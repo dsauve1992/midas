@@ -1,2 +1,4 @@
 config:
   aws:region: ca-central-1
+  github:token:
+    secure: AAABAL4EskohKys7A5QWvxMigJq77frLrNOc/PD2PusE7nX+njQuyx6HvVSgKXrfuvHjoB8MrS8ilwiOHSm0Ds+lIjvFcJGe
