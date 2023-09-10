@@ -49,11 +49,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build React App
-        if: contains(github.event.head_commit.message, 'frontend')
         working-directory: ./packages/frontend
         run: yarn build
       - name: Deploy app build to S3 bucket
-        if: contains(github.event.head_commit.message, 'frontend')
         working-directory: ./packages/frontend
         run: aws s3 sync ./dist/ s3://${{vars.FRONTEND_STORAGE_S3_BUCKET_NAME }} --acl public-read --delete
 
