@@ -17,13 +17,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
-
-      - name: Install Lerna
-        run: npm install -g lerna
+          node-version: 18.17.1
 
       - name: Bootstrap Lerna
-        run: lerna bootstrap
+        run: npx lerna bootstrap
 
 
       - name: Configure AWS Credentials
