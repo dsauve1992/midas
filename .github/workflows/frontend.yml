@@ -3,12 +3,14 @@ name: s3-depl
 on:
   push:
     branches: [ master ]
+    path: ./packages/frontend/**
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      - working-directory: ./packages/frontend
       - uses: actions/checkout@v3
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -17,7 +19,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Build React App
-        working-directory: ./packages/frontend
         run: npm install && npm run build
       - name: Deploy app build to S3 bucket
         working-directory: ./packages/frontend
