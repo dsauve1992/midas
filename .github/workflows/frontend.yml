@@ -2,13 +2,14 @@ name: CI/CD
 
 on:
   push:
-    paths:
-      - 'packages/frontend/**'
-      - 'packages/backend/**'
-      - 'packages/infra/**'
+#    paths:
+#      - 'packages/frontend/**'
+#      - 'packages/backend/**'
+#      - 'packages/infra/**'
 
 jobs:
-  setup:
+  frontend:
+    needs: setup # frontend_test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -29,28 +30,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-
-  #  frontend_test:
-  #    needs: setup
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #      - name: Checkout Repo
-  #        uses: actions/checkout@v2
-  #
-  #      - name: Test Frontend
-  #        if: contains(github.event.head_commit.message, 'frontend')
-  #        run: lerna run test --scope=@monorepo/frontend
-
-  frontend_deploy:
-    needs: setup # frontend_test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18.17.1
 
       - name: Build React App
         working-directory: ./packages/frontend
