@@ -10,7 +10,6 @@ on:
 
 jobs:
   frontend:
-    needs: setup # frontend_test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
