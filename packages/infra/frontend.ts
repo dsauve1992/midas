@@ -71,7 +71,7 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
     },
 });
 
-export const bucketName = bucket.bucketDomainName
+export const bucketName = bucket.bucket
 
 // Export the URLs and hostnames of the bucket and distribution.
 export const originURL = pulumi.interpolate`http://${bucket.websiteEndpoint}`;
