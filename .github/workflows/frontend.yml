@@ -2,6 +2,7 @@ name: CI/CD
 
 on:
   push:
+    branch: master
 #    paths:
 #      - 'packages/frontend/**'
 #      - 'packages/backend/**'
