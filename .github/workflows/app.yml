@@ -1,0 +1,81 @@
+name: CI/CD
+
+on:
+  push:
+    branch: master
+#    paths:
+#      - 'packages/frontend/**'
+#      - 'packages/backend/**'
+#      - 'packages/infra/**'
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.1
+
+      - name: Install Dependencies
+        run: yarn
+
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Build React App
+        working-directory: ./packages/frontend
+        run: yarn build
+      - name: Deploy app build to S3 bucket
+        working-directory: ./packages/frontend
+        run: aws s3 sync ./dist/ s3://${{vars.FRONTEND_STORAGE_S3_BUCKET_NAME }} --acl public-read --delete
+
+
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.1
+
+      - name: Install Dependencies
+        run: yarn
+
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Build React App
+        working-directory: ./packages/frontend
+        run: yarn build:zip
+
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v14
+        working-directory: ./packages/frontend
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{vars.BACKEND_APPLICATION_NAME}}
+          environment_name: ${{vars.BACKEND_ENVIRONMENT_NAME}}
+          version_label: ${{ github.run_id }}
+          region: ${{ secrets.AWS_REGION }}
+          deployment_package: ./app.zip
+
+
