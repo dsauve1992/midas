@@ -70,9 +70,10 @@ jobs:
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
-        DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-        IMAGE_NAME: midas-backend
-        IMAGE_TAG: latest
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          IMAGE_NAME: midas-backend
+          IMAGE_TAG: latest
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
