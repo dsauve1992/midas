@@ -62,9 +62,24 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           IMAGE_NAME: midas-backend
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: latest
         run: |
           docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG -f ./production.Dockerfile .
           docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+          
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+        IMAGE_NAME: midas-backend
+        IMAGE_TAG: latest
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker stop $(docker ps -a -q)
+            docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+            docker run -d -p 80:3000 $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
 
