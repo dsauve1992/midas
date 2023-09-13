@@ -10,10 +10,10 @@ COPY package*.json ./
 # Installez les dépendances de l'application
 RUN yarn
 
-RUN yarn build
-
 # Copiez le reste du code de l'application
 COPY . .
+
+RUN yarn build
 
 # Exposez le port sur lequel l'application s'exécute
 EXPOSE 3000
