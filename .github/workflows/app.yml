@@ -69,7 +69,7 @@ jobs:
 
       - name: Generate deployment package
         working-directory: ./packages/backend
-        run: yarn build:zip
+        run: zip -r app.zip * .[^.]* -x "**node_modules**"
 
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v14
@@ -79,6 +79,7 @@ jobs:
           application_name: ${{vars.BACKEND_APPLICATION_NAME}}
           environment_name: ${{vars.BACKEND_ENVIRONMENT_NAME}}
           version_label: ${{ github.run_id }}
+
           region: ${{ secrets.AWS_REGION }}
           deployment_package: ./packages/backend/app.zip
 
