@@ -58,6 +58,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build, tag, and push image to Docker Hub
+        working-directory: ./packages/backend
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           IMAGE_NAME: midas-backend
