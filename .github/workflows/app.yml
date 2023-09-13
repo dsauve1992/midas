@@ -64,7 +64,12 @@ jobs:
 
       - name: Build React App
         working-directory: ./packages/backend
-        run: yarn build:zip
+        run: yarn build
+
+
+      - name: Generate deployment package
+        working-directory: ./packages/backend
+        run: zip -r deploy.zip * .[^.]* -x "**node_modules**"
 
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v14
