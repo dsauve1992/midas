@@ -21,12 +21,8 @@ export const useOwnershipHistoryByInstitution = (
       holder: historyByInstitution[0].holder,
       history: historyByInstitution.map(
          ({
-            holder,
-            securityId,
-            securityName,
-            ticker,
-            sector,
-            issuerThumbnailUrl,
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            holder, securityId, securityName, ticker, sector, issuerThumbnailUrl,
             ...rest
          }) => ({ ...rest })
       ),

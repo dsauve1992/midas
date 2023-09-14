@@ -1,4 +1,3 @@
-import React from 'react'
 import TickerTitle from './TickerTitle'
 import TickerFamily from './TickerFamily'
 import { useCompanyProfile } from '../../hooks/useCompanyProfile'

@@ -10,7 +10,7 @@ export default function TradingViewTapeCard({
 }: TradingViewTapeCardProps) {
    const tradingViewReady = useTradingViewContext()
    const containerId = useMemo(() => `tradingview_${symbol}`, [symbol])
-   const onLoadScriptRef = useRef<any>(null)
+   const onLoadScriptRef = useRef<() => void>(null)
 
    const createWidget = useCallback(() => {
       if ('TradingView' in window) {
@@ -43,10 +43,14 @@ export default function TradingViewTapeCard({
    }, [symbol])
 
    useEffect(() => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       onLoadScriptRef.current = createWidget
       onLoadScriptRef.current()
 
       return () => {
+         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+         // @ts-ignore
          onLoadScriptRef.current = null
       }
    }, [symbol, tradingViewReady])

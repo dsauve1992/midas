@@ -11,7 +11,7 @@ class WatchlistAPI extends CloudFunctionApi {
 
    static async getWatchlists(): Promise<WatchlistCollection> {
       return axios
-         .get<any[]>(`${this.getBaseUrl()}`)
+         .get<{ symbols: string[], name:string }[]>(`${this.getBaseUrl()}`)
          .then((result) => result.data)
          .then((data) => {
             const tickerInWatchlist: TickerInWatchlist[] = []

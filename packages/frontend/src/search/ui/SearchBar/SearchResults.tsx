@@ -1,4 +1,3 @@
-import React from 'react'
 import { styled } from '@mui/material/styles'
 import { List, ListItem } from '@mui/material'
 import { SearchResult } from '../../../api/financialModelingPrep/types'

@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@mui/material'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { AggregateHolding } from '../../../../../api/ownership/type'
 import { useOwnershipHistoryByQuarter } from '../../../hooks/useOwnershipHistoryByQuarter'
 import {

@@ -1,18 +1,18 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
-export interface Props {
-   data: any[] | undefined
+export interface Props<T> {
+   data: T[] | undefined
    isLoading: boolean
-   children: (data: any[]) => ReactElement
+   children: (data: T[]) => ReactElement
    noDataMessage: string
 }
 
-export const LoadingPlaceHolder: React.FunctionComponent<Props> = ({
+export const LoadingPlaceHolder = <T,>({
    isLoading,
    data,
    noDataMessage,
    children,
-}: Props) => {
+}: Props<T>) => {
    if (isLoading) {
       return <p>Please wait...</p>
    }

@@ -11,7 +11,6 @@ import {
    TableRow,
 } from '@mui/material'
 import { InsiderTradingEvent } from '../../../../../api/financialModelingPrep/types'
-import { useInsiderTrading } from '../../../hooks/useInsiderTrading'
 
 export interface Props {
    events: InsiderTradingEvent[]

@@ -81,7 +81,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
 
    async getKeyMetrics(
       symbol: string,
-      parameters?: { [key: string]: any }
+      parameters?: { [key: string]: never }
    ): Promise<KeyMetrics> {
       return (
          await this.requestTo<KeyMetrics[]>(
@@ -93,7 +93,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
 
    async getIncomeStatements(
       symbol: string,
-      parameters?: { [key: string]: any }
+      parameters?: { [key: string]: string| number|boolean }
    ): Promise<IncomeStatement[]> {
       return this.requestTo<IncomeStatement[]>(
          `/income-statement/${symbol}`,
@@ -103,7 +103,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
 
    async getEarningCallTranscript(
       symbol: string,
-      parameters?: { [key: string]: any }
+      parameters?: { [key: string]: string| number|boolean }
    ): Promise<EarningCallTranscript[]> {
       return this.requestTo<EarningCallTranscript[]>(
          `/earning_call_transcript/${symbol}`,
@@ -128,7 +128,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
 
    async getEnterpriseRatios(
       symbol: string,
-      parameters?: { [key: string]: any }
+      parameters?: { [key: string]: string| number|boolean }
    ): Promise<EnterpriseRatio[]> {
       return this.requestTo<EnterpriseRatio[]>(`/ratios/${symbol}`, parameters)
    }
@@ -227,7 +227,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
 
    private async requestTo<T>(
       route: string,
-      parameters: { [key: string]: any } = {},
+      parameters: { [key: string]: string | number| boolean } = {},
       version = 3
    ): Promise<T> {
       const response = await axios.get<T>(
@@ -238,7 +238,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
 
    private buildUrl(
       route: string,
-      parameters: { [k: string]: string | number },
+      parameters: { [k: string]: string | number| boolean },
       version: number
    ) {
       const stringParameters = this.prepareParameters(parameters)
@@ -249,7 +249,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
       return `${FinancialModelingPrepClient.getBaseUrl()}?query=${query}`
    }
 
-   private prepareParameters(parameters?: { [p: string]: string | number }) {
+   private prepareParameters(parameters?: { [p: string]: string | number| boolean }) {
       if (parameters) {
          const queryString = Object.keys(parameters)
             .map((key) => `${key}=${parameters[key].toString()}`)

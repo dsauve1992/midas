@@ -1,22 +1,12 @@
-import React, { useState } from 'react'
 import {
    Card,
    CardContent,
    Grid,
    List,
-   Step,
-   StepLabel,
-   Stepper,
 } from '@mui/material'
 import { TickerProfile } from '../../ticker/ui/TickerPage/header/TickerProfile'
 import VitalSection from '../../ticker/ui/TickerPage/header/vital/VitalSection'
 import TradingViewTapeCard from '../../ui/chart/TradingViewTapeCard'
-
-const steps = [
-   'Select master blaster campaign settings',
-   'Create an ad group',
-   'Create an ad',
-]
 
 export const WatchListsPage = () => {
    return (
@@ -45,18 +35,5 @@ export const WatchListTicker = ({ symbol }: { symbol: string }) => {
             </Grid>
          </CardContent>
       </Card>
-   )
-}
-
-const WatchlistSelector = () => {
-   const [currentStep, setCurrentStep] = useState<number>(0)
-   return (
-      <Stepper activeStep={currentStep} alternativeLabel>
-         {steps.map((label, index) => (
-            <Step key={label} onClick={() => setCurrentStep(index)}>
-               <StepLabel>{label}</StepLabel>
-            </Step>
-         ))}
-      </Stepper>
    )
 }

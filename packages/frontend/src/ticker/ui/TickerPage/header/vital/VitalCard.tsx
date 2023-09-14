@@ -1,13 +1,7 @@
 import React from 'react'
 import { Card, CardContent, Typography } from '@mui/material'
 import { statusColorMapper } from './utils'
-
-export enum VitalCardStatus {
-   SAFE,
-   WARNING,
-   DANGER,
-   DEFAULT,
-}
+import {VitalCardStatus} from "./VitalCardStatus.ts";
 
 export interface Props {
    label: string

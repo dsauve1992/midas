@@ -1,5 +1,5 @@
 import { green, red, yellow } from '@mui/material/colors'
-import { VitalCardStatus } from './VitalCard'
+import {VitalCardStatus} from "./VitalCardStatus.ts";
 
 export function statusColorMapper(status: VitalCardStatus): string {
    switch (status) {

@@ -1,4 +1,3 @@
-import React from 'react'
 import { EChartOption } from 'echarts'
 import { useEchart } from '../../../../../ui/chart/hooks/useEchart'
 

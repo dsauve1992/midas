@@ -9,7 +9,6 @@ import {
    TableHead,
    TableRow,
 } from '@mui/material'
-import React from 'react'
 import { ShareholderHistory } from '../../../../../api/ownership/type'
 import { useOwnershipHistoryByInstitution } from '../../../hooks/useOwnershipHistoryByInstitution'
 import { InstitutionalOwnershipHistoryByQuarterBarChart } from './InstitutionalOwnershipHistoryByQuarterBarChart'

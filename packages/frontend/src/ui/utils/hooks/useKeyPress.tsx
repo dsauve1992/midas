@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 export function useKeyPress(targetKey: string, onKeyUp: () => void) {
    // If released key is our target key then set to false
-   const upHandler = ({ key }: any) => {
+   const upHandler = ({ key }: KeyboardEvent) => {
       if (key === targetKey) {
          onKeyUp()
       }

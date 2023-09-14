@@ -1,6 +1,6 @@
-import React from 'react'
 import { useSharesFloat } from '../../../hooks/useSharesFloat'
-import VitalCard, { VitalCardStatus } from './VitalCard'
+import VitalCard from './VitalCard'
+import {VitalCardStatus} from "./VitalCardStatus.ts";
 
 export type OutstandingSharesProps = {
    symbol: string

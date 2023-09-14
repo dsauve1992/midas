@@ -1,6 +1,6 @@
-import React from 'react'
 import { useEnterpriseRatioTTM } from '../../../hooks/useEnterpriseRatioTTM'
-import VitalCard, { VitalCardStatus } from './VitalCard'
+import VitalCard from './VitalCard'
+import {VitalCardStatus} from "./VitalCardStatus.ts";
 
 export type ReturnOnEquityProps = {
    symbol: string

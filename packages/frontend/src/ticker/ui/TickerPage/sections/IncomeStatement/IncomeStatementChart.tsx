@@ -1,4 +1,3 @@
-import React from 'react'
 import FinancialPeriod from '../../../../../lib/FinancialPeriod'
 import YearToYearQuarterlyComparisonChart from './YearToYearQuarterlyComparisonChart'
 import YearlyComparisonChart from './YearToYearEpsComparisonChart'

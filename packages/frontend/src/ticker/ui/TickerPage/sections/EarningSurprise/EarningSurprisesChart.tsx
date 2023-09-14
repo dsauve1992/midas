@@ -1,4 +1,3 @@
-import React from 'react'
 import { useEarningSurprisesComparison } from './hooks/useEarningSurprisesComparison'
 import { EarningsSurprise } from '../../../../../api/financialModelingPrep/types'
 import { MetricComparisonChart } from '../IncomeStatement/MetricComparisonChart'

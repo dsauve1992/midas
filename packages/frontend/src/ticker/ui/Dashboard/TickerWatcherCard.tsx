@@ -1,8 +1,6 @@
-import { Card, CardContent, CardHeader, Chip, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import React from 'react'
+import { Card, CardContent, Chip, Typography } from '@mui/material'
+
 import { Link } from 'react-router-dom'
-import { ThemeType } from '../../../ui/global/theme/mui.theme'
 
 type TickerWatcherCardProps = {
    symbol: string

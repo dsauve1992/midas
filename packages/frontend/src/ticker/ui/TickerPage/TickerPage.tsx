@@ -47,7 +47,7 @@ const TickerPage: React.FunctionComponent = () => {
             </Grid>
             <TabContext value={currentTab}>
                <Box sx={sx}>
-                  <TabList onChange={(event, value) => setCurrentTab(value)}>
+                  <TabList onChange={(_, value) => setCurrentTab(value)}>
                      {config.map(({ id, label }) => (
                         <Tab key={id} label={label} value={id} />
                      ))}

@@ -1,6 +1,6 @@
-import React from 'react'
 import { useCompanyRankings } from '../../../hooks/useCompanyRankings'
-import VitalCard, { VitalCardStatus } from './VitalCard'
+import VitalCard from './VitalCard'
+import {VitalCardStatus} from "./VitalCardStatus.ts";
 
 export type EarningPerShareRatingProps = {
    symbol: string
