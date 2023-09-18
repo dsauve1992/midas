@@ -81,6 +81,6 @@ jobs:
           script: |
             docker stop $(docker ps -a -q)
             docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
-            docker run -d -p 80:3000 $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+            docker run -p 80:3000 $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
 
