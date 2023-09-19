@@ -84,7 +84,6 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           IMAGE_NAME: midas-backend
           IMAGE_TAG: latest
-          PORT: 80
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
