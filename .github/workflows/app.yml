@@ -39,7 +39,7 @@ jobs:
         run: aws s3 sync ./dist/ s3://${{vars.FRONTEND_STORAGE_S3_BUCKET_NAME }} --acl public-read --delete
 
 
-  backend:
+  backend-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -73,8 +73,11 @@ jobs:
         run: |
           docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG -f ./production.Dockerfile .
           docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
-          
 
+  backend-deploy:
+    needs: backend-build
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.9
         env:
