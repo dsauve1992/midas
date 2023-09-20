@@ -1,83 +1,69 @@
-import * as fs from "fs";
+import * as aws from "@pulumi/aws";
+import * as pulumi from "@pulumi/pulumi";
 
-const pulumi = require("@pulumi/pulumi");
-const aws = require("@pulumi/aws");
 
+// Get the config ready to go.
 const config = new pulumi.Config();
-// A path to the EC2 keypair's public key:
-const publicKeyPath = config.require("publicKeyPath");
-// A path to the EC2 keypair's private key:
-const privateKeyPath = config.require("privateKeyPath");
-// The WordPress database size:
 
-const defaultVpc = new aws.ec2.DefaultVpc("defaultVPC");
+// If keyName is provided, an existing KeyPair is used, else if publicKey is provided a new KeyPair
+// derived from the publicKey is created.
+let keyName: pulumi.Input<string> | undefined = config.get("keyName");
+const publicKey = config.get("publicKey");
 
-const defaultAz1 = new aws.ec2.DefaultSubnet("defaultAz1", {availabilityZone: "ca-central-1a"});
+// The privateKey associated with the selected key must be provided (either directly or base64 encoded).
+const privateKey = config.requireSecret("privateKey").apply(key => {
+    if (key.startsWith("-----BEGIN RSA PRIVATE KEY-----")) {
+        return key;
+    } else {
+        return Buffer.from(key, "base64").toString("ascii");
+    }
+});
 
-// Read in the public key for easy use below.
-const publicKey = fs.readFileSync(publicKeyPath).toString();
-// Read in the private key for easy use below (and to ensure it's marked a secret!)
-const privateKey = pulumi.secret(fs.readFileSync(privateKeyPath).toString());
-
-
-// Find the latest Amazon Linux 2 AMI.
-const ami = pulumi.output(aws.ec2.getAmi({
-    owners: [ "amazon" ],
-    mostRecent: true,
-    filters: [
-        { name: "description", values: [ "Amazon Linux 2 *" ] },
-    ],
-}));
-
-const ec2AllowRule = new aws.ec2.SecurityGroup("ec2-allow-rule", {
-    vpcId: defaultVpc.id,
+// Create a new security group that permits SSH and web access.
+const securityGroup = new aws.ec2.SecurityGroup("ec2-security-group", {
     ingress: [
-        {
-            description: "HTTPS",
-            fromPort: 443,
-            toPort: 443,
-            protocol: "tcp",
-            cidrBlocks: ["0.0.0.0/0"],
-        },
-        {
-            description: "HTTP",
-            fromPort: 80,
-            toPort: 80,
-            protocol: "tcp",
-            cidrBlocks: ["0.0.0.0/0"],
-        },
-        {
-            description: "SSH",
-            fromPort: 22,
-            toPort: 22,
-            protocol: "tcp",
-            cidrBlocks: ["0.0.0.0/0"],
-        },
+        { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
+        { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
     ],
-    egress: [{
-        fromPort: 0,
-        toPort: 0,
-        protocol: "-1",
-        cidrBlocks: ["0.0.0.0/0"],
+});
+
+// Get the AMI
+const amiId = aws.ec2.getAmi({
+    owners: ["amazon"],
+    mostRecent: true,
+    filters: [{
+        name: "name",
+        values: ["amzn2-ami-hvm-*-x86_64-gp2"],
     }],
-    tags: {
-        Name: "allow ssh,http,https",
-    },
+}, { async: true }).then(ami => ami.id);
+
+// Create an EC2 server that we'll then provision stuff onto.
+const size = "t2.micro";
+if (!keyName) {
+    if (!publicKey) {
+        throw new Error("must provide one of `keyName` or `publicKey`");
+    }
+    const key = new aws.ec2.KeyPair("key", { publicKey });
+    keyName = key.keyName;
+}
+
+const userData = `
+    #!/bin/bash
+    yum update -y
+    yum install docker 
+    service docker start
+    usermod -a -G docker ec2-user
+`
+
+const server = new aws.ec2.Instance("midas-backend", {
+    instanceType: size,
+    ami: amiId,
+    associatePublicIpAddress: true,
+    keyName: keyName,
+    vpcSecurityGroupIds: [securityGroup.id],
+    userData
 });
 
-const wordpressKeypair = new aws.ec2.KeyPair("wordpress-keypair", {publicKey: publicKey});
 
-
-// Create and launch an Amazon Linux EC2 instance into the public subnet.
-const instance = new aws.ec2.Instance("instance", {
-    ami: ami.id,
-    instanceType: "t3.nano",
-    subnetId: defaultAz1.id,
-    keyName: wordpressKeypair.id,
-    vpcSecurityGroupIds: [
-        ec2AllowRule.id,
-    ]
-});
-
-// Export the instance's publicly accessible URL.
-export const instanceURL = pulumi.interpolate `http://${instance.publicIp}`
+export const ec2PrivateKey = privateKey
+export const publicHostName = server.publicDns;

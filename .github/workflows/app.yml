@@ -89,8 +89,8 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo docker stop $(sudo docker ps -a -q) || true
-            sudo docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
-            sudo docker run -d -p 80:3000 $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+            docker stop $(docker ps -a -q)
+            docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+            docker run -d -p 80:3000 $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
 
