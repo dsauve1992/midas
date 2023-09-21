@@ -25,6 +25,9 @@ const securityGroup = new aws.ec2.SecurityGroup("ec2-security-group", {
         { protocol: "tcp", fromPort: 22, toPort: 22, cidrBlocks: ["0.0.0.0/0"] },
         { protocol: "tcp", fromPort: 80, toPort: 80, cidrBlocks: ["0.0.0.0/0"] },
     ],
+    egress: [
+        { protocol: "-1", fromPort: 0, toPort: 0, cidrBlocks: ["0.0.0.0/0"] }
+    ]
 });
 
 // Get the AMI
@@ -47,18 +50,28 @@ if (!keyName) {
     keyName = key.keyName;
 }
 
-const userData = `
-    #!/bin/bash
-    yum update -y
-    yum install docker 
-    service docker start
-    usermod -a -G docker ec2-user
-`
+const defaultVpc = pulumi.output(aws.ec2.getVpc({
+    default: true,
+}));
+
+// Récupérer les sous-réseaux publics du VPC par défaut
+const defaultVpcSubnets = defaultVpc.apply(vpc => aws.ec2.getSubnetIds({ vpcId: vpc.id }));
+
+
+
+const userData =
+`#!/bin/bash
+yum update -y
+amazon-linux-extras install docker
+service docker start
+usermod -a -G docker ec2-user
+chkconfig docker on`
 
 const server = new aws.ec2.Instance("midas-backend", {
     instanceType: size,
     ami: amiId,
     associatePublicIpAddress: true,
+    subnetId: defaultVpcSubnets.apply(subnets => subnets.ids[0]),
     keyName: keyName,
     vpcSecurityGroupIds: [securityGroup.id],
     userData

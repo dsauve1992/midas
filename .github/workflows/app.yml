@@ -89,7 +89,11 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker stop $(docker ps -a -q)
+            if [ "$(docker ps -aq)" ]; then
+              docker stop $(docker ps -aq)
+            else
+              echo "Aucun conteneur Docker en cours d'exécution."
+            fi
             docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
             docker run -d -p 80:3000 $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
