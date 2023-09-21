@@ -94,6 +94,9 @@ jobs:
             else
               echo "Aucun conteneur Docker en cours d'exécution."
             fi
+            echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+            echo "IMAGE_NAME: $IMAGE_NAME"
+            echo "IMAGE_TAG: $IMAGE_TAG"
             docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
             docker run -d -p 80:3000 $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
