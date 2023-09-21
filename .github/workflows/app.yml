@@ -88,6 +88,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: DOCKER_USERNAME,IMAGE_NAME,IMAGE_TAG
           script: |
             if [ "$(docker ps -q)" ]; then
               docker stop $(docker ps -q)
