@@ -27,15 +27,9 @@ import {
    StockProfile,
    StockSymbol,
 } from './types'
-import CloudFunctionApi from '../global/CloudFunctionApi'
 
-class FinancialModelingPrepClient extends CloudFunctionApi {
+class FinancialModelingPrepClient {
    private static instance: FinancialModelingPrepClient | null = null
-
-   private static readonly BASE_PATH = 'fmpProxy'
-
-   private static readonly FMP_BASE_URL =
-      'https://financialmodelingprep.com/api'
 
    static getInstance(): FinancialModelingPrepClient {
       if (this.instance === null) {
@@ -46,7 +40,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
    }
 
    protected static getBaseUrl(): string {
-      return super.buildUrl(this.BASE_PATH)
+      return `${import.meta.env.VITE_BACKEND_URL}/api/fmp`
    }
 
    async getAllSymbols(): Promise<StockSymbol[]> {
@@ -243,10 +237,7 @@ class FinancialModelingPrepClient extends CloudFunctionApi {
    ) {
       const stringParameters = this.prepareParameters(parameters)
 
-      const query = encodeURIComponent(
-         `${FinancialModelingPrepClient.FMP_BASE_URL}/v${version}${route}${stringParameters}`
-      )
-      return `${FinancialModelingPrepClient.getBaseUrl()}?query=${query}`
+      return `${FinancialModelingPrepClient.getBaseUrl()}/v${version}${route}${stringParameters}`
    }
 
    private prepareParameters(parameters?: { [p: string]: string | number| boolean }) {

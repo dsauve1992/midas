@@ -33,6 +33,8 @@ jobs:
 
       - name: Build React App
         working-directory: ./packages/frontend
+        env:
+          VITE_BACKEND_URL: http://${{ secrets.EC2_HOST }}
         run: yarn build
       - name: Deploy app build to S3 bucket
         working-directory: ./packages/frontend
