@@ -4,14 +4,11 @@ FROM node:18.17.1-alpine As builder
 # Définissez le répertoire de travail dans le conteneur
 WORKDIR /usr/src/app
 
-# Copiez les fichiers package.json et package-lock.json
-COPY package*.json ./
+COPY . .
 
-# Installez les dépendances de l'application
 RUN yarn
 
 # Copiez le reste du code de l'application
-COPY . .
 
 RUN yarn build
 
