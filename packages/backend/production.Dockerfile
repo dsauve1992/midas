@@ -16,7 +16,7 @@ COPY . .
 RUN yarn build
 
 # Exposez le port sur lequel l'application s'exécute
-EXPOSE 3000
+EXPOSE 443
 
 # Définissez la commande pour exécuter l'application
 CMD ["node", "dist/main"]
