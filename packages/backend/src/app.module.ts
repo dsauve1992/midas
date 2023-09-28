@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { FinancialModelingPrepModule } from './financial-modeling-prep/financial-modeling-prep.module';
 import { ConfigModule } from '@nestjs/config';
 import { OwnershipModule } from './ownership/ownership.module';
+import { TranscriptModule } from './transcript/transcript.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { OwnershipModule } from './ownership/ownership.module';
       isGlobal: true,
     }),
     OwnershipModule,
+    TranscriptModule,
   ],
   controllers: [AppController],
   providers: [AppService],

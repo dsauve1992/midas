@@ -1,9 +1,6 @@
 import axios from 'axios'
-import CloudFunctionApi from '../global/CloudFunctionApi'
 
-class TranscriptAPI extends CloudFunctionApi {
-   private static readonly BASE_PATH = 'transcript'
-
+class TranscriptAPI {
    static async getSummary(symbol: string): Promise<string> {
       return this.get(symbol, 'SUMMARY')
    }
@@ -37,7 +34,7 @@ class TranscriptAPI extends CloudFunctionApi {
    }
 
    protected static getBaseUrl(): string {
-      return super.buildUrl(this.BASE_PATH)
+      return `${import.meta.env.VITE_BACKEND_URL}/transcript`
    }
 }
 
