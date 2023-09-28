@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FinancialModelingPrepModule } from './financial-modeling-prep/financial-modeling-prep.module';
 import { ConfigModule } from '@nestjs/config';
+import { OwnershipModule } from './ownership/ownership.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    OwnershipModule,
   ],
   controllers: [AppController],
   providers: [AppService],

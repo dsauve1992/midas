@@ -1,5 +1,4 @@
 import axios from 'axios'
-import CloudFunctionApi from '../global/CloudFunctionApi'
 import {
    OwnershipHistoryResponse,
    AggregateHolding,
@@ -7,9 +6,7 @@ import {
    TopShareholdersResponse,
 } from './type'
 
-class OwnershipAPI extends CloudFunctionApi {
-   private static readonly BASE_PATH = 'ownership'
-
+class OwnershipAPI {
    static async getHistory(symbol: string): Promise<AggregateHolding[]> {
       return axios
          .get<OwnershipHistoryResponse>(
@@ -29,7 +26,7 @@ class OwnershipAPI extends CloudFunctionApi {
    }
 
    protected static getBaseUrl(): string {
-      return super.buildUrl(this.BASE_PATH)
+      return `${import.meta.env.VITE_BACKEND_URL}/ownership`
    }
 }
 
