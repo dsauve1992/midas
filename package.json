@@ -10,6 +10,6 @@
     "lerna": "^7.2.0"
   },
   "scripts": {
-    "start": "lerna run start"
+    "start:dev": "lerna run start:dev --stream"
   }
 }

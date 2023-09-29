@@ -1,0 +1,123 @@
+{
+  "columns": [
+    "name"
+  ],
+  "filter": [
+    {
+      "left": "earnings_per_share_diluted_yoy_growth_fq",
+      "operation": "greater",
+      "right": 25
+    },
+    {
+      "left": "SMA50",
+      "operation": "egreater",
+      "right": "SMA150"
+    },
+    {
+      "left": "SMA150",
+      "operation": "egreater",
+      "right": "SMA200"
+    },
+    {
+      "left": "total_shares_outstanding_current",
+      "operation": "eless",
+      "right": 500000000
+    },
+    {
+      "left": "SMA50",
+      "operation": "eless",
+      "right": "close"
+    },
+    {
+      "left": "average_volume_10d_calc",
+      "operation": "greater",
+      "right": 200000
+    },
+    {
+      "left": "return_on_equity_fq",
+      "operation": "greater",
+      "right": 10
+    },
+    {
+      "left": "typespecs",
+      "operation": "has_none_of",
+      "right": [
+        "etn",
+        "etf"
+      ]
+    }
+  ],
+  "ignore_unknown_fields": false,
+  "price_conversion": {
+    "to_symbol": true
+  },
+  "range": [
+    0,
+    200
+  ],
+  "sort": {
+    "sortBy": "name",
+    "sortOrder": "desc"
+  },
+  "markets": [
+    "america"
+  ],
+  "filter2": {
+    "operator": "and",
+    "operands": [
+      {
+        "operation": {
+          "operator": "or",
+          "operands": [
+            {
+              "operation": {
+                "operator": "and",
+                "operands": [
+                  {
+                    "expression": {
+                      "left": "type",
+                      "operation": "equal",
+                      "right": "stock"
+                    }
+                  },
+                  {
+                    "expression": {
+                      "left": "typespecs",
+                      "operation": "has",
+                      "right": [
+                        "preferred"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "operation": {
+                "operator": "and",
+                "operands": [
+                  {
+                    "expression": {
+                      "left": "type",
+                      "operation": "equal",
+                      "right": "stock"
+                    }
+                  },
+                  {
+                    "expression": {
+                      "left": "typespecs",
+                      "operation": "has",
+                      "right": [
+                        "common"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -5,6 +5,7 @@ import { FinancialModelingPrepModule } from './financial-modeling-prep/financial
 import { ConfigModule } from '@nestjs/config';
 import { OwnershipModule } from './ownership/ownership.module';
 import { TranscriptModule } from './transcript/transcript.module';
+import { ScreenerModule } from './screener/screener.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TranscriptModule } from './transcript/transcript.module';
     }),
     OwnershipModule,
     TranscriptModule,
+    ScreenerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
