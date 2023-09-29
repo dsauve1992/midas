@@ -1,12 +1,5 @@
 import { useQuery } from 'react-query'
-import AskIbdAPI from '../../../api/askIBD/AskIbdAPI'
-
-interface StockInfo {
-   rankInGroup: string
-   groupRanking: string
-   groupName: string
-   groupLeader: string
-}
+import AskIbdAPI, {StockInfo} from '../../../api/askIBD/AskIbdAPI'
 
 export const useIBDData = (symbol: string) => {
    return useQuery<StockInfo>(['asIBD', symbol], () =>

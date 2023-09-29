@@ -8,6 +8,8 @@ import * as express from 'express';
 
 async function bootstrap() {
   const httpsOptions = {
+    // FIXME, les certificats ne devraient pas se trouver dans le code source
+    //  Ils devraient être emis par une authorité reconnu
     key: fs.readFileSync('./secrets/key.pem'),
     cert: fs.readFileSync('./secrets/certificate.pem'),
   };

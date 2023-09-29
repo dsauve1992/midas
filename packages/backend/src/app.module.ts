@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { OwnershipModule } from './ownership/ownership.module';
 import { TranscriptModule } from './transcript/transcript.module';
 import { ScreenerModule } from './screener/screener.module';
+import { InvestorsBusinessDailyModule } from './investors-business-daily/investors-business-daily.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ScreenerModule } from './screener/screener.module';
     OwnershipModule,
     TranscriptModule,
     ScreenerModule,
+    InvestorsBusinessDailyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

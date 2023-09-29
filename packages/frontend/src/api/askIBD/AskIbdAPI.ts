@@ -1,17 +1,21 @@
 import axios from 'axios'
-import CloudFunctionApi from '../global/CloudFunctionApi'
 
-class AskIbdAPI extends CloudFunctionApi {
-   private static readonly BASE_PATH = 'askIBD'
+export interface StockInfo {
+   rankInGroup: string
+   groupRanking: string
+   groupName: string
+   groupLeader: string
+}
 
-   static async getDataFor(symbol: string): Promise<any> {
+class AskIbdAPI {
+   static async getDataFor(symbol: string): Promise<StockInfo> {
       return axios
          .get(`${this.getBaseUrl()}?symbol=${symbol}`)
-         .then((result) => result.data)
+         .then((result) => result.data as StockInfo)
    }
 
    protected static getBaseUrl(): string {
-      return super.buildUrl(this.BASE_PATH)
+      return `${import.meta.env.VITE_BACKEND_URL}/investors-business-daily/ranking`
    }
 }
 
