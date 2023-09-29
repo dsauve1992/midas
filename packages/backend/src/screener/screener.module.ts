@@ -7,5 +7,6 @@ import { ScreenerFetcherService } from './screener-fetcher.service';
   controllers: [ScreenerController],
   imports: [HttpModule],
   providers: [ScreenerFetcherService],
+  exports: [ScreenerFetcherService],
 })
 export class ScreenerModule {}

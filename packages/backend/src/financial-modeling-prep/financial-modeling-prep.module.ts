@@ -7,5 +7,6 @@ import { FinancialModelingPrepFetcherService } from './financial-modeling-prep-f
   controllers: [FinancialModelingPrepController],
   imports: [HttpModule],
   providers: [FinancialModelingPrepFetcherService],
+  exports: [FinancialModelingPrepFetcherService],
 })
 export class FinancialModelingPrepModule {}
