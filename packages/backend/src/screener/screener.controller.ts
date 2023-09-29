@@ -1,21 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import * as screenerParameters from './screenerParameter.json';
-import { firstValueFrom } from 'rxjs';
+import { ScreenerFetcherService } from './screener-fetcher.service';
 
 @Controller('screener')
 export class ScreenerController {
-  constructor(private httpService: HttpService) {}
+  constructor(private screenerFetcherService: ScreenerFetcherService) {}
 
   @Get()
   async getScreener() {
-    const response = await firstValueFrom(
-      await this.httpService.post(
-        'https://scanner.tradingview.com/global/scan',
-        screenerParameters,
-      ),
-    );
-
-    return response.data.data.map((entry: any) => entry.d[0]);
+    return this.screenerFetcherService.fetch();
   }
 }
