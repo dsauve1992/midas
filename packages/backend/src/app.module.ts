@@ -7,17 +7,21 @@ import { OwnershipModule } from './ownership/ownership.module';
 import { TranscriptModule } from './transcript/transcript.module';
 import { ScreenerModule } from './screener/screener.module';
 import { InvestorsBusinessDailyModule } from './investors-business-daily/investors-business-daily.module';
+import { RatingModule } from './rating/rating.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
-    FinancialModelingPrepModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
+    FinancialModelingPrepModule,
     OwnershipModule,
     TranscriptModule,
     ScreenerModule,
     InvestorsBusinessDailyModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
