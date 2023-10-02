@@ -1,7 +1,7 @@
-import { orderBy } from 'lodash'
-import { useMemo } from 'react'
-import { IncomeStatementWithGrowthAndNetProfitMargin } from './useFinancialHistory'
-import { MetricComparison } from '../TickerPage/sections/IncomeStatement/MetricComparisonChart'
+import {orderBy} from 'lodash'
+import {useMemo} from 'react'
+import {IncomeStatementWithGrowthAndNetProfitMargin} from './useFinancialHistory'
+import {MetricComparison} from '../TickerPage/sections/IncomeStatement/MetricComparisonChart'
 
 export enum StatementSpec {
    EPS,
@@ -19,8 +19,8 @@ function buildEpsComparison(
 ): MetricComparison {
    return {
       period: q0.period,
-      current: q0.eps,
-      previous: q4.eps,
+      current: q0.epsdiluted,
+      previous: q4.epsdiluted,
       growth: q0.epsGrowth,
    }
 }

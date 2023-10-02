@@ -1,10 +1,10 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { FinancialModelingPrepFetcherService } from './financial-modeling-prep-fetcher.service';
+import { FinancialModelingPrepFetcherClient } from './financial-modeling-prep-fetcher-client.service';
 
 @Controller('api/fmp')
 export class FinancialModelingPrepController {
   constructor(
-    private financialModelingPrepFetcherService: FinancialModelingPrepFetcherService,
+    private financialModelingPrepFetcherService: FinancialModelingPrepFetcherClient,
   ) {}
 
   @Get('*')

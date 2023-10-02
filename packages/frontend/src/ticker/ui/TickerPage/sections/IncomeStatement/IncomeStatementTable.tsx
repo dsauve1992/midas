@@ -1,16 +1,8 @@
-import React, { useCallback } from 'react'
-import {
-   Paper,
-   Table,
-   TableBody,
-   TableCell,
-   TableContainer,
-   TableHead,
-   TableRow,
-} from '@mui/material'
-import { mapArrayToHeatColor } from '../../../../../lib/utils/array.utils'
-import { IncomeStatement } from '../../../../../api/financialModelingPrep/types'
-import { IncomeStatementWithGrowthAndNetProfitMargin } from '../../../hooks/useFinancialHistory'
+import React, {useCallback} from 'react'
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,} from '@mui/material'
+import {mapArrayToHeatColor} from '../../../../../lib/utils/array.utils'
+import {IncomeStatement} from '../../../../../api/financialModelingPrep/types'
+import {IncomeStatementWithGrowthAndNetProfitMargin} from '../../../hooks/useFinancialHistory'
 import EarningCallTranscript from './EarningCallTranscript'
 
 export interface Props {
@@ -86,7 +78,7 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
                         align="right"
                         style={{ color: computeEpsColorValue(row.eps) }}
                      >
-                        {row.eps.toFixed(2)}
+                        {row.epsdiluted.toFixed(2)}
                      </TableCell>
                      <TableCell align="right">
                         {row.epsGrowth.toFixed(2)}

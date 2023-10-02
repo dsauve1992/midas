@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
+import {useMemo} from 'react'
 import _ from 'lodash'
-import { MetricComparison } from '../MetricComparisonChart'
-import { IncomeStatementWithGrowthAndNetProfitMargin } from '../../../../hooks/useFinancialHistory'
+import {MetricComparison} from '../MetricComparisonChart'
+import {IncomeStatementWithGrowthAndNetProfitMargin} from '../../../../hooks/useFinancialHistory'
 
 export const useEpsComparison = (
    data?: IncomeStatementWithGrowthAndNetProfitMargin[],
@@ -12,8 +12,8 @@ export const useEpsComparison = (
 
       const allComparisons = sortedData.map((entry, index) => ({
          period: entry.calendarYear!,
-         current: entry.eps,
-         previous: sortedData[index - 1]?.eps,
+         current: entry.epsdiluted,
+         previous: sortedData[index - 1]?.epsdiluted,
          growth: entry.epsGrowth,
       }))
 

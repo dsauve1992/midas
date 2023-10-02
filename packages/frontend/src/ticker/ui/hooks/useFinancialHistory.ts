@@ -1,10 +1,7 @@
-import { useQuery } from 'react-query'
+import {useQuery} from 'react-query'
 import FinancialPeriod from '../../../lib/FinancialPeriod'
-import {
-   EnterpriseRatio,
-   IncomeStatement,
-} from '../../../api/financialModelingPrep/types'
-import { computeGrowth } from '../../../lib/utils'
+import {EnterpriseRatio, IncomeStatement,} from '../../../api/financialModelingPrep/types'
+import {computeGrowth} from '../../../lib/utils'
 import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
 
 export interface UseFinancialHistoryProps {
@@ -53,10 +50,10 @@ export function mapData(
               ]?.revenue
            ),
            epsGrowth: computeGrowth(
-              value.eps,
+              value.epsdiluted,
               incomeStatements[
                  index + (frequency === FinancialPeriod.QUARTER ? 4 : 1)
-              ]?.eps
+              ]?.epsdiluted
            ),
            netProfitMargin:
               enterpriseRatios?.find(({ date }) => date === value.date)
