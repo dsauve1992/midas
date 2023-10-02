@@ -1,5 +1,6 @@
-import { Grid } from '@mui/material'
-import TradingViewTapeCard from '../../../ui/chart/TradingViewTapeCard'
+import {Grid} from '@mui/material'
+import {useQuery} from "react-query";
+import axios from "axios";
 
 type Group = {
    name: string
@@ -45,20 +46,26 @@ const INDUSTRY_GROUPS: IndustryGroups = {
 console.log(INDUSTRY_GROUPS)
 
 export const DashboardPage = () => {
+
+   const {data} =
+       useQuery(['rating'], async () => (await axios.get(`${import.meta.env.VITE_BACKEND_URL}/rating`)).data)
+
    return (
+
       <Grid container spacing={2}>
-         <Grid item xs={12} height="600px">
-            <TradingViewTapeCard symbol="XHB" />
-         </Grid>
-         <Grid item xs={12} height="600px">
-            <TradingViewTapeCard symbol="S5UTIL" />
-         </Grid>
-         <Grid item xs={12} height="600px">
-            <TradingViewTapeCard symbol="XLF" />
-         </Grid>
-         <Grid item xs={12} height="600px">
-            <TradingViewTapeCard symbol="0L13" />
-         </Grid>
+         {data && JSON.stringify(data)}
+         {/*<Grid item xs={12} height="600px">*/}
+         {/*   <TradingViewTapeCard symbol="XHB" />*/}
+         {/*</Grid>*/}
+         {/*<Grid item xs={12} height="600px">*/}
+         {/*   <TradingViewTapeCard symbol="S5UTIL" />*/}
+         {/*</Grid>*/}
+         {/*<Grid item xs={12} height="600px">*/}
+         {/*   <TradingViewTapeCard symbol="XLF" />*/}
+         {/*</Grid>*/}
+         {/*<Grid item xs={12} height="600px">*/}
+         {/*   <TradingViewTapeCard symbol="0L13" />*/}
+         {/*</Grid>*/}
       </Grid>
    )
 }
