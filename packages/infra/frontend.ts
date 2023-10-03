@@ -1,11 +1,11 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import * as synced_folder from "@pulumi/synced-folder";
 
 // Create an S3 bucket and configure it as a website.
 const bucket = new aws.s3.Bucket("frontend-storage", {
     website: {
         indexDocument: "index.html",
+        errorDocument: "index.html"
     },
     acl: "public-read",
 });
@@ -27,6 +27,11 @@ const publicAccessBlock = new aws.s3.BucketPublicAccessBlock("public-access-bloc
 // Create a CloudFront CDN to distribute and cache the website.
 const cdn = new aws.cloudfront.Distribution("cdn", {
     enabled: true,
+    customErrorResponses: [{
+        errorCode: 404,
+        responsePagePath: "/index.html",
+        responseCode: 200
+    }],
     origins: [{
         originId: bucket.arn,
         domainName: bucket.websiteEndpoint,
