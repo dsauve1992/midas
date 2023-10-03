@@ -29,7 +29,7 @@ import {
   StockPeer,
   StockProfile,
   StockSymbol,
-} from 'frontend/src/api/financialModelingPrep/types';
+} from './types';
 
 @Injectable()
 export class FinancialModelingPrepFetcherClient {

@@ -1,123 +1,72 @@
 {
-  "columns": [
-    "name"
-  ],
   "filter": [
     {
-      "left": "earnings_per_share_diluted_yoy_growth_fq",
+      "left": "type",
+      "operation": "equal",
+      "right": "stock"
+    },
+    {
+      "left": "subtype",
+      "operation": "in_range",
+      "right": [
+        "common",
+        "foreign-issuer",
+        "preferred"
+      ]
+    },
+    {
+      "left": "exchange",
+      "operation": "in_range",
+      "right": [
+        "AMEX",
+        "NASDAQ",
+        "NYSE"
+      ]
+    },
+    {
+      "left": "volume",
+      "operation": "egreater",
+      "right": 100000
+    },
+    {
+      "left": "close",
       "operation": "greater",
-      "right": 25
+      "right": 2
     },
     {
       "left": "SMA50",
-      "operation": "egreater",
-      "right": "SMA150"
+      "operation": "greater",
+      "right": "SMA100"
     },
     {
-      "left": "SMA150",
-      "operation": "egreater",
+      "left": "SMA100",
+      "operation": "greater",
       "right": "SMA200"
     },
     {
-      "left": "total_shares_outstanding_current",
+      "left": "total_shares_outstanding_fundamental",
       "operation": "eless",
-      "right": 500000000
-    },
-    {
-      "left": "SMA50",
-      "operation": "eless",
-      "right": "close"
-    },
-    {
-      "left": "average_volume_10d_calc",
-      "operation": "greater",
-      "right": 200000
-    },
-    {
-      "left": "return_on_equity_fq",
-      "operation": "greater",
-      "right": 10
-    },
-    {
-      "left": "typespecs",
-      "operation": "has_none_of",
-      "right": [
-        "etn",
-        "etf"
-      ]
+      "right": 300000000
     }
   ],
-  "ignore_unknown_fields": false,
-  "price_conversion": {
-    "to_symbol": true
+  "options": {
+    "lang": "en"
+  },
+  "symbols": {
+    "query": {
+      "types": []
+    },
+    "tickers": []
+  },
+  "columns": [
+    "name"
+  ],
+  "sort": {
+    "sortBy": "earnings_per_share_diluted_yoy_growth_fy",
+    "sortOrder": "desc"
   },
   "range": [
     0,
-    200
-  ],
-  "sort": {
-    "sortBy": "name",
-    "sortOrder": "desc"
-  },
-  "markets": [
-    "america"
-  ],
-  "filter2": {
-    "operator": "and",
-    "operands": [
-      {
-        "operation": {
-          "operator": "or",
-          "operands": [
-            {
-              "operation": {
-                "operator": "and",
-                "operands": [
-                  {
-                    "expression": {
-                      "left": "type",
-                      "operation": "equal",
-                      "right": "stock"
-                    }
-                  },
-                  {
-                    "expression": {
-                      "left": "typespecs",
-                      "operation": "has",
-                      "right": [
-                        "preferred"
-                      ]
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "operation": {
-                "operator": "and",
-                "operands": [
-                  {
-                    "expression": {
-                      "left": "type",
-                      "operation": "equal",
-                      "right": "stock"
-                    }
-                  },
-                  {
-                    "expression": {
-                      "left": "typespecs",
-                      "operation": "has",
-                      "right": [
-                        "common"
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
+    1000
+  ]
 }

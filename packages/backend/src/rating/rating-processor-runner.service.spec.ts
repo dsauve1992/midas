@@ -6,7 +6,7 @@ import { FinancialModelingPrepFetcherClient } from '../financial-modeling-prep/f
 import {
   EnterpriseRatio,
   IncomeStatement,
-} from 'frontend/src/api/financialModelingPrep/types';
+} from '../financial-modeling-prep/types';
 
 const mockGetIncomeStatement = jest.fn<
   Promise<Partial<IncomeStatement>[]>,
