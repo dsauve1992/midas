@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { FinancialModelingPrepModule } from './financial-modeling-prep/financial-modeling-prep.module';
+import { HistoricalDataModule } from './historical-data/historical-data.module';
 import { ConfigModule } from '@nestjs/config';
 import { OwnershipModule } from './ownership/ownership.module';
 import { TranscriptModule } from './transcript/transcript.module';
@@ -16,14 +14,14 @@ import { ScheduleModule } from '@nestjs/schedule';
       isGlobal: true,
     }),
     ScheduleModule.forRoot(),
-    FinancialModelingPrepModule,
+    HistoricalDataModule,
     OwnershipModule,
     TranscriptModule,
     ScreenerModule,
     InvestorsBusinessDailyModule,
     RatingModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

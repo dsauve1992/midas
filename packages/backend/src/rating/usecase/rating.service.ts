@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { FinancialModelingPrepFetcherClient } from '../../financial-modeling-prep/financial-modeling-prep-fetcher-client.service';
+import { FinancialModelingPrepFetcherClient } from '../../historical-data/financial-modeling-prep-fetcher-client.service';
 import {
   AnnuallyIncomeHistory,
   QuarterlyIncomeHistory,

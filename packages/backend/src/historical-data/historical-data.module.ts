@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { FinancialModelingPrepController } from './financial-modeling-prep.controller';
+import { HistoricalDataController } from './historical-data.controller';
 import { HttpModule } from '@nestjs/axios';
 import { FinancialModelingPrepFetcherClient } from './financial-modeling-prep-fetcher-client.service';
 
 @Module({
-  controllers: [FinancialModelingPrepController],
+  controllers: [HistoricalDataController],
   imports: [HttpModule],
   providers: [FinancialModelingPrepFetcherClient],
   exports: [FinancialModelingPrepFetcherClient],
 })
-export class FinancialModelingPrepModule {}
+export class HistoricalDataModule {}
