@@ -1,9 +1,9 @@
 import React from 'react'
-import { Grid } from '@mui/material'
-import { EarningPerShareRating } from './EarningPerShareRating'
-import { RelativeStrengthRating } from './RelativeStrengthRating'
-import { ReturnOnEquity } from './ReturnOnEquity'
-import { OutstandingShares } from './OutstandingShares'
+import {Grid} from '@mui/material'
+import {RelativeStrengthRating} from './RelativeStrengthRating'
+import {ReturnOnEquity} from './ReturnOnEquity'
+import {OutstandingShares} from './OutstandingShares'
+import {FundamentalRating} from "./FundamentalRating.tsx";
 
 export interface Props {
    symbol: string
@@ -22,7 +22,8 @@ export const VitalSection: React.FunctionComponent<Props> = ({
             <RelativeStrengthRating symbol={symbol} size={size} />
          </Grid>
          <Grid item xs={itemCol}>
-            <EarningPerShareRating symbol={symbol} size={size} />
+            {/*<EarningPerShareRating symbol={symbol} size={size} />*/}
+            <FundamentalRating symbol={symbol} size={size} />
          </Grid>
          <Grid item xs={itemCol}>
             <ReturnOnEquity symbol={symbol} size={size} />

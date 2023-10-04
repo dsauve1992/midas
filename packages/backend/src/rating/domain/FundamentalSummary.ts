@@ -13,7 +13,7 @@ export type AnnuallyIncomeSummaryModel = {
 }[];
 
 export class QuarterlyIncomeSummary {
-  constructor(private model: QuarterlyIncomeSummaryModel) {}
+  constructor(public model: QuarterlyIncomeSummaryModel) {}
 
   toString(): string {
     return this.model
@@ -26,7 +26,7 @@ export class QuarterlyIncomeSummary {
 }
 
 export class AnnuallyIncomeSummary {
-  constructor(private model: AnnuallyIncomeSummaryModel) {}
+  constructor(public model: AnnuallyIncomeSummaryModel) {}
 
   toString(): string {
     return this.model

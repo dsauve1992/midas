@@ -4,7 +4,7 @@ export class Growth {
     private previous: number,
   ) {}
 
-  private getPercentage(): number {
+  getPercentage(): number {
     return ((this.current - this.previous) / Math.abs(this.previous)) * 100;
   }
 

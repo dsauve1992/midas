@@ -27,24 +27,34 @@ export class QuarterlyIncomeHistory {
       }));
   }
 
-  private getEpsGrowthForQuarter(currentQuarter: Quarter) {
-    const { incomeDataForCurrentQuarter, incomeDataForPreviousQuarter } =
-      this.getIncomeDataForQuarterPair(currentQuarter);
+  private getEpsGrowthForQuarter(currentQuarter: Quarter): Growth | undefined {
+    try {
+      const { incomeDataForCurrentQuarter, incomeDataForPreviousQuarter } =
+        this.getIncomeDataForQuarterPair(currentQuarter);
 
-    return new Growth(
-      incomeDataForCurrentQuarter.eps,
-      incomeDataForPreviousQuarter.eps,
-    );
+      return new Growth(
+        incomeDataForCurrentQuarter.eps,
+        incomeDataForPreviousQuarter.eps,
+      );
+    } catch (error) {
+      return undefined;
+    }
   }
 
-  private getSalesGrowthForQuarter(currentQuarter: Quarter) {
-    const { incomeDataForCurrentQuarter, incomeDataForPreviousQuarter } =
-      this.getIncomeDataForQuarterPair(currentQuarter);
+  private getSalesGrowthForQuarter(
+    currentQuarter: Quarter,
+  ): Growth | undefined {
+    try {
+      const { incomeDataForCurrentQuarter, incomeDataForPreviousQuarter } =
+        this.getIncomeDataForQuarterPair(currentQuarter);
 
-    return new Growth(
-      incomeDataForCurrentQuarter.sales,
-      incomeDataForPreviousQuarter.sales,
-    );
+      return new Growth(
+        incomeDataForCurrentQuarter.sales,
+        incomeDataForPreviousQuarter.sales,
+      );
+    } catch (error) {
+      return undefined;
+    }
   }
 
   private getIncomeDataForQuarterPair(currentQuarter: Quarter) {
@@ -84,14 +94,18 @@ export class AnnuallyIncomeHistory {
       .map((year) => ({ year, growth: this.getEpsGrowthForYear(year) }));
   }
 
-  getEpsGrowthForYear(year: number): Growth {
-    const { incomeDataForCurrentYear, incomeDataForPreviousYear } =
-      this.getIncomeDataForYearPair(year);
+  getEpsGrowthForYear(year: number): Growth | undefined {
+    try {
+      const { incomeDataForCurrentYear, incomeDataForPreviousYear } =
+        this.getIncomeDataForYearPair(year);
 
-    return new Growth(
-      incomeDataForCurrentYear.eps,
-      incomeDataForPreviousYear.eps,
-    );
+      return new Growth(
+        incomeDataForCurrentYear.eps,
+        incomeDataForPreviousYear.eps,
+      );
+    } catch (error) {
+      return undefined;
+    }
   }
 
   private getIncomeDataForYearPair(year: number) {

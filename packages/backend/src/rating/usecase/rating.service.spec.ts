@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RatingProcessorRunnerService } from './rating-processor-runner.service';
+import { RatingService } from './rating.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
-import { FinancialModelingPrepFetcherClient } from '../financial-modeling-prep/financial-modeling-prep-fetcher-client.service';
+import { FinancialModelingPrepFetcherClient } from '../../financial-modeling-prep/financial-modeling-prep-fetcher-client.service';
 import {
   EnterpriseRatio,
   IncomeStatement,
-} from '../financial-modeling-prep/types';
+} from '../../financial-modeling-prep/types';
 
 const mockGetIncomeStatement = jest.fn<
   Promise<Partial<IncomeStatement>[]>,
@@ -17,13 +17,13 @@ const mockGetEnterpriseRatios = jest.fn<
   any
 >();
 describe('RatingProcessorRunnerService', () => {
-  let service: RatingProcessorRunnerService;
+  let service: RatingService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [HttpModule, ConfigModule.forRoot({ isGlobal: true })],
       providers: [
-        RatingProcessorRunnerService,
+        RatingService,
         {
           provide: FinancialModelingPrepFetcherClient,
           useFactory: jest.fn().mockImplementation(() => ({
@@ -34,7 +34,7 @@ describe('RatingProcessorRunnerService', () => {
       ],
     }).compile();
 
-    service = app.get(RatingProcessorRunnerService);
+    service = app.get(RatingService);
   });
 
   it('should return a number', async () => {
@@ -62,21 +62,6 @@ describe('RatingProcessorRunnerService', () => {
 
     const rating = await service.computeRatingFor('BSX');
 
-    expect(rating.quarterlyIncomeSummary.toString()).toEqual(
-      `Q3 - 2021 | eps: 100.00% | sales: -80.00%
-       Q2 - 2021 | eps: 133.33% | sales: -66.67%
-       Q1 - 2021 | eps: 200.00% | sales: -57.14%
-       Q4 - 2020 | eps: 400.00% | sales: -50.00%`.replace(/  +/g, ''),
-    );
-
-    expect(rating.annuallyIncomeSummary.toString()).toEqual(
-      `2020 | eps: 16.67%
-       2019 | eps: 20.00%
-       2018 | eps: 25.00%
-       2017 | eps: 33.33%
-       2016 | eps: 50.00%`.replace(/  +/g, ''),
-    );
-
-    expect(rating.returnOnEquity).toEqual(0.2);
+    expect(rating).toEqual(65);
   });
 });
