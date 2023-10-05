@@ -97,6 +97,8 @@ jobs:
             else
               echo "Aucun conteneur Docker en cours d'exécution."
             fi
+            service docker stop
+            service docker start
             echo "DOCKER_USERNAME: $DOCKER_USERNAME"
             echo "IMAGE_NAME: $IMAGE_NAME"
             echo "IMAGE_TAG: $IMAGE_TAG"
