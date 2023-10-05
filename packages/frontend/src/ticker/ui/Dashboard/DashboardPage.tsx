@@ -48,16 +48,17 @@ export const DashboardPage = () => {
    return (
 
       <Grid container spacing={2}>
-         <Grid item xs={12} height="600px">
+         <Grid item xs={12} sx={{ height: "600px !important"}}>
             <TradingViewTapeCard symbol="XHB" />
          </Grid>
-         <Grid item xs={12} height="600px">
+
+         <Grid item xs={12} sx={{ height: "600px !important"}}>
             <TradingViewTapeCard symbol="S5UTIL" />
          </Grid>
-         <Grid item xs={12} height="600px">
+         <Grid item xs={12} sx={{ height: "600px !important"}}>
             <TradingViewTapeCard symbol="XLF" />
          </Grid>
-         <Grid item xs={12} height="600px">
+         <Grid item xs={12} sx={{ height: "600px !important"}}>
             <TradingViewTapeCard symbol="0L13" />
          </Grid>
       </Grid>

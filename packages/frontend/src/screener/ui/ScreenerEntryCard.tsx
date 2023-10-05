@@ -1,11 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Card, CardContent, Grid } from '@mui/material'
-import { MetricComparisonChart } from '../../ticker/ui/TickerPage/sections/IncomeStatement/MetricComparisonChart'
-import { TickerProfile } from '../../ticker/ui/TickerPage/header/TickerProfile'
+import {Link} from 'react-router-dom'
+import {Card, CardContent, Grid} from '@mui/material'
+import {MetricComparisonChart} from '../../ticker/ui/TickerPage/sections/IncomeStatement/MetricComparisonChart'
+import {TickerProfile} from '../../ticker/ui/TickerPage/header/TickerProfile'
 import TradingViewTapeCard from '../../ui/chart/TradingViewTapeCard'
 import VitalSection from '../../ticker/ui/TickerPage/header/vital/VitalSection'
-import { useFinancialQuarterlyPerformance } from '../../ticker/ui/hooks/useFinancialQuarterlyPerformance'
+import {useFinancialQuarterlyPerformance} from '../../ticker/ui/hooks/useFinancialQuarterlyPerformance'
 
 export interface Props {
    symbol: string
@@ -38,7 +38,7 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
                      <Grid item xs={12}>
                         <VitalSection symbol={symbol} />
                      </Grid>
-                     <Grid item xs={12} style={{ height: '300px' }}>
+                     <Grid item xs={12} sx={{ height: '300px' }}>
                         {earnings.length && (
                            <MetricComparisonChart
                               key={symbol}
@@ -47,7 +47,7 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
                            />
                         )}
                      </Grid>
-                     <Grid item xs={12} style={{ height: '300px' }}>
+                     <Grid item xs={12} sx={{ height: '300px' }}>
                         {revenues.length && (
                            <MetricComparisonChart
                               title="Revenue"
@@ -60,7 +60,7 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
                </Grid>
                <Grid item xs={8}>
                   <Grid container spacing={2}>
-                     <Grid item xs={12} style={{ height: '1000px' }}>
+                     <Grid item xs={12} sx={{ height: '1000px !important' }}>
                         <TradingViewTapeCard symbol={symbol} />
                      </Grid>
                   </Grid>
