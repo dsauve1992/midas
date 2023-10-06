@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { FinancialModelingPrepFetcherClient } from '../../historical-data/financial-modeling-prep-fetcher-client.service';
+import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import {
   AnnuallyIncomeHistory,
   QuarterlyIncomeHistory,
@@ -17,7 +17,7 @@ export class RatingService {
   private readonly logger = new Logger(RatingService.name);
 
   constructor(
-    private financialModelingPrepFetcherService: FinancialModelingPrepFetcherClient,
+    private financialModelingPrepFetcherService: FinancialModelingPrepService,
   ) {}
 
   async computeRatingFor(symbol: string) {

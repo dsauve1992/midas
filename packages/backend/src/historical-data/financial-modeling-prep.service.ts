@@ -32,7 +32,7 @@ import {
 } from './types';
 
 @Injectable()
-export class FinancialModelingPrepFetcherClient {
+export class FinancialModelingPrepService {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,

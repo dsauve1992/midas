@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RatingService } from './rating.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
-import { FinancialModelingPrepFetcherClient } from '../../historical-data/financial-modeling-prep-fetcher-client.service';
+import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { EnterpriseRatio, IncomeStatement } from '../../historical-data/types';
 
 const mockGetIncomeStatement = jest.fn<
@@ -22,7 +22,7 @@ describe('RatingProcessorRunnerService', () => {
       providers: [
         RatingService,
         {
-          provide: FinancialModelingPrepFetcherClient,
+          provide: FinancialModelingPrepService,
           useFactory: jest.fn().mockImplementation(() => ({
             getIncomeStatements: mockGetIncomeStatement,
             getEnterpriseRatios: mockGetEnterpriseRatios,
