@@ -3,7 +3,10 @@ import { RatingService } from './rating.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { EnterpriseRatio, IncomeStatement } from '../../historical-data/types';
+import {
+  EnterpriseRatio,
+  IncomeStatement,
+} from '../../../../shared-types/financial-modeling-prep';
 
 const mockGetIncomeStatement = jest.fn<
   Promise<Partial<IncomeStatement>[]>,

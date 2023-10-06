@@ -1,6 +1,6 @@
-import { useEarningSurprisesComparison } from './hooks/useEarningSurprisesComparison'
-import { EarningsSurprise } from '../../../../../api/financialModelingPrep/types'
-import { MetricComparisonChart } from '../IncomeStatement/MetricComparisonChart'
+import {useEarningSurprisesComparison} from './hooks/useEarningSurprisesComparison'
+import {EarningsSurprise} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
+import {MetricComparisonChart} from '../IncomeStatement/MetricComparisonChart'
 
 type Props = {
    data: EarningsSurprise[]

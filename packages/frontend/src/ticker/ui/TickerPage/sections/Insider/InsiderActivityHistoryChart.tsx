@@ -1,8 +1,8 @@
 import React from 'react'
-import { Card, CardContent } from '@mui/material'
-import { EChartOption } from 'echarts'
-import { InsiderTradingEvent } from '../../../../../api/financialModelingPrep/types'
-import { useEchart } from '../../../../../ui/chart/hooks/useEchart'
+import {Card, CardContent} from '@mui/material'
+import {EChartOption} from 'echarts'
+import {InsiderTradingEvent} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
+import {useEchart} from '../../../../../ui/chart/hooks/useEchart'
 import DateRange from '../../../../../lib/utils/date/DateRange'
 
 export interface Props {

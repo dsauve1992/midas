@@ -10,7 +10,7 @@ import {
    SharesFloat,
    SocialSentiment,
    StockProfile,
-} from './types'
+} from '../../../../shared-types/financial-modeling-prep.d.ts'
 
 class FinancialModelingPrepClient {
    private static instance: FinancialModelingPrepClient | null = null

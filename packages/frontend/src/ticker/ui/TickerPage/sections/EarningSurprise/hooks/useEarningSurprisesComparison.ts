@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import { useMemo } from 'react'
-import { computeGrowth } from '../../../../../../lib/utils'
-import { MetricComparison } from '../../IncomeStatement/MetricComparisonChart'
-import { EarningsSurprise } from '../../../../../../api/financialModelingPrep/types'
+import {useMemo} from 'react'
+import {computeGrowth} from '../../../../../../lib/utils'
+import {MetricComparison} from '../../IncomeStatement/MetricComparisonChart'
+import {EarningsSurprise} from '../../../../../../../../shared-types/financial-modeling-prep.d.ts'
 
 export const useEarningSurprisesComparison = (
    data: EarningsSurprise[],

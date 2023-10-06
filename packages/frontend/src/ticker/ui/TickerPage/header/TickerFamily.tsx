@@ -1,6 +1,6 @@
 import React from 'react'
-import { Chip } from '@mui/material'
-import { StockProfile } from '../../../../api/financialModelingPrep/types'
+import {Chip} from '@mui/material'
+import {StockProfile} from '../../../../../../shared-types/financial-modeling-prep.d.ts'
 
 export interface Props {
    profile: StockProfile

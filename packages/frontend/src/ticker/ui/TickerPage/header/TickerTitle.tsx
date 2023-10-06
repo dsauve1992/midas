@@ -1,6 +1,6 @@
 import React from 'react'
-import { Avatar, Box, Button, Chip, Typography } from '@mui/material'
-import { StockProfile } from '../../../../api/financialModelingPrep/types'
+import {Avatar, Box, Button, Chip, Typography} from '@mui/material'
+import {StockProfile} from '../../../../../../shared-types/financial-modeling-prep.d.ts'
 import DescriptionModal from './DescriptionModal'
 
 export interface Props {

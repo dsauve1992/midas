@@ -1,5 +1,5 @@
 import axios from "axios";
-import {StockProfile} from "./financialModelingPrep/types.ts";
+import {StockProfile} from "../../../shared-types/financial-modeling-prep.d.ts";
 
 export class MidasBackendClient {
     protected static getBaseUrl(): string {

@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query'
-import {StockProfile} from '../../../api/financialModelingPrep/types'
+import {StockProfile} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 import {MidasBackendClient} from "../../../api/MidasBackendClient.ts";
 
 export const useCompanyGeneralInformation = (symbol: string) =>

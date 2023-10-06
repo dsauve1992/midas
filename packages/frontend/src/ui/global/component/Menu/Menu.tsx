@@ -2,10 +2,10 @@ import * as React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import { Button, Grid } from '@mui/material'
-import { useHistory } from 'react-router-dom'
+import {Button, Grid} from '@mui/material'
+import {useHistory} from 'react-router-dom'
 import SearchBar from '../../../../search/ui/SearchBar/SearchBar'
-import { SearchResult } from '../../../../api/financialModelingPrep/types'
+import {SearchResult} from '../../../../../../shared-types/financial-modeling-prep.d.ts'
 
 const sx = {
    display: 'flex',

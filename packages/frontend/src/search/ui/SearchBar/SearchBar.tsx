@@ -1,10 +1,10 @@
 import React from 'react'
 import SearchIcon from '@mui/icons-material/Search'
-import { alpha, styled } from '@mui/material/styles'
+import {alpha, styled} from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
-import { SearchResults } from './SearchResults'
-import { useSearchBar } from './useSearchBar'
-import { SearchResult } from '../../../api/financialModelingPrep/types'
+import {SearchResults} from './SearchResults'
+import {useSearchBar} from './useSearchBar'
+import {SearchResult} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 
 const Search = styled('div')(({ theme }) => ({
    position: 'relative',

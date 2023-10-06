@@ -10,7 +10,7 @@ import {
    TableHead,
    TableRow,
 } from '@mui/material'
-import { InsiderTradingEvent } from '../../../../../api/financialModelingPrep/types'
+import {InsiderTradingEvent} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
 
 export interface Props {
    events: InsiderTradingEvent[]

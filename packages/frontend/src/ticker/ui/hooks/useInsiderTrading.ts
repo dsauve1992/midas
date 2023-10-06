@@ -1,5 +1,5 @@
-import { useQuery } from 'react-query'
-import { InsiderTradingEvent } from '../../../api/financialModelingPrep/types'
+import {useQuery} from 'react-query'
+import {InsiderTradingEvent} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
 
 export const useInsiderTrading = (symbol: string) => {

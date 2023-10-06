@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../historical-data/financial-modeling-prep.service';
-import { StockProfile } from '../historical-data/types';
+import { StockProfile } from '../../../shared-types/financial-modeling-prep';
 
 @Controller('stocks/:symbol')
 export class StocksController {
