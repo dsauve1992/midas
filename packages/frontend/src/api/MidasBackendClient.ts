@@ -1,5 +1,5 @@
 import axios from "axios";
-import {StockProfile} from "../../../shared-types/financial-modeling-prep.d.ts";
+import {StockGeneralInformationResponseDto} from "../../../shared-types/response.dto";
 
 export class MidasBackendClient {
     protected static getBaseUrl(): string {
@@ -7,8 +7,8 @@ export class MidasBackendClient {
     }
 
 
-    static async getCompanyGeneralInformation(symbol: string): Promise<StockProfile> {
-        const {data} =  await axios.get<StockProfile>(
+    static async getCompanyGeneralInformation(symbol: string): Promise<StockGeneralInformationResponseDto> {
+        const {data} =  await axios.get<StockGeneralInformationResponseDto>(
             `${this.getBaseUrl()}/stocks/${symbol}`
         )
 

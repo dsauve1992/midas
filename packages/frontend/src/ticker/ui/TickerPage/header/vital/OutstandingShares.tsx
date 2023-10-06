@@ -1,29 +1,27 @@
-import { useSharesFloat } from '../../../hooks/useSharesFloat'
 import VitalCard from './VitalCard'
 import {VitalCardStatus} from "./VitalCardStatus.ts";
 
 export type OutstandingSharesProps = {
-   symbol: string
+   value?:number
    size?: 'sm' | 'md'
 }
 
 export const OutstandingShares = ({
-   symbol,
+   value,
    size = 'md',
 }: OutstandingSharesProps) => {
-   const { data: sharesFloat } = useSharesFloat(symbol)
 
    return (
       <VitalCard
          size={size}
          status={
-            (sharesFloat?.outstandingShares || 0) < 100000000
+            (value || 0) < 100000000
                ? VitalCardStatus.SAFE
                : VitalCardStatus.WARNING
          }
          label="Out. Shares"
       >
-         {sharesFloat?.outstandingShares.toLocaleString() || '-'}
+         {value?.toLocaleString() || '-'}
       </VitalCard>
    )
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import {Chip} from '@mui/material'
-import {StockProfile} from '../../../../../../shared-types/financial-modeling-prep.d.ts'
+import {StockGeneralInformationResponseDto} from "../../../../../../shared-types/response.dto";
 
 export interface Props {
-   profile: StockProfile
+   profile: StockGeneralInformationResponseDto
 }
 
 const TickerFamily: React.FunctionComponent<Props> = ({ profile }: Props) => (

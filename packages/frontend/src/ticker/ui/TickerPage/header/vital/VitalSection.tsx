@@ -4,6 +4,7 @@ import {RelativeStrengthRating} from './RelativeStrengthRating'
 import {ReturnOnEquity} from './ReturnOnEquity'
 import {OutstandingShares} from './OutstandingShares'
 import {FundamentalRating} from "./FundamentalRating.tsx";
+import {useCompanyGeneralInformation} from "../../../hooks/useCompanyGeneralInformation.ts";
 
 export interface Props {
    symbol: string
@@ -16,20 +17,23 @@ export const VitalSection: React.FunctionComponent<Props> = ({
    itemCol = 6,
    size = 'sm',
 }: Props) => {
-   return (
+    const { data: profile } =
+        useCompanyGeneralInformation(symbol)
+
+
+    return (
       <Grid container>
          <Grid item xs={itemCol}>
-            <RelativeStrengthRating symbol={symbol} size={size} />
+            <RelativeStrengthRating size={size} value={profile?.relativeStrengthRating} />
          </Grid>
          <Grid item xs={itemCol}>
-            {/*<EarningPerShareRating symbol={symbol} size={size} />*/}
-            <FundamentalRating symbol={symbol} size={size} />
+            <FundamentalRating size={size} value={profile?.fundamentalRating}/>
          </Grid>
          <Grid item xs={itemCol}>
-            <ReturnOnEquity symbol={symbol} size={size} />
+            <ReturnOnEquity size={size} value={profile?.returnOnEquity} />
          </Grid>
          <Grid item xs={itemCol}>
-            <OutstandingShares symbol={symbol} size={size} />
+            <OutstandingShares size={size} value={profile?.outstandingShares}/>
          </Grid>
       </Grid>
    )

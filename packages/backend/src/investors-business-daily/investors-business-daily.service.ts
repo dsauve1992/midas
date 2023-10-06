@@ -3,6 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import * as UserAgent from 'user-agents';
 import * as cheerio from 'cheerio';
+import axios from 'axios';
+import { get } from 'lodash';
+import { format } from 'date-fns';
 
 export interface StockRankingInfo {
   rankInGroup: string;
@@ -10,6 +13,11 @@ export interface StockRankingInfo {
   groupName: string;
   groupLeader: string;
 }
+
+export type IbdRankings = {
+  rsRating: number;
+  epsRating: number;
+};
 
 @Injectable()
 export class InvestorsBusinessDailyService {
@@ -19,6 +27,31 @@ export class InvestorsBusinessDailyService {
     const url = await this.findQuoteUrl(symbol);
     const data = await this.extractPageContentV2(url);
     return this.parseData(data);
+  }
+
+  async fetchStockRating(symbol: string): Promise<IbdRankings> {
+    const todayString = format(new Date(), 'yyyy-MM-d');
+
+    const rawData = await axios.post(
+      'https://research.investors.com/services/ChartService.svc/GetData',
+      {
+        req: {
+          Symbol: symbol,
+          Type: 1,
+          StartDate: todayString,
+          EndDate: todayString,
+          EnableBats: true,
+        },
+      },
+    );
+
+    const rsRating = get(rawData.data, 'GetDataResult.rSRating')!;
+    const epsRating = get(rawData.data, 'GetDataResult.ePSRating')!;
+
+    return {
+      rsRating,
+      epsRating,
+    };
   }
 
   private async findQuoteUrl(symbol: string) {

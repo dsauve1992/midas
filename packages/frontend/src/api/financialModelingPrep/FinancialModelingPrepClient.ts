@@ -1,16 +1,14 @@
 import axios from 'axios'
-import {
+import type {
    EarningCallTranscript,
    EarningsSurprise,
    EnterpriseRatio,
-   EnterpriseRatioTTM,
    IncomeStatement,
    InsiderTradingEvent,
    SearchResult,
-   SharesFloat,
    SocialSentiment,
-   StockProfile,
 } from '../../../../shared-types/financial-modeling-prep.d.ts'
+
 
 class FinancialModelingPrepClient {
    private static instance: FinancialModelingPrepClient | null = null
@@ -25,10 +23,6 @@ class FinancialModelingPrepClient {
 
    protected static getBaseUrl(): string {
       return `${import.meta.env.VITE_BACKEND_URL}/api/fmp`
-   }
-
-   async getProfile(symbol: string): Promise<StockProfile> {
-      return (await this.requestTo<StockProfile[]>(`/profile/${symbol}`))[0]
    }
 
    async getIncomeStatements(
@@ -58,14 +52,6 @@ class FinancialModelingPrepClient {
       return this.requestTo<EnterpriseRatio[]>(`/ratios/${symbol}`, parameters)
    }
 
-   async getEnterpriseRatioTTM(symbol: string): Promise<EnterpriseRatioTTM> {
-      return (
-         await this.requestTo<EnterpriseRatioTTM[]>(`/ratios-ttm/${symbol}`, {
-            limit: 10,
-         })
-      )[0]
-   }
-
    async getInsiderTrading(symbol: string): Promise<InsiderTradingEvent[]> {
       return this.requestTo<InsiderTradingEvent[]>(
          '/insider-trading',
@@ -76,12 +62,6 @@ class FinancialModelingPrepClient {
 
    async getEarningsSurprises(symbol: string): Promise<EarningsSurprise[]> {
       return this.requestTo<EarningsSurprise[]>(`/earnings-surprises/${symbol}`)
-   }
-
-   async getSharesFloat(symbol: string): Promise<SharesFloat> {
-      return (
-         await this.requestTo<SharesFloat[]>('/shares_float', { symbol }, 4)
-      )[0]
    }
 
    async getSocialSentiment(symbol: string): Promise<SocialSentiment[]> {

@@ -1,10 +1,10 @@
 import React from 'react'
 import {Avatar, Box, Button, Chip, Typography} from '@mui/material'
-import {StockProfile} from '../../../../../../shared-types/financial-modeling-prep.d.ts'
 import DescriptionModal from './DescriptionModal'
+import {StockGeneralInformationResponseDto} from "../../../../../../shared-types/response.dto";
 
 export interface Props {
-   profile: StockProfile
+   profile: StockGeneralInformationResponseDto
 }
 
 const TickerTitle: React.FunctionComponent<Props> = ({ profile }: Props) => {

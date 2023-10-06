@@ -1,29 +1,26 @@
-import { useCompanyRankings } from '../../../hooks/useCompanyRankings'
 import VitalCard from './VitalCard'
 import {VitalCardStatus} from "./VitalCardStatus.ts";
 
 export type RelativeStrengthRatingProps = {
-   symbol: string
+   value?: number,
    size?: 'sm' | 'md'
 }
 
 export const RelativeStrengthRating = ({
-   symbol,
+    value,
    size = 'sm',
 }: RelativeStrengthRatingProps) => {
-   const { data: ibdRatings } = useCompanyRankings(symbol)
-
    return (
       <VitalCard
          label="RS Rating"
          size={size}
          status={
-            (ibdRatings?.rsRating || 0) > 60
+            (value || 0) > 60
                ? VitalCardStatus.SAFE
                : VitalCardStatus.WARNING
          }
       >
-         {ibdRatings?.rsRating || '-'}
+         {value || '-'}
       </VitalCard>
    )
 }

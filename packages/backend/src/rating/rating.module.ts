@@ -9,5 +9,6 @@ import { ComputeRatingScheduler } from './scheduler/compute-rating.scheduler';
   providers: [RatingService, ComputeRatingScheduler],
   imports: [HistoricalDataModule, ScreenerModule],
   controllers: [RatingController],
+  exports: [RatingService],
 })
 export class RatingModule {}
