@@ -1,10 +1,10 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { InvestorsBusinessDailyWebScrapperService } from './investors-business-daily-web-scrapper.service';
+import { InvestorsBusinessDailyService } from './investors-business-daily.service';
 
 @Controller('investors-business-daily')
 export class InvestorsBusinessDailyController {
   constructor(
-    private investorsBusinessDailyWebScrapperService: InvestorsBusinessDailyWebScrapperService,
+    private investorsBusinessDailyWebScrapperService: InvestorsBusinessDailyService,
   ) {}
 
   @Get('/ranking')

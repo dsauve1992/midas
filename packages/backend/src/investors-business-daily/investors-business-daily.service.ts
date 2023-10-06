@@ -12,7 +12,7 @@ export interface StockRankingInfo {
 }
 
 @Injectable()
-export class InvestorsBusinessDailyWebScrapperService {
+export class InvestorsBusinessDailyService {
   constructor(private httpService: HttpService) {}
 
   async fetchStockRankings(symbol: string): Promise<StockRankingInfo> {
