@@ -1,6 +1,6 @@
 import TickerTitle from './TickerTitle'
 import TickerFamily from './TickerFamily'
-import { useCompanyProfile } from '../../hooks/useCompanyProfile'
+import {useCompanyGeneralInformation} from '../../hooks/useCompanyGeneralInformation.ts'
 
 type TickerProfileProps = {
    symbol: string
@@ -8,7 +8,7 @@ type TickerProfileProps = {
 
 export function TickerProfile({ symbol }: TickerProfileProps) {
    const { isLoading: profileLoading, data: profile } =
-      useCompanyProfile(symbol)
+      useCompanyGeneralInformation(symbol)
 
    if (profileLoading) {
       return <p>Please wait...</p>

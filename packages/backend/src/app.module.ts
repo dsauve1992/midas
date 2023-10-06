@@ -7,6 +7,7 @@ import { ScreenerModule } from './screener/screener.module';
 import { InvestorsBusinessDailyModule } from './investors-business-daily/investors-business-daily.module';
 import { RatingModule } from './rating/rating.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { StocksModule } from './stocks/stocks.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ScreenerModule,
     InvestorsBusinessDailyModule,
     RatingModule,
+    StocksModule,
   ],
   controllers: [],
   providers: [],
