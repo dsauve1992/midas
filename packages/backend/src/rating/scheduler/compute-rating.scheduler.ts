@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RatingService } from '../usecase/rating.service';
-import { ScreenerFetcherService } from '../../screener/screener-fetcher.service';
+import { ScreenerService } from '../../screener/screener.service';
 import { delay } from '../../utils/delay';
 import { Cron } from '@nestjs/schedule';
 
@@ -9,7 +9,7 @@ export class ComputeRatingScheduler {
   private readonly logger = new Logger(ComputeRatingScheduler.name);
 
   constructor(
-    private screenerFetcherService: ScreenerFetcherService,
+    private screenerFetcherService: ScreenerService,
     private ratingService: RatingService,
   ) {}
 

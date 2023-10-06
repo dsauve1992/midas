@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { ScreenerFetcherService } from './screener-fetcher.service';
+import { ScreenerService } from './screener.service';
 
 @Controller('screener')
 export class ScreenerController {
-  constructor(private screenerFetcherService: ScreenerFetcherService) {}
+  constructor(private screenerFetcherService: ScreenerService) {}
 
   @Get()
   async getScreener() {

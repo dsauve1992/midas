@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import * as screenerParameters from './screenerParameter.json';
 
 @Injectable()
-export class ScreenerFetcherService {
+export class ScreenerService {
   constructor(private httpService: HttpService) {}
 
   async fetch(): Promise<string[]> {
