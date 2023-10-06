@@ -7,6 +7,6 @@ export class ScreenerController {
 
   @Get()
   async getScreener() {
-    return this.screenerFetcherService.fetch();
+    return this.screenerFetcherService.search();
   }
 }

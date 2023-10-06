@@ -15,7 +15,7 @@ export class ComputeRatingScheduler {
 
   @Cron('0 22 * * * *')
   async handleJob() {
-    const symbols = await this.screenerFetcherService.fetch();
+    const symbols = await this.screenerFetcherService.search();
 
     for (const symbol of symbols) {
       try {

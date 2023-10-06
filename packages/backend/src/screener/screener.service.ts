@@ -7,7 +7,7 @@ import * as screenerParameters from './screenerParameter.json';
 export class ScreenerService {
   constructor(private httpService: HttpService) {}
 
-  async fetch(): Promise<string[]> {
+  async search(): Promise<string[]> {
     const response = await firstValueFrom(
       await this.httpService.post(
         'https://scanner.tradingview.com/global/scan',
