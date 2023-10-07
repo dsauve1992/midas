@@ -23,4 +23,12 @@ export class MidasBackendClient {
 
         return data;
     }
+
+    static async getEarningsSurprises(symbol: string) {
+        const {data} = await axios.get<SocialSentiment[]>(
+            `${this.getBaseUrl()}/stocks/${symbol}/earnings-surprises`
+        )
+
+        return data;
+    }
 }

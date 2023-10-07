@@ -1,8 +1,8 @@
-import { useQuery } from 'react-query'
-import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
+import {useQuery} from 'react-query'
+import {MidasBackendClient} from "../../../api/MidasBackendClient.ts";
 
 export const useEarningSurprises = (symbol: string) => {
    return useQuery(['earning-surprises', symbol], () =>
-      FinancialModelingPrepClient.getInstance().getEarningsSurprises(symbol)
+      MidasBackendClient.getEarningsSurprises(symbol)
    )
 }

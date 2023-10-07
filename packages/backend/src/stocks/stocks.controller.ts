@@ -37,7 +37,7 @@ export class StocksController {
     return this.getEarningCallTranscriptSummaryUseCase.execute(symbol);
   }
 
-  @Get('earning-surprises')
+  @Get('earnings-surprises')
   getEarningsSurprises(@Param('symbol') symbol: string) {
     return this.getEarningsSurprisesUseCase.execute(symbol);
   }
