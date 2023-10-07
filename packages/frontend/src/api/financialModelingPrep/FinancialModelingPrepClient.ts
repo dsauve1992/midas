@@ -6,7 +6,6 @@ import type {
    IncomeStatement,
    InsiderTradingEvent,
    SearchResult,
-   SocialSentiment,
 } from '../../../../shared-types/financial-modeling-prep.d.ts'
 
 
@@ -62,14 +61,6 @@ class FinancialModelingPrepClient {
 
    async getEarningsSurprises(symbol: string): Promise<EarningsSurprise[]> {
       return this.requestTo<EarningsSurprise[]>(`/earnings-surprises/${symbol}`)
-   }
-
-   async getSocialSentiment(symbol: string): Promise<SocialSentiment[]> {
-      return this.requestTo<SocialSentiment[]>(
-         '/historical/social-sentiment',
-         { symbol, limit: 10000 },
-         4
-      )
    }
 
    async search(query: string): Promise<SearchResult[]> {
