@@ -1,11 +1,23 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { StockGeneralInformationResponseDto } from '../../../shared-types/response.dto';
 import { GetStockGeneralInformationUseCase } from './usecase/get-stock-general-information.use-case';
+import { GetInsiderTradingUseCase } from './usecase/get-insider-trading.use-case';
+import { GetEarningsSurprisesUseCase } from './usecase/get-earnings-surprises.use-case';
+import { GetInstitutionalHoldingUseCase } from './usecase/get-institutional-holding.use-case';
+import { GetSocialSentimentUseCase } from './usecase/get-social-sentiment.use-case';
+import { GetIncomeStatementUseCase } from './usecase/get-income-statement.use-case';
+import { GetEarningCallTranscriptSummaryUseCase } from './usecase/get-earning-call-transcript-summary.use-case';
 
 @Controller('stocks/:symbol')
 export class StocksController {
   constructor(
     private getStockGeneralInformationUseCase: GetStockGeneralInformationUseCase,
+    private getInsiderTradingUseCase: GetInsiderTradingUseCase,
+    private getEarningsSurprisesUseCase: GetEarningsSurprisesUseCase,
+    private getInstitutionalHoldingUseCase: GetInstitutionalHoldingUseCase,
+    private getSocialSentimentUseCase: GetSocialSentimentUseCase,
+    private getIncomeStatementUseCase: GetIncomeStatementUseCase,
+    private getEarningCallTranscriptSummaryUseCase: GetEarningCallTranscriptSummaryUseCase,
   ) {}
 
   @Get()
@@ -17,31 +29,31 @@ export class StocksController {
 
   @Get('income-statement')
   getIncomeStatement(@Param('symbol') symbol: string) {
-    return `getIncomeStatement : ${symbol}`;
+    return this.getIncomeStatementUseCase.execute(symbol);
   }
 
-  @Get('earning-call-transcript')
+  @Get('earning-call-transcript-summary')
   getEarningCallTranscript(@Param('symbol') symbol: string) {
-    return `getEarningCallTranscript : ${symbol}`;
+    return this.getEarningCallTranscriptSummaryUseCase.execute(symbol);
   }
 
   @Get('earning-surprises')
   getEarningsSurprises(@Param('symbol') symbol: string) {
-    return `getEarningsSurprises : ${symbol}`;
+    return this.getEarningsSurprisesUseCase.execute(symbol);
   }
 
   @Get('insider-trading')
   getInsiderTrading(@Param('symbol') symbol: string) {
-    return `getInsiderTrading : ${symbol}`;
+    return this.getInsiderTradingUseCase.execute(symbol);
   }
 
   @Get('institutional-holding')
   getInstitutionalHolding(@Param('symbol') symbol: string) {
-    return `getInstitutionalHolding : ${symbol}`;
+    return this.getInstitutionalHoldingUseCase.execute(symbol);
   }
 
   @Get('social-sentiment')
   getSocialSentiment(@Param('symbol') symbol: string) {
-    return `getSocialSentiment : ${symbol}`;
+    return this.getSocialSentimentUseCase.execute(symbol);
   }
 }
