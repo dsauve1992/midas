@@ -63,27 +63,27 @@ export class RatingService {
   }
 
   private async getFundamentalSummary(symbol: string) {
-    const quarterlyIncomeStatementHistory =
-      await this.getQuarterlyIncomeStatementHistory(symbol);
+    const [
+      quarterlyIncomeStatementHistory,
+      annuallyIncomeStatementHistory,
+      [currentYearRatios],
+    ] = await Promise.all([
+      this.getQuarterlyIncomeStatementHistory(symbol),
+      this.getAnnuallyIncomeStatementHistory(symbol),
+      this.financialModelingPrepFetcherService.getEnterpriseRatios(symbol, {
+        limit: 1,
+      }),
+    ]);
 
     const quarterlyData = quarterlyIncomeStatementHistory.getLastNQuarter(
       4,
       Sorting.DESC,
     );
 
-    const annuallyIncomeStatementHistory =
-      await this.getAnnuallyIncomeStatementHistory(symbol);
-
     const annuallyData = annuallyIncomeStatementHistory.getLastNYear(
       5,
       Sorting.DESC,
     );
-
-    const [currentYearRatios] =
-      await this.financialModelingPrepFetcherService.getEnterpriseRatios(
-        symbol,
-        { limit: 1 },
-      );
 
     const returnOnEquity = currentYearRatios.returnOnEquity;
 

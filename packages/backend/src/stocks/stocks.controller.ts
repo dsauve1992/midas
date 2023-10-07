@@ -16,23 +16,26 @@ export class StocksController {
   async getGeneralInformation(
     @Param('symbol') symbol: string,
   ): Promise<StockGeneralInformationResponseDto> {
-    const profile = await this.financialModelingPrepService.getProfile(symbol);
-    const { returnOnEquityTTM } =
-      await this.financialModelingPrepService.getEnterpriseRatioTTM(symbol);
-    const { outstandingShares } =
-      await this.financialModelingPrepService.getSharesFloat(symbol);
-
-    const { rsRating } =
-      await this.investorsBusinessDailyService.fetchStockRating(symbol);
-
-    const rating = await this.ratingService.computeRatingFor(symbol);
+    const [
+      profile,
+      enterpriseRatiosTtm,
+      sharesFloat,
+      ibdRating,
+      fundamentalRating,
+    ] = await Promise.all([
+      this.financialModelingPrepService.getProfile(symbol),
+      this.financialModelingPrepService.getEnterpriseRatioTTM(symbol),
+      this.financialModelingPrepService.getSharesFloat(symbol),
+      this.investorsBusinessDailyService.fetchStockRating(symbol),
+      this.ratingService.computeRatingFor(symbol),
+    ]);
 
     return {
       ...profile,
-      returnOnEquity: returnOnEquityTTM,
-      outstandingShares,
-      fundamentalRating: rating,
-      relativeStrengthRating: rsRating,
+      returnOnEquity: enterpriseRatiosTtm.returnOnEquityTTM,
+      outstandingShares: sharesFloat.outstandingShares,
+      fundamentalRating: fundamentalRating,
+      relativeStrengthRating: ibdRating.rsRating,
     };
   }
 
