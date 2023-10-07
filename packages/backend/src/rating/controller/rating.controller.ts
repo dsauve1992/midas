@@ -8,7 +8,7 @@ export class RatingController {
   @Get('/:symbol')
   async get(@Param('symbol') symbol: string) {
     try {
-      return this.ratingProcessorRunnerService.computeRatingFor(symbol);
+      return this.ratingProcessorRunnerService.getRatingFor(symbol);
     } catch (e) {
       console.log(e);
     }

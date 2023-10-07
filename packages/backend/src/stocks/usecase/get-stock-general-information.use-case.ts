@@ -22,8 +22,8 @@ export class GetStockGeneralInformationUseCase {
       this.financialModelingPrepService.getProfile(symbol),
       this.financialModelingPrepService.getEnterpriseRatioTTM(symbol),
       this.financialModelingPrepService.getSharesFloat(symbol),
-      this.investorsBusinessDailyService.fetchStockRating(symbol),
-      this.ratingService.computeRatingFor(symbol),
+      this.investorsBusinessDailyService.getStockRating(symbol),
+      this.ratingService.getRatingFor(symbol),
     ]);
 
     return {

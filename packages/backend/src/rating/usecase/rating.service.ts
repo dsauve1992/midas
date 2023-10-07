@@ -20,7 +20,7 @@ export class RatingService {
     private financialModelingPrepFetcherService: FinancialModelingPrepService,
   ) {}
 
-  async computeRatingFor(symbol: string) {
+  async getRatingFor(symbol: string) {
     let rating = 0;
 
     const summary = await this.getFundamentalSummary(symbol);

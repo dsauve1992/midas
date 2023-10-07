@@ -29,7 +29,7 @@ export class InvestorsBusinessDailyService {
     return this.parseData(data);
   }
 
-  async fetchStockRating(symbol: string): Promise<IbdRating> {
+  async getStockRating(symbol: string): Promise<IbdRating> {
     const todayString = format(new Date(), 'yyyy-MM-d');
 
     const rawData = await axios.post(

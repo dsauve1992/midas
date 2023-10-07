@@ -19,7 +19,7 @@ export class ComputeRatingScheduler {
 
     for (const symbol of symbols) {
       try {
-        const rating = await this.ratingService.computeRatingFor(symbol);
+        const rating = await this.ratingService.getRatingFor(symbol);
 
         this.logger.debug(`rating for ${symbol}: ${rating}`);
       } catch (e) {
