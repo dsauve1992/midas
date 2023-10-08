@@ -1,10 +1,8 @@
 import axios from 'axios'
 import type {
    EarningCallTranscript,
-   EarningsSurprise,
    EnterpriseRatio,
    IncomeStatement,
-   InsiderTradingEvent,
    SearchResult,
 } from '../../../../shared-types/financial-modeling-prep.d.ts'
 
@@ -49,18 +47,6 @@ class FinancialModelingPrepClient {
       parameters?: { [key: string]: string| number|boolean }
    ): Promise<EnterpriseRatio[]> {
       return this.requestTo<EnterpriseRatio[]>(`/ratios/${symbol}`, parameters)
-   }
-
-   async getInsiderTrading(symbol: string): Promise<InsiderTradingEvent[]> {
-      return this.requestTo<InsiderTradingEvent[]>(
-         '/insider-trading',
-         { symbol, limit: 100 },
-         4
-      )
-   }
-
-   async getEarningsSurprises(symbol: string): Promise<EarningsSurprise[]> {
-      return this.requestTo<EarningsSurprise[]>(`/earnings-surprises/${symbol}`)
    }
 
    async search(query: string): Promise<SearchResult[]> {
