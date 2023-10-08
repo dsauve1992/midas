@@ -1,7 +1,7 @@
 import React from 'react'
 import {EChartOption} from 'echarts'
 import {useEchart} from '../../../../../ui/chart/hooks/useEchart'
-import {SocialSentiment} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {SocialSentiment} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
 import {useSocialSentimentParsedData} from './useSocialSentimentParsedData'
 
 export interface Props {

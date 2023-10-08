@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,} from '@mui/material'
 import {mapArrayToHeatColor} from '../../../../../lib/utils/array.utils'
-import {IncomeStatement} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {IncomeStatement} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
 import {IncomeStatementWithGrowthAndNetProfitMargin} from '../../../hooks/useFinancialHistory'
 import EarningCallTranscript from './EarningCallTranscript'
 

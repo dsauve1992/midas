@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query'
 import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
-import {SearchResult} from '../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {SearchResult} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 
 export const useSearch = (query: string) => {
    return useQuery<SearchResult[]>(

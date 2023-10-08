@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query'
 import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
 import FinancialPeriod from '../../../lib/FinancialPeriod'
-import {IncomeStatement} from '../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {IncomeStatement} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 import {IncomeStatementWithGrowthAndNetProfitMargin, mapData,} from './useFinancialHistory'
 
 interface UseIncomeStatementProps {

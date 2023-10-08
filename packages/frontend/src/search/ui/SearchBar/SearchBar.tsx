@@ -4,7 +4,7 @@ import {alpha, styled} from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import {SearchResults} from './SearchResults'
 import {useSearchBar} from './useSearchBar'
-import {SearchResult} from '../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {SearchResult} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 
 const Search = styled('div')(({ theme }) => ({
    position: 'relative',

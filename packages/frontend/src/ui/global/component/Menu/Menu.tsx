@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar'
 import {Button, Grid} from '@mui/material'
 import {useHistory} from 'react-router-dom'
 import SearchBar from '../../../../search/ui/SearchBar/SearchBar'
-import {SearchResult} from '../../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {SearchResult} from '../../../../../../shared-types/financial-modeling-prep.d.ts'
 
 const sx = {
    display: 'flex',

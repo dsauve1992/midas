@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query'
 import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
-import {EarningCallTranscript} from '../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {EarningCallTranscript} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 
 interface UseEarningCallTranscriptProps {
    symbol: string
