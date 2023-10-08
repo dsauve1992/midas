@@ -14,7 +14,7 @@ export class StocksController {
     private getStockGeneralInformationUseCase: GetStockGeneralInformationUseCase,
     private getInsiderTradingUseCase: GetInsiderTradingUseCase,
     private getEarningsSurprisesUseCase: GetEarningsSurprisesUseCase,
-    private getInstitutionalHoldingUseCase: GetInstitutionalHoldingUseCase,
+    private getInstitutionalOwnershipUseCase: GetInstitutionalHoldingUseCase,
     private getSocialSentimentUseCase: GetSocialSentimentUseCase,
     private getIncomeStatementUseCase: GetIncomeStatementUseCase,
     private getEarningCallTranscriptSummaryUseCase: GetEarningCallTranscriptSummaryUseCase,
@@ -47,9 +47,9 @@ export class StocksController {
     return this.getInsiderTradingUseCase.execute(symbol);
   }
 
-  @Get('institutional-holding')
+  @Get('institutional-ownership')
   getInstitutionalHolding(@Param('symbol') symbol: string) {
-    return this.getInstitutionalHoldingUseCase.execute(symbol);
+    return this.getInstitutionalOwnershipUseCase.execute(symbol);
   }
 
   @Get('social-sentiment')

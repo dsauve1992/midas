@@ -1,3 +1,8 @@
+export interface InstitutionalOwnershipResponse {
+   history: AggregateHolding[],
+   topShareholders: ShareholderHistory[]
+}
+
 export interface AggregateHolding {
    securityId: string
    numberOfSecurityHolders: number

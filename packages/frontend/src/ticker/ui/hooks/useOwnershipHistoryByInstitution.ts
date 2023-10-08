@@ -1,5 +1,5 @@
-import { groupBy } from 'lodash'
-import { Holder, ShareholderHistory } from '../../../api/ownership/type'
+import {groupBy} from 'lodash'
+import {Holder, ShareholderHistory} from "../../../../../shared-types/institutional-ownership";
 
 export const useOwnershipHistoryByInstitution = (
    data: ShareholderHistory[]

@@ -1,10 +1,10 @@
 import {useQuery} from 'react-query'
-import {MidasBackendClient} from "../../../api/MidasBackendClient.ts";
+import {StockClient} from "../../../api/StockClient.ts";
 import {StockGeneralInformationResponseDto} from "../../../../../shared-types/response.dto";
 
 export const useCompanyGeneralInformation = (symbol: string) =>
    useQuery<StockGeneralInformationResponseDto>(
       ['company-general-information', { symbol }],
-      () => MidasBackendClient.getCompanyGeneralInformation(symbol),
+      () => StockClient.getCompanyGeneralInformation(symbol),
       { notifyOnChangeProps: 'tracked' }
    )

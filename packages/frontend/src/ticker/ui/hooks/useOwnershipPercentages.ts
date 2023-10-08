@@ -1,4 +1,4 @@
-import { Holder, ShareholderHistory } from '../../../api/ownership/type'
+import {Holder, ShareholderHistory} from "../../../../../shared-types/institutional-ownership";
 
 export type OwnershipPercentage = {
    holder: Holder

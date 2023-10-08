@@ -1,9 +1,9 @@
 import {useQuery} from 'react-query'
-import {MidasBackendClient} from "../../../api/MidasBackendClient.ts";
+import {StockClient} from "../../../api/StockClient.ts";
 
 export const useInsiderTrading = (symbol: string) => {
    return useQuery(
       ['insider-trading', symbol],
-      () => MidasBackendClient.getInsiderTrading(symbol)
+      () => StockClient.getInsiderTrading(symbol)
    )
 }

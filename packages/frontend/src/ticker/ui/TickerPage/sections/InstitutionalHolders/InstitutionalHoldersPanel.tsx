@@ -1,10 +1,9 @@
 import React from 'react'
-import { Grid } from '@mui/material'
-import { useOwnershipHistory } from '../../../hooks/useOwnershipHistory'
-import { InstitutionalOwnershipHistoryByQuarter } from './InstitutionalOwnershipHistoryByQuarter'
-import { InstitutionalOwnershipPieChart } from './InstitutionalOwnershipPieChart'
-import { useTopShareholders } from '../../../hooks/useTopShareholders'
-import { InstitutionalOwnershipHistoryByShareholders } from './InstitutionalOwnershipHistoryByShareholders'
+import {Grid} from '@mui/material'
+import {InstitutionalOwnershipHistoryByQuarter} from './InstitutionalOwnershipHistoryByQuarter'
+import {InstitutionalOwnershipPieChart} from './InstitutionalOwnershipPieChart'
+import {InstitutionalOwnershipHistoryByShareholders} from './InstitutionalOwnershipHistoryByShareholders'
+import {useInstitutionalOwnership} from "../../../hooks/useInstitutionalOwnership.ts";
 
 export interface Props {
    symbol: string
@@ -13,25 +12,24 @@ export interface Props {
 const InstitutionalHoldersPanel: React.FunctionComponent<Props> = ({
    symbol,
 }: Props) => {
-   const { data: history, isLoading: isLoadingHistory } =
-      useOwnershipHistory(symbol)
-   const { data: shareholders, isLoading: isLoadingShareholders } =
-      useTopShareholders(symbol)
+   const { data, isLoading } = useInstitutionalOwnership(symbol)
 
-   if (isLoadingHistory || isLoadingShareholders) {
+   if (isLoading) {
       return <p>Please wait ...</p>
    }
 
-   return history?.length && shareholders?.length ? (
+   const {history, topShareholders} = data!
+
+   return history?.length && topShareholders?.length ? (
       <Grid container spacing={2}>
          <Grid item xs={9}>
             <InstitutionalOwnershipHistoryByQuarter history={history} />
          </Grid>
          <Grid item xs={3}>
-            <InstitutionalOwnershipPieChart data={shareholders} />
+            <InstitutionalOwnershipPieChart data={topShareholders} />
          </Grid>
          <Grid item xs={12}>
-            <InstitutionalOwnershipHistoryByShareholders data={shareholders} />
+            <InstitutionalOwnershipHistoryByShareholders data={topShareholders} />
          </Grid>
       </Grid>
    ) : (

@@ -1,8 +1,8 @@
 import {useQuery} from 'react-query'
-import {MidasBackendClient} from "../../../api/MidasBackendClient.ts";
+import {StockClient} from "../../../api/StockClient.ts";
 
 export const useEarningSurprises = (symbol: string) => {
    return useQuery(['earning-surprises', symbol], () =>
-      MidasBackendClient.getEarningsSurprises(symbol)
+      StockClient.getEarningsSurprises(symbol)
    )
 }
