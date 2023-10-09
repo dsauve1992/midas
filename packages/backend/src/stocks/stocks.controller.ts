@@ -5,7 +5,7 @@ import { GetInsiderTradingUseCase } from './usecase/get-insider-trading.use-case
 import { GetEarningsSurprisesUseCase } from './usecase/get-earnings-surprises.use-case';
 import { GetInstitutionalHoldingUseCase } from './usecase/get-institutional-holding.use-case';
 import { GetSocialSentimentUseCase } from './usecase/get-social-sentiment.use-case';
-import { GetIncomeStatementUseCase } from './usecase/get-income-statement.use-case';
+import { GetQuarterlyIncomeStatementUseCase } from './usecase/get-quarterly-income-statement.use-case';
 import { GetEarningCallTranscriptSummaryUseCase } from './usecase/get-earning-call-transcript-summary.use-case';
 
 @Controller('stocks/:symbol')
@@ -16,7 +16,7 @@ export class StocksController {
     private getEarningsSurprisesUseCase: GetEarningsSurprisesUseCase,
     private getInstitutionalOwnershipUseCase: GetInstitutionalHoldingUseCase,
     private getSocialSentimentUseCase: GetSocialSentimentUseCase,
-    private getIncomeStatementUseCase: GetIncomeStatementUseCase,
+    private getIncomeStatementUseCase: GetQuarterlyIncomeStatementUseCase,
     private getEarningCallTranscriptSummaryUseCase: GetEarningCallTranscriptSummaryUseCase,
   ) {}
 

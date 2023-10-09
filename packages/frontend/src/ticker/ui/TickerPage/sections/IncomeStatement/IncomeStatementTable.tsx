@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react'
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,} from '@mui/material'
 import {mapArrayToHeatColor} from '../../../../../lib/utils/array.utils'
-import type {IncomeStatement} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
 import {IncomeStatementWithGrowthAndNetProfitMargin} from '../../../hooks/useFinancialHistory'
 import EarningCallTranscript from './EarningCallTranscript'
 
@@ -17,7 +16,7 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
    const computeEpsColorValue = useCallback(
       (value: number) => {
          const color = mapArrayToHeatColor(
-            (data as IncomeStatement[]).map(({ eps }) => eps)
+            (data as IncomeStatementWithGrowthAndNetProfitMargin[]).map(({ eps }) => eps)
          ).get(value as number)!
          return color?.toString() || 'default'
       },
@@ -27,7 +26,7 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
    const computeRevenueColorValue = useCallback(
       (value: number) => {
          const color = mapArrayToHeatColor(
-            (data as IncomeStatement[]).map(({ revenue }) => revenue)
+            (data as IncomeStatementWithGrowthAndNetProfitMargin[]).map(({ revenue }) => revenue)
          ).get(value as number)!
          return color?.toString() || 'default'
       },
@@ -78,7 +77,7 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
                         align="right"
                         style={{ color: computeEpsColorValue(row.eps) }}
                      >
-                        {row.epsdiluted.toFixed(2)}
+                        {row.eps.toFixed(2)}
                      </TableCell>
                      <TableCell align="right">
                         {row.epsGrowth.toFixed(2)}

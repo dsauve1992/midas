@@ -9,7 +9,13 @@ export interface UseFinancialHistoryProps {
    frequency: FinancialPeriod
 }
 
-export type IncomeStatementWithGrowthAndNetProfitMargin = IncomeStatement & {
+export type IncomeStatementWithGrowthAndNetProfitMargin = {
+    date: string,
+    period: string,
+    calendarYear?: string,
+    acceptedDate: string,
+    eps: number,
+    revenue: number,
    revenueGrowth: number
    epsGrowth: number
    netProfitMargin: number

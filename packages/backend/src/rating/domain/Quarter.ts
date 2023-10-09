@@ -5,18 +5,31 @@ export class Quarter {
   ) {}
 
   isEqual(quarter: Quarter): boolean {
-    return this.compare(quarter) === 0;
+    return this.valueOf() === quarter.valueOf();
   }
 
   toString(): string {
     return `Q${this.quarterNumber} - ${this.year}`;
   }
 
-  isSameQuarterOneYearBefore(quarter: Quarter): boolean {
-    return (
-      this.year === quarter.year + 1 &&
-      this.quarterNumber === quarter.quarterNumber
-    );
+  valueOf(): number {
+    return this.year + this.quarterNumber / 10;
+  }
+
+  previousQuarter(): Quarter {
+    if (this.quarterNumber === 1) {
+      return new Quarter(4, this.year - 1);
+    }
+
+    return new Quarter(this.quarterNumber - 1, this.year);
+  }
+
+  nextQuarter(): Quarter {
+    if (this.quarterNumber === 4) {
+      return new Quarter(1, this.year + 1);
+    }
+
+    return new Quarter(this.quarterNumber + 1, this.year);
   }
 
   sameQuarterOneYearBefore(): Quarter {
@@ -24,15 +37,9 @@ export class Quarter {
   }
 
   compare(quarter: Quarter): number {
-    if (this.year < quarter.year) {
+    if (this.valueOf() < quarter.valueOf()) {
       return -1;
-    } else if (this.year > quarter.year) {
-      return 1;
-    }
-
-    if (this.quarterNumber < quarter.quarterNumber) {
-      return -1;
-    } else if (this.quarterNumber > quarter.quarterNumber) {
+    } else if (this.valueOf() > quarter.valueOf()) {
       return 1;
     }
 

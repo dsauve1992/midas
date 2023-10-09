@@ -8,7 +8,7 @@ import { GetEarningsSurprisesUseCase } from './usecase/get-earnings-surprises.us
 import { GetInsiderTradingUseCase } from './usecase/get-insider-trading.use-case';
 import { GetInstitutionalHoldingUseCase } from './usecase/get-institutional-holding.use-case';
 import { GetSocialSentimentUseCase } from './usecase/get-social-sentiment.use-case';
-import { GetIncomeStatementUseCase } from './usecase/get-income-statement.use-case';
+import { GetQuarterlyIncomeStatementUseCase } from './usecase/get-quarterly-income-statement.use-case';
 import { GetEarningCallTranscriptSummaryUseCase } from './usecase/get-earning-call-transcript-summary.use-case';
 import { OwnershipModule } from '../ownership/ownership.module';
 
@@ -26,7 +26,7 @@ import { OwnershipModule } from '../ownership/ownership.module';
     GetInsiderTradingUseCase,
     GetInstitutionalHoldingUseCase,
     GetSocialSentimentUseCase,
-    GetIncomeStatementUseCase,
+    GetQuarterlyIncomeStatementUseCase,
     GetEarningCallTranscriptSummaryUseCase,
   ],
 })

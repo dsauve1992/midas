@@ -237,6 +237,7 @@ export type EnterpriseValue = {
 }
 
 export type EnterpriseRatio = {
+   calendarYear: string,
    symbol: string
    date: string
    period: string
