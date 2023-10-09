@@ -5,11 +5,11 @@ import { ConfigModule } from '@nestjs/config';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import {
   EnterpriseRatio,
-  IncomeStatement,
+  IncomeStatementDto,
 } from '../../../../shared-types/financial-modeling-prep';
 
 const mockGetIncomeStatement = jest.fn<
-  Promise<Partial<IncomeStatement>[]>,
+  Promise<Partial<IncomeStatementDto>[]>,
   any
 >();
 const mockGetEnterpriseRatios = jest.fn<

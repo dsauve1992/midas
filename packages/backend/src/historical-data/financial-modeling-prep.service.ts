@@ -7,7 +7,7 @@ import {
   EarningsSurprise,
   EnterpriseRatio,
   EnterpriseRatioTTM,
-  IncomeStatement,
+  IncomeStatementDto,
   InsiderTradingEvent,
   SearchResult,
   SharesFloat,
@@ -29,8 +29,8 @@ export class FinancialModelingPrepService {
   async getIncomeStatements(
     symbol: string,
     parameters?: { [key: string]: string | number | boolean },
-  ): Promise<IncomeStatement[]> {
-    return this.fetch<IncomeStatement[]>(
+  ): Promise<IncomeStatementDto[]> {
+    return this.fetch<IncomeStatementDto[]>(
       `/v3/income-statement/${symbol}`,
       parameters,
     );

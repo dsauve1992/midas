@@ -27,7 +27,7 @@ export class StocksController {
     return this.getStockGeneralInformationUseCase.execute(symbol);
   }
 
-  @Get('income-statement')
+  @Get('income-statement.ts')
   getIncomeStatement(@Param('symbol') symbol: string) {
     return this.getIncomeStatementUseCase.execute(symbol);
   }

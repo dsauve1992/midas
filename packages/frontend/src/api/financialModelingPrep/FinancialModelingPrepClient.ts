@@ -2,7 +2,7 @@ import axios from 'axios'
 import type {
    EarningCallTranscript,
    EnterpriseRatio,
-   IncomeStatement,
+   IncomeStatementDto,
    SearchResult,
 } from '../../../../shared-types/financial-modeling-prep.d.ts'
 
@@ -25,8 +25,8 @@ class FinancialModelingPrepClient {
    async getIncomeStatements(
       symbol: string,
       parameters?: { [key: string]: string| number|boolean }
-   ): Promise<IncomeStatement[]> {
-      return this.requestTo<IncomeStatement[]>(
+   ): Promise<IncomeStatementDto[]> {
+      return this.requestTo<IncomeStatementDto[]>(
          `/income-statement/${symbol}`,
          parameters
       )

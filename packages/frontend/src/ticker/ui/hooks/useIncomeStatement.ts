@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query'
 import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
 import FinancialPeriod from '../../../lib/FinancialPeriod'
-import type {IncomeStatement} from '../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {IncomeStatementDto} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 import {IncomeStatementWithGrowthAndNetProfitMargin, mapData,} from './useFinancialHistory'
 
 interface UseIncomeStatementProps {
@@ -14,7 +14,7 @@ export const useIncomeStatement = ({
    frequency,
 }: UseIncomeStatementProps) => {
    return useQuery<
-      IncomeStatement[],
+      IncomeStatementDto[],
       unknown,
       IncomeStatementWithGrowthAndNetProfitMargin[]
    >(

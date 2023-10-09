@@ -187,7 +187,7 @@ export type FinancialGrowth = {
    sgaexpensesGrowth: number
 }
 
-export type IncomeStatement = {
+export type IncomeStatementDto = {
    date: string
    symbol: string
    reportedCurrency: string

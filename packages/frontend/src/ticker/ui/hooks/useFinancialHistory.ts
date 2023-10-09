@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query'
 import FinancialPeriod from '../../../lib/FinancialPeriod'
-import type {EnterpriseRatio, IncomeStatement} from '../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {EnterpriseRatio, IncomeStatementDto} from '../../../../../shared-types/financial-modeling-prep.d.ts'
 import {computeGrowth} from '../../../lib/utils'
 import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
 
@@ -44,7 +44,7 @@ export const useFinancialHistory = ({
 
 export function mapData(
    frequency: FinancialPeriod,
-   incomeStatements: IncomeStatement[] | undefined,
+   incomeStatements: IncomeStatementDto[] | undefined,
    enterpriseRatios: EnterpriseRatio[] | undefined
 ): IncomeStatementWithGrowthAndNetProfitMargin[] {
    return incomeStatements

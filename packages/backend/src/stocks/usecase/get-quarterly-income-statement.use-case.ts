@@ -2,28 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { Quarter } from '../../rating/domain/Quarter';
 import { keyBy } from 'lodash';
-
-export interface IncomeStatementGrowthModel {
-  quarter: Quarter;
-
-  earnings: {
-    current: number;
-    growth?: number;
-  };
-  sales: {
-    current: number;
-    growth?: number;
-  };
-  netProfitMargin: number;
-}
-
-export class IncomeStatementGrowth {
-  constructor(private model: IncomeStatementGrowthModel) {}
-
-  toString(): string {
-    return `${this.model.quarter} | Earnings : ${this.model.earnings.current} (${this.model.earnings.growth}%) | Sales : ${this.model.sales.current} (${this.model.sales.growth}%) | Net Profit Margin : ${this.model.netProfitMargin}`;
-  }
-}
+import { RecordedIncomeStatement } from '../domain/recorded-income-statement';
+import { MissingIncomeStatement } from '../domain/missing-income-statement';
+import { IncomeStatementHistory } from '../domain/income-statement';
 
 @Injectable()
 export class GetQuarterlyIncomeStatementUseCase {
@@ -31,7 +12,7 @@ export class GetQuarterlyIncomeStatementUseCase {
     private financialModelingPrepService: FinancialModelingPrepService,
   ) {}
 
-  async execute(symbol: string) {
+  async execute(symbol: string): Promise<IncomeStatementHistory> {
     const [incomeStatements, enterpriseRatios] = await Promise.all([
       this.financialModelingPrepService.getIncomeStatements(symbol, {
         period: 'quarter',
@@ -109,13 +90,13 @@ export class GetQuarterlyIncomeStatementUseCase {
     }
 
     return incomeStatementsWithNetProfitMargin.map((record, index) => {
-      if ('missing' in record) {
-        return record;
+      if ('status' in record) {
+        return new MissingIncomeStatement(record.quarter);
       } else if ('eps' in record) {
         const sameQuarterOneYearBefore =
           incomeStatementsWithNetProfitMargin[index + 4];
 
-        return new IncomeStatementGrowth({
+        return new RecordedIncomeStatement({
           quarter: record.quarter,
 
           earnings: {
