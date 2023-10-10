@@ -5,17 +5,19 @@ export interface RecordedIncomeStatementModel {
 
   earnings: {
     current: number;
+    previous?: number;
     growth?: number;
   };
   sales: {
     current: number;
+    previous?: number;
     growth?: number;
   };
   netProfitMargin?: number;
 }
 
 export class RecordedIncomeStatement {
-  constructor(private model: RecordedIncomeStatementModel) {}
+  constructor(public model: RecordedIncomeStatementModel) {}
 
   toString(): string {
     return `${

@@ -1,9 +1,5 @@
-import { useIncomeStatement } from './useIncomeStatement'
-import FinancialPeriod from '../../../lib/FinancialPeriod'
-import {
-   StatementSpec,
-   useLastQuartersComparison,
-} from './useLastQuartersComparison'
+import {StatementSpec, useLastQuartersComparison,} from './useLastQuartersComparison'
+import {useQuarterlyIncomeStatement} from "./useQuarterlyIncomeStatement.ts";
 
 type UseFinancialPerformanceProps = {
    symbol: string
@@ -12,10 +8,8 @@ type UseFinancialPerformanceProps = {
 export const useFinancialQuarterlyPerformance = ({
    symbol,
 }: UseFinancialPerformanceProps) => {
-   const { data } = useIncomeStatement({
-      symbol,
-      frequency: FinancialPeriod.QUARTER,
-   })
+   const { data } = useQuarterlyIncomeStatement(symbol)
+   
    const { [StatementSpec.EPS]: earnings, [StatementSpec.REVENUE]: revenues } =
       useLastQuartersComparison(data)
 

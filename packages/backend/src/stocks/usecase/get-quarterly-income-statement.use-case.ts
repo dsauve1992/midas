@@ -16,11 +16,11 @@ export class GetQuarterlyIncomeStatementUseCase {
     const [incomeStatements, enterpriseRatios] = await Promise.all([
       this.financialModelingPrepService.getIncomeStatements(symbol, {
         period: 'quarter',
-        limit: '8',
+        limit: '20',
       }),
       this.financialModelingPrepService.getEnterpriseRatios(symbol, {
         period: 'quarter',
-        limit: '8',
+        limit: '20',
       }),
     ]);
 
@@ -101,6 +101,10 @@ export class GetQuarterlyIncomeStatementUseCase {
 
           earnings: {
             current: record.eps,
+            previous:
+              sameQuarterOneYearBefore && 'eps' in sameQuarterOneYearBefore
+                ? sameQuarterOneYearBefore?.eps
+                : undefined,
             growth:
               sameQuarterOneYearBefore && 'eps' in sameQuarterOneYearBefore
                 ? this.computeGrowth(
@@ -112,6 +116,10 @@ export class GetQuarterlyIncomeStatementUseCase {
           },
           sales: {
             current: record.sales,
+            previous:
+              sameQuarterOneYearBefore && 'sales' in sameQuarterOneYearBefore
+                ? sameQuarterOneYearBefore?.sales
+                : undefined,
             growth:
               sameQuarterOneYearBefore && 'sales' in sameQuarterOneYearBefore
                 ? this.computeGrowth(

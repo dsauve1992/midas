@@ -1,12 +1,12 @@
 import React, {useCallback} from 'react'
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,} from '@mui/material'
 import {mapArrayToHeatColor} from '../../../../../lib/utils/array.utils'
-import {IncomeStatementWithGrowthAndNetProfitMargin} from '../../../hooks/useFinancialHistory'
 import EarningCallTranscript from './EarningCallTranscript'
+import {QuarterlyIncomeStatementDto} from "../../../../../../../shared-types/income-statement";
 
 export interface Props {
    symbol: string
-   data: IncomeStatementWithGrowthAndNetProfitMargin[]
+   data: QuarterlyIncomeStatementDto[]
 }
 
 const IncomeStatementTable: React.FunctionComponent<Props> = ({
@@ -16,7 +16,9 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
    const computeEpsColorValue = useCallback(
       (value: number) => {
          const color = mapArrayToHeatColor(
-            (data as IncomeStatementWithGrowthAndNetProfitMargin[]).map(({ eps }) => eps)
+            (data as QuarterlyIncomeStatementDto[])
+                .map((entry) => entry.earnings?.current)
+                .filter((entry) => entry !== undefined) as number[]
          ).get(value as number)!
          return color?.toString() || 'default'
       },
@@ -26,7 +28,9 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
    const computeRevenueColorValue = useCallback(
       (value: number) => {
          const color = mapArrayToHeatColor(
-            (data as IncomeStatementWithGrowthAndNetProfitMargin[]).map(({ revenue }) => revenue)
+            (data as QuarterlyIncomeStatementDto[])
+                .map(({ sales }) => sales?.current)
+                .filter((entry) => entry !== undefined) as number[]
          ).get(value as number)!
          return color?.toString() || 'default'
       },
@@ -48,42 +52,42 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
                </TableRow>
             </TableHead>
             <TableBody>
-               {data.map((row: IncomeStatementWithGrowthAndNetProfitMargin) => (
+               {data.map((row: QuarterlyIncomeStatementDto) => (
                   <TableRow
                      key={row.date}
                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                      <TableCell component="th" scope="row">
                         <span>
-                           {row.period} - {row.calendarYear}
+                           Q{row.quarter.quarterNumber} - {row.quarter.year}
                         </span>
                         <EarningCallTranscript
                            symbol={symbol}
-                           year={parseInt(row.calendarYear!, 10)}
-                           quarter={parseInt(row.period[1]!, 10)}
+                           year={row.quarter.year}
+                           quarter={row.quarter.quarterNumber}
                         />
                      </TableCell>
                      <TableCell align="right">{row.acceptedDate}</TableCell>
                      <TableCell
                         align="right"
-                        style={{ color: computeRevenueColorValue(row.revenue) }}
+                        style={{ color: computeRevenueColorValue(row.sales?.current || 0) }}
                      >
-                        {row.revenue.toFixed(2)}
+                        {row.sales?.current.toFixed(2)}
                      </TableCell>
                      <TableCell align="right">
-                        {row.revenueGrowth.toFixed(2)}
+                        {row.sales?.growth?.toFixed(2)}
                      </TableCell>
                      <TableCell
                         align="right"
-                        style={{ color: computeEpsColorValue(row.eps) }}
+                        style={{ color: computeEpsColorValue(row.earnings?.current || 0) }}
                      >
-                        {row.eps.toFixed(2)}
+                        {row.earnings?.current.toFixed(2)}
                      </TableCell>
                      <TableCell align="right">
-                        {row.epsGrowth.toFixed(2)}
+                        {row.earnings?.growth?.toFixed(2)}
                      </TableCell>
                      <TableCell align="right">
-                        {row.netProfitMargin.toFixed(2)}
+                        {row.netProfitMargin?.toFixed(2)}
                      </TableCell>
                   </TableRow>
                ))}

@@ -3,6 +3,7 @@ import {StockGeneralInformationResponseDto} from "../../../shared-types/response
 import {InsiderTradingEvent, SocialSentiment} from "../../../shared-types/financial-modeling-prep";
 import {MidasBackendClient} from "./MidasBackendClient.ts";
 import {InstitutionalOwnershipResponse} from "../../../shared-types/institutional-ownership";
+import {QuarterlyIncomeStatementDto} from "../../../shared-types/income-statement";
 
 export class StockClient extends MidasBackendClient{
 
@@ -40,6 +41,14 @@ export class StockClient extends MidasBackendClient{
     static async getInstitutionalOwnership(symbol: string) {
         const {data} = await axios.get<InstitutionalOwnershipResponse>(
             `${this.getStockUrl(symbol)}/institutional-ownership`
+        )
+
+        return data;
+    }
+
+    static async getQuarterlyIncomeStatement(symbol: string) {
+        const {data} = await axios.get<QuarterlyIncomeStatementDto[]>(
+            `${this.getStockUrl(symbol)}/income-statement/quarterly`
         )
 
         return data;

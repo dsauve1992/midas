@@ -1,13 +1,9 @@
 import {useQuery} from 'react-query'
 import FinancialPeriod from '../../../lib/FinancialPeriod'
-import type {EnterpriseRatio, IncomeStatementDto} from '../../../../../shared-types/financial-modeling-prep.d.ts'
-import {computeGrowth} from '../../../lib/utils'
-import FinancialModelingPrepClient from '../../../api/financialModelingPrep/FinancialModelingPrepClient'
-
-export interface UseFinancialHistoryProps {
-   symbol: string
-   frequency: FinancialPeriod
-}
+import {StockClient} from "../../../api/StockClient.ts";
+import {EnterpriseRatio, IncomeStatementDto} from "../../../../../shared-types/financial-modeling-prep";
+import {computeGrowth} from "../../../lib/utils.ts";
+import {QuarterlyIncomeStatementDto as BackendIncomeStatementDto} from "../../../../../shared-types/income-statement";
 
 export type IncomeStatementWithGrowthAndNetProfitMargin = {
     date: string,
@@ -21,24 +17,11 @@ export type IncomeStatementWithGrowthAndNetProfitMargin = {
    netProfitMargin: number
 }
 
-const client = FinancialModelingPrepClient.getInstance()
-
-export const useFinancialHistory = ({
-   symbol,
-   frequency,
-}: UseFinancialHistoryProps) => {
-   return useQuery<IncomeStatementWithGrowthAndNetProfitMargin[]>(
-      ['financial-history', symbol, frequency],
-      async () => {
-         const incomeStatements = await client.getIncomeStatements(symbol, {
-            period: frequency,
-         })
-         const enterpriseRatios = await client.getEnterpriseRatios(symbol, {
-            period: frequency,
-         })
-
-         return mapData(frequency, incomeStatements, enterpriseRatios)
-      }
+export const useQuarterlyIncomeStatement = (symbol:string) => {
+   return useQuery<BackendIncomeStatementDto[]>(
+      ['financial-history', symbol],
+       () =>
+          StockClient.getQuarterlyIncomeStatement(symbol)
    )
 }
 

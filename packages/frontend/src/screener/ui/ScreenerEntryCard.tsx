@@ -5,7 +5,7 @@ import {MetricComparisonChart} from '../../ticker/ui/TickerPage/sections/IncomeS
 import {TickerProfile} from '../../ticker/ui/TickerPage/header/TickerProfile'
 import TradingViewTapeCard from '../../ui/chart/TradingViewTapeCard'
 import VitalSection from '../../ticker/ui/TickerPage/header/vital/VitalSection'
-import {useFinancialQuarterlyPerformance} from '../../ticker/ui/hooks/useFinancialQuarterlyPerformance'
+import {useFinancialQuarterlyPerformance} from "../../ticker/ui/hooks/useFinancialQuarterlyPerformance.ts";
 
 export interface Props {
    symbol: string

@@ -7,6 +7,9 @@ import { GetInstitutionalHoldingUseCase } from './usecase/get-institutional-hold
 import { GetSocialSentimentUseCase } from './usecase/get-social-sentiment.use-case';
 import { GetQuarterlyIncomeStatementUseCase } from './usecase/get-quarterly-income-statement.use-case';
 import { GetEarningCallTranscriptSummaryUseCase } from './usecase/get-earning-call-transcript-summary.use-case';
+import { MissingIncomeStatement } from './domain/missing-income-statement';
+import { RecordedIncomeStatement } from './domain/recorded-income-statement';
+import { QuarterlyIncomeStatementDto } from '../../../shared-types/income-statement';
 
 @Controller('stocks/:symbol')
 export class StocksController {
@@ -27,9 +30,32 @@ export class StocksController {
     return this.getStockGeneralInformationUseCase.execute(symbol);
   }
 
-  @Get('income-statement.ts')
-  getIncomeStatement(@Param('symbol') symbol: string) {
-    return this.getIncomeStatementUseCase.execute(symbol);
+  @Get('income-statement/quarterly')
+  async getQuarterlyIncomeStatement(
+    @Param('symbol') symbol: string,
+  ): Promise<QuarterlyIncomeStatementDto[]> {
+    const history = await this.getIncomeStatementUseCase.execute(symbol);
+
+    return history.map((incomeStatement) => {
+      if (incomeStatement instanceof MissingIncomeStatement) {
+        return {
+          quarter: {
+            year: incomeStatement.quarter.year,
+            quarterNumber: incomeStatement.quarter.quarterNumber,
+          },
+        };
+      } else if (incomeStatement instanceof RecordedIncomeStatement) {
+        return {
+          quarter: {
+            year: incomeStatement.model.quarter.year,
+            quarterNumber: incomeStatement.model.quarter.quarterNumber,
+          },
+          earnings: incomeStatement.model.earnings,
+          sales: incomeStatement.model.sales,
+          netProfitMargin: incomeStatement.model.netProfitMargin,
+        } as QuarterlyIncomeStatementDto;
+      }
+    });
   }
 
   @Get('earning-call-transcript-summary')

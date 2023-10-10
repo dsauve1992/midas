@@ -1,11 +1,11 @@
-import { EChartOption } from 'echarts'
-import { useEchart } from '../../../../../ui/chart/hooks/useEchart'
+import {EChartOption} from 'echarts'
+import {useEchart} from '../../../../../ui/chart/hooks/useEchart'
 
 export type MetricComparison = {
    period: string | number
-   current: number
-   previous: number
-   growth: number
+   current?: number
+   previous?: number
+   growth?: number
 }
 
 type MetricComparisonChartProps = {
