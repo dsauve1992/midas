@@ -1,6 +1,7 @@
 import React from 'react'
-import { MetricComparisonChart } from './MetricComparisonChart'
-import { useEpsYearToYearPerformance } from '../../../hooks/useEpsYearToYearPerformance'
+import {MetricComparisonChart} from './MetricComparisonChart'
+import {useFinancialPerformance} from "../../../hooks/useFinancialPerformance.ts";
+import FinancialPeriod from "../../../../../lib/FinancialPeriod.ts";
 
 export interface Props {
    symbol: string
@@ -9,9 +10,9 @@ export interface Props {
 const YearToYearEpsComparisonChart: React.FunctionComponent<Props> = ({
    symbol,
 }: Props) => {
-   const comparisons = useEpsYearToYearPerformance({ symbol })
+   const {revenues} = useFinancialPerformance({symbol, period: FinancialPeriod.ANNUAL})
 
-   return <MetricComparisonChart title="E.P.S" data={comparisons} />
+   return <MetricComparisonChart title="E.P.S" data={revenues} />
 }
 
 export default YearToYearEpsComparisonChart

@@ -1,22 +1,19 @@
 import React, {useCallback} from 'react'
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,} from '@mui/material'
 import {mapArrayToHeatColor} from '../../../../../lib/utils/array.utils'
-import EarningCallTranscript from './EarningCallTranscript'
-import {QuarterlyIncomeStatementDto} from "../../../../../../../shared-types/income-statement";
+import {IncomeStatementDto} from "../../../../../../../shared-types/income-statement";
 
 export interface Props {
-   symbol: string
-   data: QuarterlyIncomeStatementDto[]
+   data: IncomeStatementDto[]
 }
 
 const IncomeStatementTable: React.FunctionComponent<Props> = ({
-   symbol,
    data,
 }: Props) => {
    const computeEpsColorValue = useCallback(
       (value: number) => {
          const color = mapArrayToHeatColor(
-            (data as QuarterlyIncomeStatementDto[])
+            (data as IncomeStatementDto[])
                 .map((entry) => entry.earnings?.current)
                 .filter((entry) => entry !== undefined) as number[]
          ).get(value as number)!
@@ -28,7 +25,7 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
    const computeRevenueColorValue = useCallback(
       (value: number) => {
          const color = mapArrayToHeatColor(
-            (data as QuarterlyIncomeStatementDto[])
+            (data as IncomeStatementDto[])
                 .map(({ sales }) => sales?.current)
                 .filter((entry) => entry !== undefined) as number[]
          ).get(value as number)!
@@ -52,20 +49,15 @@ const IncomeStatementTable: React.FunctionComponent<Props> = ({
                </TableRow>
             </TableHead>
             <TableBody>
-               {data.map((row: QuarterlyIncomeStatementDto) => (
+               {data.map((row: IncomeStatementDto) => (
                   <TableRow
-                     key={row.date}
+                     key={row.period}
                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                      <TableCell component="th" scope="row">
                         <span>
-                           Q{row.quarter.quarterNumber} - {row.quarter.year}
+                           {row.period}
                         </span>
-                        <EarningCallTranscript
-                           symbol={symbol}
-                           year={row.quarter.year}
-                           quarter={row.quarter.quarterNumber}
-                        />
                      </TableCell>
                      <TableCell align="right">{row.acceptedDate}</TableCell>
                      <TableCell

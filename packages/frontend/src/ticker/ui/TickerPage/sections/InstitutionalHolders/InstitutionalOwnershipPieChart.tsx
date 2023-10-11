@@ -1,10 +1,10 @@
 import React from 'react'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import { EChartOption } from 'echarts'
-import { ShareholderHistory } from '../../../../../api/ownership/type'
-import { useOwnershipPercentages } from '../../../hooks/useOwnershipPercentages'
-import { useEchart } from '../../../../../ui/chart/hooks/useEchart'
+import {EChartOption} from 'echarts'
+import {useOwnershipPercentages} from '../../../hooks/useOwnershipPercentages'
+import {useEchart} from '../../../../../ui/chart/hooks/useEchart'
+import {ShareholderHistory} from "../../../../../../../shared-types/institutional-ownership";
 
 interface Props {
    data: ShareholderHistory[]

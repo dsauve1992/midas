@@ -1,7 +1,6 @@
-import { Quarter } from '../../rating/domain/Quarter';
-
-export interface RecordedIncomeStatementModel {
-  quarter: Quarter;
+export interface RecordedAnnuallyIncomeStatementModel {
+  year: number;
+  acceptedDate: string;
 
   earnings: {
     current: number;
@@ -16,12 +15,12 @@ export interface RecordedIncomeStatementModel {
   netProfitMargin?: number;
 }
 
-export class RecordedIncomeStatement {
-  constructor(public model: RecordedIncomeStatementModel) {}
+export class RecordedAnnuallyIncomeStatement {
+  constructor(public model: RecordedAnnuallyIncomeStatementModel) {}
 
   toString(): string {
-    return `${
-      this.model.quarter
+    return `FY - ${
+      this.model.year
     } : ${this.stringifyEarningsData()} | ${this.stringifySalesData()} | ${this.stringifyProfitMarginData()}`;
   }
 

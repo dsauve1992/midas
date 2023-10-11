@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 import _ from 'lodash'
 import {MetricComparison} from '../MetricComparisonChart'
-import {IncomeStatementWithGrowthAndNetProfitMargin} from '../../../../hooks/useQuarterlyIncomeStatement.ts'
+import {IncomeStatementWithGrowthAndNetProfitMargin} from '../../../../hooks/useIncomeStatement.ts'
 
 export const useEpsComparison = (
    data?: IncomeStatementWithGrowthAndNetProfitMargin[],

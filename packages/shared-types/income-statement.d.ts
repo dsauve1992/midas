@@ -1,12 +1,6 @@
-export type QuarterDto = {
-   quarterNumber: number,
-   year: number,
-}
-
-export type QuarterlyIncomeStatementDto = {
-   date?: string,
+export type IncomeStatementDto = {
    acceptedDate?: string,
-   quarter: QuarterDto;
+   period: string;
    earnings?: {
       current: number;
       previous?: number;

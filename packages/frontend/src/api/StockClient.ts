@@ -1,9 +1,9 @@
 import axios from "axios";
 import {StockGeneralInformationResponseDto} from "../../../shared-types/response.dto";
-import {InsiderTradingEvent, SocialSentiment} from "../../../shared-types/financial-modeling-prep";
+import {EarningsSurprise, InsiderTradingEvent, SocialSentiment} from "../../../shared-types/financial-modeling-prep";
 import {MidasBackendClient} from "./MidasBackendClient.ts";
 import {InstitutionalOwnershipResponse} from "../../../shared-types/institutional-ownership";
-import {QuarterlyIncomeStatementDto} from "../../../shared-types/income-statement";
+import {IncomeStatementDto} from "../../../shared-types/income-statement";
 
 export class StockClient extends MidasBackendClient{
 
@@ -24,7 +24,7 @@ export class StockClient extends MidasBackendClient{
     }
 
     static async getEarningsSurprises(symbol: string) {
-        const {data} = await axios.get<SocialSentiment[]>(
+        const {data} = await axios.get<EarningsSurprise[]>(
             `${this.getStockUrl(symbol)}/earnings-surprises`
         )
 
@@ -47,8 +47,16 @@ export class StockClient extends MidasBackendClient{
     }
 
     static async getQuarterlyIncomeStatement(symbol: string) {
-        const {data} = await axios.get<QuarterlyIncomeStatementDto[]>(
+        const {data} = await axios.get<IncomeStatementDto[]>(
             `${this.getStockUrl(symbol)}/income-statement/quarterly`
+        )
+
+        return data;
+    }
+
+    static async getAnnuallyIncomeStatement(symbol: string) {
+        const {data} = await axios.get<IncomeStatementDto[]>(
+            `${this.getStockUrl(symbol)}/income-statement/annually`
         )
 
         return data;

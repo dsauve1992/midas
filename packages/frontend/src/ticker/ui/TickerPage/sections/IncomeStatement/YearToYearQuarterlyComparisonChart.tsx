@@ -1,7 +1,8 @@
 import React from 'react'
-import { Grid } from '@mui/material'
-import { MetricComparisonChart } from './MetricComparisonChart'
-import { useFinancialQuarterlyPerformance } from '../../../hooks/useFinancialQuarterlyPerformance'
+import {Grid} from '@mui/material'
+import {MetricComparisonChart} from './MetricComparisonChart'
+import {useFinancialPerformance} from '../../../hooks/useFinancialPerformance.ts'
+import FinancialPeriod from "../../../../../lib/FinancialPeriod.ts";
 
 export interface Props {
    symbol: string
@@ -10,7 +11,7 @@ export interface Props {
 const YearToYearQuarterlyComparisonChart: React.FunctionComponent<Props> = ({
    symbol,
 }: Props) => {
-   const { earnings, revenues } = useFinancialQuarterlyPerformance({ symbol })
+   const { earnings, revenues } = useFinancialPerformance({ symbol, period: FinancialPeriod.QUARTER })
 
    return (
       <Grid container spacing={2} height="100%">

@@ -1,6 +1,6 @@
 import { Quarter } from '../../rating/domain/Quarter';
 
-export class MissingIncomeStatement {
+export class MissingQuarterlyIncomeStatement {
   constructor(public quarter: Quarter) {}
 
   toString(): string {

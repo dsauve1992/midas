@@ -1,11 +1,11 @@
-import { Card, CardContent } from '@mui/material'
-import { useMemo } from 'react'
-import { AggregateHolding } from '../../../../../api/ownership/type'
-import { useOwnershipHistoryByQuarter } from '../../../hooks/useOwnershipHistoryByQuarter'
+import {Card, CardContent} from '@mui/material'
+import {useMemo} from 'react'
+import {useOwnershipHistoryByQuarter} from '../../../hooks/useOwnershipHistoryByQuarter'
 import {
-   InstitutionalOwnershipHistoryByQuarterBarChart,
-   InstitutionalOwnershipHistoryByQuarterDataEntry,
+    InstitutionalOwnershipHistoryByQuarterBarChart,
+    InstitutionalOwnershipHistoryByQuarterDataEntry,
 } from './InstitutionalOwnershipHistoryByQuarterBarChart'
+import {AggregateHolding} from "../../../../../../../shared-types/institutional-ownership";
 
 interface Props {
    history: AggregateHolding[]

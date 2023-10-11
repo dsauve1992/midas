@@ -2,7 +2,7 @@ import React from 'react'
 import {Card, CardContent} from '@mui/material'
 import FinancialPeriod from '../../../../../lib/FinancialPeriod'
 import IncomeStatementTable from './IncomeStatementTable'
-import {useQuarterlyIncomeStatement} from '../../../hooks/useQuarterlyIncomeStatement.ts'
+import {useIncomeStatement} from '../../../hooks/useIncomeStatement.ts'
 import {IncomeStatementChart} from './IncomeStatementChart'
 
 export interface Props {
@@ -14,7 +14,7 @@ const IncomeStatementArea: React.FunctionComponent<Props> = ({
    symbol,
    frequency,
 }: Props) => {
-   const { isLoading, data } = useQuarterlyIncomeStatement(symbol)
+   const { isLoading, data } = useIncomeStatement(symbol, frequency)
 
    if (isLoading) {
       return <p>Please wait...</p>
@@ -31,7 +31,7 @@ const IncomeStatementArea: React.FunctionComponent<Props> = ({
          <br />
          <Card>
             <CardContent>
-               <IncomeStatementTable symbol={symbol} data={data} />
+               <IncomeStatementTable data={data} />
             </CardContent>
          </Card>
       </>

@@ -5,7 +5,8 @@ import {MetricComparisonChart} from '../../ticker/ui/TickerPage/sections/IncomeS
 import {TickerProfile} from '../../ticker/ui/TickerPage/header/TickerProfile'
 import TradingViewTapeCard from '../../ui/chart/TradingViewTapeCard'
 import VitalSection from '../../ticker/ui/TickerPage/header/vital/VitalSection'
-import {useFinancialQuarterlyPerformance} from "../../ticker/ui/hooks/useFinancialQuarterlyPerformance.ts";
+import {useFinancialPerformance} from "../../ticker/ui/hooks/useFinancialPerformance.ts";
+import FinancialPeriod from "../../lib/FinancialPeriod.ts";
 
 export interface Props {
    symbol: string
@@ -16,7 +17,7 @@ const style = { marginBottom: '15px' }
 export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
    symbol,
 }) => {
-   const { earnings, revenues } = useFinancialQuarterlyPerformance({ symbol })
+   const { earnings, revenues } = useFinancialPerformance({ symbol, period:FinancialPeriod.QUARTER })
 
    return (
       <Card style={style}>

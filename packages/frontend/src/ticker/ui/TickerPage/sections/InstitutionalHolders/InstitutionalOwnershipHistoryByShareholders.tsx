@@ -9,9 +9,9 @@ import {
    TableHead,
    TableRow,
 } from '@mui/material'
-import { ShareholderHistory } from '../../../../../api/ownership/type'
-import { useOwnershipHistoryByInstitution } from '../../../hooks/useOwnershipHistoryByInstitution'
-import { InstitutionalOwnershipHistoryByQuarterBarChart } from './InstitutionalOwnershipHistoryByQuarterBarChart'
+import {useOwnershipHistoryByInstitution} from '../../../hooks/useOwnershipHistoryByInstitution'
+import {InstitutionalOwnershipHistoryByQuarterBarChart} from './InstitutionalOwnershipHistoryByQuarterBarChart'
+import {ShareholderHistory} from "../../../../../../../shared-types/institutional-ownership";
 
 interface Props {
    data: ShareholderHistory[]

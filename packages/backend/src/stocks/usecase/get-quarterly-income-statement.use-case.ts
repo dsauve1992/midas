@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { Quarter } from '../../rating/domain/Quarter';
 import { keyBy } from 'lodash';
-import { RecordedIncomeStatement } from '../domain/recorded-income-statement';
-import { MissingIncomeStatement } from '../domain/missing-income-statement';
-import { IncomeStatementHistory } from '../domain/income-statement';
+import { RecordedQuarterlyIncomeStatement } from '../domain/recorded-quarterly-income-statement';
+import { MissingQuarterlyIncomeStatement } from '../domain/missing-quarterly-income-statement';
+import { QuarterlyIncomeStatementHistory } from '../domain/quarterly-income-statement';
 
 @Injectable()
 export class GetQuarterlyIncomeStatementUseCase {
@@ -12,7 +12,7 @@ export class GetQuarterlyIncomeStatementUseCase {
     private financialModelingPrepService: FinancialModelingPrepService,
   ) {}
 
-  async execute(symbol: string): Promise<IncomeStatementHistory> {
+  async execute(symbol: string): Promise<QuarterlyIncomeStatementHistory> {
     const [incomeStatements, enterpriseRatios] = await Promise.all([
       this.financialModelingPrepService.getIncomeStatements(symbol, {
         period: 'quarter',
@@ -91,13 +91,14 @@ export class GetQuarterlyIncomeStatementUseCase {
 
     return incomeStatementsWithNetProfitMargin.map((record, index) => {
       if ('status' in record) {
-        return new MissingIncomeStatement(record.quarter);
+        return new MissingQuarterlyIncomeStatement(record.quarter);
       } else if ('eps' in record) {
         const sameQuarterOneYearBefore =
           incomeStatementsWithNetProfitMargin[index + 4];
 
-        return new RecordedIncomeStatement({
+        return new RecordedQuarterlyIncomeStatement({
           quarter: record.quarter,
+          acceptedDate: record.acceptedDate,
 
           earnings: {
             current: record.eps,

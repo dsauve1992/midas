@@ -1,10 +1,5 @@
 import axios from 'axios'
-import type {
-   EarningCallTranscript,
-   EnterpriseRatio,
-   IncomeStatementDto,
-   SearchResult,
-} from '../../../../shared-types/financial-modeling-prep.d.ts'
+import type {SearchResult,} from '../../../../shared-types/financial-modeling-prep.d.ts'
 
 
 class FinancialModelingPrepClient {
@@ -20,33 +15,6 @@ class FinancialModelingPrepClient {
 
    protected static getBaseUrl(): string {
       return `${import.meta.env.VITE_BACKEND_URL}/api/fmp`
-   }
-
-   async getIncomeStatements(
-      symbol: string,
-      parameters?: { [key: string]: string| number|boolean }
-   ): Promise<IncomeStatementDto[]> {
-      return this.requestTo<IncomeStatementDto[]>(
-         `/income-statement/${symbol}`,
-         parameters
-      )
-   }
-
-   async getEarningCallTranscript(
-      symbol: string,
-      parameters?: { [key: string]: string| number|boolean }
-   ): Promise<EarningCallTranscript[]> {
-      return this.requestTo<EarningCallTranscript[]>(
-         `/earning_call_transcript/${symbol}`,
-         parameters
-      )
-   }
-
-   async getEnterpriseRatios(
-      symbol: string,
-      parameters?: { [key: string]: string| number|boolean }
-   ): Promise<EnterpriseRatio[]> {
-      return this.requestTo<EnterpriseRatio[]>(`/ratios/${symbol}`, parameters)
    }
 
    async search(query: string): Promise<SearchResult[]> {
