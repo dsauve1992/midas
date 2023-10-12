@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {MidasBackendClient} from "./MidasBackendClient.ts";
 
 export interface StockInfo {
    rankInGroup: string
@@ -7,7 +8,8 @@ export interface StockInfo {
    groupLeader: string
 }
 
-class AskIbdAPI {
+
+class AskIbdAPI extends MidasBackendClient{
    static async getDataFor(symbol: string): Promise<StockInfo> {
       return axios
          .get(`${this.getBaseUrl()}?symbol=${symbol}`)
@@ -15,7 +17,7 @@ class AskIbdAPI {
    }
 
    protected static getBaseUrl(): string {
-      return `${import.meta.env.VITE_BACKEND_URL}/investors-business-daily/ranking`
+      return `${super.getBaseUrl()}/investors-business-daily/ranking`
    }
 }
 

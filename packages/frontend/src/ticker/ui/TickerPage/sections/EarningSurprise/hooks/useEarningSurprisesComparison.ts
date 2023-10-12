@@ -11,6 +11,7 @@ export const useEarningSurprisesComparison = (
    return useMemo(() => {
       const sortedData = _.sortBy(data, 'date', 'asc')
 
+      // FIXME : Backend ?
       const allComparisons = sortedData.map((entry) => ({
          period: entry.date!,
          current: entry.actualEarningResult,

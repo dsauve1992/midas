@@ -97,7 +97,7 @@ export class FinancialModelingPrepService {
     queryParams['apikey'] = apiKey;
 
     const { data } = await firstValueFrom(
-      await this.httpService.get(url, { params: queryParams }),
+      this.httpService.get(url, { params: queryParams }),
     );
 
     return data;

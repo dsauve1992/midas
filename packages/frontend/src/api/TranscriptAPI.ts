@@ -1,6 +1,7 @@
 import axios from 'axios'
+import {MidasBackendClient} from "./MidasBackendClient.ts";
 
-class TranscriptAPI {
+class TranscriptAPI extends MidasBackendClient{
    static async getSummary(symbol: string): Promise<string> {
       return this.get(symbol, 'SUMMARY')
    }
@@ -34,7 +35,7 @@ class TranscriptAPI {
    }
 
    protected static getBaseUrl(): string {
-      return `${import.meta.env.VITE_BACKEND_URL}/transcript`
+      return `${super.getBaseUrl()}/transcript`
    }
 }
 

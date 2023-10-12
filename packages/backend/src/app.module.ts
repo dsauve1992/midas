@@ -8,6 +8,7 @@ import { InvestorsBusinessDailyModule } from './investors-business-daily/investo
 import { RatingModule } from './rating/rating.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { StocksModule } from './stocks/stocks.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { StocksModule } from './stocks/stocks.module';
     InvestorsBusinessDailyModule,
     RatingModule,
     StocksModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [],

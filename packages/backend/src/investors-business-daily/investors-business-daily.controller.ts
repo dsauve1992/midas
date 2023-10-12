@@ -8,9 +8,7 @@ export class InvestorsBusinessDailyController {
   ) {}
 
   @Get('/ranking')
-  async getStockRankingInfo(@Query() query) {
-    const { symbol } = query;
-
+  async getStockRankingInfo(@Query('symbol') symbol: string) {
     return this.investorsBusinessDailyWebScrapperService.fetchStockRankings(
       symbol,
     );
