@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InsiderTradingEvent } from '../../../../shared-types/financial-modeling-prep';
+import { InsiderTradingEvent } from '../../shared-types/financial-modeling-prep';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 
 @Injectable()

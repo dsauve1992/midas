@@ -6,7 +6,7 @@ import { FinancialModelingPrepService } from '../../historical-data/financial-mo
 import {
   EnterpriseRatio,
   IncomeStatementDto,
-} from '../../../../shared-types/financial-modeling-prep';
+} from '../../shared-types/financial-modeling-prep';
 
 const mockGetIncomeStatement = jest.fn<
   Promise<Partial<IncomeStatementDto>[]>,

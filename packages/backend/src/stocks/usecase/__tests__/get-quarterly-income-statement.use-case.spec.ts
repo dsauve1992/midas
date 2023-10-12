@@ -5,7 +5,7 @@ import { createMock, DeepMocked } from '@golevelup/ts-jest';
 import {
   EnterpriseRatio,
   IncomeStatementDto,
-} from '../../../../../shared-types/financial-modeling-prep';
+} from '../../../shared-types/financial-modeling-prep';
 
 const AAPL_QUARTERLY_INCOME_STATEMENTS = [
   {

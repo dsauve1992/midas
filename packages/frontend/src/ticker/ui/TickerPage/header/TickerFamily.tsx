@@ -1,6 +1,6 @@
 import React from 'react'
 import {Chip} from '@mui/material'
-import {StockGeneralInformationResponseDto} from "../../../../../../shared-types/response.dto";
+import {StockGeneralInformationResponseDto} from "../../../../../../backend/src/shared-types/response.dto";
 
 export interface Props {
    profile: StockGeneralInformationResponseDto

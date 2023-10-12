@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { AnnuallyIncomeStatement } from '../../domain/annually-income-statement';
 import { MissingAnnuallyIncomeStatement } from '../../domain/missing-annualy-income-statement';
 import { RecordedAnnuallyIncomeStatement } from '../../domain/recorded-annually-income-statement';
-import { IncomeStatementDto } from '../../../../../shared-types/income-statement';
+import { IncomeStatementDto } from '../../../shared-types/income-statement';
 
 @Injectable()
 export class AnnuallyIncomeStatementMapper {

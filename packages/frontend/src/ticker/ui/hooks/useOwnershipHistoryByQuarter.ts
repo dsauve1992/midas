@@ -1,6 +1,6 @@
 import {useMemo} from 'react'
 import {chain} from 'lodash'
-import {AggregateHolding} from "../../../../../shared-types/institutional-ownership";
+import {AggregateHolding} from "../../../../../backend/src/shared-types/institutional-ownership";
 
 export type OwnershipByQuarter = {
    quarterOfYear: string

@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query'
 import {StockClient} from "../../../api/StockClient.ts";
-import {StockGeneralInformationResponseDto} from "../../../../../shared-types/response.dto";
+import {StockGeneralInformationResponseDto} from "../../../../../backend/src/shared-types/response.dto";
 
 export const useCompanyGeneralInformation = (symbol: string) =>
    useQuery<StockGeneralInformationResponseDto>(

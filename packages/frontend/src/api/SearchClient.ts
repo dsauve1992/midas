@@ -1,6 +1,6 @@
 import axios from "axios";
 import {MidasBackendClient} from "./MidasBackendClient.ts";
-import {SearchResult} from "../../../shared-types/financial-modeling-prep";
+import {SearchResult} from "../../../backend/src/shared-types/financial-modeling-prep";
 
 export class SearchClient extends MidasBackendClient{
 

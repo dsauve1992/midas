@@ -1,9 +1,13 @@
 import axios from "axios";
-import {StockGeneralInformationResponseDto} from "../../../shared-types/response.dto";
-import {EarningsSurprise, InsiderTradingEvent, SocialSentiment} from "../../../shared-types/financial-modeling-prep";
+import {StockGeneralInformationResponseDto} from "../../../backend/src/shared-types/response.dto";
+import {
+    EarningsSurprise,
+    InsiderTradingEvent,
+    SocialSentiment
+} from "../../../backend/src/shared-types/financial-modeling-prep";
 import {MidasBackendClient} from "./MidasBackendClient.ts";
-import {InstitutionalOwnershipResponse} from "../../../shared-types/institutional-ownership";
-import {IncomeStatementDto} from "../../../shared-types/income-statement";
+import {InstitutionalOwnershipResponse} from "../../../backend/src/shared-types/institutional-ownership";
+import {IncomeStatementDto} from "../../../backend/src/shared-types/income-statement";
 
 export class StockClient extends MidasBackendClient{
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { InvestorsBusinessDailyService } from '../../investors-business-daily/investors-business-daily.service';
 import { RatingService } from '../../rating/usecase/rating.service';
-import { StockGeneralInformationResponseDto } from '../../../../shared-types/response.dto';
+import { StockGeneralInformationResponseDto } from '../../shared-types/response.dto';
 
 @Injectable()
 export class GetStockGeneralInformationUseCase {

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Card, CardContent} from '@mui/material'
 import {EChartOption} from 'echarts'
-import type {InsiderTradingEvent} from '../../../../../../../shared-types/financial-modeling-prep.d.ts'
+import type {InsiderTradingEvent} from '../../../../../../../backend/src/shared-types/financial-modeling-prep.d.ts'
 import {useEchart} from '../../../../../ui/chart/hooks/useEchart'
 import DateRange from '../../../../../lib/utils/date/DateRange'
 

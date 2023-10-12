@@ -13,7 +13,7 @@ import {
   SharesFloat,
   SocialSentiment,
   StockProfile,
-} from '../../../shared-types/financial-modeling-prep';
+} from '../shared-types/financial-modeling-prep';
 
 @Injectable()
 export class FinancialModelingPrepService {

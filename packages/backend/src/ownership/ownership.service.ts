@@ -6,7 +6,7 @@ import {
   OwnershipHistoryResponse,
   ShareholderHistory,
   TopShareholdersResponse,
-} from '../../../shared-types/institutional-ownership';
+} from '../shared-types/institutional-ownership';
 
 @Injectable()
 export class OwnershipService {

@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import {useOwnershipHistoryByInstitution} from '../../../hooks/useOwnershipHistoryByInstitution'
 import {InstitutionalOwnershipHistoryByQuarterBarChart} from './InstitutionalOwnershipHistoryByQuarterBarChart'
-import {ShareholderHistory} from "../../../../../../../shared-types/institutional-ownership";
+import {ShareholderHistory} from "../../../../../../../backend/src/shared-types/institutional-ownership";
 
 interface Props {
    data: ShareholderHistory[]
