@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RatingService } from '../usecase/rating.service';
-import { ScreenerService } from '../../screener/screener.service';
+import { ScreenerService } from '../../screener/service/screener.service';
 import { delay } from '../../utils/delay';
 import { Cron } from '@nestjs/schedule';
 

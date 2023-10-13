@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import * as screenerParameters from './screenerParameter.json';
+import * as screenerParameters from '../screenerParameter.json';
 
 @Injectable()
 export class ScreenerService {
@@ -9,7 +9,7 @@ export class ScreenerService {
 
   async search(): Promise<string[]> {
     const response = await firstValueFrom(
-      await this.httpService.post(
+      this.httpService.post(
         'https://scanner.tradingview.com/global/scan',
         screenerParameters,
       ),
