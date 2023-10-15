@@ -1,22 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
 import { ScreenerService } from '../service/screener.service';
-import { ScreenerRepository } from '../repository/screener.repository';
 
 @Controller('screener')
 export class ScreenerController {
-  constructor(
-    private screenerFetcherService: ScreenerService,
-    private screenerRepository: ScreenerRepository,
-  ) {}
+  constructor(private screenerFetcherService: ScreenerService) {}
 
   @Get()
   async getScreener() {
-    const symbols = await this.screenerFetcherService.search();
+    return this.screenerFetcherService.search();
+  }
 
-    await Promise.all(
-      symbols.map((symbol) => this.screenerRepository.create({ symbol })),
-    );
-
-    return symbols;
+  @Get('/with-rating')
+  async getScreenerWithRatings() {
+    return this.screenerFetcherService.searchWithRating();
   }
 }
