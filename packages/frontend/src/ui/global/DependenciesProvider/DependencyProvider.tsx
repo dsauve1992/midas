@@ -1,7 +1,9 @@
+import {ThemeProvider} from '@mui/material'
 import {PropsWithChildren} from 'react'
 import {BrowserRouter} from 'react-router-dom'
 import {QueryClient, QueryClientProvider} from 'react-query'
 import {TradingViewWidgetScriptLoader} from '../TradingViewWidgetScriptLoader'
+import darkTheme from "../theme/mui.theme.ts";
 
 export interface Props {}
 
@@ -23,11 +25,11 @@ const DependencyProvider = ({
       <BrowserRouter>
          <QueryClientProvider client={queryClient}>
             {/* <ReactQueryDevtools /> */}
-            {/*<ThemeProvider>*/}
+            <ThemeProvider theme={darkTheme}>
                <TradingViewWidgetScriptLoader>
                   <>{children}</>
                </TradingViewWidgetScriptLoader>
-            {/*</ThemeProvider>*/}
+            </ThemeProvider>
          </QueryClientProvider>
       </BrowserRouter>
    )
