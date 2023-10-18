@@ -3,6 +3,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 // Créer une table DynamoDB
 const dynamoDbTable = new aws.dynamodb.Table("screener", {
+    name: "screener",
     attributes: [
         { name: "symbol", type: "S" },
     ],
