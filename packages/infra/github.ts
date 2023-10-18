@@ -6,9 +6,11 @@ type GithubVariable = {
     EC2_HOST: Output<string>
     SSH_PRIVATE_KEY: Output<string>
     FMP_PRIVATE_KEY: Output<string>
+    DYNAMO_DB_URL: Output<string>
+    DYNAMO_DB_REGION: Output<string>
 }
 
-export const addGithubVariables = ({FRONTEND_STORAGE_S3_BUCKET_NAME, EC2_HOST, SSH_PRIVATE_KEY, FMP_PRIVATE_KEY}: GithubVariable) => {
+export const addGithubVariables = ({FRONTEND_STORAGE_S3_BUCKET_NAME, EC2_HOST, SSH_PRIVATE_KEY, FMP_PRIVATE_KEY, DYNAMO_DB_URL, DYNAMO_DB_REGION}: GithubVariable) => {
     new github.ActionsVariable("FRONTEND_STORAGE_S3_BUCKET_NAME", {
         value: FRONTEND_STORAGE_S3_BUCKET_NAME.apply(v => v),
         repository: "midas",
@@ -31,5 +33,16 @@ export const addGithubVariables = ({FRONTEND_STORAGE_S3_BUCKET_NAME, EC2_HOST, S
         plaintextValue: FMP_PRIVATE_KEY.apply(v => v),
         repository: "midas",
         secretName: "FMP_PRIVATE_KEY"
+    });
+
+    new github.ActionsSecret("DYNAMO_DB_URL", {
+        plaintextValue: DYNAMO_DB_URL.apply(v => v),
+        repository: "midas",
+        secretName: "DYNAMO_DB_URL"
+    });
+    new github.ActionsSecret("DYNAMO_DB_REGION", {
+        plaintextValue: DYNAMO_DB_REGION.apply(v => v),
+        repository: "midas",
+        secretName: "DYNAMO_DB_REGION"
     });
 }
