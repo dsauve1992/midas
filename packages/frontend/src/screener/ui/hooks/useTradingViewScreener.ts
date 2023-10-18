@@ -10,11 +10,11 @@ export const useTradingViewScreener = (): UseQueryResult<string[]> => {
       ),
    }
 }
-export const useScreener = (): UseQueryResult<{ symbol:string, fundamentalRating: number }[]> => {
+export const useScreener = (): UseQueryResult<{ symbol:string, fundamentalRating: number, technicalRating: number }[]> => {
    return {
-      ...useQuery<{ symbol:string, fundamentalRating: number }[]>([`screener`], () =>
+      ...useQuery<{ symbol:string, fundamentalRating: number,technicalRating: number }[]>([`screener`], () =>
          ScreenerClient.queryWithRatings(), {
-            select: (data) => orderBy(data, "fundamentalRating", "desc")
+            select: (data) => orderBy(data, ({technicalRating, fundamentalRating}) => technicalRating * fundamentalRating, "desc")
           }
       ),
    }

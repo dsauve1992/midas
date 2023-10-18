@@ -21,13 +21,18 @@ export class ScreenerRepository {
     );
   }
 
-  async create(payload: { symbol: string; fundamentalRating: number }) {
+  async create(payload: {
+    symbol: string;
+    fundamentalRating: number;
+    technicalRating: number;
+  }) {
     await this.client.send(
       new PutCommand({
         TableName: this.TABLE_NAME,
         Item: {
           symbol: payload.symbol,
           fundamentalRating: payload.fundamentalRating,
+          technicalRating: payload.technicalRating,
         },
       }),
     );

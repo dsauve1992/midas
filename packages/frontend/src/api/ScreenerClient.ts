@@ -13,6 +13,6 @@ export class ScreenerClient extends MidasBackendClient{
    public static async queryWithRatings() {
       const response = await axios
           .get(`${this.getBaseUrl()}/screener/with-rating`);
-      return _.uniq(response.data) as { symbol:string, fundamentalRating: number }[];
+      return _.uniq(response.data) as { symbol:string, fundamentalRating: number,technicalRating: number }[];
    }
 }
