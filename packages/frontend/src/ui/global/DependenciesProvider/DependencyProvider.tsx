@@ -1,9 +1,9 @@
-import { ThemeProvider } from '@mui/material'
-import { PropsWithChildren } from 'react'
-import { BrowserRouter } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import darkTheme from '../theme/mui.theme'
-import { TradingViewWidgetScriptLoader } from '../TradingViewWidgetScriptLoader'
+import {ThemeProvider} from '@mui/material'
+import {PropsWithChildren} from 'react'
+import {BrowserRouter} from 'react-router-dom'
+import {QueryClient, QueryClientProvider} from 'react-query'
+import {TradingViewWidgetScriptLoader} from '../TradingViewWidgetScriptLoader'
+import darkTheme from "../theme/mui.theme.ts";
 
 export interface Props {}
 

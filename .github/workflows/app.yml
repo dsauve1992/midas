@@ -105,6 +105,8 @@ jobs:
             docker run -d \
               -p 443:443 \
               -e FMP_API_KEY=${{ secrets.FMP_PRIVATE_KEY }} \
+              -e DYNAMO_DB_URL=${{ secrets.DYNAMO_DB_URL }} \
+              -e DYNAMO_DB_REGION=${{ secrets.DYNAMO_DB_REGION }} \
               $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
 

@@ -1,5 +1,7 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
+import {Output} from "@pulumi/pulumi";
+import {awsRegion, dynamoDbPolicy, dynamoDbUrl} from "./database";
 
 
 // Get the config ready to go.
@@ -41,6 +43,30 @@ const amiId = aws.ec2.getAmi({
     }],
 }, { async: true }).then(ami => ami.id);
 
+const ec2Role = new aws.iam.Role("ec2Role", {
+    assumeRolePolicy: {
+        Version: "2012-10-17",
+        Statement: [{
+            Action: "sts:AssumeRole",
+            Principal: {
+                Service: "ec2.amazonaws.com"
+            },
+            Effect: "Allow",
+            Sid: ""
+        }]
+    }
+});
+
+const instanceProfile = new aws.iam.InstanceProfile("instanceProfile", {
+    role: ec2Role.name
+});
+
+// Attacher la politique à l'instance EC2
+const rolePolicyAttachment = new aws.iam.RolePolicyAttachment("rolePolicyAttachment", {
+    role: ec2Role.name,
+    policyArn: dynamoDbPolicy.arn
+});
+
 // Create an EC2 server that we'll then provision stuff onto.
 const size = "t2.micro";
 if (!keyName) {
@@ -67,13 +93,13 @@ amazon-linux-extras install docker
 service docker start
 usermod -a -G docker ec2-user
 chkconfig docker on`
-
-const server = new aws.ec2.Instance("midas-backend", {
+ const server = new aws.ec2.Instance("midas-backend", {
     instanceType: size,
     ami: amiId,
     associatePublicIpAddress: true,
     subnetId: defaultVpcSubnets.apply(subnets => subnets.ids[0]),
     keyName: keyName,
+    iamInstanceProfile: instanceProfile.name,
     vpcSecurityGroupIds: [securityGroup.id],
     userData
 });
@@ -81,3 +107,6 @@ const server = new aws.ec2.Instance("midas-backend", {
 
 export const ec2PrivateKey = privateKey
 export const publicHostName = server.publicDns;
+
+export const dbUrl = dynamoDbUrl;
+export const dbRegion = Output.create(awsRegion!)

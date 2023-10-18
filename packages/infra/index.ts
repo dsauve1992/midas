@@ -1,5 +1,5 @@
 import {bucketName, cdnURL} from './frontend'
-import {publicHostName, ec2PrivateKey} from './backend'
+import {dbRegion, dbUrl, ec2PrivateKey, publicHostName} from './backend'
 import {addGithubVariables} from "./github";
 import * as pulumi from "@pulumi/pulumi";
 
@@ -12,7 +12,9 @@ addGithubVariables({
     FRONTEND_STORAGE_S3_BUCKET_NAME: bucketName,
     EC2_HOST: publicHostName,
     SSH_PRIVATE_KEY: ec2PrivateKey,
-    FMP_PRIVATE_KEY: fmpPrivateKey
+    FMP_PRIVATE_KEY: fmpPrivateKey,
+    DYNAMO_DB_URL:dbUrl,
+    DYNAMO_DB_REGION:dbRegion
 })
 
 export const AppURL = cdnURL

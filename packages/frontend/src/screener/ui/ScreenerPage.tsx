@@ -1,17 +1,17 @@
-import React, { useMemo, useState } from 'react'
-import { Box, List, ListItemButton, ListItemText } from '@mui/material'
-import { useTradingViewScreener } from './hooks/useTradingViewScreener'
-import { useKeyPress } from '../../ui/utils/hooks/useKeyPress'
-import { ScreenerEntryCard } from './ScreenerEntryCard'
+import React, {useMemo, useState} from 'react'
+import {Box, List, ListItemButton, ListItemText} from '@mui/material'
+import {useScreener} from './hooks/useTradingViewScreener'
+import {useKeyPress} from '../../ui/utils/hooks/useKeyPress'
+import {ScreenerEntryCard} from './ScreenerEntryCard'
 
 export interface Props {}
 
 export const ScreenerPage: React.FunctionComponent<Props> = () => {
-   const { data, isLoading } = useTradingViewScreener()
+   const { data, isLoading } = useScreener()
    const [selectedSymbolIndex, setSelectedSymbolIndex] = useState<number>(0)
 
    const selectedSymbol = useMemo(
-      () => data?.[selectedSymbolIndex],
+      () => data?.[selectedSymbolIndex].symbol,
       [data, selectedSymbolIndex]
    )
 
@@ -34,9 +34,10 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
          <Box display="flex" flexDirection="row">
             <List sx={{ height: '50px' }}>
                {data.map((el, index) => (
-                  <ListItemButton key={el}>
+                  <ListItemButton key={el.symbol}>
                      <ListItemText
-                        primary={el}
+                        primary={el.symbol}
+                        secondary={el.fundamentalRating}
                         onClick={() => setSelectedSymbolIndex(index)}
                      />
                   </ListItemButton>

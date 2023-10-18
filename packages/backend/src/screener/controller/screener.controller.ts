@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ScreenerService } from './screener.service';
+import { ScreenerService } from '../service/screener.service';
 
 @Controller('screener')
 export class ScreenerController {
@@ -8,5 +8,10 @@ export class ScreenerController {
   @Get()
   async getScreener() {
     return this.screenerFetcherService.search();
+  }
+
+  @Get('/with-rating')
+  async getScreenerWithRatings() {
+    return this.screenerFetcherService.searchWithRating();
   }
 }
