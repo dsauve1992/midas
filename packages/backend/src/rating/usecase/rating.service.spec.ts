@@ -60,7 +60,7 @@ describe('RatingProcessorRunnerService', () => {
       ]);
     mockGetEnterpriseRatios.mockResolvedValue([{ returnOnEquity: 0.2 }]);
 
-    const rating = await service.getRatingFor('BSX');
+    const rating = await service.getFundamentalRatingFor('BSX');
 
     expect(rating).toEqual(65);
   });

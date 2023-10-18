@@ -13,6 +13,7 @@ import {
   SharesFloat,
   SocialSentiment,
   StockProfile,
+  TechnicalRecord,
 } from '../shared-types/financial-modeling-prep';
 
 @Injectable()
@@ -32,6 +33,16 @@ export class FinancialModelingPrepService {
   ): Promise<IncomeStatementDto[]> {
     return this.fetch<IncomeStatementDto[]>(
       `/v3/income-statement/${symbol}`,
+      parameters,
+    );
+  }
+
+  async getDailyTechnicalIndicator(
+    symbol: string,
+    parameters?: { [key: string]: string | number | boolean },
+  ): Promise<TechnicalRecord[]> {
+    return this.fetch<TechnicalRecord[]>(
+      `v3/technical_indicator/1day/${symbol}`,
       parameters,
     );
   }

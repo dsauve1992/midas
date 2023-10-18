@@ -15,17 +15,19 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('0 45 * * * *')
+  @Cron('0 30 * * * *')
   async handleJob() {
     const symbols = await this.screenerFetcherService.search();
 
     for (const symbol of symbols) {
       try {
-        const rating = await this.ratingService.getRatingFor(symbol);
+        const rating = await this.ratingService.getFundamentalRatingFor(symbol);
         await this.screenerRepository.create({
           symbol,
           fundamentalRating: rating,
         });
+
+        this.logger.log(await this.ratingService.getTechnicalRatingFor(symbol));
 
         this.logger.debug(`rating for ${symbol}: ${rating}`);
       } catch (e) {

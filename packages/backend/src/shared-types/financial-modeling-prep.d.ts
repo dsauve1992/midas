@@ -620,6 +620,24 @@ export type RealTimeQuote = {
   timestamp: number;
 };
 
+export type TechnicalRecord = {
+  date: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+  sma?: number;
+  ema?: number;
+  wma?: number;
+  dema?: number;
+  tema?: number;
+  williams?: number;
+  rsi?: number;
+  adx?: number;
+  standarddeviation?: number;
+};
+
 export type Sector =
   | 'Consumer Cyclical'
   | 'Energy'
