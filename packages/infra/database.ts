@@ -19,6 +19,7 @@ export const dynamoDbPolicy = new aws.iam.Policy("dynamoDbPolicy", {
         Statement: [{
             Effect: "Allow",
             Action: [
+                "allow dynamodb:Scan",
                 "dynamodb:GetItem",
                 "dynamodb:PutItem",
                 "dynamodb:DeleteItem",
