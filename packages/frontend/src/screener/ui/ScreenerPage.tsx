@@ -37,7 +37,7 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
                   <ListItemButton key={el.symbol}>
                      <ListItemText
                         primary={el.symbol}
-                        secondary={el.fundamentalRating}
+                        secondary={el.fundamentalRating * el.technicalRating}
                         onClick={() => setSelectedSymbolIndex(index)}
                      />
                   </ListItemButton>
