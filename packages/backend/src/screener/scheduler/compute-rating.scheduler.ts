@@ -15,7 +15,7 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  @Cron(CronExpression.EVERY_DAY_AT_7PM, { timeZone: 'America/Montreal' })
   async handleJob() {
     const symbols = await this.screenerFetcherService.search();
 
