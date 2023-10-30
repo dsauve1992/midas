@@ -6,15 +6,6 @@
       "right": "stock"
     },
     {
-      "left": "subtype",
-      "operation": "in_range",
-      "right": [
-        "common",
-        "foreign-issuer",
-        "preferred"
-      ]
-    },
-    {
       "left": "exchange",
       "operation": "in_range",
       "right": [
@@ -46,7 +37,7 @@
     {
       "left": "total_shares_outstanding_fundamental",
       "operation": "eless",
-      "right": 300000000
+      "right": 500000000
     }
   ],
   "options": {
