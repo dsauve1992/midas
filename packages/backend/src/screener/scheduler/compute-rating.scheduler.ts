@@ -3,7 +3,7 @@ import { RatingService } from '../../rating/usecase/rating.service';
 import { ScreenerService } from '../service/screener.service';
 import { delay } from '../../utils/delay';
 import { ScreenerRepository } from '../repository/screener.repository';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class ComputeRatingScheduler {
@@ -15,7 +15,7 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('0 47 * * * *')
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
   async handleJob() {
     const symbols = await this.screenerFetcherService.search();
 
