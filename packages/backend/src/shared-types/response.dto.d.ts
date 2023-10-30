@@ -6,7 +6,7 @@ export type StockGeneralInformationResponseDto = {
   description: string;
   sector: string;
   image: string;
-  relativeStrengthRating: number;
+  technicalRating: number;
   fundamentalRating: number;
   returnOnEquity: number;
   outstandingShares: number;

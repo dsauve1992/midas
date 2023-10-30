@@ -24,7 +24,7 @@ export const VitalSection: React.FunctionComponent<Props> = ({
     return (
       <Grid container>
          <Grid item xs={itemCol}>
-            <RelativeStrengthRating size={size} value={profile?.relativeStrengthRating} />
+            <RelativeStrengthRating size={size} value={profile?.technicalRating} />
          </Grid>
          <Grid item xs={itemCol}>
             <FundamentalRating size={size} value={profile?.fundamentalRating}/>
