@@ -1,6 +1,6 @@
 import React from 'react'
 import {Grid} from '@mui/material'
-import {RelativeStrengthRating} from './RelativeStrengthRating'
+import {TechnicalRating} from './TechnicalRating.tsx'
 import {ReturnOnEquity} from './ReturnOnEquity'
 import {OutstandingShares} from './OutstandingShares'
 import {FundamentalRating} from "./FundamentalRating.tsx";
@@ -24,7 +24,7 @@ export const VitalSection: React.FunctionComponent<Props> = ({
     return (
       <Grid container>
          <Grid item xs={itemCol}>
-            <RelativeStrengthRating size={size} value={profile?.technicalRating} />
+            <TechnicalRating size={size} value={profile?.technicalRating} />
          </Grid>
          <Grid item xs={itemCol}>
             <FundamentalRating size={size} value={profile?.fundamentalRating}/>

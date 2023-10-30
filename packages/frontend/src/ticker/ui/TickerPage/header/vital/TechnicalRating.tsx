@@ -6,13 +6,13 @@ export type RelativeStrengthRatingProps = {
    size?: 'sm' | 'md'
 }
 
-export const RelativeStrengthRating = ({
+export const TechnicalRating = ({
     value,
    size = 'sm',
 }: RelativeStrengthRatingProps) => {
    return (
       <VitalCard
-         label="RS Rating"
+         label="Technical Rating"
          size={size}
          status={
             (value || 0) > 60
