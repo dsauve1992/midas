@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { RatingService } from './usecase/rating.service';
+import { ComputeFundamentalRatingUseCase } from './usecase/compute-fundamental-rating.use-case';
 import { HistoricalDataModule } from '../historical-data/historical-data.module';
 import { RatingController } from './controller/rating.controller';
+import { ComputeTechnicalRatingUseCase } from './usecase/compute-technical-rating.use-case';
 
 @Module({
-  providers: [RatingService],
+  providers: [ComputeFundamentalRatingUseCase, ComputeTechnicalRatingUseCase],
   imports: [HistoricalDataModule],
   controllers: [RatingController],
-  exports: [RatingService],
+  exports: [ComputeFundamentalRatingUseCase, ComputeTechnicalRatingUseCase],
 })
 export class RatingModule {}

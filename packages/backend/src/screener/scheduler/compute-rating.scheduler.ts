@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RatingService } from '../../rating/usecase/rating.service';
+import { ComputeFundamentalRatingUseCase } from '../../rating/usecase/compute-fundamental-rating.use-case';
 import { ScreenerService } from '../service/screener.service';
 import { delay } from '../../utils/delay';
 import { ScreenerRepository } from '../repository/screener.repository';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { ComputeTechnicalRatingUseCase } from '../../rating/usecase/compute-technical-rating.use-case';
 
 @Injectable()
 export class ComputeRatingScheduler {
@@ -11,7 +12,8 @@ export class ComputeRatingScheduler {
 
   constructor(
     private screenerFetcherService: ScreenerService,
-    private ratingService: RatingService,
+    private computeFundamentalRatingUseCase: ComputeFundamentalRatingUseCase,
+    private computeTechnicalRatingUseCase: ComputeTechnicalRatingUseCase,
     private screenerRepository: ScreenerRepository,
   ) {}
 
@@ -22,9 +24,9 @@ export class ComputeRatingScheduler {
     for (const symbol of symbols) {
       try {
         const fundamentalRating =
-          await this.ratingService.getFundamentalRatingFor(symbol);
+          await this.computeFundamentalRatingUseCase.execute(symbol);
         const technicalRating =
-          await this.ratingService.getTechnicalRatingFor(symbol);
+          await this.computeTechnicalRatingUseCase.execute(symbol);
         await this.screenerRepository.create({
           symbol,
           fundamentalRating,

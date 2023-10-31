@@ -1,14 +1,16 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { RatingService } from '../usecase/rating.service';
+import { ComputeFundamentalRatingUseCase } from '../usecase/compute-fundamental-rating.use-case';
 
 @Controller('/rating')
 export class RatingController {
-  constructor(private ratingProcessorRunnerService: RatingService) {}
+  constructor(
+    private ratingProcessorRunnerService: ComputeFundamentalRatingUseCase,
+  ) {}
 
   @Get('/:symbol')
   async get(@Param('symbol') symbol: string) {
     try {
-      return this.ratingProcessorRunnerService.getFundamentalRatingFor(symbol);
+      return this.ratingProcessorRunnerService.execute(symbol);
     } catch (e) {
       console.log(e);
     }

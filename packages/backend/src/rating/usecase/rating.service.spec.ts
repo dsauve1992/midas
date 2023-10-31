@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RatingService } from './rating.service';
+import { ComputeFundamentalRatingUseCase } from './compute-fundamental-rating.use-case';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
@@ -17,13 +17,13 @@ const mockGetEnterpriseRatios = jest.fn<
   any
 >();
 describe('RatingProcessorRunnerService', () => {
-  let service: RatingService;
+  let service: ComputeFundamentalRatingUseCase;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [HttpModule, ConfigModule.forRoot({ isGlobal: true })],
       providers: [
-        RatingService,
+        ComputeFundamentalRatingUseCase,
         {
           provide: FinancialModelingPrepService,
           useFactory: jest.fn().mockImplementation(() => ({
@@ -34,7 +34,7 @@ describe('RatingProcessorRunnerService', () => {
       ],
     }).compile();
 
-    service = app.get(RatingService);
+    service = app.get(ComputeFundamentalRatingUseCase);
   });
 
   it('should return a number', async () => {
@@ -60,7 +60,7 @@ describe('RatingProcessorRunnerService', () => {
       ]);
     mockGetEnterpriseRatios.mockResolvedValue([{ returnOnEquity: 0.2 }]);
 
-    const rating = await service.getFundamentalRatingFor('BSX');
+    const rating = await service.execute('BSX');
 
     expect(rating).toEqual(65);
   });
