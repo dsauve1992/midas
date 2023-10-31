@@ -18,7 +18,7 @@ export class OwnershipService {
     const matchingResult = await this.findTicker(symbol as string);
 
     const { data } = await firstValueFrom(
-      await this.httpService.get<OwnershipHistoryResponse>(
+      this.httpService.get<OwnershipHistoryResponse>(
         // eslint-disable-next-line max-len
         `${OwnershipService.EDGE_FUND_DATA_PROVIDER_BASE_URL}/GetSecurityAggregateHoldings/${matchingResult.SecId}`,
       ),
@@ -31,7 +31,7 @@ export class OwnershipService {
     const matchingResult = await this.findTicker(symbol as string);
 
     const { data } = await firstValueFrom(
-      await this.httpService.get<TopShareholdersResponse>(
+      this.httpService.get<TopShareholdersResponse>(
         // eslint-disable-next-line max-len
         `${OwnershipService.EDGE_FUND_DATA_PROVIDER_BASE_URL}/GetSecurityTopShareHolders/${matchingResult.SecId}?rangeStart=1&count=50`,
       ),
@@ -42,7 +42,7 @@ export class OwnershipService {
 
   private async findTicker(symbol: string) {
     const { data: searchResults } = await firstValueFrom(
-      await this.httpService.get(
+      this.httpService.get(
         // eslint-disable-next-line max-len
         `${OwnershipService.SEARCH_BASE_URL}?query=${symbol}&market=en-us`,
       ),

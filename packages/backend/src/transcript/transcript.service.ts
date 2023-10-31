@@ -32,7 +32,7 @@ export class TranscriptService {
     const userAgent = new UserAgent();
 
     const { data } = await firstValueFrom(
-      await this.httpService.post(
+      this.httpService.post(
         'https://www.earningsdigest.ai/api/company/analyze',
         {
           q: symbol,
