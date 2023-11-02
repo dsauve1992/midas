@@ -15,11 +15,6 @@
       ]
     },
     {
-      "left": "volume",
-      "operation": "egreater",
-      "right": 100000
-    },
-    {
       "left": "close",
       "operation": "greater",
       "right": 2
