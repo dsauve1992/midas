@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
-import { useTradingViewContext } from '../global/TradingViewWidgetScriptLoader'
+import {useCallback, useEffect, useMemo, useRef} from 'react'
+import {useTradingViewContext} from '../global/TradingViewWidgetScriptLoader'
 
 type TradingViewTapeCardProps = {
    symbol: string
@@ -40,7 +40,7 @@ export default function TradingViewTapeCard({
       }
 
       return null
-   }, [symbol])
+   }, [containerId, symbol])
 
    useEffect(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -53,7 +53,7 @@ export default function TradingViewTapeCard({
          // @ts-ignore
          onLoadScriptRef.current = null
       }
-   }, [symbol, tradingViewReady])
+   }, [createWidget, symbol, tradingViewReady])
 
-   return <div id={containerId} style={{ height: '100%' }} />
+   return <div id={containerId} style={{ height: '1050px' }} />
 }
