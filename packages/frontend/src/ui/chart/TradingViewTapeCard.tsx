@@ -55,5 +55,5 @@ export default function TradingViewTapeCard({
       }
    }, [createWidget, symbol, tradingViewReady])
 
-   return <div id={containerId} style={{ height: '1050px' }} />
+   return <div id={containerId} style={{ height: '100%' }} />
 }

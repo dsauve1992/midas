@@ -3,9 +3,9 @@ import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import {Button, Grid} from '@mui/material'
-import {useHistory} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import SearchBar from '../../../../search/ui/SearchBar/SearchBar'
-import type {SearchResult} from '../../../../../../backend/src/shared-types/financial-modeling-prep.d.ts'
+import type {SearchResult} from 'backend/src/shared-types/financial-modeling-prep'
 
 const sx = {
    display: 'flex',
@@ -16,18 +16,18 @@ const sx3 = { flexGrow: 1 }
 const sx1 = { minWidth: 100 }
 const sx2 = { minWidth: 100 }
 const Menu: React.FunctionComponent = () => {
-   const history = useHistory()
+   const navigate = useNavigate()
 
    function searchHandler(stock: SearchResult) {
-      history.push(`/ticker/${stock.symbol}`, stock)
+      navigate(`/ticker/${stock.symbol}`, {state: {stock}})
    }
 
    function goToToolsPage() {
-      history.push('/tools')
+      navigate('/tools')
    }
 
    function gotToScreenPage() {
-      history.push('/screener')
+      navigate('/screener')
    }
 
    return (
