@@ -5,6 +5,7 @@ import {DashboardPage} from '../../../../ticker/ui/Dashboard/DashboardPage'
 import {ToolsPage} from '../../../../tools/ToolsPage'
 import {WatchListsPage} from '../../../../watchlist/ui/WatchListsPage'
 import {ProtectedRoute} from "../../../../auth/ui/ProtectedRoute.tsx";
+import {LoginPage} from "../../../../auth/ui/LoginPage.tsx";
 
 export interface Props {}
 
@@ -13,6 +14,7 @@ const Main = () => (
    <div style={style}>
       <Routes>
          <Route index element={<DashboardPage />}/>
+         <Route path="/login" element={<LoginPage />}/>
           <Route element={<ProtectedRoute />}>
              <Route path="/ticker/:id/*" element={<TickerPage />}/>
              <Route path="/screener" element={<ScreenerPage />}/>

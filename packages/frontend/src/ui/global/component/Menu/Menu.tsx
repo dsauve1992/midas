@@ -6,6 +6,7 @@ import {Button, Grid} from '@mui/material'
 import {useNavigate} from 'react-router-dom'
 import SearchBar from '../../../../search/ui/SearchBar/SearchBar'
 import type {SearchResult} from 'backend/src/shared-types/financial-modeling-prep'
+import {LogoutButton} from "../../../../auth/ui/LogoutButton.tsx";
 
 const sx = {
    display: 'flex',
@@ -55,6 +56,7 @@ const Menu: React.FunctionComponent = () => {
                         >
                            Screener
                         </Button>
+                        <LogoutButton/>
                      </Box>
                   </Grid>
                </Grid>
