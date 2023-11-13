@@ -5,7 +5,7 @@ import {SearchClient} from "../../../api/SearchClient.ts";
 export const useSearch = (query: string) => {
    return useQuery<SearchResult[]>(
       ['search', query],
-      () => SearchClient.search(query),
+      () => new SearchClient().search(query),
       { enabled: query.length >= 2 }
    )
 }

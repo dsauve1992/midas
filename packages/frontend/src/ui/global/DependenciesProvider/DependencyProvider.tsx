@@ -27,7 +27,8 @@ const DependencyProvider = ({
            domain="dev-8me3qxit3m8ya2ig.us.auth0.com"
            clientId="AiVDSPDpHHfbUerm7ViaJA36jPrOvKLI"
            authorizationParams={{
-              redirect_uri: window.location.origin
+               redirect_uri: window.location.origin,
+               audience: 'http://localhost:3000',
            }}
        >
          <BrowserRouter>

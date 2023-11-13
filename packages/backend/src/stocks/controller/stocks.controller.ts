@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { StockGeneralInformationResponseDto } from '../../shared-types/response.dto';
 import { GetStockGeneralInformationUseCase } from '../usecase/get-stock-general-information.use-case';
 import { GetInsiderTradingUseCase } from '../usecase/get-insider-trading.use-case';
@@ -11,7 +11,9 @@ import { IncomeStatementDto } from '../../shared-types/income-statement';
 import { QuarterlyIncomeStatementMapper } from './mapper/quarterly-income-statement.mapper';
 import { AnnuallyIncomeStatementMapper } from './mapper/annually-income-statement.mapper';
 import { GetAnnuallyIncomeStatementUseCase } from '../usecase/get-annually-income-statement.use-case';
+import { AuthorizationGuard } from '../../authorization/authorization.guard';
 
+@UseGuards(AuthorizationGuard)
 @Controller('stocks/:symbol')
 export class StocksController {
   constructor(

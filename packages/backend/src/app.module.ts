@@ -9,6 +9,7 @@ import { RatingModule } from './rating/rating.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { StocksModule } from './stocks/stocks.module';
 import { SearchModule } from './search/search.module';
+import { AuthorizationModule } from './authorization/authorization.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { SearchModule } from './search/search.module';
     RatingModule,
     StocksModule,
     SearchModule,
+    AuthorizationModule,
   ],
   controllers: [],
   providers: [],

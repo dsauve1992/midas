@@ -2,31 +2,31 @@ import axios from 'axios'
 import {MidasBackendClient} from "./MidasBackendClient.ts";
 
 class TranscriptAPI extends MidasBackendClient{
-   static async getSummary(symbol: string): Promise<string> {
+    async getSummary(symbol: string): Promise<string> {
       return this.get(symbol, 'SUMMARY')
    }
 
-   static async getHighLightAndTakeaway(symbol: string): Promise<string> {
+    async getHighLightAndTakeaway(symbol: string): Promise<string> {
       return this.get(symbol, 'HIGHLIGHT_AND_TAKEAWAY')
    }
 
-   static async getGuidanceAndOutlook(symbol: string): Promise<string> {
+    async getGuidanceAndOutlook(symbol: string): Promise<string> {
       return this.get(symbol, 'GUIDANCE_AND_OUTLOOK')
    }
 
-   static async getQnASummary(symbol: string): Promise<string> {
+    async getQnASummary(symbol: string): Promise<string> {
       return this.get(symbol, 'QNA_SUMMARY')
    }
 
-   static async getStrategicUpdate(symbol: string): Promise<string> {
+    async getStrategicUpdate(symbol: string): Promise<string> {
       return this.get(symbol, 'STRATEGIC_UPDATE')
    }
 
-   static async getSentimentAnalysis(symbol: string): Promise<string> {
+    async getSentimentAnalysis(symbol: string): Promise<string> {
       return this.get(symbol, 'SENTIMENT_ANALYSIS')
    }
 
-   static async get(symbol: string, type: string): Promise<string> {
+    async get(symbol: string, type: string): Promise<string> {
       return axios
          .get<{ data: string }>(
             `${this.getBaseUrl()}/?symbol=${symbol}&type=${type}`
@@ -34,7 +34,7 @@ class TranscriptAPI extends MidasBackendClient{
          .then((result) => result.data.data)
    }
 
-   protected static getBaseUrl(): string {
+   protected  getBaseUrl(): string {
       return `${super.getBaseUrl()}/transcript`
    }
 }

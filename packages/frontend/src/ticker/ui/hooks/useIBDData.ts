@@ -3,6 +3,6 @@ import AskIbdAPI, {StockInfo} from '../../../api/AskIbdAPI.ts'
 
 export const useIBDData = (symbol: string) => {
    return useQuery<StockInfo>(['asIBD', symbol], () =>
-      AskIbdAPI.getDataFor(symbol)
+      new AskIbdAPI().getDataFor(symbol)
    )
 }

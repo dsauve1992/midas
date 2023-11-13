@@ -6,14 +6,14 @@ import {orderBy} from "lodash";
 export const useTradingViewScreener = (): UseQueryResult<string[]> => {
    return {
       ...useQuery<string[]>([`trading-view-screener`], () =>
-         ScreenerClient.query()
+         new ScreenerClient().query()
       ),
    }
 }
 export const useScreener = (): UseQueryResult<{ symbol:string, fundamentalRating: number, technicalRating: number }[]> => {
    return {
       ...useQuery<{ symbol:string, fundamentalRating: number,technicalRating: number }[]>([`screener`], () =>
-         ScreenerClient.queryWithRatings(), {
+         new ScreenerClient().queryWithRatings(), {
             select: (data) => orderBy(data, ({technicalRating, fundamentalRating}) => technicalRating * fundamentalRating, "desc")
           }
       ),
