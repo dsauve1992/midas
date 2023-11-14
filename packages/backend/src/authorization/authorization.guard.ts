@@ -12,17 +12,21 @@ import {
   UnauthorizedError,
 } from 'express-oauth2-jwt-bearer';
 import { promisify } from 'util';
+import * as console from 'console';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthorizationGuard implements CanActivate {
+  constructor(private configService: ConfigService) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
     const response = context.switchToHttp().getResponse<Response>();
 
     const validateAccessToken = promisify(
       auth({
-        audience: 'http://localhost:3000',
-        issuerBaseURL: 'https://dev-8me3qxit3m8ya2ig.us.auth0.com/',
+        audience: this.configService.get('AUTH0_AUDIENCE'),
+        issuerBaseURL: this.configService.get('AUTH0_ISSUER'),
         tokenSigningAlg: 'RS256',
       }),
     );

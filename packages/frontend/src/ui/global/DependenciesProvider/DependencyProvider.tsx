@@ -24,11 +24,11 @@ const DependencyProvider = ({
 }: PropsWithChildren<Props>) => {
    return (
        <Auth0Provider
-           domain="dev-8me3qxit3m8ya2ig.us.auth0.com"
-           clientId="AiVDSPDpHHfbUerm7ViaJA36jPrOvKLI"
+           domain={import.meta.env.VITE_AUTH0_DOMAIN}
+           clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
            authorizationParams={{
                redirect_uri: window.location.origin,
-               audience: 'http://localhost:3000',
+               audience: `${import.meta.env.VITE_BACKEND_URL}`,
            }}
        >
          <BrowserRouter>
