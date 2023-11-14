@@ -10,13 +10,13 @@ export interface StockInfo {
 
 
 class AskIbdAPI extends MidasBackendClient{
-   static async getDataFor(symbol: string): Promise<StockInfo> {
+   async getDataFor(symbol: string): Promise<StockInfo> {
       return axios
          .get(`${this.getBaseUrl()}?symbol=${symbol}`)
          .then((result) => result.data as StockInfo)
    }
 
-   protected static getBaseUrl(): string {
+   protected getBaseUrl(): string {
       return `${super.getBaseUrl()}/investors-business-daily/ranking`
    }
 }

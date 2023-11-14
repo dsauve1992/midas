@@ -27,7 +27,6 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
                   <Grid container spacing={3}>
                      <Grid item xs={12}>
                         <Link
-                           href={`/ticker/${symbol}`}
                            to={`/ticker/${symbol}`}
                         >
                            See Detail...

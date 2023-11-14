@@ -2,31 +2,31 @@ import axios from 'axios'
 import {MidasBackendClient} from "./MidasBackendClient.ts";
 
 class TranscriptAPI extends MidasBackendClient{
-   static async getSummary(symbol: string): Promise<string> {
-      return this.get(symbol, 'SUMMARY')
+    async getSummary(symbol: string): Promise<string> {
+      return this.fetch(symbol, 'SUMMARY')
    }
 
-   static async getHighLightAndTakeaway(symbol: string): Promise<string> {
-      return this.get(symbol, 'HIGHLIGHT_AND_TAKEAWAY')
+    async getHighLightAndTakeaway(symbol: string): Promise<string> {
+      return this.fetch(symbol, 'HIGHLIGHT_AND_TAKEAWAY')
    }
 
-   static async getGuidanceAndOutlook(symbol: string): Promise<string> {
-      return this.get(symbol, 'GUIDANCE_AND_OUTLOOK')
+    async getGuidanceAndOutlook(symbol: string): Promise<string> {
+      return this.fetch(symbol, 'GUIDANCE_AND_OUTLOOK')
    }
 
-   static async getQnASummary(symbol: string): Promise<string> {
-      return this.get(symbol, 'QNA_SUMMARY')
+    async getQnASummary(symbol: string): Promise<string> {
+      return this.fetch(symbol, 'QNA_SUMMARY')
    }
 
-   static async getStrategicUpdate(symbol: string): Promise<string> {
-      return this.get(symbol, 'STRATEGIC_UPDATE')
+    async getStrategicUpdate(symbol: string): Promise<string> {
+      return this.fetch(symbol, 'STRATEGIC_UPDATE')
    }
 
-   static async getSentimentAnalysis(symbol: string): Promise<string> {
-      return this.get(symbol, 'SENTIMENT_ANALYSIS')
+    async getSentimentAnalysis(symbol: string): Promise<string> {
+      return this.fetch(symbol, 'SENTIMENT_ANALYSIS')
    }
 
-   static async get(symbol: string, type: string): Promise<string> {
+    async fetch(symbol: string, type: string): Promise<string> {
       return axios
          .get<{ data: string }>(
             `${this.getBaseUrl()}/?symbol=${symbol}&type=${type}`
@@ -34,7 +34,7 @@ class TranscriptAPI extends MidasBackendClient{
          .then((result) => result.data.data)
    }
 
-   protected static getBaseUrl(): string {
+   protected  getBaseUrl(): string {
       return `${super.getBaseUrl()}/transcript`
    }
 }

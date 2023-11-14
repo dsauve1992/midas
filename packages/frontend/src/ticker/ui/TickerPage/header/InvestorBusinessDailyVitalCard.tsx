@@ -1,14 +1,6 @@
-import { Link } from 'react-router-dom'
-import {
-   Card,
-   CardContent,
-   Table,
-   TableBody,
-   TableCell,
-   TableRow,
-   Typography,
-} from '@mui/material'
-import { useIBDData } from '../../hooks/useIBDData'
+import {Link} from 'react-router-dom'
+import {Card, CardContent, Table, TableBody, TableCell, TableRow, Typography,} from '@mui/material'
+import {useIBDData} from '../../hooks/useIBDData'
 
 type Props = {
    symbol: string
@@ -41,7 +33,6 @@ export const InvestorBusinessDailyVitalCard = ({ symbol }: Props) => {
                            <div>{`${1}`}</div>
                            <div>
                               <Link
-                                 href={`/ticker/${ibdData?.groupLeader}`}
                                  to={`/ticker/${ibdData?.groupLeader}`}
                               >{`${ibdData?.groupLeader}`}</Link>
                            </div>
