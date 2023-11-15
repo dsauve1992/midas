@@ -1,6 +1,6 @@
 import {styled} from '@mui/material/styles'
 import {List, ListItem} from '@mui/material'
-import type {SearchResult} from '../../../../../backend/src/shared-types/financial-modeling-prep.d.ts'
+import type {SearchResult} from 'backend/src/shared-types/financial-modeling-prep'
 
 const Root = styled('div')(({ theme }) => ({
    position: 'absolute',

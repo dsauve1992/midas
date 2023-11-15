@@ -5,7 +5,7 @@ import {
     InstitutionalOwnershipHistoryByQuarterBarChart,
     InstitutionalOwnershipHistoryByQuarterDataEntry,
 } from './InstitutionalOwnershipHistoryByQuarterBarChart'
-import {AggregateHolding} from "../../../../../../../backend/src/shared-types/institutional-ownership";
+import {AggregateHolding} from "backend/src/shared-types/institutional-ownership";
 
 interface Props {
    history: AggregateHolding[]

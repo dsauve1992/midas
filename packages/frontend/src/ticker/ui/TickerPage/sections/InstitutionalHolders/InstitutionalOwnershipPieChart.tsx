@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent'
 import {EChartOption} from 'echarts'
 import {useOwnershipPercentages} from '../../../hooks/useOwnershipPercentages'
 import {useEchart} from '../../../../../ui/chart/hooks/useEchart'
-import {ShareholderHistory} from "../../../../../../../backend/src/shared-types/institutional-ownership";
+import {ShareholderHistory} from "backend/src/shared-types/institutional-ownership";
 
 interface Props {
    data: ShareholderHistory[]

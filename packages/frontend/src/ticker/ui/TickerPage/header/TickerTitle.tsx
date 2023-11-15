@@ -1,7 +1,7 @@
 import React from 'react'
 import {Avatar, Box, Button, Chip, Typography} from '@mui/material'
 import DescriptionModal from './DescriptionModal'
-import {StockGeneralInformationResponseDto} from "../../../../../../backend/src/shared-types/response.dto";
+import {StockGeneralInformationResponseDto} from "backend/src/shared-types/response.dto";
 
 export interface Props {
    profile: StockGeneralInformationResponseDto

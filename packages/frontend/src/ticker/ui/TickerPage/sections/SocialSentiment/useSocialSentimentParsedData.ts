@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 import _ from 'lodash'
 import moment from 'moment/moment'
-import type {SocialSentiment} from '../../../../../../../backend/src/shared-types/financial-modeling-prep.d.ts'
+import type {SocialSentiment} from 'backend/src/shared-types/financial-modeling-prep'
 
 interface HistoricEntry {
    date: string

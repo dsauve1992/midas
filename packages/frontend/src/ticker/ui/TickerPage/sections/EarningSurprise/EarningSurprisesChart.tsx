@@ -1,5 +1,5 @@
 import {useEarningSurprisesComparison} from './hooks/useEarningSurprisesComparison'
-import type {EarningsSurprise} from '../../../../../../../backend/src/shared-types/financial-modeling-prep.d.ts'
+import type {EarningsSurprise} from 'backend/src/shared-types/financial-modeling-prep'
 import {MetricComparisonChart} from '../IncomeStatement/MetricComparisonChart'
 
 type Props = {

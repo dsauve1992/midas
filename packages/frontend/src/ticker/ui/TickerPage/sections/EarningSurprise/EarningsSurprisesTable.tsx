@@ -1,6 +1,6 @@
 import React from 'react'
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,} from '@mui/material'
-import type {EarningsSurprise} from '../../../../../../../backend/src/shared-types/financial-modeling-prep.d.ts'
+import type {EarningsSurprise} from 'backend/src/shared-types/financial-modeling-prep'
 
 export interface Props {
    data: EarningsSurprise[]
