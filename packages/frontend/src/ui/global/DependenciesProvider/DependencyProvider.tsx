@@ -4,7 +4,6 @@ import {BrowserRouter} from 'react-router-dom'
 import {QueryClient, QueryClientProvider} from 'react-query'
 import {TradingViewWidgetScriptLoader} from '../TradingViewWidgetScriptLoader'
 import darkTheme from "../theme/mui.theme.ts";
-import {Auth0Provider} from "@auth0/auth0-react";
 
 export interface Props {}
 
@@ -23,14 +22,6 @@ const DependencyProvider = ({
    children,
 }: PropsWithChildren<Props>) => {
    return (
-       <Auth0Provider
-           domain={import.meta.env.VITE_AUTH0_DOMAIN}
-           clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
-           authorizationParams={{
-               redirect_uri: window.location.origin,
-               audience: `${import.meta.env.VITE_BACKEND_URL}`,
-           }}
-       >
          <BrowserRouter>
             <QueryClientProvider client={queryClient}>
                {/* <ReactQueryDevtools /> */}
@@ -40,8 +31,7 @@ const DependencyProvider = ({
                   </TradingViewWidgetScriptLoader>
                </ThemeProvider>
             </QueryClientProvider>
-         </BrowserRouter>
-       </Auth0Provider>
+     </BrowserRouter>
    )
 }
 

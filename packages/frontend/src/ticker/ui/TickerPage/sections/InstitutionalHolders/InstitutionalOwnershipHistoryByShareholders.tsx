@@ -21,8 +21,6 @@ export const InstitutionalOwnershipHistoryByShareholders = ({
 }: Props) => {
    const historyByInstitution = useOwnershipHistoryByInstitution(data)
 
-   console.log(historyByInstitution)
-
    return (
       <Card>
          <CardContent>

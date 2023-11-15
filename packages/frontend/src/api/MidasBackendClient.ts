@@ -22,8 +22,6 @@ export class MidasBackendClient {
     protected async get<ResponseBody>(url: string, ): Promise<AxiosResponse<ResponseBody>> {
         const access_token = await this.authorizationTokenProvider()
 
-        console.log(access_token)
-
         return axios.get(url, {
             headers: {
                 "content-type": "application/json",
