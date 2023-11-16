@@ -31,8 +31,13 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
 
    if (selectedSymbol && data) {
       return (
-         <Box display="flex" flexDirection="row">
-            <List sx={{ height: '50px' }}>
+         <Box display="flex" flexDirection="row" gap={"10px"}>
+
+            <Box
+                height={"100%"}
+                overflow="auto"
+            >
+            <List>
                {data.map((el, index) => (
                   <ListItemButton key={el.symbol}>
                      <ListItemText
@@ -43,9 +48,8 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
                   </ListItemButton>
                ))}
             </List>
-            <div style={{ width: '100%' }}>
-               <ScreenerEntryCard symbol={selectedSymbol} />
-            </div>
+            </Box>
+            <ScreenerEntryCard symbol={selectedSymbol} />
          </Box>
       )
    }

@@ -7,12 +7,11 @@ import TradingViewTapeCard from '../../ui/chart/TradingViewTapeCard'
 import VitalSection from '../../ticker/ui/TickerPage/header/vital/VitalSection'
 import {useFinancialPerformance} from "../../ticker/ui/hooks/useFinancialPerformance.ts";
 import FinancialPeriod from "../../lib/FinancialPeriod.ts";
+import Box from "@mui/material/Box";
 
 export interface Props {
    symbol: string
 }
-
-const style = { marginBottom: '15px' }
 
 export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
    symbol,
@@ -20,7 +19,8 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
    const { earnings, revenues } = useFinancialPerformance({ symbol, period:FinancialPeriod.QUARTER })
 
    return (
-      <Card style={style}>
+       <Box display={"flex"} flexGrow={1} width={"100%"}>
+          <Card sx={{width: "100%"}}>
          <CardContent>
             <Grid container spacing={2}>
                <Grid item xs={4}>
@@ -68,5 +68,6 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
             </Grid>
          </CardContent>
       </Card>
+       </Box>
    )
 }

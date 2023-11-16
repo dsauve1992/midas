@@ -8,10 +8,7 @@ import SearchBar from '../../../../search/ui/SearchBar/SearchBar'
 import type {SearchResult} from 'backend/src/shared-types/financial-modeling-prep'
 import {useAuth0} from "@auth0/auth0-react";
 
-const sx3 = { flexGrow: 1 }
-const sx1 = { minWidth: 100 }
-const sx2 = { minWidth: 100 }
-const MidasMenu: React.FunctionComponent = () => {
+const MidasMenu = ({ref}: {ref?: React.Ref<HTMLElement>}) => {
    const navigate = useNavigate()
    const {logout, user} = useAuth0()
 
@@ -42,19 +39,18 @@ const MidasMenu: React.FunctionComponent = () => {
    }
 
    return (
-      <Box sx={sx3}>
-         <AppBar position="fixed">
+      <Box display="flex" flexBasis="auto" ref={ref}>
+         <AppBar position="relative">
             <Toolbar>
                <Box sx={{ flexGrow: 1 }}>
 
                      <SearchBar onSelect={onClickResult} />
                </Box>
                      <Box sx={{ flexGrow: 1 }}>
-                        <Button sx={sx1} variant="text" onClick={goToToolsPage}>
+                        <Button variant="text" onClick={goToToolsPage}>
                            Tools
                         </Button>
                         <Button
-                           sx={sx2}
                            variant="text"
                            onClick={gotToScreenPage}
                         >
