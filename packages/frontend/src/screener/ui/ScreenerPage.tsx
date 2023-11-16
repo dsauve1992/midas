@@ -31,7 +31,7 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
 
   if (selectedSymbol && data) {
     return (
-      <Box display="flex" flexDirection="row" gap={"10px"}>
+      <Box display="flex" flexDirection="row" gap={"10px"} width={"100%"}>
         <Box height={"100%"} overflow="auto">
           <List>
             {data.map((el, index) => (

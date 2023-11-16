@@ -23,21 +23,23 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
 
   return (
     <Box display={"flex"} flexGrow={1} width={"100%"}>
-      <Card sx={{ width: "100%" }}>
-        <CardContent>
-          <Grid container spacing={2}>
+      <Card sx={{ width: "100%", height: "100%" }}>
+        <CardContent sx={{ width: "100%", height: "100%" }}>
+          <Grid container spacing={2} height={"100%"}>
             <Grid item xs={4}>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                gap={"5"}
+                height={"100%"}
+              >
+                <Box display="flex" flexGrow={1} flexDirection="column">
                   <Link to={`/ticker/${symbol}`}>See Detail...</Link>
-                </Grid>
-                <Grid item xs={12}>
                   <TickerProfile symbol={symbol} />
-                </Grid>
-                <Grid item xs={12}>
                   <VitalSection symbol={symbol} />
-                </Grid>
-                <Grid item xs={12} sx={{ height: "300px" }}>
+                </Box>
+
+                <Box display="flex" flexGrow={2}>
                   {earnings.length && (
                     <MetricComparisonChart
                       key={symbol}
@@ -45,8 +47,8 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
                       data={earnings}
                     />
                   )}
-                </Grid>
-                <Grid item xs={12} sx={{ height: "300px" }}>
+                </Box>
+                <Box display="flex" flexGrow={2}>
                   {revenues.length && (
                     <MetricComparisonChart
                       title="Revenue"
@@ -54,15 +56,11 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
                       data={revenues}
                     />
                   )}
-                </Grid>
-              </Grid>
+                </Box>
+              </Box>
             </Grid>
             <Grid item xs={8}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sx={{ height: "1000px !important" }}>
-                  <TradingViewTapeCard symbol={symbol} />
-                </Grid>
-              </Grid>
+              <TradingViewTapeCard symbol={symbol} />
             </Grid>
           </Grid>
         </CardContent>
