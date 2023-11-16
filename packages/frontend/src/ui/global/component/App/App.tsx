@@ -1,7 +1,8 @@
 import CssBaseline from '@mui/material/CssBaseline'
 import Layout from '../Layout/Layout'
 import {Auth0Provider} from '@auth0/auth0-react'
-import {useNavigate} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
+import {ProtectedRoute} from "../../../../auth/ui/ProtectedRoute.tsx";
 
 function App() {
   const navigate =  useNavigate()
@@ -21,7 +22,12 @@ function App() {
            }}
        >
          <CssBaseline />
-         <Layout />
+
+           <Routes>
+               <Route element={<ProtectedRoute/>}>
+                   <Route path={"/*"} element={<Layout />}/>
+               </Route>
+           </Routes>
        </Auth0Provider>
    )
 }

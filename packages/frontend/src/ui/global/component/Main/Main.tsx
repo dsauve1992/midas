@@ -4,22 +4,19 @@ import TickerPage from '../../../../ticker/ui/TickerPage/TickerPage'
 import {DashboardPage} from '../../../../ticker/ui/Dashboard/DashboardPage'
 import {ToolsPage} from '../../../../tools/ToolsPage'
 import {WatchListsPage} from '../../../../watchlist/ui/WatchListsPage'
-import {ProtectedRoute} from "../../../../auth/ui/ProtectedRoute.tsx"
 
 export interface Props {}
 
 const style = { padding: '40px' }
 const Main = () => (
    <div style={style}>
-      <Routes>
-          <Route element={<ProtectedRoute />}>
-             <Route index element={<DashboardPage />}/>
-             <Route path="/ticker/:id/*" element={<TickerPage />}/>
-             <Route path="/screener" element={<ScreenerPage />}/>
-             <Route path="/tools" element={<ToolsPage />}/>
-             <Route path="/watchlists" element={<WatchListsPage />}/>
-          </Route>
-      </Routes>
+       <Routes>
+         <Route path="/" element={<DashboardPage />}/>
+         <Route path="/ticker/:id/*" element={<TickerPage />}/>
+         <Route path="/screener" element={<ScreenerPage />}/>
+         <Route path="/tools" element={<ToolsPage />}/>
+         <Route path="/watchlists" element={<WatchListsPage />}/>
+       </Routes>
    </div>
 )
 
