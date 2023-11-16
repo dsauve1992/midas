@@ -1,23 +1,23 @@
-import TickerTitle from './TickerTitle'
-import TickerFamily from './TickerFamily'
-import {useCompanyGeneralInformation} from '../../hooks/useCompanyGeneralInformation.ts'
+import TickerTitle from "./TickerTitle";
+import TickerFamily from "./TickerFamily";
+import { useCompanyGeneralInformation } from "../../hooks/useCompanyGeneralInformation.ts";
 
 type TickerProfileProps = {
-   symbol: string
-}
+  symbol: string;
+};
 
 export function TickerProfile({ symbol }: TickerProfileProps) {
-   const { isLoading: profileLoading, data: profile } =
-      useCompanyGeneralInformation(symbol)
+  const { isLoading: profileLoading, data: profile } =
+    useCompanyGeneralInformation(symbol);
 
-   if (profileLoading) {
-      return <p>Please wait...</p>
-   }
+  if (profileLoading) {
+    return <p>Please wait...</p>;
+  }
 
-   return profile ? (
-      <>
-         <TickerTitle profile={profile} />
-         <TickerFamily profile={profile} />
-      </>
-   ) : null
+  return profile ? (
+    <>
+      <TickerTitle profile={profile} />
+      <TickerFamily profile={profile} />
+    </>
+  ) : null;
 }

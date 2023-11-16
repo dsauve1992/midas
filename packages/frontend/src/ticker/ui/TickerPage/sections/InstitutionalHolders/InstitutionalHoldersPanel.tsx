@@ -1,40 +1,40 @@
-import React from 'react'
-import {Grid} from '@mui/material'
-import {InstitutionalOwnershipHistoryByQuarter} from './InstitutionalOwnershipHistoryByQuarter'
-import {InstitutionalOwnershipPieChart} from './InstitutionalOwnershipPieChart'
-import {InstitutionalOwnershipHistoryByShareholders} from './InstitutionalOwnershipHistoryByShareholders'
-import {useInstitutionalOwnership} from "../../../hooks/useInstitutionalOwnership.ts";
+import React from "react";
+import { Grid } from "@mui/material";
+import { InstitutionalOwnershipHistoryByQuarter } from "./InstitutionalOwnershipHistoryByQuarter";
+import { InstitutionalOwnershipPieChart } from "./InstitutionalOwnershipPieChart";
+import { InstitutionalOwnershipHistoryByShareholders } from "./InstitutionalOwnershipHistoryByShareholders";
+import { useInstitutionalOwnership } from "../../../hooks/useInstitutionalOwnership.ts";
 
 export interface Props {
-   symbol: string
+  symbol: string;
 }
 
 const InstitutionalHoldersPanel: React.FunctionComponent<Props> = ({
-   symbol,
+  symbol,
 }: Props) => {
-   const { data, isLoading } = useInstitutionalOwnership(symbol)
+  const { data, isLoading } = useInstitutionalOwnership(symbol);
 
-   if (isLoading) {
-      return <p>Please wait ...</p>
-   }
+  if (isLoading) {
+    return <p>Please wait ...</p>;
+  }
 
-   const {history, topShareholders} = data!
+  const { history, topShareholders } = data!;
 
-   return history?.length && topShareholders?.length ? (
-      <Grid container spacing={2}>
-         <Grid item xs={9}>
-            <InstitutionalOwnershipHistoryByQuarter history={history} />
-         </Grid>
-         <Grid item xs={3}>
-            <InstitutionalOwnershipPieChart data={topShareholders} />
-         </Grid>
-         <Grid item xs={12}>
-            <InstitutionalOwnershipHistoryByShareholders data={topShareholders} />
-         </Grid>
+  return history?.length && topShareholders?.length ? (
+    <Grid container spacing={2}>
+      <Grid item xs={9}>
+        <InstitutionalOwnershipHistoryByQuarter history={history} />
       </Grid>
-   ) : (
-      <p>There is no institutional holder data for {symbol}</p>
-   )
-}
+      <Grid item xs={3}>
+        <InstitutionalOwnershipPieChart data={topShareholders} />
+      </Grid>
+      <Grid item xs={12}>
+        <InstitutionalOwnershipHistoryByShareholders data={topShareholders} />
+      </Grid>
+    </Grid>
+  ) : (
+    <p>There is no institutional holder data for {symbol}</p>
+  );
+};
 
-export default InstitutionalHoldersPanel
+export default InstitutionalHoldersPanel;

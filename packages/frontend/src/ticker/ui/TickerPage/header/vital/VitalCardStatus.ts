@@ -1,6 +1,6 @@
 export enum VitalCardStatus {
-    SAFE,
-    WARNING,
-    DANGER,
-    DEFAULT,
+  SAFE,
+  WARNING,
+  DANGER,
+  DEFAULT,
 }

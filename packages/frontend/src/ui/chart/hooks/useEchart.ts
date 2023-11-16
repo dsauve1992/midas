@@ -1,28 +1,28 @@
-import { useEffect, useRef } from 'react'
-import echarts, { EChartOption } from 'echarts'
-import useSize from '@react-hook/size'
-import theme from '../../global/theme/echart.theme'
+import { useEffect, useRef } from "react";
+import echarts, { EChartOption } from "echarts";
+import useSize from "@react-hook/size";
+import theme from "../../global/theme/echart.theme";
 
-echarts.registerTheme('myTheme', theme)
+echarts.registerTheme("myTheme", theme);
 
 export const useEchart = (options: EChartOption) => {
-   const ref = useRef<HTMLDivElement | null>(null)
-   const [width, height] = useSize(ref)
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [width, height] = useSize(ref);
 
-   useEffect(() => {
-      if (ref.current) {
-         const myChart = echarts.init(ref.current, 'myTheme')
+  useEffect(() => {
+    if (ref.current) {
+      const myChart = echarts.init(ref.current, "myTheme");
 
-         myChart.setOption(options)
-      }
-   }, [options])
+      myChart.setOption(options);
+    }
+  }, [options]);
 
-   useEffect(() => {
-      const chart = ref.current && echarts.getInstanceByDom(ref.current)
-      if (chart) {
-         chart.resize()
-      }
-   }, [width, height])
+  useEffect(() => {
+    const chart = ref.current && echarts.getInstanceByDom(ref.current);
+    if (chart) {
+      chart.resize();
+    }
+  }, [width, height]);
 
-   return ref
-}
+  return ref;
+};

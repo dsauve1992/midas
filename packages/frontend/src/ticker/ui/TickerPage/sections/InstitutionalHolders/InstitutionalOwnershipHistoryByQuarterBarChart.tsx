@@ -1,68 +1,68 @@
-import { EChartOption } from 'echarts'
-import { useEchart } from '../../../../../ui/chart/hooks/useEchart'
+import { EChartOption } from "echarts";
+import { useEchart } from "../../../../../ui/chart/hooks/useEchart";
 
 export interface InstitutionalOwnershipHistoryByQuarterDataEntry {
-   period: string
-   value: number
+  period: string;
+  value: number;
 }
 
 interface Props {
-   data: InstitutionalOwnershipHistoryByQuarterDataEntry[]
+  data: InstitutionalOwnershipHistoryByQuarterDataEntry[];
 }
 
 export const InstitutionalOwnershipHistoryByQuarterBarChart = ({
-   data,
+  data,
 }: Props) => {
-   const options: EChartOption = {
-      tooltip: {
-         trigger: 'axis',
-         axisPointer: {
-            type: 'cross',
-         },
+  const options: EChartOption = {
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
       },
-      grid: {
-         right: '20%',
+    },
+    grid: {
+      right: "20%",
+    },
+    toolbox: {
+      feature: {
+        dataView: { show: true, readOnly: false },
+        restore: { show: true },
+        saveAsImage: { show: true },
       },
-      toolbox: {
-         feature: {
-            dataView: { show: true, readOnly: false },
-            restore: { show: true },
-            saveAsImage: { show: true },
-         },
+    },
+    legend: {
+      data: ["Institutional Sponsorship"],
+    },
+    xAxis: [
+      {
+        type: "category",
+        axisTick: {
+          alignWithLabel: true,
+        },
+        data: data.map((q) => q.period),
       },
-      legend: {
-         data: ['Institutional Sponsorship'],
+    ],
+    yAxis: [
+      {
+        type: "value",
+        name: "Institutional Sponsorship",
+        position: "right",
+        show: true,
+        splitLine: {
+          show: false,
+        },
       },
-      xAxis: [
-         {
-            type: 'category',
-            axisTick: {
-               alignWithLabel: true,
-            },
-            data: data.map((q) => q.period),
-         },
-      ],
-      yAxis: [
-         {
-            type: 'value',
-            name: 'Institutional Sponsorship',
-            position: 'right',
-            show: true,
-            splitLine: {
-               show: false,
-            },
-         },
-      ],
-      series: [
-         {
-            name: 'Institutional Sponsorship',
-            type: 'bar',
-            data: data.map((q) => q.value),
-         },
-      ],
-   }
+    ],
+    series: [
+      {
+        name: "Institutional Sponsorship",
+        type: "bar",
+        data: data.map((q) => q.value),
+      },
+    ],
+  };
 
-   const epsRef = useEchart(options)
+  const epsRef = useEchart(options);
 
-   return <div ref={epsRef} style={{ height: 400, width: '100%' }} />
-}
+  return <div ref={epsRef} style={{ height: 400, width: "100%" }} />;
+};

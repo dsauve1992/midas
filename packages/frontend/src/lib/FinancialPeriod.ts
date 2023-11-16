@@ -1,6 +1,6 @@
 enum FinancialPeriod {
-   ANNUAL = 'annual',
-   QUARTER = 'quarter',
+  ANNUAL = "annual",
+  QUARTER = "quarter",
 }
 
-export default FinancialPeriod
+export default FinancialPeriod;

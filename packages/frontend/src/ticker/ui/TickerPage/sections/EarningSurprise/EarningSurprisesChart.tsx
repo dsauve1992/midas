@@ -1,12 +1,12 @@
-import {useEarningSurprisesComparison} from './hooks/useEarningSurprisesComparison'
-import type {EarningsSurprise} from 'backend/src/shared-types/financial-modeling-prep'
-import {MetricComparisonChart} from '../IncomeStatement/MetricComparisonChart'
+import { useEarningSurprisesComparison } from "./hooks/useEarningSurprisesComparison";
+import type { EarningsSurprise } from "backend/src/shared-types/financial-modeling-prep";
+import { MetricComparisonChart } from "../IncomeStatement/MetricComparisonChart";
 
 type Props = {
-   data: EarningsSurprise[]
-}
+  data: EarningsSurprise[];
+};
 export const EarningSurprisesChart = ({ data }: Props) => {
-   const comparisons = useEarningSurprisesComparison(data, 10)
+  const comparisons = useEarningSurprisesComparison(data, 10);
 
-   return <MetricComparisonChart title="Earnings Suprises" data={comparisons} />
-}
+  return <MetricComparisonChart title="Earnings Suprises" data={comparisons} />;
+};

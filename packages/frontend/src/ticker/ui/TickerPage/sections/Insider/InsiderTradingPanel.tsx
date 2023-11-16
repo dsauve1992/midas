@@ -1,34 +1,34 @@
-import React from 'react'
-import { Grid } from '@mui/material'
-import InsiderActivityHistoryTable from './InsiderActivityHistoryTable'
-import { useInsiderTrading } from '../../../hooks/useInsiderTrading'
-import InsiderActivityHistoryChart from './InsiderActivityHistoryChart'
+import React from "react";
+import { Grid } from "@mui/material";
+import InsiderActivityHistoryTable from "./InsiderActivityHistoryTable";
+import { useInsiderTrading } from "../../../hooks/useInsiderTrading";
+import InsiderActivityHistoryChart from "./InsiderActivityHistoryChart";
 
 export interface Props {
-   symbol: string
+  symbol: string;
 }
 
 const InsiderTradingPanel: React.FunctionComponent<Props> = ({
-   symbol,
+  symbol,
 }: Props) => {
-   const { data, isLoading } = useInsiderTrading(symbol)
+  const { data, isLoading } = useInsiderTrading(symbol);
 
-   if (isLoading) {
-      return <p>Please wait...</p>
-   }
+  if (isLoading) {
+    return <p>Please wait...</p>;
+  }
 
-   return data?.length ? (
-      <Grid container spacing={2}>
-         <Grid item xs={12}>
-            <InsiderActivityHistoryChart events={data} />
-         </Grid>
-         <Grid item xs={12}>
-            <InsiderActivityHistoryTable events={data} />
-         </Grid>
+  return data?.length ? (
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <InsiderActivityHistoryChart events={data} />
       </Grid>
-   ) : (
-      <p>There is no insider trading data for {symbol}</p>
-   )
-}
+      <Grid item xs={12}>
+        <InsiderActivityHistoryTable events={data} />
+      </Grid>
+    </Grid>
+  ) : (
+    <p>There is no insider trading data for {symbol}</p>
+  );
+};
 
-export default InsiderTradingPanel
+export default InsiderTradingPanel;
