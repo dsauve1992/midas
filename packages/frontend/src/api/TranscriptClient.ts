@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {MidasBackendClient} from "./MidasBackendClient.ts";
 
-class TranscriptAPI extends MidasBackendClient{
+class TranscriptClient extends MidasBackendClient{
     async getSummary(symbol: string): Promise<string> {
       return this.fetch(symbol, 'SUMMARY')
    }
@@ -39,4 +39,4 @@ class TranscriptAPI extends MidasBackendClient{
    }
 }
 
-export default TranscriptAPI
+export default TranscriptClient

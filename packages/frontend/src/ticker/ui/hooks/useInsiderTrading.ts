@@ -1,12 +1,12 @@
 import {useQuery} from 'react-query'
 import {StockClient} from "../../../api/StockClient.ts";
-import {useAuth0} from "@auth0/auth0-react";
+import {useApiClientInstance} from "../../../api/useApiClient.ts";
 
 export const useInsiderTrading = (symbol: string) => {
-   const {getAccessTokenSilently} = useAuth0()
+   const instance = useApiClientInstance(StockClient)
 
    return useQuery(
       ['insider-trading', symbol],
-      () =>  new StockClient(getAccessTokenSilently).getInsiderTrading(symbol)
+      () => instance.getInsiderTrading(symbol)
    )
 }

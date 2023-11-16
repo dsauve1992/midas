@@ -1,17 +1,8 @@
 import axios, {AxiosResponse} from "axios";
-import {GetTokenSilentlyOptions, GetTokenSilentlyVerboseResponse} from "@auth0/auth0-spa-js";
 
 export class MidasBackendClient {
     constructor(
-        private authorizationTokenProvider: {
-            (
-                options: GetTokenSilentlyOptions & { detailedResponse: true }
-            ): Promise<GetTokenSilentlyVerboseResponse>;
-            (options?: GetTokenSilentlyOptions): Promise<string>;
-            (options: GetTokenSilentlyOptions): Promise<
-                GetTokenSilentlyVerboseResponse | string
-            >;
-        }
+        private authorizationTokenProvider: () => Promise<string>
     ) {
     }
 

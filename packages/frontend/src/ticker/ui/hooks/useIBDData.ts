@@ -1,11 +1,9 @@
 import {useQuery} from 'react-query'
-import AskIbdAPI, {StockInfo} from '../../../api/AskIbdAPI.ts'
-import {useAuth0} from "@auth0/auth0-react";
+import AskIbdClient, {StockInfo} from '../../../api/AskIbdClient.ts'
+import {useApiClientInstance} from "../../../api/useApiClient.ts";
 
 export const useIBDData = (symbol: string) => {
-   const {getAccessTokenSilently} = useAuth0()
+   const instance = useApiClientInstance(AskIbdClient)
 
-   return useQuery<StockInfo>(['asIBD', symbol], () =>
-      new AskIbdAPI(getAccessTokenSilently).getDataFor(symbol)
-   )
+   return useQuery<StockInfo>(['asIBD', symbol], () => instance.getDataFor(symbol))
 }

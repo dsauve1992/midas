@@ -9,7 +9,7 @@ export interface StockInfo {
 }
 
 
-class AskIbdAPI extends MidasBackendClient{
+class AskIbdClient extends MidasBackendClient{
    async getDataFor(symbol: string): Promise<StockInfo> {
       return axios
          .get(`${this.getBaseUrl()}?symbol=${symbol}`)
@@ -21,4 +21,4 @@ class AskIbdAPI extends MidasBackendClient{
    }
 }
 
-export default AskIbdAPI
+export default AskIbdClient
