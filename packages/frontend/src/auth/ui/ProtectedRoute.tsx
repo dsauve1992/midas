@@ -21,7 +21,7 @@ export const ProtectedRoute = ({ children }: PropsWithChildren) => {
         })()
     }, [isAuthenticated, isLoading, loginWithRedirect, pathname]);
 
-    if (isLoading) {
+    if (isLoading || !isAuthenticated) {
         return <LoadingPage/>
     }
 

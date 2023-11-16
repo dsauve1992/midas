@@ -1,13 +1,13 @@
-import { Container } from '@mui/material'
+import {Container} from '@mui/material'
 import React from 'react'
 import Box from '@mui/material/Box'
-import Menu from '../Menu/Menu'
+import MidasMenu from '../Menu/MidasMenu.tsx'
 import Main from '../Main/Main'
 
 const style = { marginTop: '50px' }
 const Layout: React.FunctionComponent = () => (
    <Container disableGutters maxWidth={false}>
-      <Menu />
+      <MidasMenu />
       <Box style={style}>
          <Main />
       </Box>
