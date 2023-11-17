@@ -109,5 +109,5 @@ export const MetricComparisonChart = ({
 
   const epsRef = useEchart(options);
 
-  return <div ref={epsRef} style={style} />;
+  return <div ref={epsRef} className="test_ds" style={style} />;
 };

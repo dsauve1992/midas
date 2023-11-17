@@ -30,7 +30,7 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
               <Box
                 display="flex"
                 flexDirection="column"
-                gap={"5"}
+                gap={"100"}
                 height={"100%"}
               >
                 <Box display="flex" flexGrow={1} flexDirection="column">
@@ -38,17 +38,16 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
                   <TickerProfile symbol={symbol} />
                   <VitalSection symbol={symbol} />
                 </Box>
-
-                <Box display="flex" flexGrow={2}>
+                <Box display="flex" flexGrow={2} paddingY={"10px"}>
                   {earnings.length && (
                     <MetricComparisonChart
-                      key={symbol}
                       title="E.P.S"
+                      key={symbol}
                       data={earnings}
                     />
                   )}
                 </Box>
-                <Box display="flex" flexGrow={2}>
+                <Box display="flex" flexGrow={2} paddingY={"10px"}>
                   {revenues.length && (
                     <MetricComparisonChart
                       title="Revenue"

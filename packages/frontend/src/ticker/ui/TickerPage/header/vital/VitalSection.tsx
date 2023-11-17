@@ -20,7 +20,7 @@ export const VitalSection: React.FunctionComponent<Props> = ({
   const { data: profile } = useCompanyGeneralInformation(symbol);
 
   return (
-    <Grid container height={"100%"}>
+    <Grid container>
       <Grid item xs={itemCol}>
         <TechnicalRating size={size} value={profile?.technicalRating} />
       </Grid>

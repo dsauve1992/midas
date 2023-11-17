@@ -20,9 +20,9 @@ const TickerPage: React.FunctionComponent = () => {
   const [currentTab, setCurrentTab] = useState<TickerPageTab>(config[0].id);
 
   return (
-    <div>
+    <>
       <Helmet>
-        <title>{symbol} - Minerva</title>
+        <title>{symbol} - Midas</title>
       </Helmet>
 
       <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default" }}>
@@ -57,7 +57,7 @@ const TickerPage: React.FunctionComponent = () => {
           ))}
         </TabContext>
       </Box>
-    </div>
+    </>
   );
 };
 
