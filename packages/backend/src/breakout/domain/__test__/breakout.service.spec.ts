@@ -1,22 +1,29 @@
 import { FinancialModelingPrepService } from '../../../historical-data/financial-modeling-prep.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CheckForBreakoutUseCase } from '../check-for-breakout.use-case';
+import { BreakoutService } from '../breakout.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
 import { TimeFrame } from '../../../shared-types/financial-modeling-prep';
 import { readFileSync } from 'fs';
 import * as path from 'path';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { StockBreakoutEvent } from '../event/stock-breakout.event';
 
-describe('CheckForBreakoutUseCase specs', () => {
-  let useCase: CheckForBreakoutUseCase;
+describe('BreakoutService specs', () => {
+  let service: BreakoutService;
   let fmpService: DeepMocked<FinancialModelingPrepService>;
+  let eventEmitter: DeepMocked<EventEmitter2>;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [HttpModule, ConfigModule.forRoot({ isGlobal: true })],
       providers: [
-        CheckForBreakoutUseCase,
+        BreakoutService,
+        {
+          provide: EventEmitter2,
+          useValue: createMock<EventEmitter2>(),
+        },
         {
           provide: FinancialModelingPrepService,
           useValue: createMock<FinancialModelingPrepService>(),
@@ -24,8 +31,9 @@ describe('CheckForBreakoutUseCase specs', () => {
       ],
     }).compile();
 
-    useCase = app.get(CheckForBreakoutUseCase);
+    service = app.get(BreakoutService);
     fmpService = app.get(FinancialModelingPrepService);
+    eventEmitter = app.get(EventEmitter2);
 
     fmpService.getHistoricalChart.mockImplementation(
       async (symbol: string, timeframe: TimeFrame) => {
@@ -41,8 +49,15 @@ describe('CheckForBreakoutUseCase specs', () => {
     );
   });
 
-  it.each(['FUBO', 'MPTI', 'MYO'])('for symbol %s', async (symbol) => {
-    const validSignal = await useCase.execute(symbol);
-    expect(validSignal).toBe(true);
-  });
+  it.each(['FUBO', 'MPTI', 'MYO'])(
+    `for symbol %s, it should emit a ${StockBreakoutEvent.TYPE} when breakout occurs`,
+    async (symbol) => {
+      await service.checkFor(symbol);
+
+      expect(eventEmitter.emit).toHaveBeenCalledWith(
+        StockBreakoutEvent.TYPE,
+        expect.any(StockBreakoutEvent),
+      );
+    },
+  );
 });

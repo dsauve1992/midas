@@ -11,6 +11,7 @@ import { StocksModule } from './stocks/stocks.module';
 import { SearchModule } from './search/search.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { BreakoutModule } from './breakout/breakout.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { BreakoutModule } from './breakout/breakout.module';
       isGlobal: true,
     }),
     ScheduleModule.forRoot(),
+    EventEmitterModule.forRoot(),
     HistoricalDataModule,
     OwnershipModule,
     TranscriptModule,
