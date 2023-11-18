@@ -10,6 +10,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { StocksModule } from './stocks/stocks.module';
 import { SearchModule } from './search/search.module';
 import { AuthorizationModule } from './authorization/authorization.module';
+import { BreakoutModule } from './breakout/breakout.module';
 
 @Module({
   imports: [
@@ -26,8 +27,8 @@ import { AuthorizationModule } from './authorization/authorization.module';
     StocksModule,
     SearchModule,
     AuthorizationModule,
+    BreakoutModule,
   ],
   controllers: [],
-  providers: [],
 })
 export class AppModule {}

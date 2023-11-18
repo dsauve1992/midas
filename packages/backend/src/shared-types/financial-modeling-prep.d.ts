@@ -256,13 +256,25 @@ export type SearchResult = {
   exchangeShortName: string;
 };
 
-export type TechnicalRecord = {
+export type TimeFrame =
+  | '1min'
+  | '5min'
+  | '15min'
+  | '30min'
+  | '1hour'
+  | '4hour'
+  | '1day';
+
+export type OHLCVRecord = {
   date: string;
   open: number;
   high: number;
   low: number;
   close: number;
   volume: number;
+};
+
+export type TechnicalRecord = OHLCVRecord & {
   sma?: number;
   ema?: number;
   wma?: number;

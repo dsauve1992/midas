@@ -9,12 +9,15 @@ import {
   EnterpriseRatioTTM,
   IncomeStatementDto,
   InsiderTradingEvent,
+  OHLCVRecord,
   SearchResult,
   SharesFloat,
   SocialSentiment,
   StockProfile,
   TechnicalRecord,
+  TimeFrame,
 } from '../shared-types/financial-modeling-prep';
+import { format } from 'date-fns';
 
 @Injectable()
 export class FinancialModelingPrepService {
@@ -93,6 +96,24 @@ export class FinancialModelingPrepService {
       limit: 10000,
     });
   }
+
+  async getHistoricalChart(
+    symbol: string,
+    timeframe: TimeFrame,
+    period?: {
+      from?: Date;
+      to?: Date;
+    },
+  ): Promise<OHLCVRecord[]> {
+    return this.fetch<OHLCVRecord[]>(
+      `/v3/historical-chart/${timeframe}/${symbol}`,
+      {
+        from: period.from && format(period.from, 'yyyy-MM-dd'),
+        to: period.to && format(period.to, 'yyyy-MM-dd'),
+      },
+    );
+  }
+
   async search(query: string): Promise<SearchResult[]> {
     return this.fetch<SearchResult[]>('/v3/search', { limit: 10, query });
   }
