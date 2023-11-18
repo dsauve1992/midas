@@ -12,6 +12,7 @@ import { SearchModule } from './search/search.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { BreakoutModule } from './breakout/breakout.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { WatchlistModule } from './watchlist/watchlist.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     SearchModule,
     AuthorizationModule,
     BreakoutModule,
+    WatchlistModule,
   ],
   controllers: [],
 })
