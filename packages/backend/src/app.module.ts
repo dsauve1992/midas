@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { HistoricalDataModule } from './historical-data/historical-data.module';
+import { HistoricalDataModule } from './modules/historical-data/historical-data.module';
 import { ConfigModule } from '@nestjs/config';
-import { OwnershipModule } from './ownership/ownership.module';
-import { TranscriptModule } from './transcript/transcript.module';
-import { ScreenerModule } from './screener/screener.module';
-import { InvestorsBusinessDailyModule } from './investors-business-daily/investors-business-daily.module';
-import { RatingModule } from './rating/rating.module';
+import { OwnershipModule } from './modules/ownership/ownership.module';
+import { TranscriptModule } from './modules/transcript/transcript.module';
+import { ScreenerModule } from './modules/screener/screener.module';
+import { InvestorsBusinessDailyModule } from './modules/investors-business-daily/investors-business-daily.module';
+import { RatingModule } from './modules/rating/rating.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { StocksModule } from './stocks/stocks.module';
-import { SearchModule } from './search/search.module';
-import { AuthorizationModule } from './authorization/authorization.module';
-import { BreakoutModule } from './breakout/breakout.module';
+import { StocksModule } from './modules/stocks/stocks.module';
+import { SearchModule } from './modules/search/search.module';
+import { AuthorizationModule } from './modules/authorization/authorization.module';
+import { BreakoutModule } from './modules/breakout/breakout.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { WatchlistModule } from './watchlist/watchlist.module';
+import { WatchlistModule } from './modules/watchlist/watchlist.module';
 
 @Module({
   imports: [
