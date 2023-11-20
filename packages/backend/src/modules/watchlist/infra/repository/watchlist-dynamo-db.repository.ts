@@ -28,7 +28,7 @@ export class WatchlistDynamoDbRepository extends WatchlistRepository {
     const params = new GetCommand({
       TableName: this.TABLE_NAME,
       Key: {
-        id: '1',
+        id: '1345678',
       },
     });
 
@@ -42,7 +42,7 @@ export class WatchlistDynamoDbRepository extends WatchlistRepository {
       new PutCommand({
         TableName: this.TABLE_NAME,
         Item: {
-          id: '1',
+          id: '1345678',
           symbols: Array.from(watchlist),
         },
       }),
