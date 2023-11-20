@@ -240,6 +240,20 @@ export type SocialSentiment = {
   twitterSentiment: number;
 };
 
+export type StockMarketInformation = {
+  stockExchangeName: string;
+  stockMarketHours: StockMarketHours;
+  isTheStockMarketOpen: boolean;
+  isTheEuronextMarketOpen: boolean;
+  isTheForexMarketOpen: boolean;
+  isTheCryptoMarketOpen: boolean;
+};
+
+export interface StockMarketHours {
+  openingHour: string;
+  closingHour: string;
+}
+
 export type EarningCallTranscript = {
   symbol: string;
   quarter: number;

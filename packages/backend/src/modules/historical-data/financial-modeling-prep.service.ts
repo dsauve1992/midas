@@ -13,6 +13,7 @@ import {
   SearchResult,
   SharesFloat,
   SocialSentiment,
+  StockMarketInformation,
   StockProfile,
   TechnicalRecord,
   TimeFrame,
@@ -95,6 +96,10 @@ export class FinancialModelingPrepService {
       symbol,
       limit: 10000,
     });
+  }
+
+  async getMarketOpeningInformation(): Promise<StockMarketInformation> {
+    return this.fetch<StockMarketInformation>('v3/is-the-market-open');
   }
 
   async getHistoricalChart(
