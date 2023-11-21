@@ -18,7 +18,6 @@ export const useEchart = (options: EChartOption) => {
   }, [options]);
 
   useEffect(() => {
-    console.log(width, height);
     const chart = ref.current && echarts.getInstanceByDom(ref.current);
     if (chart) {
       chart.resize({ width, height });

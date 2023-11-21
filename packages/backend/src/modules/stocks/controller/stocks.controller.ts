@@ -11,9 +11,9 @@ import { IncomeStatementDto } from '../../../shared-types/income-statement';
 import { QuarterlyIncomeStatementMapper } from './mapper/quarterly-income-statement.mapper';
 import { AnnuallyIncomeStatementMapper } from './mapper/annually-income-statement.mapper';
 import { GetAnnuallyIncomeStatementUseCase } from '../usecase/get-annually-income-statement.use-case';
-import { AuthorizationGuard } from '../../authorization/authorization.guard';
+import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(AuthorizationGuard)
+@UseGuards(AuthGuard('jwt'))
 @Controller('stocks/:symbol')
 export class StocksController {
   constructor(
