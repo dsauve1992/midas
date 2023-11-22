@@ -24,17 +24,17 @@ export class WatchlistDynamoDbRepository extends WatchlistRepository {
     );
   }
 
-  async get() {
+  async getByUserId(userId: string) {
     const params = new GetCommand({
       TableName: this.TABLE_NAME,
       Key: {
-        id: '1345678',
+        id: userId,
       },
     });
 
     const response = await this.client.send(params);
 
-    return new Watchlist(response.Item.symbols);
+    return new Watchlist(response.Item.id, response.Item.symbols);
   }
 
   async save(watchlist: Watchlist) {
@@ -42,7 +42,7 @@ export class WatchlistDynamoDbRepository extends WatchlistRepository {
       new PutCommand({
         TableName: this.TABLE_NAME,
         Item: {
-          id: '1345678',
+          id: watchlist.userId,
           symbols: Array.from(watchlist),
         },
       }),

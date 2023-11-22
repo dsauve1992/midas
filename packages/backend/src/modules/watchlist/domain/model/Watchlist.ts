@@ -1,5 +1,12 @@
 export class Watchlist implements Iterable<string> {
-  constructor(private items: string[]) {}
+  constructor(
+    private _userId: string,
+    private items: string[],
+  ) {}
+
+  get userId(): string {
+    return this._userId;
+  }
 
   public [Symbol.iterator](): Iterator<string> {
     let pointer = 0;
@@ -20,5 +27,9 @@ export class Watchlist implements Iterable<string> {
         }
       },
     };
+  }
+
+  addSymbol(symbol: string) {
+    this.items.push(symbol);
   }
 }

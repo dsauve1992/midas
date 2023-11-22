@@ -12,12 +12,12 @@ export class CheckForBreakoutUseCase {
   ) {}
 
   async execute(): Promise<void> {
-    const watchlist = await this.watchlistRepository.get();
-
     const { isTheStockMarketOpen } =
       await this.fmpService.getMarketOpeningInformation();
 
     if (isTheStockMarketOpen) {
+      const watchlist = await this.watchlistRepository.getByUserId('1'); // TODO double loop sur chacun ?
+
       for (const symbol of watchlist) {
         await this.breakoutService.checkFor(symbol);
       }
