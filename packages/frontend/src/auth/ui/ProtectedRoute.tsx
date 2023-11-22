@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { LoadingPage } from "../../ui/global/component/LoadingPage.tsx";
+import { LoadingPage } from "../../lib/ui/global/component/LoadingPage.tsx";
 import { CSSTransition } from "react-transition-group";
 import "./fade.css";
 

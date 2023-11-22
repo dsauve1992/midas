@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Box, List, ListItemButton, ListItemText } from "@mui/material";
 import { useScreener } from "./hooks/useTradingViewScreener";
-import { useKeyPress } from "../../ui/utils/hooks/useKeyPress";
+import { useKeyPress } from "../../lib/ui/utils/hooks/useKeyPress";
 import { ScreenerEntryCard } from "./ScreenerEntryCard";
 
 export interface Props {}

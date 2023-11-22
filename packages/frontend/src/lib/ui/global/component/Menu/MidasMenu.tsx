@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "../../../../search/ui/SearchBar/SearchBar";
+import SearchBar from "../../../../../search/ui/SearchBar/SearchBar.tsx";
 import type { SearchResult } from "backend/src/shared-types/financial-modeling-prep";
 import { useAuth0 } from "@auth0/auth0-react";
 

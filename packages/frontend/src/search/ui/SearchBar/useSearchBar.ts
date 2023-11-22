@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { useDebounce } from "../../../ui/utils/hooks/useDebounce";
+import { useDebounce } from "../../../lib/ui/utils/hooks/useDebounce";
 import { useSearch } from "./useSearch";
 
 type useSearchBarProps<T> = {

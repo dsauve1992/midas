@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent } from "@mui/material";
 import { useSocialSentiment } from "../../../hooks/useSocialSentiment";
 import { SocialSentimentChart } from "./SocialSentimentChart";
-import { LoadingPlaceHolder } from "../../../../../ui/utils/LoadingPlaceHolder";
+import { LoadingPlaceHolder } from "../../../../../lib/ui/utils/LoadingPlaceHolder";
 
 export interface Props {
   symbol: string;

@@ -1,7 +1,7 @@
 import { Card, CardContent, Grid, List } from "@mui/material";
 import { TickerProfile } from "../../ticker/ui/TickerPage/header/TickerProfile";
 import VitalSection from "../../ticker/ui/TickerPage/header/vital/VitalSection";
-import TradingViewTapeCard from "../../ui/chart/TradingViewTapeCard";
+import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard";
 
 export const WatchListsPage = () => {
   return (

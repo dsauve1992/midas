@@ -11,7 +11,7 @@ import { config, TickerPageTab } from "./sections/tab.config";
 import { TickerProfile } from "./header/TickerProfile";
 import { InvestorBusinessDailyVitalCard } from "./header/InvestorBusinessDailyVitalCard";
 import VitalSection from "./header/vital/VitalSection";
-import TradingViewTapeCard from "../../../ui/chart/TradingViewTapeCard";
+import TradingViewTapeCard from "../../../lib/ui/chart/TradingViewTapeCard";
 
 const sx = { borderBottom: 1, borderColor: "divider" };
 const TickerPage: React.FunctionComponent = () => {

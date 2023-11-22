@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import echarts, { EChartOption } from "echarts";
 import useSize from "@react-hook/size";
-import theme from "../../global/theme/echart.theme";
+import theme from "../../global/theme/echart.theme.ts";
 
 echarts.registerTheme("myTheme", theme);
 

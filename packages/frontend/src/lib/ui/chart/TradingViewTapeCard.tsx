@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader";
+import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.tsx";
 
 type TradingViewTapeCardProps = {
   symbol: string;

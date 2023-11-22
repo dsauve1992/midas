@@ -1,5 +1,5 @@
 import { EChartOption } from "echarts";
-import { useEchart } from "../../../../../ui/chart/hooks/useEchart";
+import { useEchart } from "../../../../../lib/ui/chart/hooks/useEchart";
 
 export interface InstitutionalOwnershipHistoryByQuarterDataEntry {
   period: string;

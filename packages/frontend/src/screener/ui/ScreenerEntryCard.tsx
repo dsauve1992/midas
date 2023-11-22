@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, Grid } from "@mui/material";
 import { MetricComparisonChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/MetricComparisonChart";
 import { TickerProfile } from "../../ticker/ui/TickerPage/header/TickerProfile";
-import TradingViewTapeCard from "../../ui/chart/TradingViewTapeCard";
+import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard";
 import VitalSection from "../../ticker/ui/TickerPage/header/vital/VitalSection";
 import { useFinancialPerformance } from "../../ticker/ui/hooks/useFinancialPerformance.ts";
 import FinancialPeriod from "../../lib/FinancialPeriod.ts";
