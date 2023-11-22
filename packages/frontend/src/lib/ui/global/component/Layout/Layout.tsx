@@ -36,7 +36,7 @@ const Layout: React.FunctionComponent = () => {
             <Route path="/ticker/:id/*" element={<TickerPage />} />
             <Route path="/screener" element={<ScreenerPage />} />
             <Route path="/tools" element={<ToolsPage />} />
-            <Route path="/watchlists" element={<WatchListsPage />} />
+            <Route path="/watchlist" element={<WatchListsPage />} />
           </Routes>
         </Box>
       </Box>

@@ -35,13 +35,15 @@ export class WatchlistDynamoDbRepository extends WatchlistRepository {
     const { Item } = await this.client.send(params);
 
     if (Item) {
-      return new Watchlist(Item.id, Item.symbols);
+      return new Watchlist(Item.id, new Set(Item.symbols));
     }
 
     return Watchlist.init(userId);
   }
 
   async save(watchlist: Watchlist) {
+    console.log(watchlist);
+
     await this.client.send(
       new PutCommand({
         TableName: this.TABLE_NAME,
