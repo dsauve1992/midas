@@ -1,8 +1,12 @@
 export class Watchlist implements Iterable<string> {
   constructor(
     private _userId: string,
-    private items: string[],
+    private items: Set<string>,
   ) {}
+
+  static init(userId: string): Watchlist {
+    return new Watchlist(userId, new Set<string>());
+  }
 
   get userId(): string {
     return this._userId;
@@ -14,7 +18,7 @@ export class Watchlist implements Iterable<string> {
 
     return {
       next(): IteratorResult<string> {
-        if (pointer < items.length) {
+        if (pointer < Array.from(items).length) {
           return {
             done: false,
             value: items[pointer++],
@@ -30,6 +34,14 @@ export class Watchlist implements Iterable<string> {
   }
 
   addSymbol(symbol: string) {
-    this.items.push(symbol);
+    this.items.add(symbol);
+  }
+
+  removeSymbol(symbol: string) {
+    this.items.delete(symbol);
+  }
+
+  isEmpty() {
+    return this.items.size;
   }
 }

@@ -21,8 +21,13 @@ describe('WatchlistDynamoDbRepository specs', () => {
     repository = app.get(WatchlistDynamoDbRepository);
   });
 
+  test('given no watchlist for userId, when get it, it should get empty watchlist', async () => {
+    const newWatchlist = await repository.getByUserId('unknownUserId');
+    expect(newWatchlist.isEmpty()).toEqual(0);
+  });
+
   test('given a watchlist, when save it, it should persisted into repository', async () => {
-    const expectedWatchlist = new Watchlist('aUserId', ['AAPL']);
+    const expectedWatchlist = new Watchlist('aUserId', new Set(['AAPL']));
 
     await repository.save(expectedWatchlist);
 
@@ -30,14 +35,14 @@ describe('WatchlistDynamoDbRepository specs', () => {
   });
 
   test('given an existing watchlist, when change it then save, chnages persisted into repository', async () => {
-    const aWatchlist = new Watchlist('aUserId', ['AAPL']);
+    const aWatchlist = new Watchlist('aUserId', new Set(['AAPL']));
     await repository.save(aWatchlist);
 
     aWatchlist.addSymbol('TSLA');
     await repository.save(aWatchlist);
 
     const actual = await repository.getByUserId('aUserId');
-    const expected = new Watchlist('aUserId', ['AAPL', 'TSLA']);
+    const expected = new Watchlist('aUserId', new Set(['AAPL', 'TSLA']));
     expect(actual).toEqual(expected);
   });
 });
