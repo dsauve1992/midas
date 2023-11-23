@@ -3,7 +3,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import DescriptionModal from "./DescriptionModal";
 import { StockGeneralInformationResponseDto } from "backend/src/shared-types/response.dto";
-import { WatchlistToggler } from "../../../../watchlist/ui/WatchlistToggler.tsx";
+import { WatchlistToggleButton } from "../../../../watchlist/ui/WatchlistToggleButton.tsx";
 
 export interface Props {
   profile: StockGeneralInformationResponseDto;
@@ -21,7 +21,7 @@ const TickerTitle: React.FunctionComponent<Props> = ({ profile }: Props) => {
       <div>
         <Typography variant="h4">
           {profile.companyName} ({profile.symbol}){" "}
-          <WatchlistToggler symbol={profile.symbol} />
+          <WatchlistToggleButton symbol={profile.symbol} />
         </Typography>
         <DescriptionModal description={profile.description} />
         <IconButton

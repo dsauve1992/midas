@@ -6,14 +6,25 @@ import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useAddSymbolToWatchlist } from "./hooks/useAddSymbolToWatchlist.ts";
 import { useRemoveSymbolFromWatchlist } from "./hooks/useRemoveSymbolWatchlist.ts";
+import { toast } from "react-toastify";
 
-export type WatchlistTogglerProps = {
+export type WatchlistToggleButtonProps = {
   symbol: string;
 };
-export const WatchlistToggler = ({ symbol }: WatchlistTogglerProps) => {
+export const WatchlistToggleButton = ({
+  symbol,
+}: WatchlistToggleButtonProps) => {
   const { data: symbols } = useGetWatchlist();
-  const { add } = useAddSymbolToWatchlist({});
-  const { remove } = useRemoveSymbolFromWatchlist({});
+  const { add } = useAddSymbolToWatchlist({
+    onSuccess: () =>
+      toast.success(`${symbol} has been added to your watchlist`),
+    onError: () => toast.error("Ouf!"),
+  });
+  const { remove } = useRemoveSymbolFromWatchlist({
+    onSuccess: () =>
+      toast.success(`${symbol} has been removed from your watchlist`),
+    onError: () => toast.error("Ouf!"),
+  });
 
   const isInWatchlist = useMemo(
     () => symbols?.includes(symbol),
