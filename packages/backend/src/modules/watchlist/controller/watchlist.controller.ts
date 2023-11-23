@@ -7,7 +7,7 @@ import { GetWatchlistUseCase } from '../usecase/get-watchlist.use-case';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('watchlist')
-export class WatchlistControllerController {
+export class WatchlistController {
   constructor(
     private getWatchlistUseCase: GetWatchlistUseCase,
     private addSymbolToWatchlistUseCase: AddSymbolToWatchlistUseCase,
@@ -16,9 +16,13 @@ export class WatchlistControllerController {
 
   @Get()
   async getWatchlist(@User() user: any) {
-    const watchlist = await this.getWatchlistUseCase.execute(user.sub);
+    try {
+      const watchlist = await this.getWatchlistUseCase.execute(user.sub);
 
-    return Array.from(watchlist);
+      return Array.from(watchlist);
+    } catch (e) {
+      return e;
+    }
   }
 
   @Post('/add')
