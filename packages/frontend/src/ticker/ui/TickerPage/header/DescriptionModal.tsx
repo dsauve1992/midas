@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Backdrop, Box, Button, Fade, Modal, Typography } from "@mui/material";
+import DescriptionIcon from "@mui/icons-material/Description";
+import {
+  Backdrop,
+  Box,
+  Fade,
+  IconButton,
+  Modal,
+  Typography,
+} from "@mui/material";
 
 export interface Props {
   description: string;
@@ -24,9 +32,13 @@ const DescriptionModal: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <Button size="small" onClick={() => setOpen(true)}>
-        See description
-      </Button>
+      <IconButton
+        aria-label={"description"}
+        size="small"
+        onClick={() => setOpen(true)}
+      >
+        <DescriptionIcon />
+      </IconButton>
       <Modal
         open={open}
         onClose={() => setOpen(false)}

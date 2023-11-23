@@ -1,7 +1,9 @@
 import React from "react";
-import { Avatar, Box, Button, Chip, Typography } from "@mui/material";
+import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
+import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import DescriptionModal from "./DescriptionModal";
 import { StockGeneralInformationResponseDto } from "backend/src/shared-types/response.dto";
+import { WatchlistToggler } from "../../../../watchlist/ui/WatchlistToggler.tsx";
 
 export interface Props {
   profile: StockGeneralInformationResponseDto;
@@ -19,12 +21,21 @@ const TickerTitle: React.FunctionComponent<Props> = ({ profile }: Props) => {
       <div>
         <Typography variant="h4">
           {profile.companyName} ({profile.symbol}){" "}
-          <Chip label={profile.exchangeShortName} />
+          <WatchlistToggler symbol={profile.symbol} />
         </Typography>
         <DescriptionModal description={profile.description} />
-        <Button href={`https://finance.yahoo.com/chart/${profile.symbol}`}>
-          Yahoo
-        </Button>
+        <IconButton
+          aria-label={"yahoo"}
+          href={`https://finance.yahoo.com/chart/${profile.symbol}`}
+        >
+          <CandlestickChartIcon />
+        </IconButton>
+        <IconButton
+          aria-label={"yahoo"}
+          href={`https://finance.yahoo.com/chart/${profile.symbol}`}
+        >
+          <CandlestickChartIcon />
+        </IconButton>
       </div>
     </Box>
   );
