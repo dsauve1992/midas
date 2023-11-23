@@ -16,7 +16,9 @@ export class CheckForBreakoutUseCase {
       await this.fmpService.getMarketOpeningInformation();
 
     if (isTheStockMarketOpen) {
-      const watchlist = await this.watchlistRepository.getByUserId('1'); // TODO double loop sur chacun ?
+      const watchlist = await this.watchlistRepository.getByUserId(
+        'auth0|65554db56ac7eefb66a57439',
+      );
 
       for (const symbol of watchlist) {
         await this.breakoutService.checkFor(symbol);

@@ -111,6 +111,7 @@ jobs:
               -e DYNAMO_DB_REGION=${{ secrets.DYNAMO_DB_REGION }} \
               -e AUTH0_AUDIENCE=https://${{ secrets.EC2_HOST }} \
               -e AUTH0_ISSUER=https://${{ vars.AUTH0_DOMAIN }}/ \
+              -e TELEGRAM_BOT_TOKEN=https://${{ secrets.TELEGRAM_BOT_TOKEN }}/ \
               $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
 
