@@ -34,7 +34,7 @@ jobs:
       - name: Build React App
         working-directory: ./packages/frontend
         env:
-          VITE_BACKEND_URL: https://${{ secrets.EC2_HOST }}
+          VITE_BACKEND_URL: https://${{ vars.EC2_HOST }}
           VITE_AUTH0_CLIENT_ID: ${{ vars.AUTH0_CLIENT_ID }}
           VITE_AUTH0_DOMAIN: ${{ vars.AUTH0_DOMAIN }}
         run: yarn build
@@ -89,7 +89,7 @@ jobs:
           IMAGE_NAME: midas-backend
           IMAGE_TAG: latest
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ vars.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: DOCKER_USERNAME,IMAGE_NAME,IMAGE_TAG
@@ -109,7 +109,7 @@ jobs:
               -e FMP_API_KEY=${{ secrets.FMP_PRIVATE_KEY }} \
               -e DYNAMO_DB_URL=${{ secrets.DYNAMO_DB_URL }} \
               -e DYNAMO_DB_REGION=${{ secrets.DYNAMO_DB_REGION }} \
-              -e AUTH0_AUDIENCE=https://${{ secrets.EC2_HOST }} \
+              -e AUTH0_AUDIENCE=https://${{ vars.EC2_HOST }} \
               -e AUTH0_ISSUER=https://${{ vars.AUTH0_DOMAIN }}/ \
               -e TELEGRAM_BOT_TOKEN=https://${{ secrets.TELEGRAM_BOT_TOKEN }}/ \
               $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
