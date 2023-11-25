@@ -4,21 +4,19 @@ import { TechnicalRating } from "./TechnicalRating.tsx";
 import { ReturnOnEquity } from "./ReturnOnEquity";
 import { OutstandingShares } from "./OutstandingShares";
 import { FundamentalRating } from "./FundamentalRating.tsx";
-import { useCompanyGeneralInformation } from "../../../hooks/useCompanyGeneralInformation.ts";
+import { StockGeneralInformationResponseDto } from "backend/src/shared-types/response.dto";
 
 export interface Props {
-  symbol: string;
+  profile: StockGeneralInformationResponseDto;
   itemCol?: number;
   size?: "sm" | "md";
 }
 
 export const VitalSection: React.FunctionComponent<Props> = ({
-  symbol,
+  profile,
   itemCol = 6,
   size = "sm",
 }: Props) => {
-  const { data: profile } = useCompanyGeneralInformation(symbol);
-
   return (
     <Grid container>
       <Grid item xs={itemCol}>

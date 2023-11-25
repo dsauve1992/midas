@@ -33,7 +33,7 @@ export const WatchListTicker = ({ symbol }: { symbol: string }) => {
               <TickerProfile profile={profile!} />
             </Grid>
             <Grid item xs={3}>
-              <VitalSection symbol={symbol} itemCol={12} size="sm" />
+              <VitalSection profile={profile!} itemCol={12} size="sm" />
             </Grid>
             <Grid item xs={6} height="100%">
               <TradingViewTapeCard symbol={symbol} />

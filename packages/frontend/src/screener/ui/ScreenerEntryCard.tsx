@@ -26,58 +26,52 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
   const { isLoading: profileLoading, data: profile } =
     useCompanyGeneralInformation(symbol!);
 
+  const cardContent = profileLoading ? (
+    <LoadingBox />
+  ) : (
+    <Grid container spacing={2} height={"100%"}>
+      <Grid item xs={4}>
+        <Box display="flex" flexDirection="column" gap={"100"} height={"100%"}>
+          <Box display="flex" flexGrow={1} flexDirection="column">
+            <Box display="flex" justifyContent="center">
+              <IconButton aria-label={"detail"} href={`/ticker/${symbol}`}>
+                <InfoIcon />
+              </IconButton>
+            </Box>
+            <TickerProfile profile={profile!} />
+            <VitalSection profile={profile!} />
+          </Box>
+          <Box display="flex" flexGrow={2} paddingY={"10px"}>
+            {earnings.length && (
+              <MetricComparisonChart
+                title="E.P.S"
+                key={symbol}
+                data={earnings}
+              />
+            )}
+          </Box>
+          <Box display="flex" flexGrow={2} paddingY={"10px"}>
+            {revenues.length && (
+              <MetricComparisonChart
+                title="Revenue"
+                key={symbol}
+                data={revenues}
+              />
+            )}
+          </Box>
+        </Box>
+      </Grid>
+      <Grid item xs={8}>
+        <TradingViewTapeCard symbol={symbol} />
+      </Grid>
+    </Grid>
+  );
+
   return (
     <Box display={"flex"} flexGrow={1} width={"100%"}>
       <Card sx={{ width: "100%", height: "100%" }}>
         <CardContent sx={{ width: "100%", height: "100%" }}>
-          {profileLoading ? (
-            <LoadingBox />
-          ) : (
-            <Grid container spacing={2} height={"100%"}>
-              <Grid item xs={4}>
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  gap={"100"}
-                  height={"100%"}
-                >
-                  <Box display="flex" flexGrow={1} flexDirection="column">
-                    <Box display="flex" justifyContent="center">
-                      <IconButton
-                        aria-label={"detail"}
-                        href={`/ticker/${symbol}`}
-                      >
-                        <InfoIcon />
-                      </IconButton>
-                    </Box>
-                    <TickerProfile profile={profile!} />
-                    <VitalSection symbol={symbol} />
-                  </Box>
-                  <Box display="flex" flexGrow={2} paddingY={"10px"}>
-                    {earnings.length && (
-                      <MetricComparisonChart
-                        title="E.P.S"
-                        key={symbol}
-                        data={earnings}
-                      />
-                    )}
-                  </Box>
-                  <Box display="flex" flexGrow={2} paddingY={"10px"}>
-                    {revenues.length && (
-                      <MetricComparisonChart
-                        title="Revenue"
-                        key={symbol}
-                        data={revenues}
-                      />
-                    )}
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={8}>
-                <TradingViewTapeCard symbol={symbol} />
-              </Grid>
-            </Grid>
-          )}
+          {cardContent}
         </CardContent>
       </Card>
     </Box>

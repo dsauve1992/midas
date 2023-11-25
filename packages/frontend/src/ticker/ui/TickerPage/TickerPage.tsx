@@ -44,7 +44,7 @@ const TickerPage: React.FunctionComponent = () => {
                 <InvestorBusinessDailyVitalCard symbol={symbol!} />
               </Grid>
             </Grid>
-            <VitalSection symbol={symbol!} />
+            <VitalSection profile={profile!} />
           </Grid>
           <Grid item lg={6} md={12}>
             <TradingViewTapeCard symbol={symbol!} />
