@@ -12,12 +12,20 @@ import { TickerProfile } from "./header/TickerProfile";
 import { InvestorBusinessDailyVitalCard } from "./header/InvestorBusinessDailyVitalCard";
 import VitalSection from "./header/vital/VitalSection";
 import TradingViewTapeCard from "../../../lib/ui/chart/TradingViewTapeCard";
+import { useCompanyGeneralInformation } from "../hooks/useCompanyGeneralInformation.ts";
 
 const sx = { borderBottom: 1, borderColor: "divider" };
 const TickerPage: React.FunctionComponent = () => {
   const { id: symbol } = useParams<{ id: string }>();
 
   const [currentTab, setCurrentTab] = useState<TickerPageTab>(config[0].id);
+
+  const { isLoading: profileLoading, data: profile } =
+    useCompanyGeneralInformation(symbol!);
+
+  if (profileLoading) {
+    return <p>Please wait...</p>;
+  }
 
   return (
     <>
@@ -30,7 +38,7 @@ const TickerPage: React.FunctionComponent = () => {
           <Grid item lg={6} md={12}>
             <Grid container>
               <Grid item xs={12} xl={6}>
-                <TickerProfile symbol={symbol!} />
+                <TickerProfile profile={profile!} />
               </Grid>
               <Grid item xs={12} xl={6}>
                 <InvestorBusinessDailyVitalCard symbol={symbol!} />

@@ -30,12 +30,6 @@ const TickerTitle: React.FunctionComponent<Props> = ({ profile }: Props) => {
         >
           <CandlestickChartIcon />
         </IconButton>
-        <IconButton
-          aria-label={"yahoo"}
-          href={`https://finance.yahoo.com/chart/${profile.symbol}`}
-        >
-          <CandlestickChartIcon />
-        </IconButton>
       </div>
     </Box>
   );

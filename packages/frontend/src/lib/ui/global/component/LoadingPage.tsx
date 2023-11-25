@@ -1,5 +1,5 @@
 import { Box, useTheme } from "@mui/material";
-import { PuffLoader } from "react-spinners";
+import { LoadingBox } from "./LoadingBox.tsx";
 
 export const LoadingPage = () => {
   const theme = useTheme();
@@ -17,7 +17,7 @@ export const LoadingPage = () => {
         zIndex: 5000,
       }}
     >
-      <PuffLoader size={120} />
+      <LoadingBox />
     </Box>
   );
 };

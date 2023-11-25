@@ -1,23 +1,16 @@
 import TickerTitle from "./TickerTitle";
 import TickerFamily from "./TickerFamily";
-import { useCompanyGeneralInformation } from "../../hooks/useCompanyGeneralInformation.ts";
+import { StockGeneralInformationResponseDto } from "backend/src/shared-types/response.dto";
 
 type TickerProfileProps = {
-  symbol: string;
+  profile: StockGeneralInformationResponseDto;
 };
 
-export function TickerProfile({ symbol }: TickerProfileProps) {
-  const { isLoading: profileLoading, data: profile } =
-    useCompanyGeneralInformation(symbol);
-
-  if (profileLoading) {
-    return <p>Please wait...</p>;
-  }
-
-  return profile ? (
+export function TickerProfile({ profile }: TickerProfileProps) {
+  return (
     <>
       <TickerTitle profile={profile} />
       <TickerFamily profile={profile} />
     </>
-  ) : null;
+  );
 }
