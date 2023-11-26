@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { subDays } from 'date-fns';
-import { MACD, SMA } from 'technicalindicators';
+import { EMA, MACD } from 'technicalindicators';
 import { DataFrame } from 'danfojs-node';
 import { TimeFrame } from '../../../shared-types/financial-modeling-prep';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -16,7 +16,7 @@ export class BreakoutService {
 
   async checkFor(symbol: string): Promise<void> {
     if (
-      (await this.checkOnDailyTimeFrame(symbol)) &&
+      (await this.checkOnDailyTimeFrame(symbol)) ||
       (await this.checkOnFifteenMinuteTimeFrame(symbol))
     ) {
       this.eventEmitter.emit(
@@ -29,14 +29,18 @@ export class BreakoutService {
   private async checkOnDailyTimeFrame(symbol: string) {
     const df = await this.getHistory(symbol, '1day', 100);
 
-    return this.isLastMACDHistogramRecordIsPositive(df);
+    return (
+      this.isCurrentVolumeIsAtLeastTwoTimeHigherThanAverage(df) &&
+      this.isLastMACDHistogramRecordIsPositive(df) &&
+      this.is10EmaAnd20EmaRising(df)
+    );
   }
 
   private async checkOnFifteenMinuteTimeFrame(symbol: string) {
     const df = await this.getHistory(symbol, '15min', 30);
 
     return (
-      this.isCurrentVolumeIsAtLeastFiveTimeHigherThanAverage(df) &&
+      this.isCurrentVolumeIsAtLeastTwoTimeHigherThanAverage(df) &&
       this.isLastMACDHistogramRecordIsPositive(df)
     );
   }
@@ -57,15 +61,15 @@ export class BreakoutService {
     return lastHistogramValue > 0;
   }
 
-  private isCurrentVolumeIsAtLeastFiveTimeHigherThanAverage(df: DataFrame) {
-    const volumeSMA = SMA.calculate({
-      period: df.shape[0],
+  private isCurrentVolumeIsAtLeastTwoTimeHigherThanAverage(df: DataFrame) {
+    const EMA20_volume = EMA.calculate({
       values: df['volume'].values,
+      period: 20,
     });
-    const averageVolume = volumeSMA[0];
+    const averageVolume = EMA20_volume[EMA20_volume.length - 1];
 
     const currentVolume = df['volume'].tail(1).values[0];
-    return currentVolume >= 5 * averageVolume;
+    return currentVolume >= 2 * averageVolume;
   }
 
   private async getHistory(
@@ -84,5 +88,26 @@ export class BreakoutService {
     );
 
     return new DataFrame(history.reverse());
+  }
+
+  private is10EmaAnd20EmaRising(df: DataFrame) {
+    const EMA10_close = EMA.calculate({
+      values: df['close'].values,
+      period: 10,
+    });
+
+    const EMA20_close = EMA.calculate({
+      values: df['close'].values,
+      period: 20,
+    });
+
+    const ema10Rising =
+      EMA10_close[EMA10_close.length - 1] > EMA10_close[EMA10_close.length - 2];
+    const ema20Rising =
+      EMA20_close[EMA20_close.length - 1] > EMA20_close[EMA20_close.length - 2];
+    const ema10AboveEma20 =
+      EMA10_close[EMA10_close.length - 1] > EMA20_close[EMA20_close.length - 1];
+
+    return ema10Rising && ema20Rising && ema10AboveEma20;
   }
 }
