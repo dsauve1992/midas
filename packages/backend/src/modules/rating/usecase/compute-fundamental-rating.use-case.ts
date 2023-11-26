@@ -11,6 +11,7 @@ import {
   FundamentalSummary,
   QuarterlyIncomeSummary,
 } from '../domain/FundamentalSummary';
+import { meanBy } from 'lodash';
 
 @Injectable()
 export class ComputeFundamentalRatingUseCase {
@@ -33,7 +34,17 @@ export class ComputeFundamentalRatingUseCase {
       rating += 40;
     }
 
-    if (lastQuarter.sales.getPercentage() > 25) {
+    const isLastSalesGrowthUpperThan25 = lastQuarter.sales.getPercentage() > 25;
+    const isLastSalesGrowthUpperThanThreePreviousSalesGrowthMean =
+      lastQuarter.sales.getPercentage() >
+      meanBy([quarterMinusOne, quarterMinusTwo, quarterMinusThree], (el) =>
+        el.sales.getPercentage(),
+      );
+
+    if (
+      isLastSalesGrowthUpperThan25 ||
+      isLastSalesGrowthUpperThanThreePreviousSalesGrowthMean
+    ) {
       rating += 20;
     }
 
@@ -42,7 +53,7 @@ export class ComputeFundamentalRatingUseCase {
         ({ eps }) => eps.getPercentage() > 25,
       )
     ) {
-      rating += 15;
+      rating += 20;
     }
 
     if (
@@ -54,7 +65,7 @@ export class ComputeFundamentalRatingUseCase {
     }
 
     if (summary.returnOnEquity > 0.17) {
-      rating += 10;
+      rating += 5;
     }
 
     return rating;
