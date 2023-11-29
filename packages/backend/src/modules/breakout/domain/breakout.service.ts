@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { subDays } from 'date-fns';
-import { EMA, MACD } from 'technicalindicators';
-import { DataFrame } from 'danfojs-node';
-import { TimeFrame } from '../../../shared-types/financial-modeling-prep';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { StockBreakoutEvent } from './event/stock-breakout.event';
+import { DailyTimeFrameBreakoutStrategy } from './strategy/DailyTimeFrameBreakoutStrategy';
+import { FifteenMinutesTimeFrameBreakoutStrategy } from './strategy/FifteenMinutesTimeFrameBreakoutStrategy';
+import { BreakoutStrategy } from './strategy/BreakoutStrategy';
 
 @Injectable()
 export class BreakoutService {
@@ -15,99 +14,16 @@ export class BreakoutService {
   ) {}
 
   async checkFor(symbol: string): Promise<void> {
-    if (
-      (await this.checkOnDailyTimeFrame(symbol)) ||
-      (await this.checkOnFifteenMinuteTimeFrame(symbol))
-    ) {
-      this.eventEmitter.emit(
-        StockBreakoutEvent.TYPE,
-        new StockBreakoutEvent(symbol),
-      );
+    const strategies: BreakoutStrategy[] = [
+      new DailyTimeFrameBreakoutStrategy(this.fmpService),
+      new FifteenMinutesTimeFrameBreakoutStrategy(this.fmpService),
+    ];
+
+    for (const strategy of strategies) {
+      const breakoutEvent = await strategy.checkFor(symbol);
+
+      breakoutEvent &&
+        this.eventEmitter.emit(StockBreakoutEvent.TYPE, breakoutEvent);
     }
-  }
-
-  private async checkOnDailyTimeFrame(symbol: string) {
-    const df = await this.getHistory(symbol, '1day', 100);
-
-    return (
-      this.isCurrentVolumeIsAtLeastTwoTimeHigherThanAverage(df) &&
-      this.isLastMACDHistogramRecordIsPositive(df) &&
-      this.is10EmaAnd20EmaRising(df)
-    );
-  }
-
-  private async checkOnFifteenMinuteTimeFrame(symbol: string) {
-    const df = await this.getHistory(symbol, '15min', 30);
-
-    return (
-      this.isCurrentVolumeIsAtLeastTwoTimeHigherThanAverage(df) &&
-      this.isLastMACDHistogramRecordIsPositive(df)
-    );
-  }
-
-  private isLastMACDHistogramRecordIsPositive(df: DataFrame) {
-    const macdHistory = new DataFrame(
-      MACD.calculate({
-        values: df['close'].values,
-        fastPeriod: 12,
-        slowPeriod: 26,
-        signalPeriod: 9,
-        SimpleMAOscillator: false,
-        SimpleMASignal: false,
-      }),
-    );
-
-    const lastHistogramValue = macdHistory.tail(1)['histogram'].values[0];
-    return lastHistogramValue > 0;
-  }
-
-  private isCurrentVolumeIsAtLeastTwoTimeHigherThanAverage(df: DataFrame) {
-    const EMA20_volume = EMA.calculate({
-      values: df['volume'].values,
-      period: 20,
-    });
-    const averageVolume = EMA20_volume[EMA20_volume.length - 1];
-
-    const currentVolume = df['volume'].tail(1).values[0];
-    return currentVolume >= 2 * averageVolume;
-  }
-
-  private async getHistory(
-    symbol: string,
-    timeFrame: TimeFrame,
-    lastNDays: number,
-  ) {
-    const nDaysAgo = subDays(new Date(), lastNDays);
-
-    const history = await this.fmpService.getHistoricalChart(
-      symbol,
-      timeFrame,
-      {
-        from: nDaysAgo,
-      },
-    );
-
-    return new DataFrame(history.reverse());
-  }
-
-  private is10EmaAnd20EmaRising(df: DataFrame) {
-    const EMA10_close = EMA.calculate({
-      values: df['close'].values,
-      period: 10,
-    });
-
-    const EMA20_close = EMA.calculate({
-      values: df['close'].values,
-      period: 20,
-    });
-
-    const ema10Rising =
-      EMA10_close[EMA10_close.length - 1] > EMA10_close[EMA10_close.length - 2];
-    const ema20Rising =
-      EMA20_close[EMA20_close.length - 1] > EMA20_close[EMA20_close.length - 2];
-    const ema10AboveEma20 =
-      EMA10_close[EMA10_close.length - 1] > EMA20_close[EMA20_close.length - 1];
-
-    return ema10Rising && ema20Rising && ema10AboveEma20;
   }
 }
