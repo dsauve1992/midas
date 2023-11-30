@@ -1,8 +1,4 @@
-interface StockBreakoutEvent {
-  symbol: string;
-  date: Date;
-  toString(): string;
-}
+import { StockBreakoutEvent } from '../event/stock-breakout.event';
 
 export interface BreakoutStrategy {
   checkFor(symbol: string): Promise<StockBreakoutEvent | null>;

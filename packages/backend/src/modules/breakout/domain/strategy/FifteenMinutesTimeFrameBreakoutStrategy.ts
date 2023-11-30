@@ -19,7 +19,11 @@ export class FifteenMinutesTimeFrameBreakoutStrategy
     const volumeRatio = this.getCurrentVsAverageVolumeRatio(df);
 
     if (volumeRatio >= 2 && this.isLastMACDHistogramRecordIsPositive(df)) {
-      return new StockBreakoutEvent(symbol); // TODO add ratio
+      return new StockBreakoutEvent(symbol, [
+        { name: 'TimeFrame', value: '15 min' },
+        { name: 'Volume Ratio', value: volumeRatio },
+        { name: 'MACD', value: 'Positive Histogram' },
+      ]);
     }
     return null;
   }

@@ -9,11 +9,6 @@ export class InitialAssignmentCreatedListener {
 
   @OnEvent(StockBreakoutEvent.TYPE)
   async handleInitialAssignmentCreatedEvent(event: StockBreakoutEvent) {
-    const { symbol } = event;
-
-    await this.telegramBot.sendMarkdown(`
-    -------
-    ### ${symbol}
-    `);
+    await this.telegramBot.sendMarkdown(event.toString());
   }
 }

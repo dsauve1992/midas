@@ -14,12 +14,19 @@ export class DailyTimeFrameBreakoutStrategy implements BreakoutStrategy {
   async checkFor(symbol: string): Promise<StockBreakoutEvent | null> {
     const df = await this.getHistory(symbol, '1day', 100);
 
+    const volumeRatio = this.getCurrentVsAverageVolumeRatio(df);
+
     if (
-      this.isCurrentVolumeIsAtLeastTwoTimeHigherThanAverage(df) &&
+      volumeRatio >= 2 &&
       this.isLastMACDHistogramRecordIsPositive(df) &&
       this.is10EmaAnd20EmaRising(df)
     ) {
-      return new StockBreakoutEvent(symbol);
+      return new StockBreakoutEvent(symbol, [
+        { name: 'TimeFrame', value: 'Daily' },
+        { name: 'Volume Ratio', value: volumeRatio },
+        { name: 'MACD', value: 'Positive Histogram' },
+        { name: 'ema', value: '10 ema and 20 ema rising (10 above 20)' },
+      ]);
     }
 
     return null;
@@ -41,7 +48,7 @@ export class DailyTimeFrameBreakoutStrategy implements BreakoutStrategy {
     return lastHistogramValue > 0;
   }
 
-  private isCurrentVolumeIsAtLeastTwoTimeHigherThanAverage(df: DataFrame) {
+  private getCurrentVsAverageVolumeRatio(df: DataFrame) {
     const EMA20_volume = EMA.calculate({
       values: df['volume'].values,
       period: 20,
@@ -49,7 +56,7 @@ export class DailyTimeFrameBreakoutStrategy implements BreakoutStrategy {
     const averageVolume = EMA20_volume[EMA20_volume.length - 1];
 
     const currentVolume = df['volume'].tail(1).values[0];
-    return currentVolume >= 2 * averageVolume;
+    return currentVolume / averageVolume;
   }
 
   private async getHistory(
