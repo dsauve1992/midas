@@ -13,6 +13,7 @@ import { AuthorizationModule } from './modules/authorization/authorization.modul
 import { BreakoutModule } from './modules/breakout/breakout.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { WatchlistModule } from './modules/watchlist/watchlist.module';
     AuthorizationModule,
     BreakoutModule,
     WatchlistModule,
+    NotificationModule,
   ],
   controllers: [],
 })

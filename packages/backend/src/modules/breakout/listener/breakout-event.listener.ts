@@ -1,20 +1,16 @@
 import { StockBreakoutEvent } from '../domain/event/stock-breakout.event';
 import { OnEvent } from '@nestjs/event-emitter';
 import { Injectable } from '@nestjs/common';
-import { Telegraf } from 'telegraf';
-import { ConfigService } from '@nestjs/config';
+import { TelegramBot } from '../../notification/service/telegram-bot';
 
 @Injectable()
 export class InitialAssignmentCreatedListener {
-  constructor(private configService: ConfigService) {}
+  constructor(private telegramBot: TelegramBot) {}
 
   @OnEvent(StockBreakoutEvent.TYPE)
   async handleInitialAssignmentCreatedEvent(event: StockBreakoutEvent) {
     const { symbol } = event;
 
-    const bot = new Telegraf(
-      this.configService.getOrThrow('TELEGRAM_BOT_TOKEN'),
-    );
-    await bot.telegram.sendMessage('6964735919', `ALERT : ${symbol}`);
+    await this.telegramBot.send(`ALERT : ${symbol}`);
   }
 }

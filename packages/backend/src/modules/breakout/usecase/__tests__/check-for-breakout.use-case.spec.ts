@@ -49,7 +49,7 @@ describe('CheckForBreakoutUseCase specs', () => {
   });
 
   test('given market open, it should check breakout for each symbol in watchlist ', async () => {
-    const watchlist = new Watchlist('1', ['AAPL', 'TSLA', 'MSFT']);
+    const watchlist = new Watchlist('1', new Set(['AAPL', 'TSLA', 'MSFT']));
 
     repository.getByUserId.mockResolvedValue(watchlist);
 

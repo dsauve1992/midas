@@ -5,6 +5,7 @@ import { CheckForBreakoutUseCase } from './usecase/check-for-breakout.use-case';
 import { BreakoutScheduler } from './scheduler/breakout.scheduler';
 import { WatchlistModule } from '../watchlist/watchlist.module';
 import { InitialAssignmentCreatedListener } from './listener/breakout-event.listener';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
   providers: [
@@ -13,6 +14,6 @@ import { InitialAssignmentCreatedListener } from './listener/breakout-event.list
     BreakoutScheduler,
     InitialAssignmentCreatedListener,
   ],
-  imports: [HistoricalDataModule, WatchlistModule],
+  imports: [HistoricalDataModule, WatchlistModule, NotificationModule],
 })
 export class BreakoutModule {}
