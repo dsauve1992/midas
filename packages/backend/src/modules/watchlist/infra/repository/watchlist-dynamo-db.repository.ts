@@ -42,8 +42,6 @@ export class WatchlistDynamoDbRepository extends WatchlistRepository {
   }
 
   async save(watchlist: Watchlist) {
-    console.log(watchlist);
-
     await this.client.send(
       new PutCommand({
         TableName: this.TABLE_NAME,

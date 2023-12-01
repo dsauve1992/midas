@@ -35,6 +35,14 @@ export class TechnicalAnalysis {
     return currentVolume / averageVolume;
   }
 
+  isPriceRising(): boolean {
+    const priceHistory = this.dataframe['close'].values;
+    return (
+      priceHistory[priceHistory.length - 1] >
+      priceHistory[priceHistory.length - 2]
+    );
+  }
+
   is10EmaAnd20EmaRising() {
     const EMA10_close = EMA.calculate({
       values: this.dataframe['close'].values,
