@@ -1,6 +1,6 @@
 import { OHLCVRecord } from '../../../shared-types/financial-modeling-prep';
 import { DataFrame } from 'danfojs-node';
-import { EMA, MACD } from 'technicalindicators';
+import { ATR, EMA, MACD } from 'technicalindicators';
 
 export class TechnicalAnalysis {
   private dataframe: DataFrame;
@@ -35,10 +35,38 @@ export class TechnicalAnalysis {
     return currentVolume / averageVolume;
   }
 
-  isPriceRising(): boolean {
+  getPriceDeltaVsAtrRatio(period: number): number {
+    const previousAtr = this.getPreviousAtr(period);
+    const priceDelta = this.getPriceDelta();
+
+    return priceDelta / previousAtr;
+  }
+
+  private getPreviousAtr(period: number) {
+    const averageTrueRange = ATR.calculate({
+      close: this.dataframe['close'].values,
+      low: this.dataframe['low'].values,
+      high: this.dataframe['high'].values,
+      period,
+    });
+
+    return averageTrueRange[averageTrueRange.length - 2];
+  }
+
+  getPercentagePriceDelta(): number {
     const priceHistory = this.dataframe['close'].values;
     return (
-      priceHistory[priceHistory.length - 1] >
+      (priceHistory[priceHistory.length - 1] /
+        priceHistory[priceHistory.length - 2] -
+        1) *
+      100
+    );
+  }
+
+  getPriceDelta(): number {
+    const priceHistory = this.dataframe['close'].values;
+    return (
+      priceHistory[priceHistory.length - 1] -
       priceHistory[priceHistory.length - 2]
     );
   }

@@ -14,45 +14,51 @@ export class BreakoutService {
   ) {}
 
   async checkFor(symbol: string): Promise<void> {
+    const dailyAnalysis = await this.createAnalysis(symbol, '1day', 100);
     const fifteenMinuteAnalysis = await this.createAnalysis(
       symbol,
       '15min',
       30,
     );
 
-    const dailyAnalysis = await this.createAnalysis(symbol, '1day', 100);
+    const dailyPercentagePriceDelta = dailyAnalysis.getPercentagePriceDelta();
 
-    if (dailyAnalysis.isPriceRising()) {
+    if (dailyPercentagePriceDelta > 0) {
+      /// 15
       const fifteenMinuteVolumeRatio =
         fifteenMinuteAnalysis.getCurrentVsAverageVolumeRatio(20);
-      if (
-        fifteenMinuteVolumeRatio >= 2 &&
-        fifteenMinuteAnalysis.isLastMACDHistogramRecordIsPositive()
-      ) {
-        this.eventEmitter.emit(
-          StockBreakoutEvent.TYPE,
-          new StockBreakoutEvent(symbol, [
-            { name: 'TimeFrame', value: '15 min' },
-            { name: 'Volume Ratio', value: fifteenMinuteVolumeRatio },
-            { name: 'MACD', value: 'Positive Histogram' },
-          ]),
-        );
-      }
+      const last15MinutesMACDHistogramRecordIsPositive =
+        fifteenMinuteAnalysis.isLastMACDHistogramRecordIsPositive();
+      const fifteenMinutesPriceDeltaVsAtrRatio =
+        fifteenMinuteAnalysis.getPriceDeltaVsAtrRatio(20);
 
+      //// Daily
       const dailyVolumeRatio = dailyAnalysis.getCurrentVsAverageVolumeRatio(20);
+      const lastDailyMACDHistogramRecordIsPositive =
+        dailyAnalysis.isLastMACDHistogramRecordIsPositive();
+      const emaAnd20EmaRising = dailyAnalysis.is10EmaAnd20EmaRising();
+      const dailyPriceDeltaVsAtrRatio =
+        dailyAnalysis.getPriceDeltaVsAtrRatio(20);
 
       if (
-        dailyVolumeRatio >= 2 &&
-        dailyAnalysis.isLastMACDHistogramRecordIsPositive() &&
-        dailyAnalysis.is10EmaAnd20EmaRising()
+        (fifteenMinuteVolumeRatio >= 2 &&
+          last15MinutesMACDHistogramRecordIsPositive) ||
+        (dailyVolumeRatio >= 2 &&
+          lastDailyMACDHistogramRecordIsPositive &&
+          emaAnd20EmaRising)
       ) {
         this.eventEmitter.emit(
           StockBreakoutEvent.TYPE,
           new StockBreakoutEvent(symbol, [
-            { name: 'TimeFrame', value: 'Daily' },
+            { name: '##### TimeFrame', value: '15 min' },
+            { name: 'Volume Ratio', value: fifteenMinuteVolumeRatio },
+            { name: 'ATR Ratio', value: fifteenMinutesPriceDeltaVsAtrRatio },
+            { name: '##### TimeFrame', value: 'Daily' },
             { name: 'Volume Ratio', value: dailyVolumeRatio },
-            { name: 'MACD', value: 'Positive Histogram' },
-            { name: 'ema', value: '10 ema and 20 ema rising (10 above 20)' },
+            {
+              name: 'ATR Ratio',
+              value: dailyPriceDeltaVsAtrRatio,
+            },
           ]),
         );
       }
