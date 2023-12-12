@@ -38,7 +38,28 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
               <ListItemButton key={el.symbol}>
                 <ListItemText
                   primary={el.symbol}
-                  secondary={el.fundamentalRating * el.technicalRating}
+                  secondary={
+                    <Box
+                      display="flex"
+                      flexDirection="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <span>{el.fundamentalRating * el.technicalRating}</span>
+
+                      {!!el.numberOfDaysUntilNextEarningCall &&
+                        el.numberOfDaysUntilNextEarningCall < 14 && (
+                          <div
+                            style={{
+                              width: "8px",
+                              height: "8px",
+                              backgroundColor: "orange",
+                              borderRadius: "100%",
+                            }}
+                          />
+                        )}
+                    </Box>
+                  }
                   onClick={() => setSelectedSymbolIndex(index)}
                 />
               </ListItemButton>
