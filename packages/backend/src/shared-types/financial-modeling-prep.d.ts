@@ -288,6 +288,18 @@ export type OHLCVRecord = {
   volume: number;
 };
 
+export type EarningCalendarEntry = {
+  date: string;
+  symbol: string;
+  eps: number | null;
+  epsEstimated: number | null;
+  time: string;
+  revenue: number | null;
+  revenueEstimated: number | null;
+  updatedFromDate: string;
+  fiscalDateEnding: string;
+};
+
 export type TechnicalRecord = OHLCVRecord & {
   sma?: number;
   ema?: number;

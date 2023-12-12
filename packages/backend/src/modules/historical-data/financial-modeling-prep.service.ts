@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import {
+  EarningCalendarEntry,
   EarningCallTranscript,
   EarningsSurprise,
   EnterpriseRatio,
@@ -116,6 +117,12 @@ export class FinancialModelingPrepService {
         from: period.from && format(period.from, 'yyyy-MM-dd'),
         to: period.to && format(period.to, 'yyyy-MM-dd'),
       },
+    );
+  }
+
+  async getEarningCalendar(symbol: string) {
+    return this.fetch<EarningCalendarEntry[]>(
+      `/v3/historical/earning_calendar/${symbol}`,
     );
   }
 

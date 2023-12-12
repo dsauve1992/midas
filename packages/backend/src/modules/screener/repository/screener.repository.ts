@@ -6,6 +6,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { ScreenerEntryEntity } from '../domain/model/screener-entry.entity';
 
 @Injectable()
 export class ScreenerRepository {
@@ -21,18 +22,16 @@ export class ScreenerRepository {
     );
   }
 
-  async create(payload: {
-    symbol: string;
-    fundamentalRating: number;
-    technicalRating: number;
-  }) {
+  async create(screenerEntryEntity: ScreenerEntryEntity) {
     await this.client.send(
       new PutCommand({
         TableName: this.TABLE_NAME,
         Item: {
-          symbol: payload.symbol,
-          fundamentalRating: payload.fundamentalRating,
-          technicalRating: payload.technicalRating,
+          symbol: screenerEntryEntity.symbol,
+          fundamentalRating: screenerEntryEntity.fundamentalRating,
+          technicalRating: screenerEntryEntity.technicalRating,
+          numberOfDaysUntilNextEarningCall:
+            screenerEntryEntity.numberOfDaysUntilNextEarningCall,
         },
       }),
     );
