@@ -3,7 +3,7 @@ import { ComputeFundamentalRatingUseCase } from '../../rating/usecase/compute-fu
 import { ScreenerService } from '../service/screener.service';
 import { delay } from '../../../utils/delay';
 import { ScreenerRepository } from '../repository/screener.repository';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { ComputeTechnicalRatingUseCase } from '../../rating/usecase/compute-technical-rating.use-case';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { ScreenerEntryEntity } from '../domain/model/screener-entry.entity';
@@ -24,28 +24,33 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_2PM, { timeZone: 'America/Montreal' })
+  @Cron('38 23 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
-    await this.screenerRepository.deleteAll();
+    try {
+      await this.screenerRepository.deleteAll();
+      this.logger.debug('deleteAll');
 
-    const symbols = await this.screenerFetcherService.search();
+      const symbols = await this.screenerFetcherService.search();
 
-    for (const symbol of symbols) {
-      try {
-        const screenerEntry = await this.createScreenerEntry(symbol);
+      for (const symbol of symbols) {
+        try {
+          const entry = await this.createScreenerEntry(symbol);
 
-        await this.screenerRepository.create(screenerEntry);
-      } catch (e) {
-        this.logger.error(`error for ${symbol}`);
-        this.logger.error(e);
+          await this.screenerRepository.create(entry);
+        } catch (e) {
+          this.logger.error(`error for ${symbol}`);
+          this.logger.error(e);
+        }
+        await delay(500);
       }
-      await delay(500);
+    } catch (e) {
+      this.logger.error(e);
     }
   }
 
   private async createScreenerEntry(
     symbol: string,
-  ): Promise<ScreenerEntryEntity> {
+  ): Promise<Omit<ScreenerEntryEntity, 'averageDailyRangeRanking'>> {
     const fundamentalRating =
       await this.computeFundamentalRatingUseCase.execute(symbol);
     const technicalRating =
@@ -68,20 +73,24 @@ export class ComputeRatingScheduler {
   private async getNumberOfDaysUntilNextEarningCall(
     symbol: string,
   ): Promise<number | null> {
-    const earningsCalendar = await this.fmpService.getEarningCalendar(symbol);
+    try {
+      const earningsCalendar = await this.fmpService.getEarningCalendar(symbol);
 
-    let futureDates = earningsCalendar.filter(
-      (item) => parseISO(item.date) > new Date(),
-    );
+      let futureDates = earningsCalendar.filter(
+        (item) => parseISO(item.date) > new Date(),
+      );
 
-    futureDates = sortBy(futureDates, ['date'], ['asc']);
+      futureDates = sortBy(futureDates, ['date'], ['asc']);
 
-    if (futureDates.length === 0) {
+      if (futureDates.length === 0) {
+        return null;
+      }
+
+      const nextAnnouncementDate = parseISO(futureDates[0].date);
+
+      return differenceInDays(nextAnnouncementDate, new Date());
+    } catch (e) {
       return null;
     }
-
-    const nextAnnouncementDate = parseISO(futureDates[0].date);
-
-    return differenceInDays(nextAnnouncementDate, new Date());
   }
 }

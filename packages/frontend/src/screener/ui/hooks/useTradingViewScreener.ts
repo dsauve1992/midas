@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { UseQueryResult } from "react-query/types/react/types";
 import { ScreenerClient, ScreenerEntry } from "../../../api/ScreenerClient.ts";
-import { orderBy } from "lodash";
+import { chain } from "lodash";
 import { useApiClientInstance } from "../../../api/useApiClient.ts";
 
 export const useScreener = (): UseQueryResult<ScreenerEntry[]> => {
@@ -13,12 +13,20 @@ export const useScreener = (): UseQueryResult<ScreenerEntry[]> => {
       () => instance.queryWithRatings(),
       {
         select: (data) =>
-          orderBy(
-            data,
-            ({ technicalRating, fundamentalRating }) =>
-              technicalRating * fundamentalRating,
-            "desc",
-          ),
+          chain(data)
+            .filter((entry) => {
+              return (
+                entry.fundamentalRating >= 50 &&
+                entry.technicalRating >= 50 &&
+                entry.averageDailyRange >= 2
+              );
+            })
+            .orderBy(
+              ({ technicalRating, fundamentalRating }) =>
+                technicalRating * fundamentalRating,
+              "desc",
+            )
+            .value(),
       },
     ),
   };

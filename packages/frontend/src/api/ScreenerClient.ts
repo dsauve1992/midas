@@ -6,6 +6,8 @@ export type ScreenerEntry = {
   symbol: string;
   fundamentalRating: number;
   technicalRating: number;
+  averageDailyRange: number;
+  averageDailyRangeRanking: number;
   numberOfDaysUntilNextEarningCall: number | null;
 };
 

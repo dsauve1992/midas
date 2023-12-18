@@ -20,55 +20,60 @@ export class ComputeFundamentalRatingUseCase {
   ) {}
 
   async execute(symbol: string) {
-    let rating = 0;
+    try {
+      let rating = 0;
 
-    const summary = await this.getFundamentalSummary(symbol);
+      const summary = await this.getFundamentalSummary(symbol);
 
-    const [lastQuarter, quarterMinusOne, quarterMinusTwo, quarterMinusThree] =
-      summary.quarterlyIncomeSummary.model;
+      const [lastQuarter, quarterMinusOne, quarterMinusTwo, quarterMinusThree] =
+        summary.quarterlyIncomeSummary.model;
 
-    const [lastYear, lastYearMinusOne, lastYearMinusTwo] =
-      summary.annuallyIncomeSummary.model;
+      const [lastYear, lastYearMinusOne, lastYearMinusTwo] =
+        summary.annuallyIncomeSummary.model;
 
-    if (lastQuarter.eps.getPercentage() > 25) {
-      rating += 40;
+      if (lastQuarter.eps.getPercentage() > 25) {
+        rating += 40;
+      }
+
+      const isLastSalesGrowthUpperThan25 =
+        lastQuarter.sales.getPercentage() > 25;
+      const isLastSalesGrowthUpperThanThreePreviousSalesGrowthMean =
+        lastQuarter.sales.getPercentage() >
+        meanBy([quarterMinusOne, quarterMinusTwo, quarterMinusThree], (el) =>
+          el.sales.getPercentage(),
+        );
+
+      if (
+        isLastSalesGrowthUpperThan25 ||
+        isLastSalesGrowthUpperThanThreePreviousSalesGrowthMean
+      ) {
+        rating += 20;
+      }
+
+      if (
+        [quarterMinusOne, quarterMinusTwo, quarterMinusThree].every(
+          ({ eps }) => eps.getPercentage() > 25,
+        )
+      ) {
+        rating += 20;
+      }
+
+      if (
+        [lastYear, lastYearMinusOne, lastYearMinusTwo].every(
+          ({ growth }) => growth.getPercentage() > 25,
+        )
+      ) {
+        rating += 15;
+      }
+
+      if (summary.returnOnEquity > 0.17) {
+        rating += 5;
+      }
+
+      return rating;
+    } catch (error) {
+      return -1;
     }
-
-    const isLastSalesGrowthUpperThan25 = lastQuarter.sales.getPercentage() > 25;
-    const isLastSalesGrowthUpperThanThreePreviousSalesGrowthMean =
-      lastQuarter.sales.getPercentage() >
-      meanBy([quarterMinusOne, quarterMinusTwo, quarterMinusThree], (el) =>
-        el.sales.getPercentage(),
-      );
-
-    if (
-      isLastSalesGrowthUpperThan25 ||
-      isLastSalesGrowthUpperThanThreePreviousSalesGrowthMean
-    ) {
-      rating += 20;
-    }
-
-    if (
-      [quarterMinusOne, quarterMinusTwo, quarterMinusThree].every(
-        ({ eps }) => eps.getPercentage() > 25,
-      )
-    ) {
-      rating += 20;
-    }
-
-    if (
-      [lastYear, lastYearMinusOne, lastYearMinusTwo].every(
-        ({ growth }) => growth.getPercentage() > 25,
-      )
-    ) {
-      rating += 15;
-    }
-
-    if (summary.returnOnEquity > 0.17) {
-      rating += 5;
-    }
-
-    return rating;
   }
   private async getFundamentalSummary(symbol: string) {
     const [
