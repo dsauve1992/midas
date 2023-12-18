@@ -5,7 +5,7 @@ import {
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DeleteItemCommand, DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { ScreenerEntryEntity } from '../domain/model/screener-entry.entity';
 
 @Injectable()
@@ -32,12 +32,13 @@ export class ScreenerRepository {
           technicalRating: screenerEntryEntity.technicalRating,
           numberOfDaysUntilNextEarningCall:
             screenerEntryEntity.numberOfDaysUntilNextEarningCall,
+          averageDailyRange: screenerEntryEntity.averageDailyRange,
         },
       }),
     );
   }
 
-  async getAll() {
+  async getAll(): Promise<any[]> {
     const params = new ScanCommand({
       TableName: this.TABLE_NAME,
       ExclusiveStartKey: undefined,
@@ -52,5 +53,24 @@ export class ScreenerRepository {
     } while (typeof items.LastEvaluatedKey !== 'undefined');
 
     return scanResults;
+  }
+
+  async deleteAll() {
+    const tickers = await this.getAll();
+
+    await Promise.all(
+      tickers.map((ticker) =>
+        this.client.send(
+          new DeleteItemCommand({
+            TableName: this.TABLE_NAME,
+            Key: {
+              symbol: {
+                S: ticker.symbol,
+              },
+            },
+          }),
+        ),
+      ),
+    );
   }
 }

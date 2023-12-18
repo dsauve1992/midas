@@ -9,6 +9,7 @@ import { FinancialModelingPrepService } from '../../historical-data/financial-mo
 import { ScreenerEntryEntity } from '../domain/model/screener-entry.entity';
 import { differenceInDays, parseISO } from 'date-fns';
 import { sortBy } from 'lodash';
+import { ComputeAverageDailyRangeUseCase } from '../../rating/usecase/compute-average-daily-range.use-case';
 
 @Injectable()
 export class ComputeRatingScheduler {
@@ -18,12 +19,15 @@ export class ComputeRatingScheduler {
     private screenerFetcherService: ScreenerService,
     private computeFundamentalRatingUseCase: ComputeFundamentalRatingUseCase,
     private computeTechnicalRatingUseCase: ComputeTechnicalRatingUseCase,
+    private computeAverageDailyRangeUseCase: ComputeAverageDailyRangeUseCase,
     private fmpService: FinancialModelingPrepService,
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { timeZone: 'America/Montreal' })
+  @Cron(CronExpression.EVERY_DAY_AT_2PM, { timeZone: 'America/Montreal' })
   async handleJob() {
+    await this.screenerRepository.deleteAll();
+
     const symbols = await this.screenerFetcherService.search();
 
     for (const symbol of symbols) {
@@ -46,6 +50,8 @@ export class ComputeRatingScheduler {
       await this.computeFundamentalRatingUseCase.execute(symbol);
     const technicalRating =
       await this.computeTechnicalRatingUseCase.execute(symbol);
+    const averageDailyRange =
+      await this.computeAverageDailyRangeUseCase.execute(symbol);
 
     const numberOfDaysUntilNextEarningCall =
       await this.getNumberOfDaysUntilNextEarningCall(symbol);
@@ -54,6 +60,7 @@ export class ComputeRatingScheduler {
       symbol,
       fundamentalRating,
       technicalRating,
+      averageDailyRange,
       numberOfDaysUntilNextEarningCall,
     };
   }
