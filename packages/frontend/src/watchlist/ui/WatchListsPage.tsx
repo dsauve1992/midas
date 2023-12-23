@@ -11,7 +11,7 @@ export const WatchListsPage = () => {
 
   return (
     <>
-      <List>
+      <List sx={{ width: "100%" }}>
         {symbols?.map((el) => <WatchListTicker symbol={el} key={el} />)}
       </List>
     </>
@@ -24,19 +24,22 @@ export const WatchListTicker = ({ symbol }: { symbol: string }) => {
 
   return (
     <Card>
-      <CardContent sx={{ height: "450px" }}>
+      <CardContent sx={{ height: "600px" }}>
         {profileLoading ? (
           <LoadingBox />
         ) : (
           <Grid container spacing={2} height="100%" alignItems="center">
-            <Grid item xs={3} justifyContent="center">
+            <Grid item xs={2} justifyContent="center">
               <TickerProfile profile={profile!} />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <VitalSection profile={profile!} itemCol={12} size="sm" />
             </Grid>
-            <Grid item xs={6} height="100%">
+            <Grid item xs={4} height="100%">
               <TradingViewTapeCard symbol={symbol} />
+            </Grid>
+            <Grid item xs={4} height="100%">
+              <TradingViewTapeCard symbol={symbol} interval="15" />
             </Grid>
           </Grid>
         )}

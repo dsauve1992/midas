@@ -3,13 +3,18 @@ import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.t
 
 type TradingViewTapeCardProps = {
   symbol: string;
+  interval?: "D" | "15";
 };
 
 export default function TradingViewTapeCard({
   symbol,
+  interval = "D",
 }: TradingViewTapeCardProps) {
   const tradingViewReady = useTradingViewContext();
-  const containerId = useMemo(() => `tradingview_${symbol}`, [symbol]);
+  const containerId = useMemo(
+    () => `tradingview_${symbol}_${interval}`,
+    [interval, symbol],
+  );
   const onLoadScriptRef = useRef<() => void>(null);
 
   const createWidget = useCallback(() => {
@@ -20,7 +25,7 @@ export default function TradingViewTapeCard({
       return new window.TradingView.widget({
         autosize: true,
         symbol,
-        interval: "D",
+        interval: interval,
         timezone: "Etc/UTC",
         theme: "dark",
         style: "1",
