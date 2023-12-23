@@ -28,11 +28,6 @@
       "left": "SMA100",
       "operation": "greater",
       "right": "SMA200"
-    },
-    {
-      "left": "total_shares_outstanding_fundamental",
-      "operation": "eless",
-      "right": 500000000
     }
   ],
   "options": {
@@ -47,12 +42,8 @@
   "columns": [
     "name"
   ],
-  "sort": {
-    "sortBy": "earnings_per_share_diluted_yoy_growth_fy",
-    "sortOrder": "desc"
-  },
   "range": [
     0,
-    1000
+    2000
   ]
 }
