@@ -24,24 +24,23 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('25 6 * * *', { timeZone: 'America/Montreal' })
+  @Cron('35 12 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
-      this.logger.debug('deleteAll');
 
       const symbols = await this.screenerFetcherService.search();
 
       for (const symbol of symbols) {
         try {
           const entry = await this.createScreenerEntry(symbol);
-
           await this.screenerRepository.create(entry);
+
+          await delay(3000);
         } catch (e) {
           this.logger.error(`error for ${symbol}`);
           this.logger.error(e);
         }
-        await delay(500);
       }
     } catch (e) {
       this.logger.error(e);
