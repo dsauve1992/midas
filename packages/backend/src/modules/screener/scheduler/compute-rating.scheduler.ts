@@ -10,6 +10,7 @@ import { ScreenerEntryEntity } from '../domain/model/screener-entry.entity';
 import { differenceInDays, parseISO } from 'date-fns';
 import { sortBy } from 'lodash';
 import { ComputeAverageDailyRangeUseCase } from '../../rating/usecase/compute-average-daily-range.use-case';
+import { CheckTechnicalSetupService } from '../../rating/domain/service/check-technical-setup.service';
 
 @Injectable()
 export class ComputeRatingScheduler {
@@ -20,11 +21,12 @@ export class ComputeRatingScheduler {
     private computeFundamentalRatingUseCase: ComputeFundamentalRatingUseCase,
     private computeTechnicalRatingUseCase: ComputeTechnicalRatingUseCase,
     private computeAverageDailyRangeUseCase: ComputeAverageDailyRangeUseCase,
+    private checkTechnicalSetupUseCase: CheckTechnicalSetupService,
     private fmpService: FinancialModelingPrepService,
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('35 12 * * *', { timeZone: 'America/Montreal' })
+  @Cron('50 14 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
@@ -32,17 +34,26 @@ export class ComputeRatingScheduler {
       const symbols = await this.screenerFetcherService.search();
 
       for (const symbol of symbols) {
-        try {
-          const entry = await this.createScreenerEntry(symbol);
-          await this.screenerRepository.create(entry);
-
-          await delay(3000);
-        } catch (e) {
-          this.logger.error(`error for ${symbol}`);
-          this.logger.error(e);
-        }
+        await this.processSymbol(symbol);
       }
     } catch (e) {
+      this.logger.error(e);
+    }
+  }
+
+  private async processSymbol(symbol: string) {
+    const rightTechnicalSetup =
+      await this.checkTechnicalSetupUseCase.hasStrongTechnicalSetup(symbol);
+
+    try {
+      if (rightTechnicalSetup) {
+        const entry = await this.createScreenerEntry(symbol);
+        await this.screenerRepository.create(entry);
+      }
+
+      await delay(3000);
+    } catch (e) {
+      this.logger.error(`error for ${symbol}`);
       this.logger.error(e);
     }
   }
