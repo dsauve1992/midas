@@ -1,59 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { format, subWeeks } from 'date-fns';
+import { TechnicalIndicatorService } from '../domain/service/technical-indicator.service';
 
 @Injectable()
 export class ComputeTechnicalRatingUseCase {
   constructor(
-    private financialModelingPrepFetcherService: FinancialModelingPrepService,
+    private getTechnicalIndicatorsUseCase: TechnicalIndicatorService,
   ) {}
 
   async execute(symbol: string) {
     try {
       let ratio = 0;
-
-      const fiftyTwoWeeksAgo = format(subWeeks(new Date(), 52), 'yyyy-MM-dd');
-      const sma200Parameters = {
-        type: 'sma',
-        period: '200',
-        from: fiftyTwoWeeksAgo,
-      };
-      const sma150Parameters = {
-        type: 'sma',
-        period: '150',
-        from: fiftyTwoWeeksAgo,
-      };
-      const sma50Parameters = {
-        type: 'sma',
-        period: '50',
-        from: fiftyTwoWeeksAgo,
-      };
-
-      const [sma200Data, sma150Data, sma50Data] = await Promise.all([
-        this.financialModelingPrepFetcherService.getDailyTechnicalIndicator(
-          symbol,
-          sma200Parameters,
-        ),
-        this.financialModelingPrepFetcherService.getDailyTechnicalIndicator(
-          symbol,
-          sma150Parameters,
-        ),
-        this.financialModelingPrepFetcherService.getDailyTechnicalIndicator(
-          symbol,
-          sma50Parameters,
-        ),
-      ]);
-
-      const fiftyTwoWeeksHigh = Math.max(...sma50Data.map(({ high }) => high));
-      const fiftyTwoWeeksLow = Math.min(...sma50Data.map(({ low }) => low));
-      const currentPrice = sma50Data[0].close;
-
-      const highRatio = (1 - currentPrice / fiftyTwoWeeksHigh) * 100;
-      const lowRatio = (currentPrice / fiftyTwoWeeksLow - 1) * 100;
-
-      const currentSma200 = sma200Data[0].sma!;
-      const currentSma150 = sma150Data[0].sma!;
-      const currentSma50 = sma50Data[0].sma!;
+      const {
+        currentSma200,
+        currentSma150,
+        currentSma50,
+        highRatio,
+        lowRatio,
+        currentPrice,
+      } =
+        await this.getTechnicalIndicatorsUseCase.getTechnicalIndicators(symbol);
 
       if (currentSma150 > currentSma200) {
         ratio += 30;

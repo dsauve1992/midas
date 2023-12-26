@@ -1,6 +1,6 @@
 import { OHLCVRecord } from '../../../shared-types/financial-modeling-prep';
 import { DataFrame } from 'danfojs-node';
-import { ATR, EMA, MACD } from 'technicalindicators';
+import { ATR, EMA, MACD, SMA } from 'technicalindicators';
 
 export class TechnicalAnalysis {
   private dataframe: DataFrame;
@@ -90,5 +90,35 @@ export class TechnicalAnalysis {
       EMA10_close[EMA10_close.length - 1] > EMA20_close[EMA20_close.length - 1];
 
     return ema10Rising && ema20Rising && ema10AboveEma20;
+  }
+
+  getEmaLastValue(period: number): number {
+    const value = EMA.calculate({
+      values: this.dataframe['close'].values,
+      period: period,
+    }).reverse()[0];
+
+    return +value.toFixed(2);
+  }
+
+  getSmaLastValue(period: number): number {
+    const value = SMA.calculate({
+      values: this.dataframe['close'].values,
+      period: period,
+    }).reverse()[0];
+
+    return +value.toFixed(2);
+  }
+
+  getCurrentPrice() {
+    return this.dataframe.tail(1)['close'].values[0];
+  }
+
+  getFiftyTwoWeeksHigh() {
+    return this.dataframe.tail(260)['high'].max().toFixed(2);
+  }
+
+  getFiftyTwoWeeksLow() {
+    return +this.dataframe.tail(260)['low'].min().toFixed(2);
   }
 }
