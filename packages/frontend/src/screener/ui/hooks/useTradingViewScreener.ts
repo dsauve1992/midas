@@ -22,8 +22,8 @@ export const useScreener = (): UseQueryResult<ScreenerEntry[]> => {
               );
             })
             .orderBy(
-              ({ technicalRating, fundamentalRating }) =>
-                technicalRating * fundamentalRating,
+              ({ averageDailyRange, fundamentalRating }) =>
+                averageDailyRange * fundamentalRating,
               "desc",
             )
             .value(),

@@ -26,7 +26,7 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('50 14 * * *', { timeZone: 'America/Montreal' })
+  @Cron('5 1 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
@@ -42,10 +42,10 @@ export class ComputeRatingScheduler {
   }
 
   private async processSymbol(symbol: string) {
-    const rightTechnicalSetup =
-      await this.checkTechnicalSetupUseCase.hasStrongTechnicalSetup(symbol);
-
     try {
+      const rightTechnicalSetup =
+        await this.checkTechnicalSetupUseCase.hasStrongTechnicalSetup(symbol);
+
       if (rightTechnicalSetup) {
         const entry = await this.createScreenerEntry(symbol);
         await this.screenerRepository.create(entry);

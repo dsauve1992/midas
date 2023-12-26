@@ -45,7 +45,7 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
                       alignItems="center"
                       justifyContent="space-between"
                     >
-                      <span>{el.fundamentalRating * el.technicalRating}</span>
+                      <span>{el.fundamentalRating * el.averageDailyRange}</span>
 
                       {!!el.numberOfDaysUntilNextEarningCall &&
                         el.numberOfDaysUntilNextEarningCall < 14 && (
