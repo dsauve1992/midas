@@ -17,8 +17,8 @@ export class CheckTechnicalSetupService {
     return (
       currentSma50 > currentSma200 &&
       currentPrice > currentSma50 &&
-      currentEma10 > currentSma50 &&
-      currentEma20 > currentSma50
+      currentEma20 > currentSma50 &&
+      currentEma10 > currentEma20
     );
   }
 }
