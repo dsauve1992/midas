@@ -35,6 +35,22 @@ export default function TradingViewTapeCard({
         withdateranges: true,
         fullscreen: true,
         // range: '1M',
+        studies: [
+          {
+            id: "MAExp@tv-basicstudies",
+            version: 60,
+            inputs: {
+              length: 10,
+            },
+          },
+          {
+            id: "MAExp@tv-basicstudies",
+            version: 60,
+            inputs: {
+              length: 20,
+            },
+          },
+        ],
         hide_side_toolbar: true,
         allow_symbol_change: false,
         details: false,

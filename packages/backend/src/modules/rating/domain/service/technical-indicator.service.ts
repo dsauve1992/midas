@@ -23,19 +23,31 @@ export class TechnicalIndicatorService {
 
     const technicalAnalysis = new TechnicalAnalysis(history);
 
-    const currentEma10 = technicalAnalysis.getEmaLastValue(10);
-    const currentEma20 = technicalAnalysis.getEmaLastValue(20);
-    const currentSma50 = technicalAnalysis.getSmaLastValue(50);
-    const currentSma150 = technicalAnalysis.getSmaLastValue(150);
-    const currentSma200 = technicalAnalysis.getSmaLastValue(200);
+    const currentEma10 = +technicalAnalysis.getEma(10).reverse()[0].toFixed(2);
+    const currentEma20 = +technicalAnalysis.getEma(20).reverse()[0].toFixed(2);
+    const currentSma50 = +technicalAnalysis.getSma(50).reverse()[0].toFixed(2);
+    const currentSma150 = +technicalAnalysis
+      .getSma(150)
+      .reverse()[0]
+      .toFixed(2);
+    const currentSma200 = +technicalAnalysis
+      .getSma(200)
+      .reverse()[0]
+      .toFixed(2);
     const currentPrice = technicalAnalysis.getCurrentPrice();
     const fiftyTwoWeeksHigh = technicalAnalysis.getFiftyTwoWeeksHigh();
     const fiftyTwoWeeksLow = technicalAnalysis.getFiftyTwoWeeksLow();
 
     const highRatio = (1 - currentPrice / fiftyTwoWeeksHigh) * 100;
     const lowRatio = (currentPrice / fiftyTwoWeeksLow - 1) * 100;
+
+    const sma200ReverseHistory = technicalAnalysis.getSma(200).reverse();
+    const sma200LastMonthPerformance =
+      (sma200ReverseHistory[0] / sma200ReverseHistory[20] - 1) * 100;
+
     return {
       currentSma200,
+      sma200LastMonthPerformance: +sma200LastMonthPerformance.toFixed(2),
       currentSma150,
       currentSma50,
       currentEma20,

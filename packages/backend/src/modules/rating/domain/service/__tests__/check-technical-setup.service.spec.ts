@@ -22,7 +22,7 @@ describe('CheckTechnicalSetupService specs', () => {
     technicalIndicatorService = app.get(TechnicalIndicatorService);
   });
 
-  test('it should have strong technical setup when sma50 is above sma200 and current price, ema20 and ema10 are above sma50', async () => {
+  test('it should have strong technical setup when sma50 is above sma200, current price, ema20 and ema10 are above sma50 and ema10 is above ema20', async () => {
     technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
       currentSma200: 178.65,
       currentSma150: 183.36,
@@ -30,6 +30,7 @@ describe('CheckTechnicalSetupService specs', () => {
       currentEma20: 193.33,
       currentEma10: 194.96,
       currentPrice: 193.6,
+      sma200LastMonthPerformance: 2.47,
       highRatio: 3.02,
       lowRatio: 55.92,
     });
@@ -48,6 +49,7 @@ describe('CheckTechnicalSetupService specs', () => {
       currentEma20: 193.33,
       currentEma10: 194.96,
       currentPrice: 193.6,
+      sma200LastMonthPerformance: 2.47,
       highRatio: 3.02,
       lowRatio: 55.92,
     });
@@ -66,6 +68,7 @@ describe('CheckTechnicalSetupService specs', () => {
       currentEma20: 193.33,
       currentEma10: 194.96,
       currentPrice: 2,
+      sma200LastMonthPerformance: 2.47,
       highRatio: 3.02,
       lowRatio: 55.92,
     });
@@ -84,6 +87,7 @@ describe('CheckTechnicalSetupService specs', () => {
       currentEma20: 193.33,
       currentEma10: 2,
       currentPrice: 193.6,
+      sma200LastMonthPerformance: 2.47,
       highRatio: 3.02,
       lowRatio: 55.92,
     });
@@ -102,6 +106,45 @@ describe('CheckTechnicalSetupService specs', () => {
       currentEma20: 2,
       currentEma10: 194.96,
       currentPrice: 193.6,
+      sma200LastMonthPerformance: 2.47,
+      highRatio: 3.02,
+      lowRatio: 55.92,
+    });
+
+    const strongTechnicalSetup =
+      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
+
+    expect(strongTechnicalSetup).toBe(false);
+  });
+
+  test('it should not have strong technical setup when ema10 is below sma20', async () => {
+    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
+      currentSma200: 178.65,
+      currentSma150: 183.36,
+      currentSma50: 185.4,
+      currentEma20: 193.33,
+      currentEma10: 192.96,
+      currentPrice: 193.6,
+      sma200LastMonthPerformance: 2.47,
+      highRatio: 3.02,
+      lowRatio: 55.92,
+    });
+
+    const strongTechnicalSetup =
+      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
+
+    expect(strongTechnicalSetup).toBe(false);
+  });
+
+  test('it should not have strong technical setup when sma200 is not rising since last month', async () => {
+    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
+      currentSma200: 178.65,
+      currentSma150: 183.36,
+      currentSma50: 185.4,
+      currentEma20: 193.33,
+      currentEma10: 194.96,
+      currentPrice: 193.6,
+      sma200LastMonthPerformance: -3.01,
       highRatio: 3.02,
       lowRatio: 55.92,
     });

@@ -92,22 +92,18 @@ export class TechnicalAnalysis {
     return ema10Rising && ema20Rising && ema10AboveEma20;
   }
 
-  getEmaLastValue(period: number): number {
-    const value = EMA.calculate({
+  getEma(period: number): number[] {
+    return EMA.calculate({
       values: this.dataframe['close'].values,
       period: period,
-    }).reverse()[0];
-
-    return +value.toFixed(2);
+    });
   }
 
-  getSmaLastValue(period: number): number {
-    const value = SMA.calculate({
+  getSma(period: number): number[] {
+    return SMA.calculate({
       values: this.dataframe['close'].values,
       period: period,
-    }).reverse()[0];
-
-    return +value.toFixed(2);
+    });
   }
 
   getCurrentPrice() {

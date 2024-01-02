@@ -35,6 +35,7 @@ describe('TechnicalIndicatorService specs', () => {
       currentEma20: 193.33,
       currentEma10: 194.96,
       currentPrice: 193.6,
+      sma200LastMonthPerformance: 2.47,
       highRatio: 3.02,
       lowRatio: 55.92,
     });

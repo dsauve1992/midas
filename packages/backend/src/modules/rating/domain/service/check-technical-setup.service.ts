@@ -12,9 +12,11 @@ export class CheckTechnicalSetupService {
       currentSma50,
       currentEma20,
       currentEma10,
+      sma200LastMonthPerformance,
     } = await this.technicalIndicatorService.getTechnicalIndicators(symbol);
 
     return (
+      sma200LastMonthPerformance > 0 &&
       currentSma50 > currentSma200 &&
       currentPrice > currentSma50 &&
       currentEma20 > currentSma50 &&
