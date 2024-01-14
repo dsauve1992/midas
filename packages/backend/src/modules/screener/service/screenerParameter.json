@@ -49,7 +49,9 @@
     "EMA10",
     "EMA20",
     "SMA50",
-    "SMA200"
+    "SMA200",
+    "sector",
+    "industry"
   ],
   "range": [
     0,

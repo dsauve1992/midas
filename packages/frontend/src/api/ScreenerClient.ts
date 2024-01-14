@@ -5,7 +5,6 @@ import { MidasBackendClient } from "./MidasBackendClient.ts";
 export type ScreenerEntry = {
   symbol: string;
   fundamentalRating: number;
-  technicalRating: number;
   averageDailyRange: number;
   numberOfDaysUntilNextEarningCall: number | null;
 };

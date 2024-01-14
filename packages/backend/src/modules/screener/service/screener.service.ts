@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import * as screenerParameters from './screenerParameter.json';
 import { ScreenerRepository } from '../repository/screener.repository';
 
-export type ScreenerEntryResponse = {
+export type TradingViewScreenerEntry = {
   symbol: string;
   exchange: string;
   price: number;
@@ -12,6 +12,8 @@ export type ScreenerEntryResponse = {
   ema20: number;
   sma50: number;
   sma200: number;
+  sector: string;
+  industry: string;
 };
 
 @Injectable()
@@ -21,7 +23,7 @@ export class ScreenerService {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  async search(): Promise<ScreenerEntryResponse[]> {
+  async search(): Promise<TradingViewScreenerEntry[]> {
     const response = await firstValueFrom(
       this.httpService.post(
         'https://scanner.tradingview.com/global/scan',
@@ -31,7 +33,7 @@ export class ScreenerService {
 
     return response.data.data.map((entry: any) => {
       const [exchange, symbol] = entry.s.split(':');
-      const [price, ema10, ema20, sma50, sma200] = entry.d;
+      const [price, ema10, ema20, sma50, sma200, sector, industry] = entry.d;
 
       return {
         symbol,
@@ -41,6 +43,8 @@ export class ScreenerService {
         ema20,
         sma50,
         sma200,
+        sector,
+        industry,
       };
     });
   }

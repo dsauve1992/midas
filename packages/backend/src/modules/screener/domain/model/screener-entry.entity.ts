@@ -1,7 +1,9 @@
 export type ScreenerEntryEntity = {
   symbol: string;
+  exchange: string;
+  sector: string;
+  industry: string;
   fundamentalRating: number;
-  technicalRating: number;
   averageDailyRange: number;
   numberOfDaysUntilNextEarningCall: number;
 };

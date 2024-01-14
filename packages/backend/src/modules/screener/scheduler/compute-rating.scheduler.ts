@@ -1,19 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ComputeFundamentalRatingUseCase } from '../../rating/usecase/compute-fundamental-rating.use-case';
 import {
-  ScreenerEntryResponse,
   ScreenerService,
+  TradingViewScreenerEntry,
 } from '../service/screener.service';
-import { delay } from '../../../utils/delay';
 import { ScreenerRepository } from '../repository/screener.repository';
 import { Cron } from '@nestjs/schedule';
-import { ComputeTechnicalRatingUseCase } from '../../rating/usecase/compute-technical-rating.use-case';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { ScreenerEntryEntity } from '../domain/model/screener-entry.entity';
 import { differenceInDays, parseISO } from 'date-fns';
 import { sortBy } from 'lodash';
 import { ComputeAverageDailyRangeUseCase } from '../../rating/usecase/compute-average-daily-range.use-case';
 import { CheckTechnicalSetupService } from '../../rating/domain/service/check-technical-setup.service';
+import { delay } from '../../../utils/delay';
 
 @Injectable()
 export class ComputeRatingScheduler {
@@ -22,18 +21,19 @@ export class ComputeRatingScheduler {
   constructor(
     private screenerFetcherService: ScreenerService,
     private computeFundamentalRatingUseCase: ComputeFundamentalRatingUseCase,
-    private computeTechnicalRatingUseCase: ComputeTechnicalRatingUseCase,
     private computeAverageDailyRangeUseCase: ComputeAverageDailyRangeUseCase,
     private fmpService: FinancialModelingPrepService,
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('22 5 * * *', { timeZone: 'America/Montreal' })
+  @Cron('0 8 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
 
       const results = await this.screenerFetcherService.search();
+
+      console.table(results);
 
       for (const entry of results) {
         await this.processScreenerEntry(entry);
@@ -43,18 +43,17 @@ export class ComputeRatingScheduler {
     }
   }
 
-  private async processScreenerEntry(entry: ScreenerEntryResponse) {
+  private async processScreenerEntry(entry: TradingViewScreenerEntry) {
     try {
       const rightTechnicalSetup =
         await CheckTechnicalSetupService.hasStrongTechnicalSetup(entry);
 
       if (rightTechnicalSetup) {
         // TODO mieux expliciter la différence entre screener trading view vs screener interne
-        const midasEntry = await this.createScreenerEntry(entry.symbol);
+        const midasEntry = await this.createScreenerEntry(entry);
         await this.screenerRepository.create(midasEntry);
+        await delay(3000);
       }
-
-      await delay(3000);
     } catch (e) {
       this.logger.error(`error for ${entry.symbol}`);
       this.logger.error(e);
@@ -62,22 +61,22 @@ export class ComputeRatingScheduler {
   }
 
   private async createScreenerEntry(
-    symbol: string,
-  ): Promise<Omit<ScreenerEntryEntity, 'averageDailyRangeRanking'>> {
+    entry: TradingViewScreenerEntry,
+  ): Promise<ScreenerEntryEntity> {
     const fundamentalRating =
-      await this.computeFundamentalRatingUseCase.execute(symbol);
-    const technicalRating =
-      await this.computeTechnicalRatingUseCase.execute(symbol); // TODO pu besoin
+      await this.computeFundamentalRatingUseCase.execute(entry.symbol);
     const averageDailyRange =
-      await this.computeAverageDailyRangeUseCase.execute(symbol);
+      await this.computeAverageDailyRangeUseCase.execute(entry.symbol);
 
     const numberOfDaysUntilNextEarningCall =
-      await this.getNumberOfDaysUntilNextEarningCall(symbol);
+      await this.getNumberOfDaysUntilNextEarningCall(entry.symbol); // TODO demander à trading view à la place
 
     return {
-      symbol,
+      symbol: entry.symbol,
+      exchange: entry.exchange,
+      industry: entry.industry,
+      sector: entry.sector,
       fundamentalRating,
-      technicalRating,
       averageDailyRange,
       numberOfDaysUntilNextEarningCall,
     };

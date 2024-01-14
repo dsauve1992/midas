@@ -16,9 +16,7 @@ export const useScreener = (): UseQueryResult<ScreenerEntry[]> => {
           chain(data)
             .filter((entry) => {
               return (
-                entry.fundamentalRating >= 50 &&
-                entry.technicalRating >= 50 &&
-                entry.averageDailyRange >= 2
+                entry.fundamentalRating >= 50 && entry.averageDailyRange >= 2
               );
             })
             .orderBy(

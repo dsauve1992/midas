@@ -28,8 +28,10 @@ export class ScreenerRepository {
         TableName: this.TABLE_NAME,
         Item: {
           symbol: screenerEntryEntity.symbol,
+          exchange: screenerEntryEntity.exchange,
+          sector: screenerEntryEntity.sector,
+          industry: screenerEntryEntity.industry,
           fundamentalRating: screenerEntryEntity.fundamentalRating,
-          technicalRating: screenerEntryEntity.technicalRating,
           numberOfDaysUntilNextEarningCall:
             screenerEntryEntity.numberOfDaysUntilNextEarningCall,
           averageDailyRange: screenerEntryEntity.averageDailyRange,

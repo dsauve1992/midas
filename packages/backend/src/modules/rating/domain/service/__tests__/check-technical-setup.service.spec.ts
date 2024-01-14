@@ -1,156 +1,68 @@
-import { createMock, DeepMocked } from '@golevelup/ts-jest';
-import { Test } from '@nestjs/testing';
-import { TechnicalIndicatorService } from '../technical-indicator.service';
 import { CheckTechnicalSetupService } from '../check-technical-setup.service';
+import { TradingViewScreenerEntry } from '../../../../screener/service/screener.service';
 
 describe('CheckTechnicalSetupService specs', () => {
-  let checkTechnicalSetupService: CheckTechnicalSetupService;
-  let technicalIndicatorService: DeepMocked<TechnicalIndicatorService>;
-
-  beforeEach(async () => {
-    const app = await Test.createTestingModule({
-      providers: [
-        CheckTechnicalSetupService,
-        {
-          provide: TechnicalIndicatorService,
-          useValue: createMock<TechnicalIndicatorService>(),
-        },
-      ],
-    }).compile();
-
-    checkTechnicalSetupService = app.get(CheckTechnicalSetupService);
-    technicalIndicatorService = app.get(TechnicalIndicatorService);
-  });
-
   test('it should have strong technical setup when sma50 is above sma200, current price, ema20 and ema10 are above sma50 and ema10 is above ema20', async () => {
-    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
-      currentSma200: 178.65,
-      currentSma150: 183.36,
-      currentSma50: 185.4,
-      currentEma20: 193.33,
-      currentEma10: 194.96,
-      currentPrice: 193.6,
-      sma200LastMonthPerformance: 2.47,
-      highRatio: 3.02,
-      lowRatio: 55.92,
-    });
-
     const strongTechnicalSetup =
-      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
+      await CheckTechnicalSetupService.hasStrongTechnicalSetup({
+        sma200: 178.65,
+        sma50: 185.4,
+        ema20: 193.33,
+        ema10: 194.96,
+        price: 193.6,
+      } as TradingViewScreenerEntry);
 
     expect(strongTechnicalSetup).toBe(true);
   });
 
   test('it should not have strong technical setup when sma50 is below sma200', async () => {
-    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
-      currentSma200: 178.65,
-      currentSma150: 183.36,
-      currentSma50: 2,
-      currentEma20: 193.33,
-      currentEma10: 194.96,
-      currentPrice: 193.6,
-      sma200LastMonthPerformance: 2.47,
-      highRatio: 3.02,
-      lowRatio: 55.92,
-    });
-
     const strongTechnicalSetup =
-      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
+      await CheckTechnicalSetupService.hasStrongTechnicalSetup({
+        sma200: 178.65,
+        sma50: 2,
+        ema20: 193.33,
+        ema10: 194.96,
+        price: 193.6,
+      } as TradingViewScreenerEntry);
 
     expect(strongTechnicalSetup).toBe(false);
   });
 
   test('it should not have strong technical setup when current price is below sma50', async () => {
-    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
-      currentSma200: 178.65,
-      currentSma150: 183.36,
-      currentSma50: 183.36,
-      currentEma20: 193.33,
-      currentEma10: 194.96,
-      currentPrice: 2,
-      sma200LastMonthPerformance: 2.47,
-      highRatio: 3.02,
-      lowRatio: 55.92,
-    });
-
     const strongTechnicalSetup =
-      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
+      await CheckTechnicalSetupService.hasStrongTechnicalSetup({
+        sma200: 178.65,
+        sma50: 183.36,
+        ema20: 193.33,
+        ema10: 194.96,
+        price: 2,
+      } as TradingViewScreenerEntry);
 
     expect(strongTechnicalSetup).toBe(false);
   });
 
   test('it should not have strong technical setup when ema10 is below sma50', async () => {
-    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
-      currentSma200: 178.65,
-      currentSma150: 183.36,
-      currentSma50: 185.4,
-      currentEma20: 193.33,
-      currentEma10: 2,
-      currentPrice: 193.6,
-      sma200LastMonthPerformance: 2.47,
-      highRatio: 3.02,
-      lowRatio: 55.92,
-    });
-
     const strongTechnicalSetup =
-      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
+      await CheckTechnicalSetupService.hasStrongTechnicalSetup({
+        sma200: 178.65,
+        sma50: 185.4,
+        ema20: 193.33,
+        ema10: 2,
+        price: 193.6,
+      } as TradingViewScreenerEntry);
 
     expect(strongTechnicalSetup).toBe(false);
   });
 
   test('it should not have strong technical setup when ema20 is below sma50', async () => {
-    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
-      currentSma200: 178.65,
-      currentSma150: 183.36,
-      currentSma50: 185.4,
-      currentEma20: 2,
-      currentEma10: 194.96,
-      currentPrice: 193.6,
-      sma200LastMonthPerformance: 2.47,
-      highRatio: 3.02,
-      lowRatio: 55.92,
-    });
-
     const strongTechnicalSetup =
-      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
-
-    expect(strongTechnicalSetup).toBe(false);
-  });
-
-  test('it should not have strong technical setup when ema10 is below sma20', async () => {
-    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
-      currentSma200: 178.65,
-      currentSma150: 183.36,
-      currentSma50: 185.4,
-      currentEma20: 193.33,
-      currentEma10: 192.96,
-      currentPrice: 193.6,
-      sma200LastMonthPerformance: 2.47,
-      highRatio: 3.02,
-      lowRatio: 55.92,
-    });
-
-    const strongTechnicalSetup =
-      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
-
-    expect(strongTechnicalSetup).toBe(false);
-  });
-
-  test('it should not have strong technical setup when sma200 is not rising since last month', async () => {
-    technicalIndicatorService.getTechnicalIndicators.mockResolvedValue({
-      currentSma200: 178.65,
-      currentSma150: 183.36,
-      currentSma50: 185.4,
-      currentEma20: 193.33,
-      currentEma10: 194.96,
-      currentPrice: 193.6,
-      sma200LastMonthPerformance: -3.01,
-      highRatio: 3.02,
-      lowRatio: 55.92,
-    });
-
-    const strongTechnicalSetup =
-      await checkTechnicalSetupService.hasStrongTechnicalSetup('AAPL');
+      await CheckTechnicalSetupService.hasStrongTechnicalSetup({
+        sma200: 178.65,
+        sma50: 185.4,
+        ema20: 2,
+        ema10: 194.96,
+        price: 193.6,
+      } as TradingViewScreenerEntry);
 
     expect(strongTechnicalSetup).toBe(false);
   });
