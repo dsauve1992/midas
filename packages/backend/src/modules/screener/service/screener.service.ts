@@ -4,6 +4,16 @@ import { firstValueFrom } from 'rxjs';
 import * as screenerParameters from './screenerParameter.json';
 import { ScreenerRepository } from '../repository/screener.repository';
 
+export type ScreenerEntryResponse = {
+  symbol: string;
+  exchange: string;
+  price: number;
+  ema10: number;
+  ema20: number;
+  sma50: number;
+  sma200: number;
+};
+
 @Injectable()
 export class ScreenerService {
   constructor(
@@ -11,7 +21,7 @@ export class ScreenerService {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  async search(): Promise<string[]> {
+  async search(): Promise<ScreenerEntryResponse[]> {
     const response = await firstValueFrom(
       this.httpService.post(
         'https://scanner.tradingview.com/global/scan',
@@ -19,7 +29,20 @@ export class ScreenerService {
       ),
     );
 
-    return response.data.data.map((entry: any) => entry.d[0]);
+    return response.data.data.map((entry: any) => {
+      const [exchange, symbol] = entry.s.split(':');
+      const [price, ema10, ema20, sma50, sma200] = entry.d;
+
+      return {
+        symbol,
+        exchange,
+        price,
+        ema10,
+        ema20,
+        sma50,
+        sma200,
+      };
+    });
   }
 
   async searchWithRating() {

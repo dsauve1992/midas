@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ComputeFundamentalRatingUseCase } from '../../rating/usecase/compute-fundamental-rating.use-case';
-import { ScreenerService } from '../service/screener.service';
+import {
+  ScreenerEntryResponse,
+  ScreenerService,
+} from '../service/screener.service';
 import { delay } from '../../../utils/delay';
 import { ScreenerRepository } from '../repository/screener.repository';
 import { Cron } from '@nestjs/schedule';
@@ -21,39 +24,39 @@ export class ComputeRatingScheduler {
     private computeFundamentalRatingUseCase: ComputeFundamentalRatingUseCase,
     private computeTechnicalRatingUseCase: ComputeTechnicalRatingUseCase,
     private computeAverageDailyRangeUseCase: ComputeAverageDailyRangeUseCase,
-    private checkTechnicalSetupUseCase: CheckTechnicalSetupService,
     private fmpService: FinancialModelingPrepService,
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('30 23 * * *', { timeZone: 'America/Montreal' })
+  @Cron('15 5 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
 
-      const symbols = await this.screenerFetcherService.search();
+      const results = await this.screenerFetcherService.search();
 
-      for (const symbol of symbols) {
-        await this.processSymbol(symbol);
+      for (const entry of results) {
+        await this.processScreenerEntry(entry);
       }
     } catch (e) {
       this.logger.error(e);
     }
   }
 
-  private async processSymbol(symbol: string) {
+  private async processScreenerEntry(entry: ScreenerEntryResponse) {
     try {
       const rightTechnicalSetup =
-        await this.checkTechnicalSetupUseCase.hasStrongTechnicalSetup(symbol);
+        await CheckTechnicalSetupService.hasStrongTechnicalSetup(entry);
 
       if (rightTechnicalSetup) {
-        const entry = await this.createScreenerEntry(symbol);
-        await this.screenerRepository.create(entry);
+        // TODO mieux expliciter la différence entre screener trading view vs screener interne
+        const midasEntry = await this.createScreenerEntry(entry.symbol);
+        await this.screenerRepository.create(midasEntry);
       }
 
       await delay(3000);
     } catch (e) {
-      this.logger.error(`error for ${symbol}`);
+      this.logger.error(`error for ${entry.symbol}`);
       this.logger.error(e);
     }
   }
@@ -64,7 +67,7 @@ export class ComputeRatingScheduler {
     const fundamentalRating =
       await this.computeFundamentalRatingUseCase.execute(symbol);
     const technicalRating =
-      await this.computeTechnicalRatingUseCase.execute(symbol);
+      await this.computeTechnicalRatingUseCase.execute(symbol); // TODO pu besoin
     const averageDailyRange =
       await this.computeAverageDailyRangeUseCase.execute(symbol);
 

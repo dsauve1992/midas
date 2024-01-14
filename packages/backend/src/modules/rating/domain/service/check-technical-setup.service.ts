@@ -1,26 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { TechnicalIndicatorService } from './technical-indicator.service';
+import { ScreenerEntryResponse } from '../../../screener/service/screener.service';
 
-@Injectable()
 export class CheckTechnicalSetupService {
-  constructor(private technicalIndicatorService: TechnicalIndicatorService) {}
+  static async hasStrongTechnicalSetup(entry: ScreenerEntryResponse) {
+    const { price, ema10, ema20, sma50, sma200 } = entry;
 
-  async hasStrongTechnicalSetup(symbol: string) {
-    const {
-      currentPrice,
-      currentSma200,
-      currentSma50,
-      currentEma20,
-      currentEma10,
-      sma200LastMonthPerformance,
-    } = await this.technicalIndicatorService.getTechnicalIndicators(symbol);
-
-    return (
-      sma200LastMonthPerformance > 0 &&
-      currentSma50 > currentSma200 &&
-      currentPrice > currentSma50 &&
-      currentEma20 > currentSma50 &&
-      currentEma10 > currentEma20
-    );
+    return sma50 > sma200 && ema10 > sma50 && ema20 > sma50 && price > sma50;
   }
 }

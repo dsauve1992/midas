@@ -45,7 +45,11 @@
     "tickers": []
   },
   "columns": [
-    "name"
+    "close",
+    "EMA10",
+    "EMA20",
+    "SMA50",
+    "SMA200"
   ],
   "range": [
     0,
