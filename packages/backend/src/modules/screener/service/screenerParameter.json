@@ -2,8 +2,8 @@
   "filter": [
     {
       "left": "type",
-      "operation": "equal",
-      "right": "stock"
+      "operation": "in_range",
+      "right": ["stock", "dr"]
     },
     {
       "left": "exchange",
@@ -27,7 +27,7 @@
     {
       "left": "SMA50",
       "operation": "greater",
-      "right": "SMA100"
+      "right": "SMA200"
     },
     {
       "left": "SMA100",

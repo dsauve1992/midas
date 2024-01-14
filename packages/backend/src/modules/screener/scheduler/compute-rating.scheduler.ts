@@ -26,7 +26,7 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('0 8 * * *', { timeZone: 'America/Montreal' })
+  @Cron('48 13 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
@@ -63,6 +63,7 @@ export class ComputeRatingScheduler {
   private async createScreenerEntry(
     entry: TradingViewScreenerEntry,
   ): Promise<ScreenerEntryEntity> {
+    const profile = await this.fmpService.getProfile(entry.symbol);
     const fundamentalRating =
       await this.computeFundamentalRatingUseCase.execute(entry.symbol);
     const averageDailyRange =
@@ -74,8 +75,8 @@ export class ComputeRatingScheduler {
     return {
       symbol: entry.symbol,
       exchange: entry.exchange,
-      industry: entry.industry,
-      sector: entry.sector,
+      industry: profile.industry,
+      sector: profile.sector,
       fundamentalRating,
       averageDailyRange,
       numberOfDaysUntilNextEarningCall,
