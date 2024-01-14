@@ -3,13 +3,14 @@ import { Card, CardContent, Grid, IconButton } from "@mui/material";
 import { MetricComparisonChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/MetricComparisonChart";
 import { TickerProfile } from "../../ticker/ui/TickerPage/header/TickerProfile";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard";
-import VitalSection from "../../ticker/ui/TickerPage/header/vital/VitalSection";
 import { useFinancialPerformance } from "../../ticker/ui/hooks/useFinancialPerformance.ts";
 import FinancialPeriod from "../../lib/FinancialPeriod.ts";
 import Box from "@mui/material/Box";
 import { useCompanyGeneralInformation } from "../../ticker/ui/hooks/useCompanyGeneralInformation.ts";
 import { LoadingBox } from "../../lib/ui/global/component/LoadingBox.tsx";
 import InfoIcon from "@mui/icons-material/Info";
+import { FundamentalRating } from "../../ticker/ui/TickerPage/header/vital/FundamentalRating.tsx";
+import { ReturnOnEquity } from "../../ticker/ui/TickerPage/header/vital/ReturnOnEquity.tsx";
 
 export interface Props {
   symbol: string;
@@ -39,7 +40,17 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
               </IconButton>
             </Box>
             <TickerProfile profile={profile!} />
-            <VitalSection profile={profile!} />
+            <Grid container>
+              <Grid item xs={6}>
+                <FundamentalRating
+                  size={"sm"}
+                  value={profile?.fundamentalRating}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <ReturnOnEquity size={"sm"} value={profile?.returnOnEquity} />
+              </Grid>
+            </Grid>
           </Box>
           <Box display="flex" flexGrow={2} paddingY={"10px"}>
             {earnings.length && (
