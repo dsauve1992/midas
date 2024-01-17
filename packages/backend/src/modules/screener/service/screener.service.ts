@@ -3,6 +3,8 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import * as screenerParameters from './screenerParameter.json';
 import { ScreenerRepository } from '../repository/screener.repository';
+import { chain } from 'lodash';
+import { ScreenerResponse } from '../../../shared-types/screener';
 
 export type TradingViewScreenerEntry = {
   symbol: string;
@@ -51,5 +53,51 @@ export class ScreenerService {
 
   async searchWithRating() {
     return this.screenerRepository.getAll();
+  }
+
+  async getHierarchy(): Promise<ScreenerResponse> {
+    const entries = await this.screenerRepository.getAll();
+
+    return {
+      sectors: chain(entries || [])
+        .groupBy('sector')
+        .map((value, key) => ({
+          name: key,
+          index: this.mapSectorNameToRelatedIndex(key),
+          industryGroups: chain(value)
+            .groupBy('industry')
+            .map((value, key) => ({
+              name: key,
+              stocks: value,
+            }))
+            .value(),
+        }))
+        .value(),
+    };
+  }
+
+  mapSectorNameToRelatedIndex(sectorName: string): string | null {
+    switch (sectorName) {
+      case 'Energy':
+        return 'XLE';
+      case 'Technology':
+        return 'XLK';
+      case 'Industrials':
+        return 'XLI';
+      case 'Financial Services':
+        return 'XLF';
+      case 'Communication Services':
+        return 'XLC';
+      case 'Healthcare':
+        return 'XLV';
+      case 'Real Estate':
+        return 'XLRE';
+      case 'Utilities':
+        return 'XLU';
+      case 'Financial':
+        return 'XLF';
+      default:
+        return null;
+    }
   }
 }

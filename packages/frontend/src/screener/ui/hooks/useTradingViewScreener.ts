@@ -1,14 +1,15 @@
 import { useQuery } from "react-query";
 import { UseQueryResult } from "react-query/types/react/types";
-import { ScreenerClient, ScreenerEntry } from "../../../api/ScreenerClient.ts";
+import { ScreenerClient } from "../../../api/ScreenerClient.ts";
 import { chain } from "lodash";
 import { useApiClientInstance } from "../../../api/useApiClient.ts";
+import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
 
-export const useScreener = (): UseQueryResult<ScreenerEntry[]> => {
+export const useScreener = (): UseQueryResult<ScreenerEntryEntity[]> => {
   const instance = useApiClientInstance(ScreenerClient);
 
   return {
-    ...useQuery<ScreenerEntry[]>(
+    ...useQuery<ScreenerEntryEntity[]>(
       [`screener`],
       () => instance.queryWithRatings(),
       {

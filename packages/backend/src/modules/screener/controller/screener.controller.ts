@@ -14,4 +14,9 @@ export class ScreenerController {
   async getScreenerWithRatings() {
     return this.screenerFetcherService.searchWithRating();
   }
+
+  @Get('/new')
+  async getNewScreener() {
+    return this.screenerFetcherService.getHierarchy();
+  }
 }

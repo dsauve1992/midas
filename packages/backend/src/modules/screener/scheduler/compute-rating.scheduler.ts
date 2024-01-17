@@ -7,7 +7,7 @@ import {
 import { ScreenerRepository } from '../repository/screener.repository';
 import { Cron } from '@nestjs/schedule';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { ScreenerEntryEntity } from '../domain/model/screener-entry.entity';
+import { ScreenerEntryEntity } from '../../../shared-types/screener-entry.entity';
 import { differenceInDays, parseISO } from 'date-fns';
 import { sortBy } from 'lodash';
 import { ComputeAverageDailyRangeUseCase } from '../../rating/usecase/compute-average-daily-range.use-case';
@@ -26,14 +26,12 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('48 13 * * *', { timeZone: 'America/Montreal' })
+  @Cron('45 2 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
 
       const results = await this.screenerFetcherService.search();
-
-      console.table(results);
 
       for (const entry of results) {
         await this.processScreenerEntry(entry);
@@ -51,7 +49,13 @@ export class ComputeRatingScheduler {
       if (rightTechnicalSetup) {
         // TODO mieux expliciter la différence entre screener trading view vs screener interne
         const midasEntry = await this.createScreenerEntry(entry);
-        await this.screenerRepository.create(midasEntry);
+        // TODO valider tous les filtres en même temps ?
+        const hasStrongFundamentals = midasEntry.fundamentalRating >= 50;
+        const hasStrongADR = midasEntry.averageDailyRange >= 2;
+
+        if (hasStrongFundamentals && hasStrongADR) {
+          await this.screenerRepository.create(midasEntry);
+        }
         await delay(3000);
       }
     } catch (e) {

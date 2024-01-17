@@ -6,7 +6,7 @@ type Props = {
   data: EarningsSurprise[];
 };
 export const EarningSurprisesChart = ({ data }: Props) => {
-  const comparisons = useEarningSurprisesComparison(data, 10);
+  const comparisons = useEarningSurprisesComparison(data, 4);
 
   return <MetricComparisonChart title="Earnings Suprises" data={comparisons} />;
 };
