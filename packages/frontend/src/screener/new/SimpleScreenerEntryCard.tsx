@@ -3,11 +3,10 @@ import { Box, Button, Drawer, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
 import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
 import { useState } from "react";
-import FinancialPeriod from "../../lib/FinancialPeriod.ts";
-import { useFinancialPerformance } from "../../ticker/ui/hooks/useFinancialPerformance.ts";
-import { MetricComparisonChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/MetricComparisonChart.tsx";
-import { useEarningSurprises } from "../../ticker/ui/hooks/useEarningSurprises.ts";
-import { EarningSurprisesChart } from "../../ticker/ui/TickerPage/sections/EarningSurprise/EarningSurprisesChart.tsx";
+import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
+import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneEpsChart.tsx";
+import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
+import { StandaloneInstitutionalOwnershipHistoryByQuarter } from "../../ticker/ui/TickerPage/sections/InstitutionalHolders/StandaloneInstitutionalOwnershipHistoryByQuarter.tsx";
 
 export interface StockScreenerTapeCardProps {
   entry: ScreenerEntryEntity;
@@ -57,32 +56,28 @@ export const SimpleScreenerEntryCard = ({
 
       {/*  TODO : découpler le card du drawer*/}
       <Drawer anchor={"right"} open={open} onClose={() => setOpen(!open)}>
-        <QuickTickerDetail symbol={symbol} />
+        <TickerDetailPanel symbol={symbol} />
       </Drawer>
     </>
   );
 };
 
-const QuickTickerDetail = (props: { symbol: string }) => {
+const TickerDetailPanel = (props: { symbol: string }) => {
   const { symbol } = props;
-
-  const { earnings, revenues } = useFinancialPerformance({
-    symbol,
-    period: FinancialPeriod.QUARTER,
-  });
-
-  const { data } = useEarningSurprises(symbol);
 
   return (
     <Box sx={{ width: 600 }} role="presentation" padding={"20px"}>
       <Box sx={{ height: 250 }} marginBottom="20px">
-        <MetricComparisonChart title="E.P.S" data={earnings} />
+        <StandaloneEpsChart symbol={symbol} />
       </Box>
       <Box sx={{ height: 250 }} marginBottom="20px">
-        <MetricComparisonChart title="Revenue" data={revenues} />
+        <StandaloneRevenueChart symbol={symbol} />
       </Box>
       <Box sx={{ height: 250 }} marginBottom="20px">
-        {data && <EarningSurprisesChart data={data} />}
+        <StandaloneEarningSurprisesChart symbol={symbol} />
+      </Box>
+      <Box sx={{ height: 250 }} marginBottom="20px">
+        <StandaloneInstitutionalOwnershipHistoryByQuarter symbol={symbol} />
       </Box>
     </Box>
   );

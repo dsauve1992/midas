@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@mui/material";
 import { useMemo } from "react";
 import { useOwnershipHistoryByQuarter } from "../../../hooks/useOwnershipHistoryByQuarter";
 import {
@@ -22,11 +21,5 @@ export const InstitutionalOwnershipHistoryByQuarter = ({ history }: Props) => {
     [quarters],
   );
 
-  return (
-    <Card>
-      <CardContent>
-        <InstitutionalOwnershipHistoryByQuarterBarChart data={chartData} />
-      </CardContent>
-    </Card>
-  );
+  return <InstitutionalOwnershipHistoryByQuarterBarChart data={chartData} />;
 };

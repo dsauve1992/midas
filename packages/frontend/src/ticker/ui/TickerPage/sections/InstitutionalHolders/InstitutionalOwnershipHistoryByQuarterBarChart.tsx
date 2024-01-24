@@ -64,5 +64,5 @@ export const InstitutionalOwnershipHistoryByQuarterBarChart = ({
 
   const epsRef = useEchart(options);
 
-  return <div ref={epsRef} style={{ height: 400, width: "100%" }} />;
+  return <div ref={epsRef} style={{ height: "100%", width: "100%" }} />;
 };

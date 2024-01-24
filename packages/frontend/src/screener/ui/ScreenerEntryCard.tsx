@@ -1,16 +1,15 @@
 import React from "react";
 import { Card, CardContent, Grid, IconButton } from "@mui/material";
-import { MetricComparisonChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/MetricComparisonChart";
 import { TickerProfile } from "../../ticker/ui/TickerPage/header/TickerProfile";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard";
-import { useFinancialPerformance } from "../../ticker/ui/hooks/useFinancialPerformance.ts";
-import FinancialPeriod from "../../lib/FinancialPeriod.ts";
 import Box from "@mui/material/Box";
 import { useCompanyGeneralInformation } from "../../ticker/ui/hooks/useCompanyGeneralInformation.ts";
 import { LoadingBox } from "../../lib/ui/global/component/LoadingBox.tsx";
 import InfoIcon from "@mui/icons-material/Info";
 import { FundamentalRating } from "../../ticker/ui/TickerPage/header/vital/FundamentalRating.tsx";
 import { ReturnOnEquity } from "../../ticker/ui/TickerPage/header/vital/ReturnOnEquity.tsx";
+import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneEpsChart.tsx";
+import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
 
 export interface Props {
   symbol: string;
@@ -19,11 +18,6 @@ export interface Props {
 export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
   symbol,
 }) => {
-  const { earnings, revenues } = useFinancialPerformance({
-    symbol,
-    period: FinancialPeriod.QUARTER,
-  });
-
   const { isLoading: profileLoading, data: profile } =
     useCompanyGeneralInformation(symbol!);
 
@@ -53,22 +47,10 @@ export const ScreenerEntryCard: React.FunctionComponent<Props> = ({
             </Grid>
           </Box>
           <Box display="flex" flexGrow={2} paddingY={"10px"}>
-            {earnings.length && (
-              <MetricComparisonChart
-                title="E.P.S"
-                key={symbol}
-                data={earnings}
-              />
-            )}
+            <StandaloneEpsChart symbol={symbol} />
           </Box>
           <Box display="flex" flexGrow={2} paddingY={"10px"}>
-            {revenues.length && (
-              <MetricComparisonChart
-                title="Revenue"
-                key={symbol}
-                data={revenues}
-              />
-            )}
+            <StandaloneRevenueChart symbol={symbol} />
           </Box>
         </Box>
       </Grid>

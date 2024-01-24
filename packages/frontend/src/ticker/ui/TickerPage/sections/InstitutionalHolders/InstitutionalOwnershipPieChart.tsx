@@ -1,6 +1,4 @@
 import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import { EChartOption } from "echarts";
 import { useOwnershipPercentages } from "../../../hooks/useOwnershipPercentages";
 import { useEchart } from "../../../../../lib/ui/chart/hooks/useEchart";
@@ -46,11 +44,5 @@ export const InstitutionalOwnershipPieChart: React.FunctionComponent<Props> = ({
   };
 
   const epsRef = useEchart(options);
-  return (
-    <Card>
-      <CardContent>
-        <div ref={epsRef} style={{ height: 400, width: "100%" }} />
-      </CardContent>
-    </Card>
-  );
+  return <div ref={epsRef} style={{ height: "100%", width: "100%" }} />;
 };

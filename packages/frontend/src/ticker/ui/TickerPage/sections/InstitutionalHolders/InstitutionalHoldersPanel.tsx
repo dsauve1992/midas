@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Card, CardContent, Grid } from "@mui/material";
 import { InstitutionalOwnershipHistoryByQuarter } from "./InstitutionalOwnershipHistoryByQuarter";
 import { InstitutionalOwnershipPieChart } from "./InstitutionalOwnershipPieChart";
 import { InstitutionalOwnershipHistoryByShareholders } from "./InstitutionalOwnershipHistoryByShareholders";
@@ -23,10 +23,18 @@ const InstitutionalHoldersPanel: React.FunctionComponent<Props> = ({
   return history?.length && topShareholders?.length ? (
     <Grid container spacing={2}>
       <Grid item xs={9}>
-        <InstitutionalOwnershipHistoryByQuarter history={history} />
+        <Card>
+          <CardContent sx={{ height: 400 }}>
+            <InstitutionalOwnershipHistoryByQuarter history={history} />
+          </CardContent>
+        </Card>
       </Grid>
       <Grid item xs={3}>
-        <InstitutionalOwnershipPieChart data={topShareholders} />
+        <Card>
+          <CardContent sx={{ height: 400 }}>
+            <InstitutionalOwnershipPieChart data={topShareholders} />
+          </CardContent>
+        </Card>
       </Grid>
       <Grid item xs={12}>
         <InstitutionalOwnershipHistoryByShareholders data={topShareholders} />

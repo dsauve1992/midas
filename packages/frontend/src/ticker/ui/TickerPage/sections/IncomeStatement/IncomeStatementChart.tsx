@@ -1,6 +1,7 @@
 import FinancialPeriod from "../../../../../lib/FinancialPeriod";
-import YearToYearQuarterlyComparisonChart from "./YearToYearQuarterlyComparisonChart";
-import YearlyComparisonChart from "./YearToYearEpsComparisonChart";
+import { StandaloneEpsChart } from "./StandaloneEpsChart.tsx";
+import { Grid } from "@mui/material";
+import { StandaloneRevenueChart } from "./StandaloneRevenueChart.tsx";
 
 type Props = {
   symbol: string;
@@ -8,8 +9,17 @@ type Props = {
 };
 export const IncomeStatementChart = ({ symbol, frequency }: Props) => {
   if (frequency === FinancialPeriod.QUARTER) {
-    return <YearToYearQuarterlyComparisonChart symbol={symbol} />;
+    return (
+      <Grid container spacing={2} height="100%">
+        <Grid item xs={6}>
+          <StandaloneEpsChart symbol={symbol} />
+        </Grid>
+        <Grid item xs={6}>
+          <StandaloneRevenueChart symbol={symbol} />
+        </Grid>
+      </Grid>
+    );
   }
 
-  return <YearlyComparisonChart symbol={symbol} />;
+  return <StandaloneEpsChart symbol={symbol} period={FinancialPeriod.ANNUAL} />;
 };
