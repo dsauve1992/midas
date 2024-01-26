@@ -4,7 +4,6 @@ import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.t
 type TradingViewTapeCardProps = {
   symbol: string;
   interval?: "D" | "15";
-  range?: "1M" | "2M" | "3M" | "6M" | "12M";
   withDateRanges?: boolean;
   hideTopToolbar?: boolean;
 };
@@ -12,7 +11,6 @@ type TradingViewTapeCardProps = {
 export default function TradingViewTapeCard({
   symbol,
   interval = "D",
-  range = "6M",
   withDateRanges = true,
   hideTopToolbar = false,
 }: TradingViewTapeCardProps) {
@@ -31,7 +29,7 @@ export default function TradingViewTapeCard({
       return new window.TradingView.widget({
         autosize: true,
         symbol,
-        interval: interval,
+        interval,
         timezone: "Etc/UTC",
         theme: "dark",
         style: "1",
@@ -57,7 +55,6 @@ export default function TradingViewTapeCard({
             },
           },
         ],
-        range,
         hide_side_toolbar: true,
         allow_symbol_change: false,
         details: false,
@@ -68,7 +65,7 @@ export default function TradingViewTapeCard({
     }
 
     return null;
-  }, [containerId, hideTopToolbar, interval, range, symbol, withDateRanges]);
+  }, [containerId, hideTopToolbar, interval, symbol, withDateRanges]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

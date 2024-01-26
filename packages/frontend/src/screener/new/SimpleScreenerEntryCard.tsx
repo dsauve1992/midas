@@ -53,8 +53,8 @@ export const SimpleScreenerEntryCard = ({
       <Box height={"600px"}>
         <TradingViewTapeCard
           symbol={`${exchange}:${symbol}`}
-          withDateRanges={false}
-          range={"3M"}
+          withDateRanges={true}
+          interval={"D"}
           hideTopToolbar
         />
       </Box>
