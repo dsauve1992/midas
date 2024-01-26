@@ -6,7 +6,7 @@ type TradingViewTapeCardProps = {
   interval?: "D" | "15";
   range?: "1M" | "2M" | "3M" | "6M" | "12M";
   withDateRanges?: boolean;
-  hideTopToolbar: boolean;
+  hideTopToolbar?: boolean;
 };
 
 export default function TradingViewTapeCard({
