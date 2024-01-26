@@ -1,4 +1,3 @@
-import { SelectableElement } from "./StockTree.tsx";
 import { Grid, Typography } from "@mui/material";
 import { SimpleScreenerEntryCard } from "./SimpleScreenerEntryCard.tsx";
 import {
@@ -8,23 +7,7 @@ import {
 import Box from "@mui/material/Box";
 import TradingViewSimpleDailyTapeCard from "../../lib/ui/chart/TradingViewSimpleDailyTapeCard.tsx";
 
-export type SelectionDetailProps = {
-  selection: SelectableElement;
-};
-
-export const SelectionDetail = (props: SelectionDetailProps) => {
-  const { selection } = props;
-
-  if (selection instanceof SectorTickerCollection) {
-    return <SectorDetail sector={selection} />;
-  }
-
-  if (selection instanceof IndustryGroupTickerCollection) {
-    return <IndustryGroupDetail group={selection} />;
-  }
-};
-
-const SectorDetail = (props: { sector: SectorTickerCollection }) => {
+export const SectorDetail = (props: { sector: SectorTickerCollection }) => {
   const { sector } = props;
 
   return (

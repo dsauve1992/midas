@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-import { SelectableElement, StockTree } from "./StockTree.tsx";
-import { SelectionDetail } from "./SelectionDetail.tsx";
+import { StockTree } from "./StockTree.tsx";
 import { useNewScreener } from "../ui/hooks/useNewScreener.ts";
+import { SectorTickerCollection } from "../domain/NestedTickerCollection.ts";
+import { SectorDetail } from "./SelectionDetail.tsx";
 
 export interface Props {}
 
 export const NewScreenerPage: React.FunctionComponent<Props> = () => {
   const { data, isLoading } = useNewScreener();
 
-  const [selection, setSelection] = useState<SelectableElement>();
+  const [selection, setSelection] = useState<SectorTickerCollection>();
 
-  const handleSelectElement = (element: SelectableElement) => {
+  const handleSelectElement = (element: SectorTickerCollection) => {
     setSelection(element);
   };
 
@@ -30,7 +31,7 @@ export const NewScreenerPage: React.FunctionComponent<Props> = () => {
           />
         </Box>
         <Box height={"100%"} width={"100%"} overflow="auto">
-          {selection && <SelectionDetail selection={selection} />}
+          {selection && <SectorDetail sector={selection} />}
         </Box>
       </Box>
     );

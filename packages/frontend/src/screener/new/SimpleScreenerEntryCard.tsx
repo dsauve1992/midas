@@ -1,4 +1,3 @@
-import TradingViewSimpleDailyTapeCard from "../../lib/ui/chart/TradingViewSimpleDailyTapeCard.tsx";
 import { Box, Button, Drawer, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
 import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
@@ -7,6 +6,7 @@ import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sect
 import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneEpsChart.tsx";
 import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
 import { StandaloneInstitutionalOwnershipHistoryByQuarter } from "../../ticker/ui/TickerPage/sections/InstitutionalHolders/StandaloneInstitutionalOwnershipHistoryByQuarter.tsx";
+import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
 
 export interface StockScreenerTapeCardProps {
   entry: ScreenerEntryEntity;
@@ -51,7 +51,12 @@ export const SimpleScreenerEntryCard = ({
         <WatchlistToggleButton symbol={symbol} />
       </Box>
       <Box height={"600px"}>
-        <TradingViewSimpleDailyTapeCard symbol={`${exchange}:${symbol}`} />
+        <TradingViewTapeCard
+          symbol={`${exchange}:${symbol}`}
+          withDateRanges={false}
+          range={"3M"}
+          hideTopToolbar
+        />
       </Box>
 
       {/*  TODO : découpler le card du drawer*/}

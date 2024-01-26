@@ -4,11 +4,17 @@ import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.t
 type TradingViewTapeCardProps = {
   symbol: string;
   interval?: "D" | "15";
+  range?: "1M" | "2M" | "3M" | "6M" | "12M";
+  withDateRanges?: boolean;
+  hideTopToolbar: boolean;
 };
 
 export default function TradingViewTapeCard({
   symbol,
   interval = "D",
+  range = "6M",
+  withDateRanges = true,
+  hideTopToolbar = false,
 }: TradingViewTapeCardProps) {
   const tradingViewReady = useTradingViewContext();
   const containerId = useMemo(
@@ -32,9 +38,9 @@ export default function TradingViewTapeCard({
         locale: "en",
         toolbar_bg: "#f1f3f6",
         enable_publishing: false,
-        withdateranges: true,
+        withdateranges: withDateRanges,
+        hide_top_toolbar: hideTopToolbar,
         fullscreen: true,
-        // range: '1M',
         studies: [
           {
             id: "MAExp@tv-basicstudies",
@@ -51,6 +57,7 @@ export default function TradingViewTapeCard({
             },
           },
         ],
+        range,
         hide_side_toolbar: true,
         allow_symbol_change: false,
         details: false,
@@ -61,7 +68,7 @@ export default function TradingViewTapeCard({
     }
 
     return null;
-  }, [containerId, symbol]);
+  }, [containerId, hideTopToolbar, interval, range, symbol, withDateRanges]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
