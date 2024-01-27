@@ -55,6 +55,7 @@ export const SimpleScreenerEntryCard = ({
           symbol={`${exchange}:${symbol}`}
           withDateRanges={true}
           interval={"D"}
+          range={"3m"}
           hideTopToolbar
         />
       </Box>

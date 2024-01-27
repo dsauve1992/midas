@@ -3,7 +3,8 @@ import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.t
 
 type TradingViewTapeCardProps = {
   symbol: string;
-  interval?: "D" | "15";
+  interval?: "D" | "15" | "60";
+  range?: "1m" | "3m" | "6m" | "12m";
   withDateRanges?: boolean;
   hideTopToolbar?: boolean;
 };
@@ -11,6 +12,7 @@ type TradingViewTapeCardProps = {
 export default function TradingViewTapeCard({
   symbol,
   interval = "D",
+  range = "12m",
   withDateRanges = true,
   hideTopToolbar = false,
 }: TradingViewTapeCardProps) {
@@ -30,6 +32,7 @@ export default function TradingViewTapeCard({
         autosize: true,
         symbol,
         interval,
+        range,
         timezone: "Etc/UTC",
         theme: "dark",
         style: "1",
@@ -65,7 +68,7 @@ export default function TradingViewTapeCard({
     }
 
     return null;
-  }, [containerId, hideTopToolbar, interval, symbol, withDateRanges]);
+  }, [containerId, hideTopToolbar, interval, range, symbol, withDateRanges]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
