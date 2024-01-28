@@ -78,24 +78,26 @@ export class ScreenerService {
 
   mapSectorNameToRelatedIndex(sectorName: string): string | null {
     switch (sectorName) {
-      case 'Energy':
-        return 'XLE';
       case 'Technology':
         return 'XLK';
-      case 'Industrials':
-        return 'XLI';
-      case 'Financial Services':
-        return 'XLF';
       case 'Communication Services':
         return 'XLC';
+      case 'Financial Services':
+        return 'XLF';
       case 'Healthcare':
         return 'XLV';
+      case 'Industrials':
+        return 'XLI';
+      case 'Consumer Discretionary':
+        return 'XLY';
+      case 'Consumer Staples':
+        return 'XLP';
       case 'Real Estate':
         return 'XLRE';
       case 'Utilities':
         return 'XLU';
-      case 'Financial':
-        return 'XLF';
+      case 'Energy':
+        return 'XLE';
       default:
         return null;
     }
