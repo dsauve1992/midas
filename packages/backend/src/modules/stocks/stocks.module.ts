@@ -14,6 +14,7 @@ import { OwnershipModule } from '../ownership/ownership.module';
 import { QuarterlyIncomeStatementMapper } from './controller/mapper/quarterly-income-statement.mapper';
 import { GetAnnuallyIncomeStatementUseCase } from './usecase/get-annually-income-statement.use-case';
 import { AnnuallyIncomeStatementMapper } from './controller/mapper/annually-income-statement.mapper';
+import { GetAnnualAnalystEstimatesUseCase } from './usecase/get-annual-analyst-estimates-use-case.service';
 
 @Module({
   controllers: [StocksController],
@@ -32,6 +33,7 @@ import { AnnuallyIncomeStatementMapper } from './controller/mapper/annually-inco
     GetQuarterlyIncomeStatementUseCase,
     GetAnnuallyIncomeStatementUseCase,
     GetEarningCallTranscriptSummaryUseCase,
+    GetAnnualAnalystEstimatesUseCase,
     QuarterlyIncomeStatementMapper,
     AnnuallyIncomeStatementMapper,
   ],

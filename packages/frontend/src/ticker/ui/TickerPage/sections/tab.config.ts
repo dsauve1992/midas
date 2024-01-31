@@ -5,14 +5,16 @@ import InsiderTradingPanel from "./Insider/InsiderTradingPanel";
 import InstitutionalHoldersPanel from "./InstitutionalHolders/InstitutionalHoldersPanel";
 import SocialSentimentPanel from "./SocialSentiment/SocialSentimentPanel";
 import EarningCallTranscriptPanel from "./EarningCallTranscript/EarningCallTranscriptPanel";
+import AnalystEstimatesPanel from "./AnalystEstimates/AnalystEstimatesPanel.tsx";
 
 export enum TickerPageTab {
   INCOME_STATEMENT_TAB = "1",
   EARNING_CALL_TRANSCRIPT = "2",
   EARNING_SURPRISE_TAB = "3",
-  INSIDER_TRADING_TAB = "4",
-  INSTITUTIONAL_HOLDERS_TAB = "5",
-  SOCIAL_SENTIMENT = "6",
+  ANALYST_ESTIMATES_TAB = "4",
+  INSIDER_TRADING_TAB = "5",
+  INSTITUTIONAL_HOLDERS_TAB = "6",
+  SOCIAL_SENTIMENT = "7",
 }
 
 export type TabsConfig = {
@@ -36,6 +38,11 @@ export const config: TabsConfig = [
     id: TickerPageTab.EARNING_SURPRISE_TAB,
     label: "Earning Surprises",
     PanelComponent: EarningsSurprisesPanel,
+  },
+  {
+    id: TickerPageTab.ANALYST_ESTIMATES_TAB,
+    label: "Analyst Estimates",
+    PanelComponent: AnalystEstimatesPanel,
   },
   {
     id: TickerPageTab.INSIDER_TRADING_TAB,

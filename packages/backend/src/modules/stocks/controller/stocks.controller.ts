@@ -12,6 +12,7 @@ import { QuarterlyIncomeStatementMapper } from './mapper/quarterly-income-statem
 import { AnnuallyIncomeStatementMapper } from './mapper/annually-income-statement.mapper';
 import { GetAnnuallyIncomeStatementUseCase } from '../usecase/get-annually-income-statement.use-case';
 import { AuthGuard } from '@nestjs/passport';
+import { GetAnnualAnalystEstimatesUseCase } from '../usecase/get-annual-analyst-estimates-use-case.service';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('stocks/:symbol')
@@ -25,6 +26,7 @@ export class StocksController {
     private getQuarterlyIncomeStatementUseCase: GetQuarterlyIncomeStatementUseCase,
     private getAnnuallyIncomeStatementUseCase: GetAnnuallyIncomeStatementUseCase,
     private getEarningCallTranscriptSummaryUseCase: GetEarningCallTranscriptSummaryUseCase,
+    private getAnalystEstimatesUseCase: GetAnnualAnalystEstimatesUseCase,
     private quarterlyIncomeStatementMapper: QuarterlyIncomeStatementMapper,
     private annuallyIncomeStatementMapper: AnnuallyIncomeStatementMapper,
   ) {}
@@ -83,5 +85,10 @@ export class StocksController {
   @Get('social-sentiment')
   getSocialSentiment(@Param('symbol') symbol: string) {
     return this.getSocialSentimentUseCase.execute(symbol);
+  }
+
+  @Get('analyst-estimates')
+  getEstimates(@Param('symbol') symbol: string) {
+    return this.getAnalystEstimatesUseCase.execute(symbol);
   }
 }

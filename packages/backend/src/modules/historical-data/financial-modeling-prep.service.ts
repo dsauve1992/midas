@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import {
+  AnalystEstimateEntry,
   EarningCalendarEntry,
   EarningCallTranscript,
   EarningsSurprise,
@@ -123,6 +124,12 @@ export class FinancialModelingPrepService {
   async getEarningCalendar(symbol: string) {
     return this.fetch<EarningCalendarEntry[]>(
       `/v3/historical/earning_calendar/${symbol}`,
+    );
+  }
+
+  async getAnalystEstimates(symbol: string, period: 'annual' | 'quarter') {
+    return this.fetch<AnalystEstimateEntry[]>(
+      `/v3/analyst-estimates/${symbol}?period=${period}`,
     );
   }
 

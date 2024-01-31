@@ -300,6 +300,31 @@ export type EarningCalendarEntry = {
   fiscalDateEnding: string;
 };
 
+export type AnalystEstimateEntry = {
+  symbol: string;
+  date: string;
+  estimatedRevenueLow: number;
+  estimatedRevenueHigh: number;
+  estimatedRevenueAvg: number;
+  estimatedEbitdaLow: number;
+  estimatedEbitdaHigh: number;
+  estimatedEbitdaAvg: number;
+  estimatedEbitLow: number;
+  estimatedEbitHigh: number;
+  estimatedEbitAvg: number;
+  estimatedNetIncomeLow: number;
+  estimatedNetIncomeHigh: number;
+  estimatedNetIncomeAvg: number;
+  estimatedSgaExpenseLow: number;
+  estimatedSgaExpenseHigh: number;
+  estimatedSgaExpenseAvg: number;
+  estimatedEpsAvg: number;
+  estimatedEpsHigh: number;
+  estimatedEpsLow: number;
+  numberAnalystEstimatedRevenue: number;
+  numberAnalystsEstimatedEps: number;
+};
+
 export type TechnicalRecord = OHLCVRecord & {
   sma?: number;
   ema?: number;
