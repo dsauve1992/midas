@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { SimpleScreenerEntryCard } from "./SimpleScreenerEntryCard.tsx";
+import { TickerCard } from "./TickerCard.tsx";
 import {
   IndustryGroupTickerCollection,
   SectorTickerCollection,
@@ -39,7 +39,7 @@ const IndustryGroupDetail = (props: {
         {group.name}
       </Typography>
       {group.listEntities().map((entry) => (
-        <SimpleScreenerEntryCard entry={entry} />
+        <TickerCard entry={entry} />
       ))}
     </Box>
   );

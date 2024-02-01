@@ -1,23 +1,25 @@
 import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
 import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
 import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneEpsChart.tsx";
 import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
 import { StandaloneInstitutionalOwnershipHistoryByQuarter } from "../../ticker/ui/TickerPage/sections/InstitutionalHolders/StandaloneInstitutionalOwnershipHistoryByQuarter.tsx";
+import { useInViewport } from "react-in-viewport";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
 
 export interface StockScreenerTapeCardProps {
   entry: ScreenerEntryEntity;
 }
 
-export const SimpleScreenerEntryCard = ({
-  entry,
-}: StockScreenerTapeCardProps) => {
+export const TickerCard = ({ entry }: StockScreenerTapeCardProps) => {
   const { exchange, symbol, averageDailyRange } = entry;
 
   const [open, setOpen] = useState<boolean>(false);
+
+  const ref = useRef(null);
+  const { enterCount } = useInViewport(ref);
 
   return (
     <Box marginBottom="40px">
@@ -50,27 +52,29 @@ export const SimpleScreenerEntryCard = ({
         </Box>
         <WatchlistToggleButton symbol={symbol} />
       </Box>
-      <Box height={"600px"}>
-        <Grid container height={"100%"}>
-          <Grid item xs={6}>
-            <TradingViewTapeCard
-              symbol={`${exchange}:${symbol}`}
-              withDateRanges={true}
-              interval={"D"}
-              range={"3m"}
-              hideTopToolbar
-            />
+      <Box height={"600px"} ref={ref}>
+        {enterCount && (
+          <Grid container height={"100%"}>
+            <Grid item xs={6}>
+              <TradingViewTapeCard
+                symbol={`${exchange}:${symbol}`}
+                withDateRanges={true}
+                interval={"D"}
+                range={"3m"}
+                hideTopToolbar
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TradingViewTapeCard
+                symbol={`${exchange}:${symbol}`}
+                withDateRanges={true}
+                interval={"60"}
+                range={"5d"}
+                hideTopToolbar
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <TradingViewTapeCard
-              symbol={`${exchange}:${symbol}`}
-              withDateRanges={true}
-              interval={"60"}
-              range={"5d"}
-              hideTopToolbar
-            />
-          </Grid>
-        </Grid>
+        )}
       </Box>
 
       <Drawer anchor={"right"} open={open} onClose={() => setOpen(!open)}>
