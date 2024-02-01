@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, Typography } from "@mui/material";
+import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
 import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
 import { useState } from "react";
@@ -20,7 +20,7 @@ export const SimpleScreenerEntryCard = ({
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <>
+    <Box marginBottom="40px">
       <Box
         display="flex"
         alignItems="center"
@@ -51,20 +51,32 @@ export const SimpleScreenerEntryCard = ({
         <WatchlistToggleButton symbol={symbol} />
       </Box>
       <Box height={"600px"}>
-        <TradingViewTapeCard
-          symbol={`${exchange}:${symbol}`}
-          withDateRanges={true}
-          interval={"D"}
-          range={"3m"}
-          hideTopToolbar
-        />
+        <Grid container height={"100%"}>
+          <Grid item xs={6}>
+            <TradingViewTapeCard
+              symbol={`${exchange}:${symbol}`}
+              withDateRanges={true}
+              interval={"D"}
+              range={"3m"}
+              hideTopToolbar
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TradingViewTapeCard
+              symbol={`${exchange}:${symbol}`}
+              withDateRanges={true}
+              interval={"60"}
+              range={"5d"}
+              hideTopToolbar
+            />
+          </Grid>
+        </Grid>
       </Box>
 
-      {/*  TODO : découpler le card du drawer*/}
       <Drawer anchor={"right"} open={open} onClose={() => setOpen(!open)}>
         <TickerDetailPanel symbol={symbol} />
       </Drawer>
-    </>
+    </Box>
   );
 };
 

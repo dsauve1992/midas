@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { SimpleScreenerEntryCard } from "./SimpleScreenerEntryCard.tsx";
 import {
   IndustryGroupTickerCollection,
@@ -38,13 +38,9 @@ const IndustryGroupDetail = (props: {
       <Typography variant="h3" marginBottom={"25px"}>
         {group.name}
       </Typography>
-      <Grid container columnSpacing={5} rowSpacing={15} width={"100%"}>
-        {group.listEntities().map((entry) => (
-          <Grid item xs={12} sm={6} key={entry.symbol}>
-            <SimpleScreenerEntryCard entry={entry} />
-          </Grid>
-        ))}
-      </Grid>
+      {group.listEntities().map((entry) => (
+        <SimpleScreenerEntryCard entry={entry} />
+      ))}
     </Box>
   );
 };
