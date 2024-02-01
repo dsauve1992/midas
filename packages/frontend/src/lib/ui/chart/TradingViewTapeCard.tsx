@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef } from "react";
 import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.tsx";
 
 type TradingViewTapeCardProps = {
@@ -9,7 +9,7 @@ type TradingViewTapeCardProps = {
   hideTopToolbar?: boolean;
 };
 
-export default function TradingViewTapeCard({
+function TradingViewTapeCard({
   symbol,
   interval = "D",
   range = "12m",
@@ -85,3 +85,5 @@ export default function TradingViewTapeCard({
 
   return <div id={containerId} style={{ height: "100%" }} />;
 }
+
+export default memo(TradingViewTapeCard);
