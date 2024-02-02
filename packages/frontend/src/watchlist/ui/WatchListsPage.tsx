@@ -1,37 +1,16 @@
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Grid, List, Typography } from "@mui/material";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard";
 import { useGetWatchlist } from "./hooks/useGetWatchlist.ts";
-import { AutoSizer, List } from "react-virtualized";
-import { ListRowRenderer } from "react-virtualized/dist/es/List";
 import { WatchlistToggleButton } from "./WatchlistToggleButton.tsx";
 import Box from "@mui/material/Box";
 
 export const WatchListsPage = () => {
   const { data: symbols } = useGetWatchlist();
-
-  const rowRender: ListRowRenderer = ({ index, key, style }) => {
-    return (
-      <div style={style} key={key}>
-        <WatchListTicker symbol={symbols?.[index] || ""} />
-      </div>
-    );
-  };
-
   return (
     <>
-      <AutoSizer>
-        {({ width, height }) => (
-          <List
-            ref="List"
-            height={height}
-            rowCount={symbols?.length || 0}
-            overscanRowCount={10}
-            rowHeight={800}
-            rowRenderer={rowRender}
-            width={width}
-          />
-        )}
-      </AutoSizer>
+      <List sx={{ width: "100%" }}>
+        {symbols?.map((el) => <WatchListTicker symbol={el} key={el} />)}
+      </List>
     </>
   );
 };
