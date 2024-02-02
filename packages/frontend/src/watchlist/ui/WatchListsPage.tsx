@@ -3,6 +3,8 @@ import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard";
 import { useGetWatchlist } from "./hooks/useGetWatchlist.ts";
 import { WatchlistToggleButton } from "./WatchlistToggleButton.tsx";
 import Box from "@mui/material/Box";
+import { useRef } from "react";
+import { useInViewport } from "react-in-viewport";
 
 export const WatchListsPage = () => {
   const { data: symbols } = useGetWatchlist();
@@ -16,9 +18,12 @@ export const WatchListsPage = () => {
 };
 
 export const WatchListTicker = ({ symbol }: { symbol: string }) => {
+  const ref = useRef(null);
+  const { enterCount } = useInViewport(ref);
+
   return (
-    <Card sx={{ height: "100%" }}>
-      <CardContent sx={{ height: "100%" }}>
+    <Card ref={ref}>
+      <CardContent>
         <Box
           display={"flex"}
           alignItems={"center"}
@@ -28,12 +33,24 @@ export const WatchListTicker = ({ symbol }: { symbol: string }) => {
           <WatchlistToggleButton symbol={symbol} />
         </Box>
 
-        <Grid container spacing={2} height="100%" alignItems="center">
-          <Grid item xs={6} height="100%">
-            <TradingViewTapeCard symbol={symbol} interval={"D"} range={"3m"} />
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={6} height="600px">
+            {enterCount > 0 && (
+              <TradingViewTapeCard
+                symbol={symbol}
+                interval={"D"}
+                range={"3m"}
+              />
+            )}
           </Grid>
-          <Grid item xs={6} height="100%">
-            <TradingViewTapeCard symbol={symbol} interval="60" range={"5d"} />
+          <Grid item xs={6} height="600px">
+            {enterCount > 0 && (
+              <TradingViewTapeCard
+                symbol={symbol}
+                interval={"60"}
+                range={"5d"}
+              />
+            )}
           </Grid>
         </Grid>
       </CardContent>
