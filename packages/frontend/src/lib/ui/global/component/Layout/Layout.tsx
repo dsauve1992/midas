@@ -5,11 +5,10 @@ import MidasMenu from "../Menu/MidasMenu.tsx";
 import { Route, Routes } from "react-router-dom";
 import { DashboardPage } from "../../../../../ticker/ui/Dashboard/DashboardPage.tsx";
 import TickerPage from "../../../../../ticker/ui/TickerPage/TickerPage.tsx";
-import ScreenerPage from "../../../../../screener/ui/ScreenerPage.tsx";
 import { ToolsPage } from "../../../../../tools/ToolsPage.tsx";
 import { WatchListsPage } from "../../../../../watchlist/ui/WatchListsPage.tsx";
 import { useElementSize } from "usehooks-ts";
-import NewScreenerPage from "../../../../../screener/new/NewScreenerPage.tsx";
+import ScreenerPage from "../../../../../screener/new/ScreenerPage.tsx";
 
 const Layout: React.FunctionComponent = () => {
   const [squareRef, { height }] = useElementSize();
@@ -36,7 +35,6 @@ const Layout: React.FunctionComponent = () => {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/ticker/:id/*" element={<TickerPage />} />
             <Route path="/screener" element={<ScreenerPage />} />
-            <Route path="/new-screener" element={<NewScreenerPage />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/watchlist" element={<WatchListsPage />} />
           </Routes>

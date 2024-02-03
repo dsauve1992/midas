@@ -21,8 +21,8 @@ export const SectorDetail = (props: { sector: SectorTickerCollection }) => {
         </Box>
       )}
 
-      {sector.children().map((entry) => (
-        <IndustryGroupDetail key={entry.name} group={entry} />
+      {sector.industryGroups.map((group) => (
+        <IndustryGroupDetail key={group.name} group={group} />
       ))}
     </Box>
   );
@@ -38,8 +38,8 @@ const IndustryGroupDetail = (props: {
       <Typography variant="h3" marginBottom={"25px"}>
         {group.name}
       </Typography>
-      {group.listEntities().map((entry) => (
-        <TickerCard entry={entry} />
+      {group.tickers.map((ticker) => (
+        <TickerCard ticker={ticker} key={ticker.symbol} />
       ))}
     </Box>
   );

@@ -4,7 +4,7 @@ import { ScreenerClient } from "../../../api/ScreenerClient.ts";
 import { useApiClientInstance } from "../../../api/useApiClient.ts";
 import { SectorTickerCollection } from "../../domain/NestedTickerCollection.ts";
 
-export const useNewScreener = (): UseQueryResult<SectorTickerCollection[]> => {
+export const useScreener = (): UseQueryResult<SectorTickerCollection[]> => {
   const instance = useApiClientInstance(ScreenerClient);
 
   return {

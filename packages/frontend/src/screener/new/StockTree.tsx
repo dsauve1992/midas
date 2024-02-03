@@ -16,6 +16,7 @@ export const StockTree = (props: StockTreeProps) => {
         <ListItemButton
           onClick={() => onSelect(sector)}
           selected={sector == selection}
+          key={sector.name}
         >
           <ListItemText
             primary={

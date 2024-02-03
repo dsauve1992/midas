@@ -10,11 +10,11 @@ import { useInViewport } from "react-in-viewport";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
 
 export interface StockScreenerTapeCardProps {
-  entry: ScreenerEntryEntity;
+  ticker: ScreenerEntryEntity;
 }
 
-export const TickerCard = ({ entry }: StockScreenerTapeCardProps) => {
-  const { exchange, symbol, averageDailyRange } = entry;
+export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
+  const { exchange, symbol, averageDailyRange } = ticker;
 
   const [open, setOpen] = useState<boolean>(false);
 

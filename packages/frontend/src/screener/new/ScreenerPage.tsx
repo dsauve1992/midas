@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { StockTree } from "./StockTree.tsx";
-import { useNewScreener } from "../ui/hooks/useNewScreener.ts";
+import { useScreener } from "../ui/hooks/useScreener.ts";
 import { SectorTickerCollection } from "../domain/NestedTickerCollection.ts";
 import { SectorDetail } from "./SelectionDetail.tsx";
 
 export interface Props {}
 
-export const NewScreenerPage: React.FunctionComponent<Props> = () => {
-  const { data, isLoading } = useNewScreener();
+export const ScreenerPage: React.FunctionComponent<Props> = () => {
+  const { data, isLoading } = useScreener();
 
   const [selection, setSelection] = useState<SectorTickerCollection>();
+
+  useEffect(() => {
+    if (data?.length) {
+      setSelection(data?.[0]);
+    }
+  }, [data]);
 
   const handleSelectElement = (element: SectorTickerCollection) => {
     setSelection(element);
@@ -31,7 +37,9 @@ export const NewScreenerPage: React.FunctionComponent<Props> = () => {
           />
         </Box>
         <Box height={"100%"} width={"100%"} overflow="auto">
-          {selection && <SectorDetail sector={selection} />}
+          {selection && (
+            <SectorDetail sector={selection} key={selection.name} />
+          )}
         </Box>
       </Box>
     );
@@ -40,4 +48,4 @@ export const NewScreenerPage: React.FunctionComponent<Props> = () => {
   return null;
 };
 
-export default NewScreenerPage;
+export default ScreenerPage;
