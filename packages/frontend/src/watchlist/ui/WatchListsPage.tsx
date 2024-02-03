@@ -5,11 +5,16 @@ import { WatchlistToggleButton } from "./WatchlistToggleButton.tsx";
 import Box from "@mui/material/Box";
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";
+import { Helmet } from "react-helmet";
 
 export const WatchListsPage = () => {
   const { data: symbols } = useGetWatchlist();
   return (
     <>
+      <Helmet>
+        <title>Watchlist - Midas</title>
+      </Helmet>
+
       <List sx={{ width: "100%" }}>
         {symbols?.map((el) => <WatchListTicker symbol={el} key={el} />)}
       </List>

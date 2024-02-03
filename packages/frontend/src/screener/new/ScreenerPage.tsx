@@ -4,6 +4,7 @@ import { StockTree } from "./StockTree.tsx";
 import { useScreener } from "../ui/hooks/useScreener.ts";
 import { SectorTickerCollection } from "../domain/NestedTickerCollection.ts";
 import { SectorDetail } from "./SelectionDetail.tsx";
+import { Helmet } from "react-helmet";
 
 export interface Props {}
 
@@ -28,20 +29,26 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
 
   if (data) {
     return (
-      <Box display="flex" flexDirection="row" gap={"10px"} width={"100%"}>
-        <Box height={"100%"} width={"400px"} overflow="auto">
-          <StockTree
-            tree={data}
-            selection={selection}
-            onSelect={handleSelectElement}
-          />
+      <>
+        <Helmet>
+          <title>Screener - Midas</title>
+        </Helmet>
+
+        <Box display="flex" flexDirection="row" gap={"10px"} width={"100%"}>
+          <Box height={"100%"} width={"400px"} overflow="auto">
+            <StockTree
+              tree={data}
+              selection={selection}
+              onSelect={handleSelectElement}
+            />
+          </Box>
+          <Box height={"100%"} width={"100%"} overflow="auto">
+            {selection && (
+              <SectorDetail sector={selection} key={selection.name} />
+            )}
+          </Box>
         </Box>
-        <Box height={"100%"} width={"100%"} overflow="auto">
-          {selection && (
-            <SectorDetail sector={selection} key={selection.name} />
-          )}
-        </Box>
-      </Box>
+      </>
     );
   }
 
