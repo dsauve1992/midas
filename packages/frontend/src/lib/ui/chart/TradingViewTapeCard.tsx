@@ -57,6 +57,7 @@ function TradingViewTapeCard({
               length: 20,
             },
           },
+          "Earnings",
         ],
         hide_side_toolbar: true,
         allow_symbol_change: false,

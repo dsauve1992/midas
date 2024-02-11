@@ -15,6 +15,7 @@ import { QuarterlyIncomeStatementMapper } from './controller/mapper/quarterly-in
 import { GetAnnuallyIncomeStatementUseCase } from './usecase/get-annually-income-statement.use-case';
 import { AnnuallyIncomeStatementMapper } from './controller/mapper/annually-income-statement.mapper';
 import { GetAnnualAnalystEstimatesUseCase } from './usecase/get-annual-analyst-estimates-use-case.service';
+import { GetAnnuallyIncomeStatementV2UseCase } from './usecase/get-annually-income-statement-v2.use-case';
 
 @Module({
   controllers: [StocksController],
@@ -32,6 +33,7 @@ import { GetAnnualAnalystEstimatesUseCase } from './usecase/get-annual-analyst-e
     GetSocialSentimentUseCase,
     GetQuarterlyIncomeStatementUseCase,
     GetAnnuallyIncomeStatementUseCase,
+    GetAnnuallyIncomeStatementV2UseCase,
     GetEarningCallTranscriptSummaryUseCase,
     GetAnnualAnalystEstimatesUseCase,
     QuarterlyIncomeStatementMapper,

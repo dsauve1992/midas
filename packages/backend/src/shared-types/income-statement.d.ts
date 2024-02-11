@@ -1,4 +1,4 @@
-export type IncomeStatementDto = {
+export type FinancialRecordDto = {
   acceptedDate?: string;
   period: string;
   earnings?: {

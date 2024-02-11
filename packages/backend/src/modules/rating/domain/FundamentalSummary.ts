@@ -1,8 +1,8 @@
-import { Quarter } from './Quarter';
+import { FinancialQuarter } from './FinancialQuarter';
 import { Growth } from './Growth';
 
 export type QuarterlyIncomeSummaryModel = {
-  quarter: Quarter;
+  quarter: FinancialQuarter;
   eps: Growth;
   sales: Growth;
 }[];

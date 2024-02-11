@@ -5,7 +5,7 @@ import {
   QuarterlyIncomeHistory,
 } from '../domain/QuarterlyIncomeHistory';
 import { Sorting } from '../domain/Sorting';
-import { Quarter } from '../domain/Quarter';
+import { FinancialQuarter } from '../domain/FinancialQuarter';
 import {
   AnnuallyIncomeSummary,
   FundamentalSummary,
@@ -116,7 +116,7 @@ export class ComputeFundamentalRatingUseCase {
 
     return new QuarterlyIncomeHistory(
       statementHistory.map(({ calendarYear, period, epsdiluted, revenue }) => ({
-        quarter: new Quarter(
+        quarter: new FinancialQuarter(
           parseInt(period.slice(1, 2)),
           parseInt(calendarYear),
         ),

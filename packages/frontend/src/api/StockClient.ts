@@ -7,7 +7,7 @@ import {
 } from "backend/src/shared-types/financial-modeling-prep";
 import { MidasBackendClient } from "./MidasBackendClient.ts";
 import { InstitutionalOwnershipResponse } from "backend/src/shared-types/institutional-ownership";
-import { IncomeStatementDto } from "backend/src/shared-types/income-statement";
+import { FinancialRecordDto } from "backend/src/shared-types/income-statement";
 
 export class StockClient extends MidasBackendClient {
   async getCompanyGeneralInformation(
@@ -60,7 +60,7 @@ export class StockClient extends MidasBackendClient {
   }
 
   async getQuarterlyIncomeStatement(symbol: string) {
-    const { data } = await this.get<IncomeStatementDto[]>(
+    const { data } = await this.get<FinancialRecordDto[]>(
       `${this.getStockUrl(symbol)}/income-statement/quarterly`,
     );
 
@@ -68,11 +68,19 @@ export class StockClient extends MidasBackendClient {
   }
 
   async getAnnuallyIncomeStatement(symbol: string) {
-    const { data } = await this.get<IncomeStatementDto[]>(
+    const { data } = await this.get<FinancialRecordDto[]>(
       `${this.getStockUrl(symbol)}/income-statement/annually`,
     );
 
     return data;
+  }
+
+  async getAnnuallyIncomeStatementV2(symbol: string) {
+    const { data } = await this.get<FinancialRecordDto[]>(
+      `${this.getStockUrl(symbol)}/income-statement/annually-2`,
+    );
+
+    return data.reverse();
   }
 
   private getStockUrl(symbol: string) {

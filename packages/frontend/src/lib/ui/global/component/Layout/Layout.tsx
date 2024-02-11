@@ -4,11 +4,12 @@ import Box from "@mui/material/Box";
 import MidasMenu from "../Menu/MidasMenu.tsx";
 import { Route, Routes } from "react-router-dom";
 import { DashboardPage } from "../../../../../dashboard/ui/Dashboard/DashboardPage.tsx";
-import TickerPage from "../../../../../ticker/ui/TickerPage/TickerPage.tsx";
+import TickerPage from "../../../../../ticker/ui/TickerPage/old/TickerPage.tsx";
 import { ToolsPage } from "../../../../../tools/ToolsPage.tsx";
 import { WatchListsPage } from "../../../../../watchlist/ui/WatchListsPage.tsx";
 import { useElementSize } from "usehooks-ts";
 import ScreenerPage from "../../../../../screener/new/ScreenerPage.tsx";
+import { NewTickerPage } from "../../../../../ticker/ui/TickerPage/new/NewTickerPage.tsx";
 
 const Layout: React.FunctionComponent = () => {
   const [squareRef, { height }] = useElementSize();
@@ -34,6 +35,7 @@ const Layout: React.FunctionComponent = () => {
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/ticker/:id/*" element={<TickerPage />} />
+            <Route path="/tickerv2/:id/*" element={<NewTickerPage />} />
             <Route path="/screener" element={<ScreenerPage />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/watchlist" element={<WatchListsPage />} />

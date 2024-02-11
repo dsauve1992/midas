@@ -7,12 +7,13 @@ import { GetInstitutionalHoldingUseCase } from '../usecase/get-institutional-hol
 import { GetSocialSentimentUseCase } from '../usecase/get-social-sentiment.use-case';
 import { GetQuarterlyIncomeStatementUseCase } from '../usecase/get-quarterly-income-statement.use-case';
 import { GetEarningCallTranscriptSummaryUseCase } from '../usecase/get-earning-call-transcript-summary.use-case';
-import { IncomeStatementDto } from '../../../shared-types/income-statement';
+import { FinancialRecordDto } from '../../../shared-types/income-statement';
 import { QuarterlyIncomeStatementMapper } from './mapper/quarterly-income-statement.mapper';
 import { AnnuallyIncomeStatementMapper } from './mapper/annually-income-statement.mapper';
 import { GetAnnuallyIncomeStatementUseCase } from '../usecase/get-annually-income-statement.use-case';
 import { AuthGuard } from '@nestjs/passport';
 import { GetAnnualAnalystEstimatesUseCase } from '../usecase/get-annual-analyst-estimates-use-case.service';
+import { GetAnnuallyIncomeStatementV2UseCase } from '../usecase/get-annually-income-statement-v2.use-case';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('stocks/:symbol')
@@ -25,6 +26,7 @@ export class StocksController {
     private getSocialSentimentUseCase: GetSocialSentimentUseCase,
     private getQuarterlyIncomeStatementUseCase: GetQuarterlyIncomeStatementUseCase,
     private getAnnuallyIncomeStatementUseCase: GetAnnuallyIncomeStatementUseCase,
+    private getAnnuallyIncomeStatementV2UseCase: GetAnnuallyIncomeStatementV2UseCase,
     private getEarningCallTranscriptSummaryUseCase: GetEarningCallTranscriptSummaryUseCase,
     private getAnalystEstimatesUseCase: GetAnnualAnalystEstimatesUseCase,
     private quarterlyIncomeStatementMapper: QuarterlyIncomeStatementMapper,
@@ -41,7 +43,7 @@ export class StocksController {
   @Get('income-statement/quarterly')
   async getQuarterlyIncomeStatement(
     @Param('symbol') symbol: string,
-  ): Promise<IncomeStatementDto[]> {
+  ): Promise<FinancialRecordDto[]> {
     const history =
       await this.getQuarterlyIncomeStatementUseCase.execute(symbol);
 
@@ -53,13 +55,23 @@ export class StocksController {
   @Get('income-statement/annually')
   async getAnnuallyIncomeStatement(
     @Param('symbol') symbol: string,
-  ): Promise<IncomeStatementDto[]> {
+  ): Promise<FinancialRecordDto[]> {
     const history =
       await this.getAnnuallyIncomeStatementUseCase.execute(symbol);
 
     return history.map((incomeStatement) =>
       this.annuallyIncomeStatementMapper.toDto(incomeStatement),
     );
+  }
+
+  @Get('income-statement/annually-2')
+  async getAnnuallyIncomeStatementV2(
+    @Param('symbol') symbol: string,
+  ): Promise<FinancialRecordDto[]> {
+    const history =
+      await this.getAnnuallyIncomeStatementV2UseCase.execute(symbol);
+
+    return history.toFinancialRecordDtos();
   }
 
   @Get('earning-call-transcript-summary')

@@ -1,7 +1,7 @@
-import { Quarter } from '../../rating/domain/Quarter';
+import { FinancialQuarter } from '../../rating/domain/FinancialQuarter';
 
 export interface RecordedQuarterlyIncomeStatementModel {
-  quarter: Quarter;
+  quarter: FinancialQuarter;
   acceptedDate: string;
 
   earnings: {

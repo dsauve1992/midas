@@ -1,9 +1,9 @@
-import { Quarter } from './Quarter';
+import { FinancialQuarter } from './FinancialQuarter';
 import { Sorting } from './Sorting';
 import { Growth } from './Growth';
 
 export type QuarterlyIncomeHistoryModel = {
-  quarter: Quarter;
+  quarter: FinancialQuarter;
   sales: number;
   eps: number;
 }[];
@@ -14,7 +14,7 @@ export class QuarterlyIncomeHistory {
   getLastNQuarter(
     n: number,
     sort: Sorting,
-  ): { quarter: Quarter; eps: Growth; sales: Growth }[] {
+  ): { quarter: FinancialQuarter; eps: Growth; sales: Growth }[] {
     return this.history
       .map(({ quarter }) => quarter)
       .sort((a, b) => a.compare(b) * Sorting.DESC)
@@ -27,7 +27,9 @@ export class QuarterlyIncomeHistory {
       }));
   }
 
-  private getEpsGrowthForQuarter(currentQuarter: Quarter): Growth | undefined {
+  private getEpsGrowthForQuarter(
+    currentQuarter: FinancialQuarter,
+  ): Growth | undefined {
     try {
       const { incomeDataForCurrentQuarter, incomeDataForPreviousQuarter } =
         this.getIncomeDataForQuarterPair(currentQuarter);
@@ -42,7 +44,7 @@ export class QuarterlyIncomeHistory {
   }
 
   private getSalesGrowthForQuarter(
-    currentQuarter: Quarter,
+    currentQuarter: FinancialQuarter,
   ): Growth | undefined {
     try {
       const { incomeDataForCurrentQuarter, incomeDataForPreviousQuarter } =
@@ -57,14 +59,14 @@ export class QuarterlyIncomeHistory {
     }
   }
 
-  private getIncomeDataForQuarterPair(currentQuarter: Quarter) {
+  private getIncomeDataForQuarterPair(currentQuarter: FinancialQuarter) {
     const oneYearAgo = currentQuarter.sameQuarterOneYearBefore();
     const incomeDataForCurrentQuarter = this.getDataFor(currentQuarter);
     const incomeDataForPreviousQuarter = this.getDataFor(oneYearAgo);
     return { incomeDataForCurrentQuarter, incomeDataForPreviousQuarter };
   }
 
-  private getDataFor(_quarter: Quarter) {
+  private getDataFor(_quarter: FinancialQuarter) {
     const incomeData = this.history.find(({ quarter }) =>
       quarter.isEqual(_quarter),
     );

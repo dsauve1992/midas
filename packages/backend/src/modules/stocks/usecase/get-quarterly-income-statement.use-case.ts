@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { Quarter } from '../../rating/domain/Quarter';
+import { FinancialQuarter } from '../../rating/domain/FinancialQuarter';
 import { keyBy } from 'lodash';
 import { RecordedQuarterlyIncomeStatement } from '../domain/recorded-quarterly-income-statement';
 import { MissingQuarterlyIncomeStatement } from '../domain/missing-quarterly-income-statement';
@@ -26,7 +26,7 @@ export class GetQuarterlyIncomeStatementUseCase {
 
     const enterpriseRatiosMapByQuarter = keyBy(
       enterpriseRatios.map(({ period, calendarYear, netProfitMargin }) => ({
-        quarter: new Quarter(
+        quarter: new FinancialQuarter(
           parseInt(period.slice(1, 2)),
           parseInt(calendarYear),
         ),
@@ -45,10 +45,10 @@ export class GetQuarterlyIncomeStatementUseCase {
           netProfitMargin: number;
         }
     ) & {
-      quarter: Quarter;
+      quarter: FinancialQuarter;
     })[] = incomeStatements.map(
       ({ date, acceptedDate, period, revenue, epsdiluted, calendarYear }) => {
-        const quarter = new Quarter(
+        const quarter = new FinancialQuarter(
           parseInt(period.slice(1, 2)),
           parseInt(calendarYear),
         );
@@ -74,12 +74,10 @@ export class GetQuarterlyIncomeStatementUseCase {
 
       if (
         !currentRecordedQuarter ||
-        !previousRecordedQuarter
-          .previousQuarter()
-          .isEqual(currentRecordedQuarter)
+        !previousRecordedQuarter.previous().isEqual(currentRecordedQuarter)
       ) {
         incomeStatementsWithNetProfitMargin.splice(i, 0, {
-          quarter: previousRecordedQuarter.previousQuarter(),
+          quarter: previousRecordedQuarter.previous(),
           status: 'missing',
         });
       }

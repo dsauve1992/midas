@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MissingQuarterlyIncomeStatement } from '../../domain/missing-quarterly-income-statement';
 import { RecordedQuarterlyIncomeStatement } from '../../domain/recorded-quarterly-income-statement';
 import { QuarterlyIncomeStatement } from '../../domain/quarterly-income-statement';
-import { IncomeStatementDto } from '../../../../shared-types/income-statement';
+import { FinancialRecordDto } from '../../../../shared-types/income-statement';
 
 @Injectable()
 export class QuarterlyIncomeStatementMapper {
@@ -18,7 +18,7 @@ export class QuarterlyIncomeStatementMapper {
 
   private fromRecordedIncomeStatement(
     incomeStatement: RecordedQuarterlyIncomeStatement,
-  ): IncomeStatementDto {
+  ): FinancialRecordDto {
     return {
       period: incomeStatement.model.quarter.toString(),
       acceptedDate: incomeStatement.model.acceptedDate,
@@ -30,7 +30,7 @@ export class QuarterlyIncomeStatementMapper {
 
   private fromMissingIncomeStatement(
     incomeStatement: MissingQuarterlyIncomeStatement,
-  ): IncomeStatementDto {
+  ): FinancialRecordDto {
     return {
       period: incomeStatement.quarter.toString(),
     };

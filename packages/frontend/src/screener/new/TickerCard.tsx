@@ -2,10 +2,10 @@ import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
 import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
 import { useRef, useState } from "react";
-import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
-import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneEpsChart.tsx";
-import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
-import { StandaloneInstitutionalOwnershipHistoryByQuarter } from "../../ticker/ui/TickerPage/sections/InstitutionalHolders/StandaloneInstitutionalOwnershipHistoryByQuarter.tsx";
+import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/old/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
+import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/old/sections/IncomeStatement/StandaloneEpsChart.tsx";
+import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/old/sections/IncomeStatement/StandaloneRevenueChart.tsx";
+import { StandaloneInstitutionalOwnershipHistoryByQuarter } from "../../ticker/ui/TickerPage/old/sections/InstitutionalHolders/StandaloneInstitutionalOwnershipHistoryByQuarter.tsx";
 import { useInViewport } from "react-in-viewport";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
 
