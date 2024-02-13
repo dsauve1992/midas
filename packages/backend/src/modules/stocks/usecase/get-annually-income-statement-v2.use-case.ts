@@ -3,6 +3,7 @@ import { FinancialModelingPrepService } from '../../historical-data/financial-mo
 import { chain } from 'lodash';
 import { FinancialPeriod } from '../../rating/domain/FinancialPeriod';
 import {
+  AnalystEstimateEntry,
   EnterpriseRatio,
   IncomeStatementDto,
 } from '../../../shared-types/financial-modeling-prep';
@@ -76,6 +77,7 @@ class FinancialRecord<T extends FinancialPeriod<T>> {
     public period: T,
     public acceptedDate: string | null, //TODO date
     metrics: Map<FinancialMetricType, FinancialMetric>,
+    private estimate: boolean,
   ) {
     this.metrics = new Map([
       ...new Map<FinancialMetricType, FinancialMetric>([
@@ -88,7 +90,7 @@ class FinancialRecord<T extends FinancialPeriod<T>> {
   }
 
   static empty<T extends FinancialPeriod<T>>(period: T): FinancialRecord<T> {
-    return new FinancialRecord(period, null, new Map([]));
+    return new FinancialRecord(period, null, new Map([]), false);
   }
 
   compareFrom(
@@ -168,10 +170,12 @@ export class GetAnnuallyIncomeStatementV2UseCase {
   ) {}
 
   async execute(symbol: string): Promise<AnnuallyFinancialHistory> {
-    const { incomeStatements, enterpriseRatios } = await this.fetchData(symbol);
+    const { incomeStatements, enterpriseRatios, analystEstimates } =
+      await this.fetchData(symbol);
     const entries = this.mapToFinancialRecords(
       incomeStatements,
       enterpriseRatios,
+      analystEstimates,
     );
 
     return new AnnuallyFinancialHistory(entries);
@@ -180,30 +184,38 @@ export class GetAnnuallyIncomeStatementV2UseCase {
   private mapToFinancialRecords(
     incomeStatements: IncomeStatementDto[],
     enterpriseRatios: EnterpriseRatio[],
+    analystEstimates: AnalystEstimateEntry[],
   ) {
-    return chain([...incomeStatements, ...enterpriseRatios])
-      .groupBy('calendarYear')
+    return chain([
+      ...incomeStatements,
+      ...enterpriseRatios,
+      ...analystEstimates,
+    ])
+      .groupBy('date')
       .mapValues((el) => {
-        const mergedData: IncomeStatementDto & EnterpriseRatio = Object.assign(
-          {},
-          ...el,
-        );
+        const mergedData: IncomeStatementDto &
+          EnterpriseRatio &
+          AnalystEstimateEntry = Object.assign({}, ...el);
 
         return new FinancialRecord(
-          new FinancialYear(parseInt(mergedData.calendarYear)),
+          new FinancialYear(parseInt(mergedData.date.split('-')[0])),
           mergedData.acceptedDate,
           new Map(
             [
-              mergedData.epsdiluted &&
-                new FinancialMetric('eps', mergedData.epsdiluted),
-              mergedData.revenue &&
-                new FinancialMetric('revenue', mergedData.revenue),
-              mergedData.netProfitMargin &&
-                new FinancialMetric('profitMargin', mergedData.netProfitMargin),
+              new FinancialMetric(
+                'eps',
+                mergedData.epsdiluted ?? mergedData.estimatedEpsAvg,
+              ),
+              new FinancialMetric(
+                'revenue',
+                mergedData.revenue ?? mergedData.estimatedRevenueAvg,
+              ),
+              new FinancialMetric('profitMargin', mergedData.netProfitMargin),
             ]
               .filter(Boolean)
               .map((metric) => [metric.name, metric]),
           ),
+          !!mergedData.estimatedEpsAvg && !mergedData.epsdiluted,
         );
       })
       .values()
@@ -211,14 +223,16 @@ export class GetAnnuallyIncomeStatementV2UseCase {
   }
 
   private async fetchData(symbol: string) {
-    const [incomeStatements, enterpriseRatios] = await Promise.all([
-      this.financialModelingPrepService.getIncomeStatements(symbol, {
-        limit: '20',
-      }),
-      this.financialModelingPrepService.getEnterpriseRatios(symbol, {
-        limit: '20',
-      }),
-    ]);
-    return { incomeStatements, enterpriseRatios };
+    const [incomeStatements, enterpriseRatios, analystEstimates] =
+      await Promise.all([
+        this.financialModelingPrepService.getIncomeStatements(symbol, {
+          limit: '20',
+        }),
+        this.financialModelingPrepService.getEnterpriseRatios(symbol, {
+          limit: '20',
+        }),
+        this.financialModelingPrepService.getAnalystEstimates(symbol, 'annual'),
+      ]);
+    return { incomeStatements, enterpriseRatios, analystEstimates };
   }
 }
