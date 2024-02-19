@@ -1430,6 +1430,110 @@ describe(`${GetAnnuallyIncomeStatementV2UseCase.name} specs`, () => {
 
     const incomeStatementGrowthHistory = await useCase.execute('AAPL');
 
-    expect(incomeStatementGrowthHistory).toBeDefined();
+    expect(incomeStatementGrowthHistory.toFinancialRecordDtos()).toEqual([
+      {
+        acceptedDate: '2019-10-30 18:12:36',
+        earnings: {
+          current: 2.97,
+          growth: null,
+          previous: null,
+        },
+        netProfitMargin: 0.21238094505984456,
+        period: '2019',
+        sales: {
+          current: 260174000000,
+          growth: null,
+          previous: null,
+        },
+      },
+      {
+        acceptedDate: '2020-10-29 18:06:25',
+        earnings: {
+          current: 3.28,
+          growth: 10.44,
+          previous: 2.97,
+        },
+        netProfitMargin: 0.20913611278072236,
+        period: '2020',
+        sales: {
+          current: 274515000000,
+          growth: 5.512,
+          previous: 260174000000,
+        },
+      },
+      {
+        acceptedDate: '2021-10-28 18:04:28',
+        earnings: {
+          current: 5.61,
+          growth: 71.04,
+          previous: 3.28,
+        },
+        netProfitMargin: 0.2588179335569424,
+        period: '2021',
+        sales: {
+          current: 365817000000,
+          growth: 33.26,
+          previous: 274515000000,
+        },
+      },
+      {
+        acceptedDate: '2022-10-27 18:01:14',
+        earnings: {
+          current: 6.11,
+          growth: 8.913,
+          previous: 5.61,
+        },
+        netProfitMargin: 0.2530964070519973,
+        period: '2022',
+        sales: {
+          current: 394328000000,
+          growth: 7.794,
+          previous: 365817000000,
+        },
+      },
+      {
+        acceptedDate: '2023-11-02 18:08:27',
+        earnings: {
+          current: 6.13,
+          growth: 0.3273,
+          previous: 6.11,
+        },
+        netProfitMargin: 0.2530623426432028,
+        period: '2023',
+        sales: {
+          current: 383285000000,
+          growth: -2.8,
+          previous: 394328000000,
+        },
+      },
+      {
+        earnings: {
+          current: 6.39,
+          growth: 4.241,
+          previous: 6.13,
+        },
+        netProfitMargin: null,
+        period: '2024',
+        sales: {
+          current: 400500000000,
+          growth: 4.491,
+          previous: 383285000000,
+        },
+      },
+      {
+        earnings: {
+          current: 7.10865,
+          growth: 11.25,
+          previous: 6.39,
+        },
+        netProfitMargin: null,
+        period: '2025',
+        sales: {
+          current: 427024215020,
+          growth: 6.623,
+          previous: 400500000000,
+        },
+      },
+    ]);
   });
 });

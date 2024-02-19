@@ -127,9 +127,13 @@ export class FinancialModelingPrepService {
     );
   }
 
-  async getAnalystEstimates(symbol: string, period: 'annual' | 'quarter') {
+  async getAnalystEstimates(
+    symbol: string,
+    parameters?: { [key: string]: string | number | boolean },
+  ) {
     return this.fetch<AnalystEstimateEntry[]>(
-      `/v3/analyst-estimates/${symbol}?period=${period}`,
+      `/v3/analyst-estimates/${symbol}`,
+      parameters,
     );
   }
 

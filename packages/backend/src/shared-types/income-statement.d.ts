@@ -12,4 +12,5 @@ export type FinancialRecordDto = {
     growth?: number;
   };
   netProfitMargin?: number;
+  estimate: boolean;
 };

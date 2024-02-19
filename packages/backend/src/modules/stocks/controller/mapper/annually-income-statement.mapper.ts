@@ -26,6 +26,7 @@ export class AnnuallyIncomeStatementMapper {
       earnings: incomeStatement.model.earnings,
       sales: incomeStatement.model.sales,
       netProfitMargin: incomeStatement.model.netProfitMargin,
+      estimate: false,
     };
   }
 
@@ -34,6 +35,7 @@ export class AnnuallyIncomeStatementMapper {
   ): FinancialRecordDto {
     return {
       period: `FY - ${incomeStatement.year}`,
+      estimate: false,
     };
   }
 }

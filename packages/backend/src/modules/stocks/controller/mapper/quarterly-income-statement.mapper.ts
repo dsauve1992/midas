@@ -25,6 +25,7 @@ export class QuarterlyIncomeStatementMapper {
       earnings: incomeStatement.model.earnings,
       sales: incomeStatement.model.sales,
       netProfitMargin: incomeStatement.model.netProfitMargin,
+      estimate: false,
     };
   }
 
@@ -33,6 +34,7 @@ export class QuarterlyIncomeStatementMapper {
   ): FinancialRecordDto {
     return {
       period: incomeStatement.quarter.toString(),
+      estimate: false,
     };
   }
 }

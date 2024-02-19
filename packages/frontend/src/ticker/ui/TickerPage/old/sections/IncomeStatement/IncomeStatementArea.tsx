@@ -2,10 +2,7 @@ import React from "react";
 import { Card, CardContent } from "@mui/material";
 import FinancialPeriod from "../../../../../../lib/FinancialPeriod.ts";
 import IncomeStatementTable from "./IncomeStatementTable.tsx";
-import {
-  useIncomeStatement,
-  useIncomeStatementV2,
-} from "../../../../hooks/useIncomeStatement.ts";
+import { useIncomeStatement } from "../../../../hooks/useIncomeStatement.ts";
 import { IncomeStatementChart } from "./IncomeStatementChart.tsx";
 
 export interface Props {
@@ -18,10 +15,6 @@ const IncomeStatementArea: React.FunctionComponent<Props> = ({
   frequency,
 }: Props) => {
   const { isLoading, data } = useIncomeStatement(symbol, frequency);
-  const { data: newes } = useIncomeStatementV2(symbol, frequency);
-
-  console.log("old", data);
-  console.log("new", newes);
 
   if (isLoading) {
     return <p>Please wait...</p>;

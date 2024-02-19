@@ -8,9 +8,8 @@ export class GetAnnualAnalystEstimatesUseCase {
   ) {}
 
   execute(symbol: string) {
-    return this.financialModelingPrepService.getAnalystEstimates(
-      symbol,
-      'annual',
-    );
+    return this.financialModelingPrepService.getAnalystEstimates(symbol, {
+      period: 'annual',
+    });
   }
 }
