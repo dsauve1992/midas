@@ -60,7 +60,7 @@ export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
                 symbol={`${exchange}:${symbol}`}
                 withDateRanges={true}
                 interval={"D"}
-                range={"3m"}
+                range={"6m"}
                 hideTopToolbar
               />
             </Grid>
@@ -69,7 +69,7 @@ export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
                 symbol={`${exchange}:${symbol}`}
                 withDateRanges={true}
                 interval={"60"}
-                range={"5d"}
+                range={"1m"}
                 hideTopToolbar
               />
             </Grid>
