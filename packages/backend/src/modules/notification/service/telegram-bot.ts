@@ -13,7 +13,7 @@ export class TelegramBot {
     );
 
     await bot.telegram.sendMessage('6964735919', {
-      text: message,
+      text: JSON.stringify(message),
       parse_mode: 'Markdown',
     } as FmtString);
   }
