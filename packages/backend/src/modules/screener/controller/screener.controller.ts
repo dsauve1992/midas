@@ -10,11 +10,6 @@ export class ScreenerController {
     return this.screenerFetcherService.search();
   }
 
-  @Get('/with-rating')
-  async getScreenerWithRatings() {
-    return this.screenerFetcherService.searchWithRating();
-  }
-
   @Get('/new')
   async getNewScreener() {
     return this.screenerFetcherService.getHierarchy();

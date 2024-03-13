@@ -11,8 +11,8 @@ import { ScreenerEntryEntity } from '../../../shared-types/screener-entry.entity
 import { differenceInDays, parseISO } from 'date-fns';
 import { sortBy } from 'lodash';
 import { ComputeAverageDailyRangeUseCase } from '../../rating/usecase/compute-average-daily-range.use-case';
-import { CheckTechnicalSetupService } from '../../rating/domain/service/check-technical-setup.service';
 import { delay } from '../../../utils/delay';
+import { ComputeRelativeStrengthUseCase } from '../../rating/usecase/compute-relative-strength.use-case';
 
 @Injectable()
 export class ComputeRatingScheduler {
@@ -22,11 +22,12 @@ export class ComputeRatingScheduler {
     private screenerFetcherService: ScreenerService,
     private computeFundamentalRatingUseCase: ComputeFundamentalRatingUseCase,
     private computeAverageDailyRangeUseCase: ComputeAverageDailyRangeUseCase,
+    private computeRelativeStrengthUseCase: ComputeRelativeStrengthUseCase,
     private fmpService: FinancialModelingPrepService,
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('0 23 * * *', { timeZone: 'America/Montreal' })
+  @Cron('0 22 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
@@ -43,21 +44,16 @@ export class ComputeRatingScheduler {
 
   private async processScreenerEntry(entry: TradingViewScreenerEntry) {
     try {
-      const rightTechnicalSetup =
-        await CheckTechnicalSetupService.hasStrongTechnicalSetup(entry);
+      const midasEntry = await this.createScreenerEntry(entry);
+      const hasStrongRelativeStrength =
+        midasEntry.rsLine > midasEntry.rsLineSma50 &&
+        midasEntry.rsLineSma50 > midasEntry.rsLineSma200;
+      const hasStrongADR = midasEntry.averageDailyRange >= 3;
 
-      if (rightTechnicalSetup) {
-        // TODO mieux expliciter la différence entre screener trading view vs screener interne
-        const midasEntry = await this.createScreenerEntry(entry);
-        // TODO valider tous les filtres en même temps ?
-        const hasStrongFundamentals = midasEntry.fundamentalRating >= 50;
-        const hasStrongADR = midasEntry.averageDailyRange >= 2;
-
-        if (hasStrongFundamentals && hasStrongADR) {
-          await this.screenerRepository.create(midasEntry);
-        }
-        await delay(3000);
+      if (hasStrongRelativeStrength && hasStrongADR) {
+        await this.screenerRepository.create(midasEntry);
       }
+      await delay(3000);
     } catch (e) {
       this.logger.error(`error for ${entry.symbol}`);
       this.logger.error(e);
@@ -73,6 +69,9 @@ export class ComputeRatingScheduler {
     const averageDailyRange =
       await this.computeAverageDailyRangeUseCase.execute(entry.symbol);
 
+    const { rsLine, rsLineSma50, rsLineSma200 } =
+      await this.computeRelativeStrengthUseCase.execute(entry.symbol);
+
     const numberOfDaysUntilNextEarningCall =
       await this.getNumberOfDaysUntilNextEarningCall(entry.symbol); // TODO demander à trading view à la place
 
@@ -81,6 +80,9 @@ export class ComputeRatingScheduler {
       exchange: entry.exchange,
       industry: profile.industry,
       sector: profile.sector,
+      rsLine,
+      rsLineSma50,
+      rsLineSma200,
       fundamentalRating,
       averageDailyRange,
       numberOfDaysUntilNextEarningCall,

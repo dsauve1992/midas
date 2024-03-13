@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import * as screenerParameters from './screenerParameter.json';
+import * as screenerParameters_v2 from './screenerParameter_v2.json';
 import { ScreenerRepository } from '../repository/screener.repository';
 import { chain } from 'lodash';
 import { ScreenerResponse } from '../../../shared-types/screener';
@@ -9,11 +9,6 @@ import { ScreenerResponse } from '../../../shared-types/screener';
 export type TradingViewScreenerEntry = {
   symbol: string;
   exchange: string;
-  price: number;
-  ema10: number;
-  ema20: number;
-  sma50: number;
-  sma200: number;
   sector: string;
   industry: string;
 };
@@ -29,30 +24,21 @@ export class ScreenerService {
     const response = await firstValueFrom(
       this.httpService.post(
         'https://scanner.tradingview.com/global/scan',
-        screenerParameters,
+        screenerParameters_v2,
       ),
     );
 
     return response.data.data.map((entry: any) => {
       const [exchange, symbol] = entry.s.split(':');
-      const [price, ema10, ema20, sma50, sma200, sector, industry] = entry.d;
+      const [sector, industry] = entry.d;
 
       return {
         symbol,
         exchange,
-        price,
-        ema10,
-        ema20,
-        sma50,
-        sma200,
         sector,
         industry,
       };
     });
-  }
-
-  async searchWithRating() {
-    return this.screenerRepository.getAll();
   }
 
   async getHierarchy(): Promise<ScreenerResponse> {

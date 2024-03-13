@@ -6,19 +6,11 @@ import {
   IndustryGroupTickerCollection,
   SectorTickerCollection,
 } from "../screener/domain/NestedTickerCollection.ts";
-import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
 
 export class ScreenerClient extends MidasBackendClient {
   public async query() {
     const response = await axios.get(`${this.getBaseUrl()}/screener`);
     return _.uniq(response.data) as string[];
-  }
-
-  public async queryWithRatings() {
-    const response = await this.get<ScreenerEntryEntity[]>(
-      `${this.getBaseUrl()}/screener/with-rating`,
-    );
-    return _.uniq(response.data);
   }
 
   public async queryHierarchy(): Promise<SectorTickerCollection[]> {

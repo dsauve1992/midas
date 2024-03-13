@@ -5,12 +5,14 @@ import { ComputeTechnicalRatingUseCase } from './usecase/compute-technical-ratin
 import { ComputeAverageDailyRangeUseCase } from './usecase/compute-average-daily-range.use-case';
 import { TechnicalIndicatorService } from './domain/service/technical-indicator.service';
 import { CheckTechnicalSetupService } from './domain/service/check-technical-setup.service';
+import { ComputeRelativeStrengthUseCase } from './usecase/compute-relative-strength.use-case';
 
 @Module({
   providers: [
     ComputeFundamentalRatingUseCase,
     ComputeTechnicalRatingUseCase,
     ComputeAverageDailyRangeUseCase,
+    ComputeRelativeStrengthUseCase,
     TechnicalIndicatorService,
     CheckTechnicalSetupService,
   ],
@@ -21,6 +23,7 @@ import { CheckTechnicalSetupService } from './domain/service/check-technical-set
     ComputeTechnicalRatingUseCase,
     ComputeAverageDailyRangeUseCase,
     CheckTechnicalSetupService,
+    ComputeRelativeStrengthUseCase,
   ],
 })
 export class RatingModule {}

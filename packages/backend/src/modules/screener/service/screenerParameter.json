@@ -17,7 +17,7 @@
     {
       "left": "average_volume_60d_calc",
       "operation": "egreater",
-      "right": 100000
+      "right": 500000
     },
     {
       "left": "close",
