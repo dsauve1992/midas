@@ -27,7 +27,7 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('0 22 * * *', { timeZone: 'America/Montreal' })
+  @Cron('10 22 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
