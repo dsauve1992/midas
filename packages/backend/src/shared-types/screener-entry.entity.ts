@@ -9,4 +9,6 @@ export type ScreenerEntryEntity = {
   fundamentalRating: number;
   averageDailyRange: number;
   numberOfDaysUntilNextEarningCall: number;
+  _5WeeksHigh: number;
+  _52WeeksHigh: number;
 };

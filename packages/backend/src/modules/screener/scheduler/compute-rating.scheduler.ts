@@ -27,7 +27,7 @@ export class ComputeRatingScheduler {
     private screenerRepository: ScreenerRepository,
   ) {}
 
-  @Cron('10 22 * * *', { timeZone: 'America/Montreal' })
+  @Cron('35 23 * * *', { timeZone: 'America/Montreal' })
   async handleJob() {
     try {
       await this.screenerRepository.deleteAll();
@@ -47,7 +47,8 @@ export class ComputeRatingScheduler {
       const midasEntry = await this.createScreenerEntry(entry);
       const hasStrongRelativeStrength =
         midasEntry.rsLine > midasEntry.rsLineSma50 &&
-        midasEntry.rsLineSma50 > midasEntry.rsLineSma200;
+        midasEntry.rsLineSma50 > midasEntry.rsLineSma200 &&
+        midasEntry._5WeeksHigh === midasEntry._52WeeksHigh;
       const hasStrongADR = midasEntry.averageDailyRange >= 3;
 
       if (hasStrongRelativeStrength && hasStrongADR) {
@@ -69,7 +70,7 @@ export class ComputeRatingScheduler {
     const averageDailyRange =
       await this.computeAverageDailyRangeUseCase.execute(entry.symbol);
 
-    const { rsLine, rsLineSma50, rsLineSma200 } =
+    const { rsLine, rsLineSma50, rsLineSma200, _52WeeksHigh, _5WeeksHigh } =
       await this.computeRelativeStrengthUseCase.execute(entry.symbol);
 
     const numberOfDaysUntilNextEarningCall =
@@ -86,6 +87,8 @@ export class ComputeRatingScheduler {
       fundamentalRating,
       averageDailyRange,
       numberOfDaysUntilNextEarningCall,
+      _5WeeksHigh,
+      _52WeeksHigh,
     };
   }
 

@@ -8,6 +8,8 @@ type RelativeStrengthResponse = {
   rsLine: number;
   rsLineSma50: number;
   rsLineSma200: number;
+  _5WeeksHigh: number;
+  _52WeeksHigh: number;
 };
 
 @Injectable()
@@ -47,6 +49,9 @@ export class ComputeRelativeStrengthUseCase {
 
     const rsLine = tickerDf['close'].div(indexDf['close']).mul(100);
 
+    const _52WeeksHigh = rsLine.tail(260).max().toFixed(2);
+    const _5WeeksHigh = rsLine.tail(25).max().toFixed(2);
+
     const rsLineSma50 = SMA.calculate({ values: rsLine.values, period: 50 });
     const rsLineSma200 = SMA.calculate({ values: rsLine.values, period: 200 });
 
@@ -54,6 +59,8 @@ export class ComputeRelativeStrengthUseCase {
       rsLine: rsLine.values.reverse()[0],
       rsLineSma50: rsLineSma50.reverse()[0],
       rsLineSma200: rsLineSma200.reverse()[0],
+      _52WeeksHigh,
+      _5WeeksHigh,
     };
   }
 }
