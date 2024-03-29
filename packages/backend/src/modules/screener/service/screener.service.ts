@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import * as screenerParameters_v2 from './screenerParameter_v2.json';
+import * as screenerParameters_v2 from './screenerParameter.json';
 import { ScreenerRepository } from '../repository/screener.repository';
 import { chain } from 'lodash';
 import { ScreenerResponse } from '../../../shared-types/screener';
