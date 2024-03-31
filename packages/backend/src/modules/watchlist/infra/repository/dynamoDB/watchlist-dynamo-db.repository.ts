@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { WatchlistRepository } from '../../domain/repository/watchlist.repository';
-import { Watchlist } from '../../domain/model/Watchlist';
+import { WatchlistRepository } from '../../../domain/repository/watchlist.repository';
+import { Watchlist } from '../../../domain/model/Watchlist';
 import {
   DynamoDBDocumentClient,
   GetCommand,
@@ -35,7 +35,7 @@ export class WatchlistDynamoDbRepository extends WatchlistRepository {
     const { Item } = await this.client.send(params);
 
     if (Item) {
-      return new Watchlist(Item.id, new Set(Item.symbols));
+      return new Watchlist(Item.id, Item.id, new Set(Item.symbols));
     }
 
     return Watchlist.init(userId);
