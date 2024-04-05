@@ -7,7 +7,7 @@
     {
       "left": "EMA10",
       "operation": "greater",
-      "right": "SMA50"
+      "right": "EMA20"
     },
     {
       "left": "EMA20",
