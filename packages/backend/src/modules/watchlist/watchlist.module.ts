@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { WatchlistDynamoDbRepository } from './infra/repository/watchlist-dynamo-db.repository';
+import { WatchlistDynamoDbRepository } from './infra/repository/dynamoDB/watchlist-dynamo-db.repository';
 import { WatchlistRepository } from './domain/repository/watchlist.repository';
 import { ConfigModule } from '@nestjs/config';
 import { AddSymbolToWatchlistUseCase } from './usecase/add-symbol-to-watchlist.use-case';

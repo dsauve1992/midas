@@ -6,9 +6,8 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN yarn
 
-# Copiez le reste du code de l'application
+RUN yarn
 
 RUN yarn build
 

@@ -1,15 +1,14 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export class Watchlist implements Iterable<string> {
   constructor(
-    private _userId: string,
+    readonly id: string,
+    readonly userId: string,
     private items: Set<string>,
   ) {}
 
   static init(userId: string): Watchlist {
-    return new Watchlist(userId, new Set<string>());
-  }
-
-  get userId(): string {
-    return this._userId;
+    return new Watchlist(uuidv4(), userId, new Set<string>());
   }
 
   public [Symbol.iterator](): Iterator<string> {
@@ -25,6 +24,6 @@ export class Watchlist implements Iterable<string> {
   }
 
   isEmpty() {
-    return this.items.size;
+    return this.items.size == 0;
   }
 }

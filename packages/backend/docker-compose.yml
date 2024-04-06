@@ -9,3 +9,22 @@ services:
     volumes:
       - "~/home/dynamodb:/home/dynamodblocal/data"
     working_dir: /home/dynamodblocal
+
+
+  db:
+    image: postgres
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
