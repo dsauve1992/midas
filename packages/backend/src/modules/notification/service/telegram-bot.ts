@@ -1,16 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
+import { TELEGRAM_BOT } from '../notification.module';
 
 @Injectable()
 export class TelegramBot {
-  constructor(private configService: ConfigService) {}
+  constructor(@Inject(TELEGRAM_BOT) private bot: Telegraf) {}
 
   async sendMarkdown(message: string) {
-    const bot = new Telegraf(
-      this.configService.getOrThrow('TELEGRAM_BOT_TOKEN'),
-    );
-
-    await bot.telegram.sendMessage('6964735919', message);
+    await this.bot.telegram.sendMessage('6964735919', message);
   }
 }
