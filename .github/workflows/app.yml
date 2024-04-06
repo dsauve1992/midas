@@ -42,10 +42,8 @@ jobs:
         working-directory: ./packages/frontend
         run: aws s3 sync ./dist/ s3://${{vars.FRONTEND_STORAGE_S3_BUCKET_NAME }} --acl public-read --delete
 
-
   backend-build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -78,8 +76,29 @@ jobs:
           docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG -f ./production.Dockerfile .
           docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
-  backend-deploy:
+  backend-db-migrate:
     needs: backend-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.1
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Knex migrate latest
+        working-directory: ./packages/backend
+        env:
+          DATABASE_CONNECTION_STRING: ${{ secrets.DATABASE_CONNECTION_STRING }}
+        run: yarn db:migrate-latest
+
+  backend-deploy:
+    needs: backend-db-migrate
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to EC2

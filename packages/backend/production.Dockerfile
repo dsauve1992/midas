@@ -6,9 +6,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-
 RUN yarn
-
 RUN yarn build
 
 # Exposez le port sur lequel l'application s'exécute
