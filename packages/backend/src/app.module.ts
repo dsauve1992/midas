@@ -13,7 +13,7 @@ import { AuthorizationModule } from './modules/authorization/authorization.modul
 import { BreakoutModule } from './modules/breakout/breakout.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
-import { NotificationModule } from './modules/notification/notification.module';
+import { TelegramModule } from './modules/telegram/telegram.module';
 
 @Module({
   imports: [
@@ -33,7 +33,7 @@ import { NotificationModule } from './modules/notification/notification.module';
     AuthorizationModule,
     BreakoutModule,
     WatchlistModule,
-    NotificationModule,
+    TelegramModule,
   ],
   controllers: [],
 })

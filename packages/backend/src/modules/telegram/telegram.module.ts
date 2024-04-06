@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Telegraf } from 'telegraf';
 
@@ -17,4 +17,17 @@ export const TELEGRAM_BOT = 'TELEGRAM_BOT';
   ],
   exports: [TELEGRAM_BOT],
 })
-export class NotificationModule {}
+export class TelegramModule implements OnModuleInit, OnModuleDestroy {
+  constructor(@Inject(TELEGRAM_BOT) private readonly bot: Telegraf) {}
+
+  async onModuleInit() {
+    this.bot.command('ping', (ctx) => {
+      ctx.reply('pong');
+    });
+    await this.bot.launch();
+  }
+
+  onModuleDestroy() {
+    this.bot.stop();
+  }
+}

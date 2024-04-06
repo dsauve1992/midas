@@ -4,16 +4,16 @@ import { HistoricalDataModule } from '../historical-data/historical-data.module'
 import { CheckForBreakoutUseCase } from './usecase/check-for-breakout.use-case';
 import { BreakoutScheduler } from './scheduler/breakout.scheduler';
 import { WatchlistModule } from '../watchlist/watchlist.module';
-import { InitialAssignmentCreatedListener } from './listener/breakout-event.listener';
-import { NotificationModule } from '../notification/notification.module';
+import { BreakoutEventListener } from './listener/breakout-event.listener';
+import { TelegramModule } from '../telegram/telegram.module';
 
 @Module({
   providers: [
     BreakoutService,
     CheckForBreakoutUseCase,
     BreakoutScheduler,
-    InitialAssignmentCreatedListener,
+    BreakoutEventListener,
   ],
-  imports: [HistoricalDataModule, WatchlistModule, NotificationModule],
+  imports: [HistoricalDataModule, WatchlistModule, TelegramModule],
 })
 export class BreakoutModule {}
