@@ -14,7 +14,7 @@ export type TradingViewScreenerEntry = {
 };
 
 @Injectable()
-export class ScreenerService {
+export class TradingViewScreenerService {
   constructor(
     private httpService: HttpService,
     private screenerRepository: ScreenerRepository,

@@ -1,15 +1,40 @@
-import { Module } from '@nestjs/common';
+import { Inject, Module, OnModuleInit } from '@nestjs/common';
 import { ScreenerController } from './controller/screener.controller';
 import { HttpModule } from '@nestjs/axios';
-import { ScreenerService } from './service/screener.service';
+import { TradingViewScreenerService } from './service/trading-view-screener.service';
 import { ScreenerRepository } from './repository/screener.repository';
 import { ComputeRatingScheduler } from './scheduler/compute-rating.scheduler';
 import { RatingModule } from '../rating/rating.module';
 import { HistoricalDataModule } from '../historical-data/historical-data.module';
+import { UpdateScreenerUseCase } from './usecase/update-screener.use-case';
+import { TELEGRAM_BOT, TelegramModule } from '../telegram/telegram.module';
+import { Telegraf } from 'telegraf';
 
 @Module({
   controllers: [ScreenerController],
-  imports: [HttpModule, RatingModule, HistoricalDataModule],
-  providers: [ScreenerService, ScreenerRepository, ComputeRatingScheduler],
+  imports: [HttpModule, RatingModule, HistoricalDataModule, TelegramModule],
+  providers: [
+    UpdateScreenerUseCase,
+    TradingViewScreenerService,
+    ScreenerRepository,
+    ComputeRatingScheduler,
+  ],
 })
-export class ScreenerModule {}
+export class ScreenerModule implements OnModuleInit {
+  constructor(
+    @Inject(TELEGRAM_BOT) private bot: Telegraf,
+    private updateScreenerUseCase: UpdateScreenerUseCase,
+  ) {}
+
+  async onModuleInit() {
+    console.log('onModuleInit - ScreenerModule');
+
+    this.bot.command('screener', async (ctx) => {
+      await ctx.reply('⏳ updating screener...');
+
+      this.updateScreenerUseCase.execute().finally(() => {
+        ctx.reply('✅ screener updated');
+      });
+    });
+  }
+}

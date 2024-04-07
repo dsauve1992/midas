@@ -24,7 +24,8 @@ export class TelegramModule implements OnModuleInit, OnModuleDestroy {
     this.bot.command('ping', (ctx) => {
       ctx.reply('pong');
     });
-    await this.bot.launch();
+
+    void this.bot.launch();
   }
 
   onModuleDestroy() {

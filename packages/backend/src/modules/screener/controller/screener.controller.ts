@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { ScreenerService } from '../service/screener.service';
+import { TradingViewScreenerService } from '../service/trading-view-screener.service';
 
 @Controller('screener')
 export class ScreenerController {
-  constructor(private screenerFetcherService: ScreenerService) {}
+  constructor(private screenerFetcherService: TradingViewScreenerService) {}
 
   @Get()
   async getScreener() {
