@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
+import { Box, Button, Drawer, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
 import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
 import { useRef, useState } from "react";
@@ -54,26 +54,15 @@ export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
       </Box>
       <Box height={"600px"} ref={ref}>
         {enterCount && (
-          <Grid container height={"100%"}>
-            <Grid item xs={6}>
-              <TradingViewTapeCard
-                symbol={`${exchange}:${symbol}`}
-                withDateRanges={true}
-                interval={"D"}
-                range={"6m"}
-                hideTopToolbar
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TradingViewTapeCard
-                symbol={`${exchange}:${symbol}`}
-                withDateRanges={true}
-                interval={"60"}
-                range={"1m"}
-                hideTopToolbar
-              />
-            </Grid>
-          </Grid>
+          <Box height={"100%"}>
+            <TradingViewTapeCard
+              symbol={`${exchange}:${symbol}`}
+              withDateRanges={true}
+              interval={"D"}
+              range={"6m"}
+              hideTopToolbar
+            />
+          </Box>
         )}
       </Box>
 
