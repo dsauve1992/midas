@@ -64,6 +64,8 @@ export class TradingViewScreenerService {
 
   mapSectorNameToRelatedIndex(sectorName: string): string | null {
     switch (sectorName) {
+      case 'Basic Materials':
+        return 'XLB';
       case 'Technology':
         return 'XLK';
       case 'Communication Services':
@@ -74,9 +76,9 @@ export class TradingViewScreenerService {
         return 'XLV';
       case 'Industrials':
         return 'XLI';
-      case 'Consumer Discretionary':
+      case 'Consumer Cyclical':
         return 'XLY';
-      case 'Consumer Staples':
+      case 'Consumer Defensive':
         return 'XLP';
       case 'Real Estate':
         return 'XLRE';
