@@ -23,13 +23,6 @@ export const InstitutionalOwnershipHistoryByQuarterBarChart = ({
     grid: {
       right: "20%",
     },
-    toolbox: {
-      feature: {
-        dataView: { show: true, readOnly: false },
-        restore: { show: true },
-        saveAsImage: { show: true },
-      },
-    },
     legend: {
       data: ["Institutional Sponsorship"],
     },

@@ -26,13 +26,6 @@ const InsiderActivityHistoryChart: React.FunctionComponent<Props> = ({
     grid: {
       right: "20%",
     },
-    toolbox: {
-      feature: {
-        dataView: { show: true, readOnly: false },
-        restore: { show: true },
-        saveAsImage: { show: true },
-      },
-    },
     legend: {
       data: ["Purchase events", "Sales events"],
     },

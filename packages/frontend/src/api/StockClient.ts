@@ -1,6 +1,5 @@
 import { StockGeneralInformationResponseDto } from "backend/src/shared-types/response.dto";
 import {
-  AnalystEstimateEntry,
   EarningsSurprise,
   InsiderTradingEvent,
   SocialSentiment,
@@ -31,14 +30,6 @@ export class StockClient extends MidasBackendClient {
   async getEarningsSurprises(symbol: string) {
     const { data } = await this.get<EarningsSurprise[]>(
       `${this.getStockUrl(symbol)}/earnings-surprises`,
-    );
-
-    return data;
-  }
-
-  async getAnalystEstimates(symbol: string) {
-    const { data } = await this.get<AnalystEstimateEntry[]>(
-      `${this.getStockUrl(symbol)}/analyst-estimates`,
     );
 
     return data;

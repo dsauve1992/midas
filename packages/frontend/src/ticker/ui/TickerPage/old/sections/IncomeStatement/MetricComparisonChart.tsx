@@ -1,5 +1,5 @@
-import { EChartOption } from "echarts";
 import { useEchart } from "../../../../../../lib/ui/chart/hooks/useEchart.ts";
+import { EChartOption } from "echarts";
 
 export type MetricComparison = {
   period: string | number;
@@ -37,16 +37,6 @@ export const MetricComparisonChart = ({
     },
     grid: {
       right: "20%",
-    },
-    toolbox: {
-      feature: {
-        dataView: { show: true, readOnly: false },
-        restore: { show: true },
-        saveAsImage: { show: true },
-      },
-    },
-    legend: {
-      data: [previousMetricLabel, currentMetricLabel, growthMetricLabel],
     },
     xAxis: [
       {

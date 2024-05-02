@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, Typography } from "@mui/material";
+import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
 import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
 import { useRef, useState } from "react";
@@ -8,6 +8,7 @@ import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/old/sections/
 import { StandaloneInstitutionalOwnershipHistoryByQuarter } from "../../ticker/ui/TickerPage/old/sections/InstitutionalHolders/StandaloneInstitutionalOwnershipHistoryByQuarter.tsx";
 import { useInViewport } from "react-in-viewport";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
+import { StandaloneAnnualEpsHistory } from "../../ticker/ui/TickerPage/new/StandaloneAnnualEpsHistory.tsx";
 
 export interface StockScreenerTapeCardProps {
   ticker: ScreenerEntryEntity;
@@ -77,19 +78,24 @@ const TickerDetailPanel = (props: { symbol: string }) => {
   const { symbol } = props;
 
   return (
-    <Box sx={{ width: 600 }} role="presentation" padding={"20px"}>
-      <Box sx={{ height: 250 }} marginBottom="20px">
-        <StandaloneEpsChart symbol={symbol} />
-      </Box>
-      <Box sx={{ height: 250 }} marginBottom="20px">
-        <StandaloneRevenueChart symbol={symbol} />
-      </Box>
-      <Box sx={{ height: 250 }} marginBottom="20px">
-        <StandaloneEarningSurprisesChart symbol={symbol} />
-      </Box>
-      <Box sx={{ height: 250 }} marginBottom="20px">
-        <StandaloneInstitutionalOwnershipHistoryByQuarter symbol={symbol} />
-      </Box>
+    <Box sx={{ width: 1200 }} role="presentation" padding={"20px"}>
+      <Grid container spacing={5}>
+        <Grid item xs={12} height={"33vh"}>
+          <StandaloneAnnualEpsHistory symbol={symbol} />
+        </Grid>
+        <Grid item xs={6} height={"33vh"}>
+          <StandaloneEpsChart symbol={symbol} />
+        </Grid>
+        <Grid item xs={6} height={"33vh"}>
+          <StandaloneRevenueChart symbol={symbol} />
+        </Grid>
+        <Grid item xs={6} height={"33vh"}>
+          <StandaloneEarningSurprisesChart symbol={symbol} />
+        </Grid>
+        <Grid item xs={6} height={"33vh"}>
+          <StandaloneInstitutionalOwnershipHistoryByQuarter symbol={symbol} />
+        </Grid>
+      </Grid>
     </Box>
   );
 };

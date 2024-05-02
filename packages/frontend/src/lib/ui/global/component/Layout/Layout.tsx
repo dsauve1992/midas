@@ -9,7 +9,6 @@ import { ToolsPage } from "../../../../../tools/ToolsPage.tsx";
 import { WatchListsPage } from "../../../../../watchlist/ui/WatchListsPage.tsx";
 import { useElementSize } from "usehooks-ts";
 import ScreenerPage from "../../../../../screener/new/ScreenerPage.tsx";
-import { NewTickerPage } from "../../../../../ticker/ui/TickerPage/new/NewTickerPage.tsx";
 
 const Layout: React.FunctionComponent = () => {
   const [squareRef, { height }] = useElementSize();
@@ -35,7 +34,6 @@ const Layout: React.FunctionComponent = () => {
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/ticker/:id/*" element={<TickerPage />} />
-            <Route path="/tickerv2/:id/*" element={<NewTickerPage />} />
             <Route path="/screener" element={<ScreenerPage />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/watchlist" element={<WatchListsPage />} />
