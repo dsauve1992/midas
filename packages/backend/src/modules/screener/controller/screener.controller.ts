@@ -5,13 +5,8 @@ import { TradingViewScreenerService } from '../service/trading-view-screener.ser
 export class ScreenerController {
   constructor(private screenerFetcherService: TradingViewScreenerService) {}
 
-  @Get()
+  @Get('/')
   async getScreener() {
-    return this.screenerFetcherService.search();
-  }
-
-  @Get('/new')
-  async getNewScreener() {
     return this.screenerFetcherService.getHierarchy();
   }
 }

@@ -15,7 +15,7 @@ export class ScreenerClient extends MidasBackendClient {
 
   public async queryHierarchy(): Promise<SectorTickerCollection[]> {
     const response = await this.get<ScreenerResponse>(
-      `${this.getBaseUrl()}/screener/new`,
+      `${this.getBaseUrl()}/screener`,
     );
     const data = response.data;
 

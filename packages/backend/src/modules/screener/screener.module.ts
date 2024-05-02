@@ -9,12 +9,14 @@ import { HistoricalDataModule } from '../historical-data/historical-data.module'
 import { UpdateScreenerUseCase } from './usecase/update-screener.use-case';
 import { TELEGRAM_BOT, TelegramModule } from '../telegram/telegram.module';
 import { Telegraf } from 'telegraf';
+import { GetHierarchyUseCase } from './usecase/get-hierarchy.use-case';
 
 @Module({
   controllers: [ScreenerController],
   imports: [HttpModule, RatingModule, HistoricalDataModule, TelegramModule],
   providers: [
     UpdateScreenerUseCase,
+    GetHierarchyUseCase,
     TradingViewScreenerService,
     ScreenerRepository,
     ComputeRatingScheduler,
