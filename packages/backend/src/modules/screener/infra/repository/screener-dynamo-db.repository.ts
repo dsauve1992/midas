@@ -6,10 +6,10 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
 import { DeleteItemCommand, DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { ScreenerEntryEntity } from '../../../shared-types/screener-entry.entity';
+import { ScreenerEntryFrontendDto } from '../../../../shared-types/screener-entry-frontend.dto';
 
 @Injectable()
-export class ScreenerRepository {
+export class ScreenerDynamoDbRepository {
   private readonly TABLE_NAME = 'screener';
   private readonly client: DynamoDBDocumentClient;
 
@@ -22,7 +22,7 @@ export class ScreenerRepository {
     );
   }
 
-  async create(screenerEntryEntity: ScreenerEntryEntity) {
+  async create(screenerEntryEntity: ScreenerEntryFrontendDto) {
     await this.client.send(
       new PutCommand({
         TableName: this.TABLE_NAME,
@@ -40,7 +40,7 @@ export class ScreenerRepository {
     );
   }
 
-  async getAll(): Promise<ScreenerEntryEntity[]> {
+  async getAll(): Promise<ScreenerEntryFrontendDto[]> {
     const params = new ScanCommand({
       TableName: this.TABLE_NAME,
       ExclusiveStartKey: undefined,

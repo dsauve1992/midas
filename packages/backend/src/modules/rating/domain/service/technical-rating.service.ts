@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { TechnicalIndicatorService } from '../domain/service/technical-indicator.service';
+import { TechnicalIndicatorService } from './technical-indicator.service';
 
 @Injectable()
-export class ComputeTechnicalRatingUseCase {
+export class TechnicalRatingService {
   constructor(
     private getTechnicalIndicatorsUseCase: TechnicalIndicatorService,
   ) {}

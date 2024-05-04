@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { ComputeFundamentalRatingUseCase } from '../../rating/usecase/compute-fundamental-rating.use-case';
+import { FundamentalRatingService } from '../../rating/domain/service/fundamental-rating.service';
 import { StockGeneralInformationResponseDto } from '../../../shared-types/response.dto';
-import { ComputeTechnicalRatingUseCase } from '../../rating/usecase/compute-technical-rating.use-case';
+import { TechnicalRatingService } from '../../rating/domain/service/technical-rating.service';
 
 @Injectable()
 export class GetStockGeneralInformationUseCase {
   constructor(
     private financialModelingPrepService: FinancialModelingPrepService,
-    private computeFundamentalRatingUseCase: ComputeFundamentalRatingUseCase,
-    private computeTechnicalRatingUseCase: ComputeTechnicalRatingUseCase,
+    private computeFundamentalRatingUseCase: FundamentalRatingService,
+    private computeTechnicalRatingUseCase: TechnicalRatingService,
   ) {}
   async execute(symbol: string): Promise<StockGeneralInformationResponseDto> {
     const [

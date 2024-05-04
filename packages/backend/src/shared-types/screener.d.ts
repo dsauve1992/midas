@@ -1,4 +1,4 @@
-import { ScreenerEntryEntity } from './screener-entry.entity';
+import { ScreenerEntryFrontendDto } from './screener-entry-frontend.dto';
 
 type ScreenerResponse = {
   sectors: {
@@ -6,7 +6,7 @@ type ScreenerResponse = {
     index: string | null;
     industryGroups: {
       name: string;
-      stocks: ScreenerEntryEntity[];
+      stocks: ScreenerEntryFrontendDto[];
     }[];
   }[];
 };

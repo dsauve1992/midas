@@ -1,4 +1,4 @@
-export type ScreenerEntryEntity = {
+export type ScreenerEntryFrontendDto = {
   symbol: string;
   exchange: string;
   sector: string;

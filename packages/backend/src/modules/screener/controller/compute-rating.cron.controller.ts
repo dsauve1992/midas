@@ -3,7 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import { UpdateScreenerUseCase } from '../usecase/update-screener.use-case';
 
 @Injectable()
-export class ComputeRatingScheduler {
+export class ComputeRatingCronController {
   constructor(private updateScreenerUseCase: UpdateScreenerUseCase) {}
 
   @Cron('30 17 * * *', { timeZone: 'America/Montreal' })

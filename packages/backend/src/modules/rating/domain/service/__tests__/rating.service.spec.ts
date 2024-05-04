@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ComputeFundamentalRatingUseCase } from './compute-fundamental-rating.use-case';
+import { FundamentalRatingService } from '../fundamental-rating.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
-import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
+import { FinancialModelingPrepService } from '../../../../historical-data/financial-modeling-prep.service';
 import {
   EnterpriseRatio,
   IncomeStatementDto,
-} from '../../../shared-types/financial-modeling-prep';
+} from '../../../../../shared-types/financial-modeling-prep';
 
 const mockGetIncomeStatement = jest.fn<
   Promise<Partial<IncomeStatementDto>[]>,
@@ -17,13 +17,13 @@ const mockGetEnterpriseRatios = jest.fn<
   any
 >();
 describe('RatingProcessorRunnerService', () => {
-  let service: ComputeFundamentalRatingUseCase;
+  let service: FundamentalRatingService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [HttpModule, ConfigModule.forRoot({ isGlobal: true })],
       providers: [
-        ComputeFundamentalRatingUseCase,
+        FundamentalRatingService,
         {
           provide: FinancialModelingPrepService,
           useFactory: jest.fn().mockImplementation(() => ({
@@ -34,7 +34,7 @@ describe('RatingProcessorRunnerService', () => {
       ],
     }).compile();
 
-    service = app.get(ComputeFundamentalRatingUseCase);
+    service = app.get(FundamentalRatingService);
   });
 
   it('should return a number', async () => {

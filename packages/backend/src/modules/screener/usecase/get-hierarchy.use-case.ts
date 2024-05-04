@@ -1,47 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import * as screenerParameters_v2 from './screenerParameter.json';
-import { ScreenerRepository } from '../repository/screener.repository';
-import { chain } from 'lodash';
 import { ScreenerResponse } from '../../../shared-types/screener';
-
-export type TradingViewScreenerEntry = {
-  symbol: string;
-  exchange: string;
-  sector: string;
-  industry: string;
-};
+import { chain } from 'lodash';
+import { ScreenerRepository } from '../domain/screener.repository';
 
 @Injectable()
-export class TradingViewScreenerService {
-  constructor(
-    private httpService: HttpService,
-    private screenerRepository: ScreenerRepository,
-  ) {}
+export class GetHierarchyUseCase {
+  constructor(private readonly screenerRepository: ScreenerRepository) {}
 
-  async search(): Promise<TradingViewScreenerEntry[]> {
-    const response = await firstValueFrom(
-      this.httpService.post(
-        'https://scanner.tradingview.com/global/scan',
-        screenerParameters_v2,
-      ),
-    );
-
-    return response.data.data.map((entry: any) => {
-      const [exchange, symbol] = entry.s.split(':');
-      const [sector, industry] = entry.d;
-
-      return {
-        symbol,
-        exchange,
-        sector,
-        industry,
-      };
-    });
-  }
-
-  async getHierarchy(): Promise<ScreenerResponse> {
+  // TODO this is a reading usecase. Do we need a usecase for reading?
+  async execute(): Promise<ScreenerResponse> {
     const entries = await this.screenerRepository.getAll();
 
     return {
@@ -54,7 +21,21 @@ export class TradingViewScreenerService {
             .groupBy('industry')
             .map((value, key) => ({
               name: key,
-              stocks: value,
+              stocks: value.map((entry) => ({
+                symbol: entry.symbol,
+                exchange: entry.exchange,
+                sector: entry.sector,
+                industry: entry.industry,
+                fundamentalRating: entry.fundamentalRating,
+                numberOfDaysUntilNextEarningCall:
+                  entry.numberOfDaysUntilNextEarningCall,
+                averageDailyRange: entry.averageDailyRange,
+                _5WeeksHigh: entry._5WeeksHigh,
+                _52WeeksHigh: entry._52WeeksHigh,
+                rsLine: entry.rsLine,
+                rsLineSma50: entry.rsLineSma50,
+                rsLineSma200: entry.rsLineSma200,
+              })),
             }))
             .value(),
         }))
