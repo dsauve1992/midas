@@ -11,6 +11,7 @@ import { Telegraf } from 'telegraf';
 import { GetHierarchyUseCase } from './usecase/get-hierarchy.use-case';
 import { ScreenerRestController } from './controller/screener.rest.controller';
 import { ScreenerRepository } from './domain/screener.repository';
+import { ScreenerEntryFactory } from './domain/screener-entry.factory';
 
 @Module({
   controllers: [ScreenerRestController],
@@ -23,6 +24,7 @@ import { ScreenerRepository } from './domain/screener.repository';
       provide: ScreenerRepository,
       useClass: ScreenerDynamoDbRepository,
     },
+    ScreenerEntryFactory,
     ComputeRatingCronController,
   ],
 })

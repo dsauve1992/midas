@@ -14,7 +14,7 @@ export type TradingViewScreenerEntry = {
 export class TradingViewScreenerService {
   constructor(private httpService: HttpService) {}
 
-  async search(): Promise<TradingViewScreenerEntry[]> {
+  async search(): Promise<string[]> {
     const response = await firstValueFrom(
       this.httpService.post(
         'https://scanner.tradingview.com/global/scan',
@@ -23,15 +23,9 @@ export class TradingViewScreenerService {
     );
 
     return response.data.data.map((entry: any) => {
-      const [exchange, symbol] = entry.s.split(':');
-      const [sector, industry] = entry.d;
+      const [, symbol] = entry.s.split(':');
 
-      return {
-        symbol,
-        exchange,
-        sector,
-        industry,
-      };
+      return symbol;
     });
   }
 }

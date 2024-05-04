@@ -13,4 +13,14 @@ export class ScreenerEntryEntity {
     readonly _5WeeksHigh: number,
     readonly _52WeeksHigh: number,
   ) {}
+
+  hasGreatSetup(): boolean {
+    const hasStrongRelativeStrength =
+      this.rsLine > this.rsLineSma50 &&
+      this.rsLineSma50 > this.rsLineSma200 &&
+      this._5WeeksHigh === this._52WeeksHigh;
+    const hasStrongADR = this.averageDailyRange >= 3;
+
+    return hasStrongRelativeStrength && hasStrongADR;
+  }
 }
