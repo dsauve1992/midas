@@ -1,9 +1,9 @@
-import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
+import { ScreenerEntryFrontendDto } from "backend/src/shared-types/screener-entry-frontend.dto.ts";
 
 export class IndustryGroupTickerCollection {
   constructor(
     readonly name: string,
-    readonly tickers: ScreenerEntryEntity[],
+    readonly tickers: ScreenerEntryFrontendDto[],
   ) {}
 }
 

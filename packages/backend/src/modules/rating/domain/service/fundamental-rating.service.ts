@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
+import { FinancialModelingPrepService } from '../../../historical-data/financial-modeling-prep.service';
 import {
   AnnuallyIncomeHistory,
   QuarterlyIncomeHistory,
-} from '../domain/QuarterlyIncomeHistory';
-import { Sorting } from '../domain/Sorting';
-import { FinancialQuarter } from '../domain/FinancialQuarter';
+} from '../QuarterlyIncomeHistory';
+import { Sorting } from '../Sorting';
+import { FinancialQuarter } from '../FinancialQuarter';
 import {
   AnnuallyIncomeSummary,
   FundamentalSummary,
   QuarterlyIncomeSummary,
-} from '../domain/FundamentalSummary';
+} from '../FundamentalSummary';
 import { meanBy } from 'lodash';
 
 @Injectable()
-export class ComputeFundamentalRatingUseCase {
+export class FundamentalRatingService {
   constructor(
     private financialModelingPrepFetcherService: FinancialModelingPrepService,
   ) {}

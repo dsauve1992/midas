@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
+import { FinancialModelingPrepService } from '../../../historical-data/financial-modeling-prep.service';
 import { subDays } from 'date-fns';
 import { DataFrame } from 'danfojs-node';
 import { SMA } from 'technicalindicators';
 
 @Injectable()
-export class ComputeAverageDailyRangeUseCase {
+export class AverageDailyRangeService {
   constructor(
     private financialModelingPrepFetcherService: FinancialModelingPrepService,
   ) {}

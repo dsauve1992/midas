@@ -1,17 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ComputeFundamentalRatingUseCase } from '../../rating/usecase/compute-fundamental-rating.use-case';
+import { FundamentalRatingService } from '../../rating/domain/service/fundamental-rating.service';
 import {
   TradingViewScreenerEntry,
   TradingViewScreenerService,
 } from '../service/trading-view-screener.service';
 import { ScreenerRepository } from '../repository/screener.repository';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { ScreenerEntryEntity } from '../../../shared-types/screener-entry.entity';
 import { differenceInDays, parseISO } from 'date-fns';
 import { sortBy } from 'lodash';
-import { ComputeAverageDailyRangeUseCase } from '../../rating/usecase/compute-average-daily-range.use-case';
+import { AverageDailyRangeService } from '../../rating/domain/service/average-daily-range.service';
 import { delay } from '../../../utils/delay';
-import { ComputeRelativeStrengthUseCase } from '../../rating/usecase/compute-relative-strength.use-case';
+import { RelativeStrengthService } from '../../rating/domain/service/relative-strength.service';
+import { ScreenerEntryEntity } from '../domain/screener-entry.entity';
 
 @Injectable()
 export class UpdateScreenerUseCase {
@@ -19,9 +19,9 @@ export class UpdateScreenerUseCase {
 
   constructor(
     private screenerFetcherService: TradingViewScreenerService,
-    private computeFundamentalRatingUseCase: ComputeFundamentalRatingUseCase,
-    private computeAverageDailyRangeUseCase: ComputeAverageDailyRangeUseCase,
-    private computeRelativeStrengthUseCase: ComputeRelativeStrengthUseCase,
+    private fundamentalRatingService: FundamentalRatingService,
+    private averageDailyRangeService: AverageDailyRangeService,
+    private relativeStrengthService: RelativeStrengthService,
     private fmpService: FinancialModelingPrepService,
     private screenerRepository: ScreenerRepository,
   ) {}
@@ -63,17 +63,19 @@ export class UpdateScreenerUseCase {
   private async createScreenerEntry(
     entry: TradingViewScreenerEntry,
   ): Promise<ScreenerEntryEntity> {
-    const profile = await this.fmpService.getProfile(entry.symbol);
+    const { symbol } = entry;
+
+    const profile = await this.fmpService.getProfile(symbol);
     const fundamentalRating =
-      await this.computeFundamentalRatingUseCase.execute(entry.symbol);
+      await this.fundamentalRatingService.execute(symbol);
     const averageDailyRange =
-      await this.computeAverageDailyRangeUseCase.execute(entry.symbol);
+      await this.averageDailyRangeService.execute(symbol);
 
     const { rsLine, rsLineSma50, rsLineSma200, _52WeeksHigh, _5WeeksHigh } =
-      await this.computeRelativeStrengthUseCase.execute(entry.symbol);
+      await this.relativeStrengthService.execute(symbol);
 
     const numberOfDaysUntilNextEarningCall =
-      await this.getNumberOfDaysUntilNextEarningCall(entry.symbol); // TODO demander à trading view à la place
+      await this.getNumberOfDaysUntilNextEarningCall(symbol); // TODO demander à trading view à la place
 
     return {
       symbol: entry.symbol,

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import * as screenerParameters_v2 from './screenerParameter.json';
-import { ScreenerRepository } from '../repository/screener.repository';
 
 export type TradingViewScreenerEntry = {
   symbol: string;
@@ -13,10 +12,7 @@ export type TradingViewScreenerEntry = {
 
 @Injectable()
 export class TradingViewScreenerService {
-  constructor(
-    private httpService: HttpService,
-    private screenerRepository: ScreenerRepository,
-  ) {}
+  constructor(private httpService: HttpService) {}
 
   async search(): Promise<TradingViewScreenerEntry[]> {
     const response = await firstValueFrom(

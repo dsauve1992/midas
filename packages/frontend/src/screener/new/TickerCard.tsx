@@ -1,6 +1,6 @@
 import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
-import { ScreenerEntryEntity } from "backend/src/shared-types/screener-entry.entity";
+import { ScreenerEntryFrontendDto } from "backend/src/shared-types/screener-entry-frontend.dto.ts";
 import { useRef, useState } from "react";
 import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/old/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
 import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/old/sections/IncomeStatement/StandaloneEpsChart.tsx";
@@ -11,7 +11,7 @@ import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
 import { StandaloneAnnualEpsHistory } from "../../ticker/ui/TickerPage/new/StandaloneAnnualEpsHistory.tsx";
 
 export interface StockScreenerTapeCardProps {
-  ticker: ScreenerEntryEntity;
+  ticker: ScreenerEntryFrontendDto;
 }
 
 export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {

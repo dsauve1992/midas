@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { subWeeks } from 'date-fns';
-import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
+import { FinancialModelingPrepService } from '../../../historical-data/financial-modeling-prep.service';
 import { DataFrame } from 'danfojs-node';
 import { SMA } from 'technicalindicators';
 
@@ -13,7 +13,7 @@ type RelativeStrengthResponse = {
 };
 
 @Injectable()
-export class ComputeRelativeStrengthUseCase {
+export class RelativeStrengthService {
   constructor(
     private financialModelingPrepFetcherService: FinancialModelingPrepService,
   ) {}

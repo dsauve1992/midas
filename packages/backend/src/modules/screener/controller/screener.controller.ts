@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { TradingViewScreenerService } from '../service/trading-view-screener.service';
+import { GetHierarchyUseCase } from '../usecase/get-hierarchy.use-case';
 
 @Controller('screener')
 export class ScreenerController {
-  constructor(private screenerFetcherService: TradingViewScreenerService) {}
+  constructor(private getHierarchyUseCase: GetHierarchyUseCase) {}
 
   @Get('/')
   async getScreener() {
-    return this.screenerFetcherService.getHierarchy();
+    return this.getHierarchyUseCase.execute();
   }
 }
