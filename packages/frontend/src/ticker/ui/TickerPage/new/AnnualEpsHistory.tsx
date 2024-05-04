@@ -1,5 +1,7 @@
 import { EChartOption } from "echarts";
 import { useEchart } from "../../../../lib/ui/chart/hooks/useEchart.ts";
+import { useMemo } from "react";
+import CartesianAxis = echarts.EChartOption.BasicComponents.CartesianAxis;
 
 type Props = {
   history: {
@@ -8,9 +10,46 @@ type Props = {
     growth: number;
     estimate: boolean;
   }[];
+  position: "vertical" | "horizontal";
 };
 
-export const AnnualEpsHistory = ({ history }: Props) => {
+export const AnnualEpsHistory = ({ history, position }: Props) => {
+  const yearAxis = useMemo(
+    () => [
+      {
+        type: "category",
+        axisTick: {
+          alignWithLabel: true,
+        },
+        position: "left",
+        // prettier-ignore
+        data: history.map((e) => e.year),
+      } as CartesianAxis,
+    ],
+    [history],
+  );
+
+  const epsAxis = useMemo(
+    () => [
+      {
+        type: "value",
+        name: "Eps",
+        show: true,
+        splitLine: {
+          show: false,
+        },
+      } as CartesianAxis,
+      {
+        type: "value",
+        name: "Growth",
+        axisLine: {
+          show: true,
+        },
+      } as CartesianAxis,
+    ],
+    [],
+  );
+
   const options: EChartOption = {
     title: {
       show: true,
@@ -25,33 +64,8 @@ export const AnnualEpsHistory = ({ history }: Props) => {
     grid: {
       right: "10%",
     },
-    yAxis: [
-      {
-        type: "category",
-        axisTick: {
-          alignWithLabel: true,
-        },
-        // prettier-ignore
-        data: history.map((e) => e.year),
-      },
-    ],
-    xAxis: [
-      {
-        type: "value",
-        name: "Eps",
-        show: true,
-        splitLine: {
-          show: false,
-        },
-      },
-      {
-        type: "value",
-        name: "Growth",
-        axisLine: {
-          show: true,
-        },
-      },
-    ],
+    yAxis: position === "horizontal" ? epsAxis : yearAxis,
+    xAxis: position === "horizontal" ? yearAxis : epsAxis,
     series: [
       {
         name: "current",
@@ -65,12 +79,14 @@ export const AnnualEpsHistory = ({ history }: Props) => {
             borderColor: e.estimate ? "rgb(255,84,46)" : "rgba(210, 70, 70, 0)",
           },
         })),
-        xAxisIndex: 0,
+        yAxisIndex: position === "horizontal" ? 0 : undefined,
+        xAxisIndex: position === "vertical" ? 0 : undefined,
       },
       {
         name: "Growth",
         type: "line",
-        xAxisIndex: 1,
+        yAxisIndex: position === "horizontal" ? 1 : undefined,
+        xAxisIndex: position === "vertical" ? 1 : undefined,
         data: history.map((e) => e.growth),
         label: {
           show: true,

@@ -4,13 +4,14 @@ import { AnnualEpsHistory } from "./AnnualEpsHistory.tsx";
 
 type Props = {
   symbol: string;
+  position: "vertical" | "horizontal";
 };
 
-export const StandaloneAnnualEpsHistory = ({ symbol }: Props) => {
+export const StandaloneAnnualEpsHistory = ({ symbol, position }: Props) => {
   const { data: history } = useAnnualIncomeStatementWithEstimates(symbol!);
 
   const mem = useMemo(() => {
-    return (history || []).map(({ period, earnings, estimate }) => {
+    const data = (history || []).map(({ period, earnings, estimate }) => {
       return {
         year: +period,
         value: earnings!.current!,
@@ -18,7 +19,8 @@ export const StandaloneAnnualEpsHistory = ({ symbol }: Props) => {
         estimate: estimate,
       };
     });
-  }, [history]);
+    return position === "vertical" ? data : data.reverse();
+  }, [history, position]);
 
-  return <AnnualEpsHistory history={mem} />;
+  return <AnnualEpsHistory history={mem} position={position} />;
 };

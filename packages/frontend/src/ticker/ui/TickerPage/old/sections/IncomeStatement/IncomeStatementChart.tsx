@@ -2,6 +2,7 @@ import FinancialPeriod from "../../../../../../lib/FinancialPeriod.ts";
 import { StandaloneEpsChart } from "./StandaloneEpsChart.tsx";
 import { Grid } from "@mui/material";
 import { StandaloneRevenueChart } from "./StandaloneRevenueChart.tsx";
+import { StandaloneAnnualEpsHistory } from "../../../new/StandaloneAnnualEpsHistory.tsx";
 
 type Props = {
   symbol: string;
@@ -21,5 +22,5 @@ export const IncomeStatementChart = ({ symbol, frequency }: Props) => {
     );
   }
 
-  return <StandaloneEpsChart symbol={symbol} period={FinancialPeriod.ANNUAL} />;
+  return <StandaloneAnnualEpsHistory symbol={symbol} position={"horizontal"} />;
 };

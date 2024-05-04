@@ -81,7 +81,7 @@ const TickerDetailPanel = (props: { symbol: string }) => {
     <Box sx={{ width: 1200 }} role="presentation" padding={"20px"}>
       <Grid container spacing={5}>
         <Grid item xs={12} height={"33vh"}>
-          <StandaloneAnnualEpsHistory symbol={symbol} />
+          <StandaloneAnnualEpsHistory symbol={symbol} position={"vertical"} />
         </Grid>
         <Grid item xs={6} height={"33vh"}>
           <StandaloneEpsChart symbol={symbol} />
