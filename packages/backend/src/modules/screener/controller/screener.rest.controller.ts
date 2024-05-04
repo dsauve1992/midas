@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { GetHierarchyUseCase } from '../usecase/get-hierarchy.use-case';
 
 @Controller('screener')
-export class ScreenerController {
+export class ScreenerRestController {
   constructor(private getHierarchyUseCase: GetHierarchyUseCase) {}
 
   @Get('/')

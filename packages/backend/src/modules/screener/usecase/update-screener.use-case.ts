@@ -3,8 +3,7 @@ import { FundamentalRatingService } from '../../rating/domain/service/fundamenta
 import {
   TradingViewScreenerEntry,
   TradingViewScreenerService,
-} from '../service/trading-view-screener.service';
-import { ScreenerRepository } from '../repository/screener.repository';
+} from '../infra/trading-view/trading-view-screener.service';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { differenceInDays, parseISO } from 'date-fns';
 import { sortBy } from 'lodash';
@@ -12,6 +11,7 @@ import { AverageDailyRangeService } from '../../rating/domain/service/average-da
 import { delay } from '../../../utils/delay';
 import { RelativeStrengthService } from '../../rating/domain/service/relative-strength.service';
 import { ScreenerEntryEntity } from '../domain/screener-entry.entity';
+import { ScreenerRepository } from '../domain/screener.repository';
 
 @Injectable()
 export class UpdateScreenerUseCase {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ScreenerResponse } from '../../../shared-types/screener';
 import { chain } from 'lodash';
-import { ScreenerRepository } from '../repository/screener.repository';
+import { ScreenerRepository } from '../domain/screener.repository';
 
 @Injectable()
 export class GetHierarchyUseCase {
