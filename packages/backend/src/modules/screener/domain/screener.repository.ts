@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ScreenerEntryFrontendDto } from '../../../shared-types/screener-entry-frontend.dto';
+import { ScreenerEntryEntity } from './screener-entry.entity';
 
 @Injectable()
 export abstract class ScreenerRepository {
-  abstract create(screenerEntryEntity: ScreenerEntryFrontendDto): Promise<void>;
+  abstract create(screenerEntryEntity: ScreenerEntryEntity): Promise<void>;
 
-  abstract getAll(): Promise<ScreenerEntryFrontendDto[]>;
+  abstract getAll(): Promise<ScreenerEntryEntity[]>;
 
   abstract deleteAll(): Promise<void>;
 }

@@ -77,11 +77,11 @@ export class UpdateScreenerUseCase {
     const numberOfDaysUntilNextEarningCall =
       await this.getNumberOfDaysUntilNextEarningCall(symbol); // TODO demander à trading view à la place
 
-    return {
-      symbol: entry.symbol,
-      exchange: entry.exchange,
-      industry: profile.industry,
-      sector: profile.sector,
+    return new ScreenerEntryEntity(
+      entry.symbol,
+      entry.exchange,
+      profile.industry,
+      profile.sector,
       rsLine,
       rsLineSma50,
       rsLineSma200,
@@ -90,7 +90,7 @@ export class UpdateScreenerUseCase {
       numberOfDaysUntilNextEarningCall,
       _5WeeksHigh,
       _52WeeksHigh,
-    };
+    );
   }
 
   private async getNumberOfDaysUntilNextEarningCall(

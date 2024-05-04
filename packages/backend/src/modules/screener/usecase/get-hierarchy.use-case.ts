@@ -7,6 +7,7 @@ import { ScreenerRepository } from '../domain/screener.repository';
 export class GetHierarchyUseCase {
   constructor(private readonly screenerRepository: ScreenerRepository) {}
 
+  // TODO this is a reading usecase. Do we need a usecase for reading?
   async execute(): Promise<ScreenerResponse> {
     const entries = await this.screenerRepository.getAll();
 
@@ -20,7 +21,21 @@ export class GetHierarchyUseCase {
             .groupBy('industry')
             .map((value, key) => ({
               name: key,
-              stocks: value,
+              stocks: value.map((entry) => ({
+                symbol: entry.symbol,
+                exchange: entry.exchange,
+                sector: entry.sector,
+                industry: entry.industry,
+                fundamentalRating: entry.fundamentalRating,
+                numberOfDaysUntilNextEarningCall:
+                  entry.numberOfDaysUntilNextEarningCall,
+                averageDailyRange: entry.averageDailyRange,
+                _5WeeksHigh: entry._5WeeksHigh,
+                _52WeeksHigh: entry._52WeeksHigh,
+                rsLine: entry.rsLine,
+                rsLineSma50: entry.rsLineSma50,
+                rsLineSma200: entry.rsLineSma200,
+              })),
             }))
             .value(),
         }))
