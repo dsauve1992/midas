@@ -126,6 +126,7 @@ jobs:
             docker run -d \
               -p 443:443 \
               -e FMP_API_KEY=${{ secrets.FMP_PRIVATE_KEY }} \
+              -e SENTRY_DSN=${{ secrets.SENTRY_DSN }} \
               -e DYNAMO_DB_URL=${{ secrets.DYNAMO_DB_URL }} \
               -e DYNAMO_DB_REGION=${{ secrets.DYNAMO_DB_REGION }} \
               -e AUTH0_AUDIENCE=https://${{ vars.EC2_HOST }} \
