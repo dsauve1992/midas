@@ -20,16 +20,14 @@ export class UpdateScreenerUseCase {
 
       const symbols = await this.screenerFetcherService.search();
 
-      const entries = await Promise.all(
-        symbols.map(async (symbol) => {
-          await delay(3000); // TODO: to avoid rate limiting. But we should manage this inside fmpService
-          return this.screenerEntryFactory.create(symbol);
-        }),
-      );
+      for (const symbol of symbols) {
+        await delay(3000); // TODO: to avoid rate limiting. But we should manage this inside fmpService
+        const entry = await this.screenerEntryFactory.create(symbol);
 
-      entries
-        .filter((midasEntry) => midasEntry.hasGreatSetup())
-        .forEach((entry) => this.screenerRepository.save(entry));
+        if (entry.hasGreatSetup()) {
+          await this.screenerRepository.save(entry);
+        }
+      }
     } catch (e) {
       this.logger.error(e);
     }
