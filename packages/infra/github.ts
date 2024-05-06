@@ -8,6 +8,7 @@ type GithubVariable = {
   FMP_PRIVATE_KEY: Output<string>;
   DYNAMO_DB_URL: Output<string>;
   DYNAMO_DB_REGION: Output<string>;
+  SENTRY_DSN: Output<string>;
 };
 
 export const addGithubVariables = ({
@@ -17,6 +18,7 @@ export const addGithubVariables = ({
   FMP_PRIVATE_KEY,
   DYNAMO_DB_URL,
   DYNAMO_DB_REGION,
+  SENTRY_DSN,
 }: GithubVariable) => {
   new github.ActionsVariable("FRONTEND_STORAGE_S3_BUCKET_NAME", {
     value: FRONTEND_STORAGE_S3_BUCKET_NAME.apply((v) => v),
@@ -40,6 +42,12 @@ export const addGithubVariables = ({
     plaintextValue: FMP_PRIVATE_KEY.apply((v) => v),
     repository: "midas",
     secretName: "FMP_PRIVATE_KEY",
+  });
+
+  new github.ActionsSecret("SENTRY_DSN", {
+    plaintextValue: SENTRY_DSN.apply((v) => v),
+    repository: "midas",
+    secretName: "SENTRY_DSN",
   });
 
   new github.ActionsSecret("DYNAMO_DB_URL", {
