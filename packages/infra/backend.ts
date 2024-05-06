@@ -13,7 +13,7 @@ const publicKey = config.get("publicKey");
 
 // The privateKey associated with the selected key must be provided (either directly or base64 encoded).
 const privateKey = config.requireSecret("privateKey").apply((key) => {
-  if (key.startsWith("-----BEGIN RSA PRIVATE KEY-----")) {
+  if (key.startsWith("-----BEGIN OPENSSH PRIVATE KEY-----")) {
     return key;
   } else {
     return Buffer.from(key, "base64").toString("ascii");
