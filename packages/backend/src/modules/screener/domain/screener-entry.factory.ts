@@ -36,8 +36,8 @@ export class ScreenerEntryFactory {
     return new ScreenerEntryEntity(
       symbol,
       exchange,
-      profile.industry,
       profile.sector,
+      profile.industry,
       rsLine,
       rsLineSma50,
       rsLineSma200,
