@@ -3,18 +3,18 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import * as screenerParameters_v2 from './screenerParameter.json';
 
-export type TradingViewScreenerEntry = {
-  symbol: string;
-  exchange: string;
-  sector: string;
-  industry: string;
-};
+export class SymbolWithExchange {
+  constructor(
+    readonly exchange: string,
+    readonly symbol: string,
+  ) {}
+}
 
 @Injectable()
 export class TradingViewScreenerService {
   constructor(private httpService: HttpService) {}
 
-  async search(): Promise<string[]> {
+  async search(): Promise<SymbolWithExchange[]> {
     const response = await firstValueFrom(
       this.httpService.post(
         'https://scanner.tradingview.com/global/scan',
@@ -23,9 +23,9 @@ export class TradingViewScreenerService {
     );
 
     return response.data.data.map((entry: any) => {
-      const [, symbol] = entry.s.split(':');
+      const [exchange, symbol] = entry.s.split(':');
 
-      return symbol;
+      return new SymbolWithExchange(exchange, symbol);
     });
   }
 }

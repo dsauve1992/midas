@@ -6,6 +6,7 @@ import { AverageDailyRangeService } from '../../rating/domain/service/average-da
 import { RelativeStrengthService } from '../../rating/domain/service/relative-strength.service';
 import { differenceInDays, parseISO } from 'date-fns';
 import { sortBy } from 'lodash';
+import { SymbolWithExchange } from '../infra/trading-view/trading-view-screener.service';
 
 @Injectable()
 export class ScreenerEntryFactory {
@@ -16,7 +17,12 @@ export class ScreenerEntryFactory {
     private readonly relativeStrengthService: RelativeStrengthService,
   ) {}
 
-  async create(symbol: string): Promise<ScreenerEntryEntity> {
+  async create(
+    symbolWithExchange: SymbolWithExchange,
+  ): Promise<ScreenerEntryEntity> {
+    const symbol = symbolWithExchange.symbol;
+    const exchange = symbolWithExchange.exchange;
+
     const profile = await this.fmpService.getProfile(symbol);
     const fundamentalRating =
       await this.fundamentalRatingService.execute(symbol);
@@ -29,7 +35,7 @@ export class ScreenerEntryFactory {
 
     return new ScreenerEntryEntity(
       symbol,
-      profile.exchange,
+      exchange,
       profile.industry,
       profile.sector,
       rsLine,

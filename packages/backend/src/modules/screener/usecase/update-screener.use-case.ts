@@ -15,21 +15,23 @@ export class UpdateScreenerUseCase {
   ) {}
 
   async execute() {
-    try {
-      await this.screenerRepository.deleteAll();
+    await this.screenerRepository.deleteAll();
 
-      const symbols = await this.screenerFetcherService.search();
+    const symbols = await this.screenerFetcherService.search();
 
-      for (const symbol of symbols) {
+    for (const symbolWithExchange of symbols) {
+      try {
         await delay(3000); // TODO: to avoid rate limiting. But we should manage this inside fmpService
-        const entry = await this.screenerEntryFactory.create(symbol);
+        const entry =
+          await this.screenerEntryFactory.create(symbolWithExchange);
 
         if (entry.hasGreatSetup()) {
           await this.screenerRepository.save(entry);
         }
+      } catch (e) {
+        this.logger.error(symbolWithExchange);
+        this.logger.error(e);
       }
-    } catch (e) {
-      this.logger.error(e);
     }
   }
 }
