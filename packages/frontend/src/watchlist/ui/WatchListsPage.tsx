@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";
 import { Helmet } from "react-helmet";
+import { TicketDetailButton } from "../../screener/new/TicketDetailButton.tsx";
 
 export const WatchListsPage = () => {
   const { data: symbols } = useGetWatchlist();
@@ -33,8 +34,17 @@ export const WatchListTicker = ({ symbol }: { symbol: string }) => {
           display={"flex"}
           alignItems={"center"}
           justifyContent={"space-between"}
+          marginBottom={1}
         >
-          <Typography variant="h5">{symbol}</Typography>
+          <Box
+            display={"inline-flex"}
+            flexDirection={"row"}
+            alignItems={"end"}
+            gap={1}
+          >
+            <Typography variant="h5">{symbol}</Typography>
+            <TicketDetailButton symbol={symbol} />
+          </Box>
           <WatchlistToggleButton symbol={symbol} />
         </Box>
 
