@@ -30,11 +30,6 @@ export class GetHierarchyUseCase {
                 numberOfDaysUntilNextEarningCall:
                   entry.numberOfDaysUntilNextEarningCall,
                 averageDailyRange: entry.averageDailyRange,
-                _5WeeksHigh: entry._5WeeksHigh,
-                _52WeeksHigh: entry._52WeeksHigh,
-                rsLine: entry.rsLine,
-                rsLineSma50: entry.rsLineSma50,
-                rsLineSma200: entry.rsLineSma200,
               })),
             }))
             .value(),

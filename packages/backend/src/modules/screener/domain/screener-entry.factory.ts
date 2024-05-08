@@ -4,7 +4,7 @@ import { FinancialModelingPrepService } from '../../historical-data/financial-mo
 import { FundamentalRatingService } from '../../rating/domain/service/fundamental-rating.service';
 import { AverageDailyRangeService } from '../../rating/domain/service/average-daily-range.service';
 import { RelativeStrengthService } from '../../rating/domain/service/relative-strength.service';
-import { differenceInDays, parseISO } from 'date-fns';
+import { differenceInDays, format, parseISO, subDays } from 'date-fns';
 import { sortBy } from 'lodash';
 import { SymbolWithExchange } from '../infra/trading-view/trading-view-screener.service';
 
@@ -28,10 +28,28 @@ export class ScreenerEntryFactory {
       await this.fundamentalRatingService.execute(symbol);
     const averageDailyRange =
       await this.averageDailyRangeService.execute(symbol);
-    const { rsLine, rsLineSma50, rsLineSma200, _52WeeksHigh, _5WeeksHigh } =
+    const { rsLine, rsLineSma50, rsLineSma200 } =
       await this.relativeStrengthService.execute(symbol);
     const numberOfDaysUntilNextEarningCall =
       await this.getNumberOfDaysUntilNextEarningCall(symbol);
+
+    const _10emaHistory = await this.fmpService.getDailyTechnicalIndicator(
+      symbol,
+      {
+        type: 'ema',
+        period: 10,
+        from: format(subDays(new Date(), 5), 'yyyy-MM-dd'),
+      },
+    );
+
+    const _20emaHistory = await this.fmpService.getDailyTechnicalIndicator(
+      symbol,
+      {
+        type: 'ema',
+        period: 20,
+        from: format(subDays(new Date(), 5), 'yyyy-MM-dd'),
+      },
+    );
 
     return new ScreenerEntryEntity(
       symbol,
@@ -44,8 +62,8 @@ export class ScreenerEntryFactory {
       fundamentalRating,
       averageDailyRange,
       numberOfDaysUntilNextEarningCall,
-      _5WeeksHigh,
-      _52WeeksHigh,
+      _10emaHistory.map(({ ema }) => ema),
+      _20emaHistory.map(({ ema }) => ema),
     );
   }
 
