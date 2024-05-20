@@ -6,6 +6,7 @@ import {
 } from "../domain/NestedTickerCollection.ts";
 import Box from "@mui/material/Box";
 import TradingViewSimpleDailyTapeCard from "../../lib/ui/chart/TradingViewSimpleDailyTapeCard.tsx";
+import { orderBy } from "lodash";
 
 export const SectorDetail = (props: { sector: SectorTickerCollection }) => {
   const { sector } = props;
@@ -38,7 +39,7 @@ const IndustryGroupDetail = (props: {
       <Typography variant="h3" marginBottom={"25px"}>
         {group.name}
       </Typography>
-      {group.tickers.map((ticker) => (
+      {orderBy(group.tickers, "averageDailyRange", "desc").map((ticker) => (
         <TickerCard ticker={ticker} key={ticker.symbol} />
       ))}
     </Box>

@@ -15,16 +15,6 @@
       "right": "SMA50"
     },
     {
-      "left": "SMA50",
-      "operation": "egreater",
-      "right": "SMA150"
-    },
-    {
-      "left": "SMA150",
-      "operation": "egreater",
-      "right": "SMA200"
-    },
-    {
       "left": "exchange",
       "operation": "in_range",
       "right": [
