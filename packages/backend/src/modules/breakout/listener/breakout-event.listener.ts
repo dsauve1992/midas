@@ -15,6 +15,9 @@ export class BreakoutEventListener {
     await this.bot.telegram.sendMessage(
       BreakoutEventListener.TELEGRAM_CHAT_ID,
       event.toString(),
+      {
+        parse_mode: 'MarkdownV2',
+      },
     );
   }
 }

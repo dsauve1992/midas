@@ -29,6 +29,8 @@ export class BreakoutService {
         fifteenMinuteAnalysis.getCurrentVsAverageVolumeRatio(20);
       const last15MinutesMACDHistogramRecordIsPositive =
         fifteenMinuteAnalysis.isLastMACDHistogramRecordIsPositive();
+      const fifteenMinuteEmaAnd20EmaRising =
+        fifteenMinuteAnalysis.is10EmaAnd20EmaRising();
       const fifteenMinutesPriceDeltaVsAtrRatio =
         fifteenMinuteAnalysis.getPriceDeltaVsAtrRatio(20);
 
@@ -36,16 +38,17 @@ export class BreakoutService {
       const dailyVolumeRatio = dailyAnalysis.getCurrentVsAverageVolumeRatio(20);
       const lastDailyMACDHistogramRecordIsPositive =
         dailyAnalysis.isLastMACDHistogramRecordIsPositive();
-      const emaAnd20EmaRising = dailyAnalysis.is10EmaAnd20EmaRising();
+      const dailyEmaAnd20EmaRising = dailyAnalysis.is10EmaAnd20EmaRising();
       const dailyPriceDeltaVsAtrRatio =
         dailyAnalysis.getPriceDeltaVsAtrRatio(20);
 
       if (
         (fifteenMinuteVolumeRatio >= 2 &&
+          fifteenMinuteEmaAnd20EmaRising &&
           last15MinutesMACDHistogramRecordIsPositive) ||
         (dailyVolumeRatio >= 2 &&
           lastDailyMACDHistogramRecordIsPositive &&
-          emaAnd20EmaRising)
+          dailyEmaAnd20EmaRising)
       ) {
         this.eventEmitter.emit(
           StockBreakoutEvent.TYPE,
