@@ -6,6 +6,13 @@ export class GetWatchlistUseCase {
   constructor(private watchlistRepository: WatchlistRepository) {}
 
   async execute(userId: string) {
-    return this.watchlistRepository.getByUserId(userId);
+    try {
+      const l = await this.watchlistRepository.getByUserId(userId);
+
+      console.log(l);
+      return l;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
