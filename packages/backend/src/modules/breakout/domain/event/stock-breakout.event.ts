@@ -17,7 +17,7 @@ export class StockBreakoutEvent {
 
   toString() {
     return `
-    #### [${this.symbol}](https://finance.yahoo.com/chart/${this.symbol}) 
+    [${this.symbol}](https://finance.yahoo.com/chart/${this.symbol}) 
     ${this.metrics.map(({ name, value }) => `${name} : ${value}`).join('\n')}
     `;
   }

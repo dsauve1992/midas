@@ -53,10 +53,10 @@ export class BreakoutService {
         this.eventEmitter.emit(
           StockBreakoutEvent.TYPE,
           new StockBreakoutEvent(symbol, [
-            { name: '##### TimeFrame', value: '15 min' },
+            { name: '*TimeFrame*', value: '15 min' },
             { name: 'Volume Ratio', value: fifteenMinuteVolumeRatio },
             { name: 'ATR Ratio', value: fifteenMinutesPriceDeltaVsAtrRatio },
-            { name: '##### TimeFrame', value: 'Daily' },
+            { name: '*TimeFrame*', value: 'Daily' },
             { name: 'Volume Ratio', value: dailyVolumeRatio },
             {
               name: 'ATR Ratio',
