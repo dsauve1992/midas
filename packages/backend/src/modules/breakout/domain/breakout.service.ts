@@ -54,18 +54,33 @@ export class BreakoutService {
           StockBreakoutEvent.TYPE,
           new StockBreakoutEvent(symbol, [
             { name: '*TimeFrame*', value: '15 min' },
-            { name: 'Volume Ratio', value: fifteenMinuteVolumeRatio },
-            { name: 'ATR Ratio', value: fifteenMinutesPriceDeltaVsAtrRatio },
-            { name: '*TimeFrame*', value: 'Daily' },
-            { name: 'Volume Ratio', value: dailyVolumeRatio },
+            {
+              name: 'Volume Ratio',
+              value: this.parseNumericalValue(fifteenMinuteVolumeRatio),
+            },
             {
               name: 'ATR Ratio',
-              value: dailyPriceDeltaVsAtrRatio,
+              value: this.parseNumericalValue(
+                fifteenMinutesPriceDeltaVsAtrRatio,
+              ),
+            },
+            { name: '*TimeFrame*', value: 'Daily' },
+            {
+              name: 'Volume Ratio',
+              value: this.parseNumericalValue(dailyVolumeRatio),
+            },
+            {
+              name: 'ATR Ratio',
+              value: this.parseNumericalValue(dailyPriceDeltaVsAtrRatio),
             },
           ]),
         );
       }
     }
+  }
+
+  private parseNumericalValue(value: number) {
+    return value.toFixed(2).replace('.', '.');
   }
 
   private async createAnalysis(
