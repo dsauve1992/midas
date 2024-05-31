@@ -80,7 +80,7 @@ export class BreakoutService {
   }
 
   private parseNumericalValue(value: number) {
-    return value.toFixed(2).replace('.', '.');
+    return value.toFixed(2).replace('.', '\\.');
   }
 
   private async createAnalysis(
