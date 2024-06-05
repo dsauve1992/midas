@@ -7,9 +7,7 @@ import { GetStockGeneralInformationUseCase } from './usecase/get-stock-general-i
 import { GetEarningsSurprisesUseCase } from './usecase/get-earnings-surprises.use-case';
 import { GetInsiderTradingUseCase } from './usecase/get-insider-trading.use-case';
 import { GetInstitutionalHoldingUseCase } from './usecase/get-institutional-holding.use-case';
-import { GetSocialSentimentUseCase } from './usecase/get-social-sentiment.use-case';
 import { GetQuarterlyIncomeStatementUseCase } from './usecase/get-quarterly-income-statement.use-case';
-import { GetEarningCallTranscriptSummaryUseCase } from './usecase/get-earning-call-transcript-summary.use-case';
 import { OwnershipModule } from '../ownership/ownership.module';
 import { QuarterlyIncomeStatementMapper } from './controller/mapper/quarterly-income-statement.mapper';
 import { GetAnnuallyIncomeStatementUseCase } from './usecase/get-annually-income-statement.use-case';
@@ -30,11 +28,9 @@ import { GetAnnuallyIncomeStatementV2UseCase } from './usecase/get-annually-inco
     GetEarningsSurprisesUseCase,
     GetInsiderTradingUseCase,
     GetInstitutionalHoldingUseCase,
-    GetSocialSentimentUseCase,
     GetQuarterlyIncomeStatementUseCase,
     GetAnnuallyIncomeStatementUseCase,
     GetAnnuallyIncomeStatementV2UseCase,
-    GetEarningCallTranscriptSummaryUseCase,
     GetAnnualAnalystEstimatesUseCase,
     QuarterlyIncomeStatementMapper,
     AnnuallyIncomeStatementMapper,

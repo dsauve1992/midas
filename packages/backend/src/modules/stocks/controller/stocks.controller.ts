@@ -4,7 +4,6 @@ import { GetStockGeneralInformationUseCase } from '../usecase/get-stock-general-
 import { GetInsiderTradingUseCase } from '../usecase/get-insider-trading.use-case';
 import { GetEarningsSurprisesUseCase } from '../usecase/get-earnings-surprises.use-case';
 import { GetInstitutionalHoldingUseCase } from '../usecase/get-institutional-holding.use-case';
-import { GetSocialSentimentUseCase } from '../usecase/get-social-sentiment.use-case';
 import { GetQuarterlyIncomeStatementUseCase } from '../usecase/get-quarterly-income-statement.use-case';
 import { GetEarningCallTranscriptSummaryUseCase } from '../usecase/get-earning-call-transcript-summary.use-case';
 import { FinancialRecordDto } from '../../../shared-types/income-statement';
@@ -23,7 +22,6 @@ export class StocksController {
     private getInsiderTradingUseCase: GetInsiderTradingUseCase,
     private getEarningsSurprisesUseCase: GetEarningsSurprisesUseCase,
     private getInstitutionalOwnershipUseCase: GetInstitutionalHoldingUseCase,
-    private getSocialSentimentUseCase: GetSocialSentimentUseCase,
     private getQuarterlyIncomeStatementUseCase: GetQuarterlyIncomeStatementUseCase,
     private getAnnuallyIncomeStatementUseCase: GetAnnuallyIncomeStatementUseCase,
     private getAnnuallyIncomeStatementV2UseCase: GetAnnuallyIncomeStatementV2UseCase,
@@ -74,11 +72,6 @@ export class StocksController {
     return history.toFinancialRecordDtos();
   }
 
-  @Get('earning-call-transcript-summary')
-  getEarningCallTranscript(@Param('symbol') symbol: string) {
-    return this.getEarningCallTranscriptSummaryUseCase.execute(symbol);
-  }
-
   @Get('earnings-surprises')
   getEarningsSurprises(@Param('symbol') symbol: string) {
     return this.getEarningsSurprisesUseCase.execute(symbol);
@@ -92,11 +85,6 @@ export class StocksController {
   @Get('institutional-ownership')
   getInstitutionalHolding(@Param('symbol') symbol: string) {
     return this.getInstitutionalOwnershipUseCase.execute(symbol);
-  }
-
-  @Get('social-sentiment')
-  getSocialSentiment(@Param('symbol') symbol: string) {
-    return this.getSocialSentimentUseCase.execute(symbol);
   }
 
   @Get('analyst-estimates')

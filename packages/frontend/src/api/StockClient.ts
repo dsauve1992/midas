@@ -2,7 +2,6 @@ import { StockGeneralInformationResponseDto } from "backend/src/shared-types/res
 import {
   EarningsSurprise,
   InsiderTradingEvent,
-  SocialSentiment,
 } from "backend/src/shared-types/financial-modeling-prep";
 import { MidasBackendClient } from "./MidasBackendClient.ts";
 import { InstitutionalOwnershipResponse } from "backend/src/shared-types/institutional-ownership";
@@ -14,14 +13,6 @@ export class StockClient extends MidasBackendClient {
   ): Promise<StockGeneralInformationResponseDto> {
     const { data } = await this.get<StockGeneralInformationResponseDto>(
       `${this.getStockUrl(symbol)}`,
-    );
-
-    return data;
-  }
-
-  async getSocialSentiment(symbol: string) {
-    const { data } = await this.get<SocialSentiment[]>(
-      `${this.getStockUrl(symbol)}/social-sentiment`,
     );
 
     return data;
