@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { HistoricalDataModule } from './modules/historical-data/historical-data.module';
 import { ConfigModule } from '@nestjs/config';
 import { OwnershipModule } from './modules/ownership/ownership.module';
-import { TranscriptModule } from './modules/transcript/transcript.module';
 import { ScreenerModule } from './modules/screener/screener.module';
 import { InvestorsBusinessDailyModule } from './modules/investors-business-daily/investors-business-daily.module';
 import { RatingModule } from './modules/rating/rating.module';
@@ -24,7 +23,6 @@ import { TelegramModule } from './modules/telegram/telegram.module';
     EventEmitterModule.forRoot(),
     HistoricalDataModule,
     OwnershipModule,
-    TranscriptModule,
     ScreenerModule,
     InvestorsBusinessDailyModule,
     RatingModule,
