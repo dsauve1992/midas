@@ -1,7 +1,7 @@
 import { useIncomeStatement } from "./useIncomeStatement.ts";
 import FinancialPeriod from "../../../lib/FinancialPeriod.ts";
 import { useMemo } from "react";
-import { MetricComparison } from "../TickerPage/old/sections/IncomeStatement/MetricComparisonChart.tsx";
+import { MetricComparison } from "../TickerPage/sections/IncomeStatement/MetricComparisonChart.tsx";
 
 type UseFinancialPerformanceProps = {
   symbol: string;

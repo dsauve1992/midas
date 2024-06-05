@@ -1,9 +1,9 @@
 import { Box, Button, Drawer, Grid } from "@mui/material";
-import { StandaloneAnnualEpsHistory } from "../../ticker/ui/TickerPage/new/StandaloneAnnualEpsHistory.tsx";
-import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/old/sections/IncomeStatement/StandaloneEpsChart.tsx";
-import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/old/sections/IncomeStatement/StandaloneRevenueChart.tsx";
-import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/old/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
-import { StandaloneInstitutionalOwnershipHistoryByQuarter } from "../../ticker/ui/TickerPage/old/sections/InstitutionalHolders/StandaloneInstitutionalOwnershipHistoryByQuarter.tsx";
+import { StandaloneAnnualEpsHistory } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneAnnualEpsHistory.tsx";
+import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneEpsChart.tsx";
+import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
+import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
+import { StandaloneInstitutionalOwnershipHistoryByQuarter } from "../../ticker/ui/TickerPage/sections/InstitutionalHolders/StandaloneInstitutionalOwnershipHistoryByQuarter.tsx";
 import { useState } from "react";
 
 type TicketDetailButtonProps = {
