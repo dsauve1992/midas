@@ -5,7 +5,6 @@ import { GetInsiderTradingUseCase } from '../usecase/get-insider-trading.use-cas
 import { GetEarningsSurprisesUseCase } from '../usecase/get-earnings-surprises.use-case';
 import { GetInstitutionalHoldingUseCase } from '../usecase/get-institutional-holding.use-case';
 import { GetQuarterlyIncomeStatementUseCase } from '../usecase/get-quarterly-income-statement.use-case';
-import { GetEarningCallTranscriptSummaryUseCase } from '../usecase/get-earning-call-transcript-summary.use-case';
 import { FinancialRecordDto } from '../../../shared-types/income-statement';
 import { QuarterlyIncomeStatementMapper } from './mapper/quarterly-income-statement.mapper';
 import { AnnuallyIncomeStatementMapper } from './mapper/annually-income-statement.mapper';
@@ -13,6 +12,7 @@ import { GetAnnuallyIncomeStatementUseCase } from '../usecase/get-annually-incom
 import { AuthGuard } from '@nestjs/passport';
 import { GetAnnualAnalystEstimatesUseCase } from '../usecase/get-annual-analyst-estimates-use-case.service';
 import { GetAnnuallyIncomeStatementV2UseCase } from '../usecase/get-annually-income-statement-v2.use-case';
+import { GetPriceTargetUseCase } from '../usecase/get-price-target.use-case';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('stocks/:symbol')
@@ -25,7 +25,7 @@ export class StocksController {
     private getQuarterlyIncomeStatementUseCase: GetQuarterlyIncomeStatementUseCase,
     private getAnnuallyIncomeStatementUseCase: GetAnnuallyIncomeStatementUseCase,
     private getAnnuallyIncomeStatementV2UseCase: GetAnnuallyIncomeStatementV2UseCase,
-    private getEarningCallTranscriptSummaryUseCase: GetEarningCallTranscriptSummaryUseCase,
+    private getPriceTargetUseCase: GetPriceTargetUseCase,
     private getAnalystEstimatesUseCase: GetAnnualAnalystEstimatesUseCase,
     private quarterlyIncomeStatementMapper: QuarterlyIncomeStatementMapper,
     private annuallyIncomeStatementMapper: AnnuallyIncomeStatementMapper,
@@ -75,6 +75,11 @@ export class StocksController {
   @Get('earnings-surprises')
   getEarningsSurprises(@Param('symbol') symbol: string) {
     return this.getEarningsSurprisesUseCase.execute(symbol);
+  }
+
+  @Get('price-target')
+  getPriceTarget(@Param('symbol') symbol: string) {
+    return this.getPriceTargetUseCase.execute(symbol);
   }
 
   @Get('insider-trading')

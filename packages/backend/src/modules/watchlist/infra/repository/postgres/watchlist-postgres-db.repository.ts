@@ -37,8 +37,6 @@ export class WatchlistPostgresDbRepository extends WatchlistRepository {
         rows[0].userid,
         new Set(rows.map((row) => row.symbol).filter(Boolean)),
       );
-    } catch (e) {
-      console.log(e);
     } finally {
       client.release();
     }

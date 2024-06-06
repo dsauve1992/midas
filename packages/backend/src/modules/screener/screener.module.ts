@@ -35,8 +35,6 @@ export class ScreenerModule implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    console.log('onModuleInit - ScreenerModule');
-
     this.bot.command('screener', async (ctx) => {
       await ctx.reply('⏳ updating screener...');
 

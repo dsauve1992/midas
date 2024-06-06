@@ -5,13 +5,13 @@ import { firstValueFrom } from 'rxjs';
 import {
   AnalystEstimateEntry,
   EarningCalendarEntry,
-  EarningCallTranscript,
   EarningsSurprise,
   EnterpriseRatio,
   EnterpriseRatioTTM,
   IncomeStatementDto,
   InsiderTradingEvent,
   OHLCVRecord,
+  PriceTargetRecord,
   SearchResult,
   SharesFloat,
   SocialSentiment,
@@ -43,22 +43,16 @@ export class FinancialModelingPrepService {
     );
   }
 
+  async getPriceTarget(symbol: string): Promise<PriceTargetRecord[]> {
+    return this.fetch<PriceTargetRecord[]>(`/v4/price-target`, { symbol });
+  }
+
   async getDailyTechnicalIndicator(
     symbol: string,
     parameters?: { [key: string]: string | number | boolean },
   ): Promise<TechnicalRecord[]> {
     return this.fetch<TechnicalRecord[]>(
       `v3/technical_indicator/1day/${symbol}`,
-      parameters,
-    );
-  }
-
-  async getEarningCallTranscript(
-    symbol: string,
-    parameters?: { [key: string]: string | number | boolean },
-  ): Promise<EarningCallTranscript[]> {
-    return this.fetch<EarningCallTranscript[]>(
-      `/v3/earning_call_transcript/${symbol}`,
       parameters,
     );
   }

@@ -325,6 +325,20 @@ export type AnalystEstimateEntry = {
   numberAnalystsEstimatedEps: number;
 };
 
+export type PriceTargetRecord = {
+  symbol: string;
+  publishedDate: string;
+  newsURL: string;
+  newsTitle: string;
+  analystName: string;
+  priceTarget: number;
+  adjPriceTarget: number;
+  priceWhenPosted: number;
+  newsPublisher: string;
+  newsBaseURL: string;
+  analystCompany: string;
+};
+
 export type TechnicalRecord = OHLCVRecord & {
   sma?: number;
   ema?: number;

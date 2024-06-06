@@ -5,8 +5,6 @@ import * as process from 'process';
 dotenv.config();
 // Update with your config settings.
 
-console.log(process.env);
-
 const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'pg',

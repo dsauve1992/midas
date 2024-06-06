@@ -2,6 +2,7 @@ import { StockGeneralInformationResponseDto } from "backend/src/shared-types/res
 import {
   EarningsSurprise,
   InsiderTradingEvent,
+  PriceTargetRecord,
 } from "backend/src/shared-types/financial-modeling-prep";
 import { MidasBackendClient } from "./MidasBackendClient.ts";
 import { InstitutionalOwnershipResponse } from "backend/src/shared-types/institutional-ownership";
@@ -21,6 +22,14 @@ export class StockClient extends MidasBackendClient {
   async getEarningsSurprises(symbol: string) {
     const { data } = await this.get<EarningsSurprise[]>(
       `${this.getStockUrl(symbol)}/earnings-surprises`,
+    );
+
+    return data;
+  }
+
+  async getPriceTarget(symbol: string) {
+    const { data } = await this.get<PriceTargetRecord[]>(
+      `${this.getStockUrl(symbol)}/price-target`,
     );
 
     return data;

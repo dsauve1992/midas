@@ -14,6 +14,7 @@ import { GetAnnuallyIncomeStatementUseCase } from './usecase/get-annually-income
 import { AnnuallyIncomeStatementMapper } from './controller/mapper/annually-income-statement.mapper';
 import { GetAnnualAnalystEstimatesUseCase } from './usecase/get-annual-analyst-estimates-use-case.service';
 import { GetAnnuallyIncomeStatementV2UseCase } from './usecase/get-annually-income-statement-v2.use-case';
+import { GetPriceTargetUseCase } from './usecase/get-price-target.use-case';
 
 @Module({
   controllers: [StocksController],
@@ -27,6 +28,7 @@ import { GetAnnuallyIncomeStatementV2UseCase } from './usecase/get-annually-inco
     GetStockGeneralInformationUseCase,
     GetEarningsSurprisesUseCase,
     GetInsiderTradingUseCase,
+    GetPriceTargetUseCase,
     GetInstitutionalHoldingUseCase,
     GetQuarterlyIncomeStatementUseCase,
     GetAnnuallyIncomeStatementUseCase,
