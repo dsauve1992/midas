@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { TradingViewWidgetScriptLoader } from "../TradingViewWidgetScriptLoader.tsx";
 import darkTheme from "../theme/mui.theme.ts";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 export interface Props {}
 
@@ -24,9 +26,11 @@ const DependencyProvider = ({ children }: PropsWithChildren<Props>) => {
       <QueryClientProvider client={queryClient}>
         {/* <ReactQueryDevtools /> */}
         <ThemeProvider theme={darkTheme}>
-          <TradingViewWidgetScriptLoader>
-            <>{children}</>
-          </TradingViewWidgetScriptLoader>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <TradingViewWidgetScriptLoader>
+              <>{children}</>
+            </TradingViewWidgetScriptLoader>
+          </LocalizationProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
