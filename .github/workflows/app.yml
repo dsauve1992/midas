@@ -2,7 +2,8 @@ name: CI/CD
 
 on:
   push:
-    branch: master
+    branches:
+     - master
 #    paths:
 #      - 'packages/frontend/**'
 #      - 'packages/backend/**'
@@ -15,14 +16,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.17.1
-
-      - name: Install Dependencies
-        run: yarn
-
+      - name: Load & Cache Dependencies
+        uses: ./.github/actions/cached-deps
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -48,10 +43,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.17.1
+      - name: Load & Cache Dependencies
+        uses: ./.github/actions/cached-deps
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -83,13 +76,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.17.1
-
-      - name: Install Dependencies
-        run: yarn
+      - name: Load & Cache Dependencies
+        uses: ./.github/actions/cached-deps
 
       - name: Knex migrate latest
         working-directory: ./packages/backend
