@@ -3,7 +3,7 @@ import { PickersDay, PickersDayProps } from "@mui/x-date-pickers";
 import { Moment } from "moment";
 
 export interface Props extends PickersDayProps<Moment> {
-  highlightedDays?: number[];
+  highlightedDays?: Date[];
 }
 
 export const EarningCallDay = (props: Props) => {
@@ -11,7 +11,7 @@ export const EarningCallDay = (props: Props) => {
 
   const isSelected =
     !props.outsideCurrentMonth &&
-    highlightedDays.indexOf(props.day.date()) >= 0;
+    !!highlightedDays.find((day) => props.day.isSame(day, "day"));
 
   return (
     <Badge
