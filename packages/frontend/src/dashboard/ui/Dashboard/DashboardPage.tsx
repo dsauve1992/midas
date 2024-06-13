@@ -5,7 +5,7 @@ import { EarningsCalendar } from "./EarningsCalendar.tsx";
 export const DashboardPage = () => {
   return (
     <Grid container spacing={2}>
-      <h1>Welcome</h1>
+      <h1>Welcome !</h1>
       <Profile />
       <EarningsCalendar />
     </Grid>
