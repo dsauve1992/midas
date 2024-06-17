@@ -5,6 +5,7 @@ import { TechnicalRatingService } from './domain/service/technical-rating.servic
 import { AverageDailyRangeService } from './domain/service/average-daily-range.service';
 import { TechnicalIndicatorService } from './domain/service/technical-indicator.service';
 import { RelativeStrengthService } from './domain/service/relative-strength.service';
+import { FiftyTwoWeeksHighService } from './domain/service/fifty-two-weeks-high.service';
 
 @Module({
   providers: [
@@ -13,6 +14,7 @@ import { RelativeStrengthService } from './domain/service/relative-strength.serv
     AverageDailyRangeService,
     RelativeStrengthService,
     TechnicalIndicatorService,
+    FiftyTwoWeeksHighService,
   ],
   imports: [HistoricalDataModule],
   exports: [
@@ -21,6 +23,7 @@ import { RelativeStrengthService } from './domain/service/relative-strength.serv
     TechnicalRatingService,
     AverageDailyRangeService,
     RelativeStrengthService,
+    FiftyTwoWeeksHighService,
   ],
 })
 export class RatingModule {}

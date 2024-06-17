@@ -7,6 +7,7 @@ import { RelativeStrengthService } from '../../rating/domain/service/relative-st
 import { differenceInDays, format, parseISO, subDays } from 'date-fns';
 import { sortBy } from 'lodash';
 import { SymbolWithExchange } from '../infra/trading-view/trading-view-screener.service';
+import { FiftyTwoWeeksHighService } from '../../rating/domain/service/fifty-two-weeks-high.service';
 
 @Injectable()
 export class ScreenerEntryFactory {
@@ -15,6 +16,7 @@ export class ScreenerEntryFactory {
     private readonly fundamentalRatingService: FundamentalRatingService,
     private readonly averageDailyRangeService: AverageDailyRangeService,
     private readonly relativeStrengthService: RelativeStrengthService,
+    private readonly fiftyTwoWeeksHighService: FiftyTwoWeeksHighService,
   ) {}
 
   async create(
@@ -32,6 +34,10 @@ export class ScreenerEntryFactory {
       await this.relativeStrengthService.execute(symbol);
     const numberOfDaysUntilNextEarningCall =
       await this.getNumberOfDaysUntilNextEarningCall(symbol);
+    const daysSinceLast52WeekHigh =
+      await this.fiftyTwoWeeksHighService.getNumberOfDaysSinceLast52WeekHigh(
+        symbol,
+      );
 
     const _10emaHistory = await this.fmpService.getDailyTechnicalIndicator(
       symbol,
@@ -64,6 +70,7 @@ export class ScreenerEntryFactory {
       numberOfDaysUntilNextEarningCall,
       _10emaHistory.map(({ ema }) => ema),
       _20emaHistory.map(({ ema }) => ema),
+      daysSinceLast52WeekHigh,
     );
   }
 

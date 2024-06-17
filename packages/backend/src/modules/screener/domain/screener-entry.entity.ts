@@ -12,6 +12,7 @@ export class ScreenerEntryEntity {
     readonly numberOfDaysUntilNextEarningCall: number,
     private _10emaHistory: number[],
     private _20emaHistory: number[],
+    private daysSinceLast52WeekHigh: number,
   ) {}
 
   hasGreatSetup(): boolean {
@@ -23,11 +24,14 @@ export class ScreenerEntryEntity {
 
     const hasStrongADR = this.averageDailyRange >= 3;
 
+    const _52WeeksHighLessThan50DaysAgo = this.daysSinceLast52WeekHigh < 50;
+
     return (
       hasStrongRelativeStrength &&
       hasStrongADR &&
       is10emaRising &&
-      is20emaRising
+      is20emaRising &&
+      _52WeeksHighLessThan50DaysAgo
     );
   }
 }
