@@ -77,7 +77,6 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
 
   backend-db-migrate:
-    needs: backend-build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -93,7 +92,7 @@ jobs:
         run: yarn db:migrate-latest
 
   backend-deploy:
-    needs: backend-db-migrate
+    needs: backend-build
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to EC2
