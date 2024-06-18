@@ -4,10 +4,6 @@ on:
   push:
     branches:
      - master
-#    paths:
-#      - 'packages/frontend/**'
-#      - 'packages/backend/**'
-#      - 'packages/infra/**'
 
 jobs:
   frontend:

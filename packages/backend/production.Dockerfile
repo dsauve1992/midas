@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN yarn
+RUN yarn install --frozen-lockfile
 RUN yarn build
 
 # Exposez le port sur lequel l'application s'exécute
