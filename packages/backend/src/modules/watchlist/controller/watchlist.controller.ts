@@ -17,10 +17,12 @@ export class WatchlistController {
   @Get()
   async getWatchlist(@User() user: any) {
     try {
-      const watchlist = await this.getWatchlistUseCase.execute(user.sub);
-
+      const watchlist = await this.getWatchlistUseCase.execute({
+        userId: user.sub,
+      });
       return Array.from(watchlist);
     } catch (e) {
+      console.log(e);
       return e;
     }
   }
@@ -30,7 +32,10 @@ export class WatchlistController {
     @User() user: any,
     @Body('symbol') symbol: string,
   ) {
-    await this.addSymbolToWatchlistUseCase.execute(user.sub, symbol);
+    await this.addSymbolToWatchlistUseCase.execute({
+      userId: user.sub,
+      symbol,
+    });
   }
 
   @Post('/remove')
@@ -38,6 +43,9 @@ export class WatchlistController {
     @User() user: any,
     @Body('symbol') symbol: string,
   ) {
-    await this.removeSymbolFromWatchlistUseCase.execute(user.sub, symbol);
+    await this.removeSymbolFromWatchlistUseCase.execute({
+      userId: user.sub,
+      symbol,
+    });
   }
 }
