@@ -14,6 +14,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
 import { LibModule } from './lib/lib.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -35,6 +36,6 @@ import { LibModule } from './lib/lib.module';
     TelegramModule,
     LibModule,
   ],
-  controllers: [],
+  controllers: [AppController],
 })
 export class AppModule {}
