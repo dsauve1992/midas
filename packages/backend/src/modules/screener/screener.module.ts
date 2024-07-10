@@ -1,7 +1,6 @@
 import { Inject, Module, OnModuleInit } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { TradingViewScreenerService } from './infra/trading-view/trading-view-screener.service';
-import { ScreenerDynamoDbRepository } from './infra/repository/dynamoDb/screener-dynamo-db.repository';
 import { ComputeRatingCronController } from './controller/compute-rating.cron.controller';
 import { RatingModule } from '../rating/rating.module';
 import { HistoricalDataModule } from '../historical-data/historical-data.module';
@@ -12,6 +11,7 @@ import { GetHierarchyUseCase } from './usecase/get-hierarchy.use-case';
 import { ScreenerRestController } from './controller/screener.rest.controller';
 import { ScreenerRepository } from './domain/screener.repository';
 import { ScreenerEntryFactory } from './domain/screener-entry.factory';
+import { ScreenerPostgresDbRepository } from './infra/repository/postgres/screener-postgres-db.repository';
 
 @Module({
   controllers: [ScreenerRestController],
@@ -22,7 +22,7 @@ import { ScreenerEntryFactory } from './domain/screener-entry.factory';
     TradingViewScreenerService,
     {
       provide: ScreenerRepository,
-      useClass: ScreenerDynamoDbRepository,
+      useClass: ScreenerPostgresDbRepository,
     },
     ScreenerEntryFactory,
     ComputeRatingCronController,
