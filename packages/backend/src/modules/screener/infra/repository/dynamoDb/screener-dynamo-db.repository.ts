@@ -6,8 +6,8 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ConfigService } from '@nestjs/config';
 import { DeleteItemCommand, DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { ScreenerRepository } from '../../domain/screener.repository';
-import { ScreenerEntryEntity } from '../../domain/screener-entry.entity';
+import { ScreenerRepository } from '../../../domain/screener.repository';
+import { ScreenerEntryEntity } from '../../../domain/screener-entry.entity';
 
 @Injectable()
 export class ScreenerDynamoDbRepository extends ScreenerRepository {

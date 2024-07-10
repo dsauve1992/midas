@@ -10,9 +10,9 @@ export class ScreenerEntryEntity {
     readonly fundamentalRating: number,
     readonly averageDailyRange: number,
     readonly numberOfDaysUntilNextEarningCall: number,
-    private _10emaHistory: number[],
-    private _20emaHistory: number[],
-    private daysSinceLast52WeekHigh: number,
+    readonly _10emaHistory: number[],
+    readonly _20emaHistory: number[],
+    readonly daysSinceLast52WeekHigh: number,
   ) {}
 
   hasGreatSetup(): boolean {

@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { WatchlistRepository } from '../../../domain/repository/watchlist.repository';
 import { Watchlist } from '../../../domain/model/Watchlist';
 import { UnitOfWork } from '../../../../../lib/unit-of-work';
 
 @Injectable()
 export class WatchlistPostgresDbRepository extends WatchlistRepository {
-  constructor(private unitOfWork: UnitOfWork) {
+  constructor(@Inject('UNIT_OF_WORK') private unitOfWork: UnitOfWork) {
     super();
   }
 

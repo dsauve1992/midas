@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { WatchlistRepository } from '../domain/repository/watchlist.repository';
 import { BaseUseCase } from '../../../lib/base-use-case';
-import { UnitOfWork } from '../../../lib/unit-of-work';
+import { TransactionalUnitOfWork } from '../../../lib/transactional-unit-of-work.service';
 
 interface AddSymbolToWatchlistUseCaseRequest {
   userId: string;
@@ -12,7 +12,7 @@ interface AddSymbolToWatchlistUseCaseRequest {
 export class AddSymbolToWatchlistUseCase extends BaseUseCase<AddSymbolToWatchlistUseCaseRequest> {
   constructor(
     private watchlistRepository: WatchlistRepository,
-    unitOfWork: UnitOfWork,
+    unitOfWork: TransactionalUnitOfWork,
   ) {
     super(unitOfWork);
   }

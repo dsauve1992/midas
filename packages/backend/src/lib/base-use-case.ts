@@ -1,7 +1,9 @@
-import { UnitOfWork } from './unit-of-work';
+import { TransactionalUnitOfWork } from './transactional-unit-of-work.service';
 
 export abstract class BaseUseCase<T, U = void> {
-  protected constructor(protected readonly unitOfWork: UnitOfWork) {}
+  protected constructor(
+    protected readonly unitOfWork: TransactionalUnitOfWork,
+  ) {}
 
   async execute(data: T): Promise<U> {
     await this.unitOfWork.start();

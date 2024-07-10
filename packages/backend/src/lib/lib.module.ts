@@ -1,6 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { Pool } from 'pg';
-import { UnitOfWork } from './unit-of-work';
+import { TransactionalUnitOfWork } from './transactional-unit-of-work.service';
+import { AutoCommitUnitOfWork } from './auto-commit-unit-of-work.service';
+import { UnitOfWork } from '../../dist/lib/unit-of-work';
 
 @Global()
 @Module({
@@ -15,8 +17,13 @@ import { UnitOfWork } from './unit-of-work';
         max: 1,
       }),
     },
-    UnitOfWork,
+    {
+      provide: 'UNIT_OF_WORK',
+      useClass: TransactionalUnitOfWork,
+    },
+    TransactionalUnitOfWork,
+    AutoCommitUnitOfWork,
   ],
-  exports: [UnitOfWork],
+  exports: [TransactionalUnitOfWork, AutoCommitUnitOfWork, UnitOfWork],
 })
 export class LibModule {}

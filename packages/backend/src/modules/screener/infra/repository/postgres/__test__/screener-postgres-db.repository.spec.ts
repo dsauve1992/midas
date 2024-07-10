@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Watchlist } from '../../../../domain/model/Watchlist';
 import { ConfigModule } from '@nestjs/config';
-import { WatchlistPostgresDbRepository } from '../watchlist-postgres-db.repository';
-import { v4 as uuidv4 } from 'uuid';
 import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
@@ -10,9 +7,11 @@ import {
 import { Pool } from 'pg';
 import Knex from 'knex';
 import { AutoCommitUnitOfWork } from '../../../../../../lib/auto-commit-unit-of-work.service';
+import { ScreenerPostgresDbRepository } from '../screener-postgres-db.repository';
+import { ScreenerEntryEntity } from '../../../../domain/screener-entry.entity';
 
-describe('WatchlistPostgresDbRepository specs', () => {
-  let repository: WatchlistPostgresDbRepository;
+describe('ScreenerPostgresDbRepository specs', () => {
+  let repository: ScreenerPostgresDbRepository;
   let unitOfWork: AutoCommitUnitOfWork;
   let pool: Pool;
   let postgresContainer: StartedPostgreSqlContainer;
@@ -27,7 +26,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
           provide: 'UNIT_OF_WORK',
           useClass: AutoCommitUnitOfWork,
         },
-        WatchlistPostgresDbRepository,
+        ScreenerPostgresDbRepository,
         {
           provide: 'PG_CONNECTION_POOL',
           useValue: new Pool({
@@ -42,7 +41,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
       ],
     }).compile();
 
-    repository = app.get(WatchlistPostgresDbRepository);
+    repository = app.get(ScreenerPostgresDbRepository);
     unitOfWork = app.get('UNIT_OF_WORK');
     pool = app.get('PG_CONNECTION_POOL');
 
@@ -62,8 +61,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
 
   afterEach(async () => {
     const client = await pool.connect();
-    await client.query('DELETE FROM watchlist_items;');
-    await client.query('DELETE FROM watchlists;');
+    await client.query('DELETE FROM screener;');
     client.release();
   });
 
@@ -71,45 +69,35 @@ describe('WatchlistPostgresDbRepository specs', () => {
     postgresContainer.stop();
   });
 
-  test('given no watchlist for userId, when get it, it should get empty watchlist', async () => {
+  test('given empty screener, when get all, it should return empty list', async () => {
     await unitOfWork.execute(async () => {
-      const newWatchlist = await repository.getByUserId('unknownUserId');
-      expect(newWatchlist.isEmpty()).toBe(true);
+      const screenerEntities = await repository.getAll();
+      expect(screenerEntities).toHaveLength(0);
     });
   });
 
-  test('given a watchlist, when save it, it should persisted into repository', async () => {
+  test('given a screener entity, when save it, it should persisted into repository', async () => {
     await unitOfWork.execute(async () => {
-      const expectedWatchlist = new Watchlist(
-        uuidv4(),
-        'aUserId',
-        new Set(['CLFD']),
+      const newEntity = new ScreenerEntryEntity(
+        'AAPL',
+        'NASDAQ',
+        'Technology',
+        'Software',
+        56,
+        67,
+        54,
+        56,
+        54,
+        4,
+        [],
+        [],
+        34,
       );
 
-      await repository.save(expectedWatchlist);
-      const actual = await repository.getByUserId('aUserId');
+      await repository.save(newEntity);
+      const entities = await repository.getAll();
 
-      expect(actual).toEqual(expectedWatchlist);
-    });
-  });
-
-  test('given an existing watchlist, when change it then save, changes should be persisted into repository', async () => {
-    await unitOfWork.execute(async () => {
-      const id = uuidv4();
-      const aWatchlist = new Watchlist(id, 'aUserId', new Set([]));
-      await repository.save(aWatchlist);
-
-      aWatchlist.addSymbol('AAPL');
-      aWatchlist.addSymbol('TSLA');
-      await repository.save(aWatchlist);
-
-      const actual = await repository.getByUserId('aUserId');
-      const expected = new Watchlist(
-        aWatchlist.id,
-        'aUserId',
-        new Set(['AAPL', 'TSLA']),
-      );
-      expect(actual).toEqual(expected);
+      expect(entities).toEqual([newEntity]);
     });
   });
 });
