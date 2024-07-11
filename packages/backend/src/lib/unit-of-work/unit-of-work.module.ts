@@ -25,4 +25,4 @@ import { AutoCommitUnitOfWork } from './auto-commit-unit-of-work.service';
   ],
   exports: [TransactionalUnitOfWork, AutoCommitUnitOfWork],
 })
-export class LibModule {}
+export class UnitOfWorkModule {}

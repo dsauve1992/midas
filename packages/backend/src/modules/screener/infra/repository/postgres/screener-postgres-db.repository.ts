@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ScreenerRepository } from '../../../domain/screener.repository';
 import { ScreenerEntryEntity } from '../../../domain/screener-entry.entity';
-import { UnitOfWork } from '../../../../../lib/unit-of-work';
+import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 
 @Injectable()
 export class ScreenerPostgresDbRepository extends ScreenerRepository {

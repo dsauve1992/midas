@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { WatchlistRepository } from '../../../domain/repository/watchlist.repository';
 import { Watchlist } from '../../../domain/model/Watchlist';
-import { UnitOfWork } from '../../../../../lib/unit-of-work';
+import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 
 @Injectable()
 export class WatchlistPostgresDbRepository extends WatchlistRepository {

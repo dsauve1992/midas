@@ -1,4 +1,4 @@
-import { TransactionalUnitOfWork } from './transactional-unit-of-work.service';
+import { TransactionalUnitOfWork } from './unit-of-work/transactional-unit-of-work.service';
 
 export abstract class BaseUseCase<T, U = void> {
   protected constructor(

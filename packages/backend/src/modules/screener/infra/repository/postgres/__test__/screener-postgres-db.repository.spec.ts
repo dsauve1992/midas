@@ -2,9 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { Pool } from 'pg';
 import Knex from 'knex';
-import { AutoCommitUnitOfWork } from '../../../../../../lib/auto-commit-unit-of-work.service';
+import { AutoCommitUnitOfWork } from '../../../../../../lib/unit-of-work/auto-commit-unit-of-work.service';
 import { ScreenerPostgresDbRepository } from '../screener-postgres-db.repository';
 import { ScreenerEntryEntity } from '../../../../domain/screener-entry.entity';
+import { IntegrationTestModule } from '../../../../../../lib/test/integration-test.module';
 
 describe('ScreenerPostgresDbRepository specs', () => {
   let repository: ScreenerPostgresDbRepository;
@@ -14,43 +15,16 @@ describe('ScreenerPostgresDbRepository specs', () => {
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot()],
-      providers: [
-        {
-          provide: 'UNIT_OF_WORK',
-          useClass: AutoCommitUnitOfWork,
-        },
-        ScreenerPostgresDbRepository,
-        {
-          provide: 'PG_CONNECTION_POOL',
-          useValue: new Pool({
-            host: global.__dbConfig__.host,
-            port: global.__dbConfig__.port,
-            user: global.__dbConfig__.user,
-            password: global.__dbConfig__.password,
-            database: global.__dbConfig__.database,
-          }),
-        },
-      ],
+      imports: [ConfigModule.forRoot(), IntegrationTestModule],
+      providers: [ScreenerPostgresDbRepository],
     }).compile();
 
     repository = app.get(ScreenerPostgresDbRepository);
     unitOfWork = app.get('UNIT_OF_WORK');
     pool = app.get('PG_CONNECTION_POOL');
-
-    knex = Knex({
-      client: 'pg',
-      connection: {
-        host: global.__dbConfig__.host,
-        port: global.__dbConfig__.port,
-        user: global.__dbConfig__.user,
-        password: global.__dbConfig__.password,
-        database: global.__dbConfig__.database,
-      },
-    });
+    knex = app.get('KNEX');
 
     await knex.migrate.latest();
-
     await unitOfWork.connect();
   });
 

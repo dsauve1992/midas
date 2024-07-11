@@ -5,7 +5,8 @@ import { WatchlistPostgresDbRepository } from '../watchlist-postgres-db.reposito
 import { v4 as uuidv4 } from 'uuid';
 import { Pool } from 'pg';
 import Knex from 'knex';
-import { AutoCommitUnitOfWork } from '../../../../../../lib/auto-commit-unit-of-work.service';
+import { AutoCommitUnitOfWork } from '../../../../../../lib/unit-of-work/auto-commit-unit-of-work.service';
+import { IntegrationTestModule } from '../../../../../../lib/test/integration-test.module';
 
 describe('WatchlistPostgresDbRepository specs', () => {
   let repository: WatchlistPostgresDbRepository;
@@ -15,40 +16,14 @@ describe('WatchlistPostgresDbRepository specs', () => {
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot()],
-      providers: [
-        {
-          provide: 'UNIT_OF_WORK',
-          useClass: AutoCommitUnitOfWork,
-        },
-        WatchlistPostgresDbRepository,
-        {
-          provide: 'PG_CONNECTION_POOL',
-          useValue: new Pool({
-            host: global.__dbConfig__.host,
-            port: global.__dbConfig__.port,
-            user: global.__dbConfig__.user,
-            password: global.__dbConfig__.password,
-            database: global.__dbConfig__.database,
-          }),
-        },
-      ],
+      imports: [ConfigModule.forRoot(), IntegrationTestModule],
+      providers: [WatchlistPostgresDbRepository],
     }).compile();
 
     repository = app.get(WatchlistPostgresDbRepository);
     unitOfWork = app.get('UNIT_OF_WORK');
     pool = app.get('PG_CONNECTION_POOL');
-
-    knex = Knex({
-      client: 'pg',
-      connection: {
-        host: global.__dbConfig__.host,
-        port: global.__dbConfig__.port,
-        user: global.__dbConfig__.user,
-        password: global.__dbConfig__.password,
-        database: global.__dbConfig__.database,
-      },
-    });
+    knex = app.get('KNEX');
 
     await knex.migrate.latest();
     await unitOfWork.connect();
