@@ -11,6 +11,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
   let repository: WatchlistPostgresDbRepository;
   let unitOfWork: AutoCommitUnitOfWork;
   let pool: Pool;
+  let knex: Knex.Knex;
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -38,7 +39,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
     unitOfWork = app.get('UNIT_OF_WORK');
     pool = app.get('PG_CONNECTION_POOL');
 
-    const knex = Knex({
+    knex = Knex({
       client: 'pg',
       connection: {
         host: global.__dbConfig__.host,
@@ -61,6 +62,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
 
   afterAll(async () => {
     await pool.end();
+    await knex.destroy();
   });
 
   test('given no watchlist for userId, when get it, it should get empty watchlist', async () => {

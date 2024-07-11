@@ -6,7 +6,6 @@ import {
 export class TestContainer {
   private static container: StartedPostgreSqlContainer;
   static async init() {
-    console.log('------- INIT TEST CONTAINER -------');
     this.container = await new PostgreSqlContainer().start();
 
     global.__dbConfig__ = {
@@ -18,7 +17,6 @@ export class TestContainer {
     };
   }
   static async stop() {
-    console.log('------- STOP TEST CONTAINER -------');
     await this.container.stop();
   }
 }

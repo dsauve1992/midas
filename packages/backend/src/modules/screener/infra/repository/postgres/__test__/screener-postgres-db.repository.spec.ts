@@ -10,6 +10,7 @@ describe('ScreenerPostgresDbRepository specs', () => {
   let repository: ScreenerPostgresDbRepository;
   let unitOfWork: AutoCommitUnitOfWork;
   let pool: Pool;
+  let knex: Knex.Knex;
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -37,7 +38,7 @@ describe('ScreenerPostgresDbRepository specs', () => {
     unitOfWork = app.get('UNIT_OF_WORK');
     pool = app.get('PG_CONNECTION_POOL');
 
-    const knex = Knex({
+    knex = Knex({
       client: 'pg',
       connection: {
         host: global.__dbConfig__.host,
@@ -59,6 +60,7 @@ describe('ScreenerPostgresDbRepository specs', () => {
 
   afterAll(async () => {
     await pool.end();
+    await knex.destroy();
   });
 
   test('given empty screener, when get all, it should return empty list', async () => {

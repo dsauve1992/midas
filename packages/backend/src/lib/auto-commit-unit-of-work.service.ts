@@ -15,8 +15,6 @@ export class AutoCommitUnitOfWork implements UnitOfWork {
 
     try {
       result = await something();
-    } catch (e) {
-      console.log(e);
     } finally {
       await this.release();
     }
