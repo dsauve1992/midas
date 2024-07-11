@@ -8,20 +8,6 @@ export class AutoCommitUnitOfWork implements UnitOfWork {
 
   constructor(@Inject('PG_CONNECTION_POOL') private readonly pool: Pool) {}
 
-  async execute<T>(something: () => Promise<T>): Promise<T> {
-    await this.connect();
-
-    let result: T;
-
-    try {
-      result = await something();
-    } finally {
-      await this.release();
-    }
-
-    return result;
-  }
-
   async connect() {
     this.client = await this.pool.connect();
   }

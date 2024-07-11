@@ -50,6 +50,8 @@ describe('ScreenerPostgresDbRepository specs', () => {
     });
 
     await knex.migrate.latest();
+
+    await unitOfWork.connect();
   });
 
   beforeEach(async () => {
@@ -59,39 +61,36 @@ describe('ScreenerPostgresDbRepository specs', () => {
   });
 
   afterAll(async () => {
+    await unitOfWork.release();
     await pool.end();
     await knex.destroy();
   });
 
   test('given empty screener, when get all, it should return empty list', async () => {
-    await unitOfWork.execute(async () => {
-      const screenerEntities = await repository.getAll();
-      expect(screenerEntities).toHaveLength(0);
-    });
+    const screenerEntities = await repository.getAll();
+    expect(screenerEntities).toHaveLength(0);
   });
 
   test('given a screener entity, when save it, it should persisted into repository', async () => {
-    await unitOfWork.execute(async () => {
-      const newEntity = new ScreenerEntryEntity(
-        'AAPL',
-        'NASDAQ',
-        'Technology',
-        'Software',
-        56,
-        67,
-        54,
-        56,
-        54,
-        4,
-        [],
-        [],
-        34,
-      );
+    const newEntity = new ScreenerEntryEntity(
+      'AAPL',
+      'NASDAQ',
+      'Technology',
+      'Software',
+      56,
+      67,
+      54,
+      56,
+      54,
+      4,
+      [],
+      [],
+      34,
+    );
 
-      await repository.save(newEntity);
-      const entities = await repository.getAll();
+    await repository.save(newEntity);
+    const entities = await repository.getAll();
 
-      expect(entities).toEqual([newEntity]);
-    });
+    expect(entities).toEqual([newEntity]);
   });
 });

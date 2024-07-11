@@ -51,6 +51,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
     });
 
     await knex.migrate.latest();
+    await unitOfWork.connect();
   });
 
   beforeEach(async () => {
@@ -61,49 +62,44 @@ describe('WatchlistPostgresDbRepository specs', () => {
   });
 
   afterAll(async () => {
+    await unitOfWork.release();
     await pool.end();
     await knex.destroy();
   });
 
   test('given no watchlist for userId, when get it, it should get empty watchlist', async () => {
-    await unitOfWork.execute(async () => {
-      const newWatchlist = await repository.getByUserId('unknownUserId');
-      expect(newWatchlist.isEmpty()).toBe(true);
-    });
+    const newWatchlist = await repository.getByUserId('unknownUserId');
+    expect(newWatchlist.isEmpty()).toBe(true);
   });
 
   test('given a watchlist, when save it, it should persisted into repository', async () => {
-    await unitOfWork.execute(async () => {
-      const expectedWatchlist = new Watchlist(
-        uuidv4(),
-        'aUserId',
-        new Set(['CLFD']),
-      );
+    const expectedWatchlist = new Watchlist(
+      uuidv4(),
+      'aUserId',
+      new Set(['CLFD']),
+    );
 
-      await repository.save(expectedWatchlist);
-      const actual = await repository.getByUserId('aUserId');
+    await repository.save(expectedWatchlist);
+    const actual = await repository.getByUserId('aUserId');
 
-      expect(actual).toEqual(expectedWatchlist);
-    });
+    expect(actual).toEqual(expectedWatchlist);
   });
 
   test('given an existing watchlist, when change it then save, changes should be persisted into repository', async () => {
-    await unitOfWork.execute(async () => {
-      const id = uuidv4();
-      const aWatchlist = new Watchlist(id, 'aUserId', new Set([]));
-      await repository.save(aWatchlist);
+    const id = uuidv4();
+    const aWatchlist = new Watchlist(id, 'aUserId', new Set([]));
+    await repository.save(aWatchlist);
 
-      aWatchlist.addSymbol('AAPL');
-      aWatchlist.addSymbol('TSLA');
-      await repository.save(aWatchlist);
+    aWatchlist.addSymbol('AAPL');
+    aWatchlist.addSymbol('TSLA');
+    await repository.save(aWatchlist);
 
-      const actual = await repository.getByUserId('aUserId');
-      const expected = new Watchlist(
-        aWatchlist.id,
-        'aUserId',
-        new Set(['AAPL', 'TSLA']),
-      );
-      expect(actual).toEqual(expected);
-    });
+    const actual = await repository.getByUserId('aUserId');
+    const expected = new Watchlist(
+      aWatchlist.id,
+      'aUserId',
+      new Set(['AAPL', 'TSLA']),
+    );
+    expect(actual).toEqual(expected);
   });
 });
