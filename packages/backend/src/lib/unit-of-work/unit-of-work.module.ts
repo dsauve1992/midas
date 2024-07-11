@@ -23,6 +23,6 @@ import { AutoCommitUnitOfWork } from './auto-commit-unit-of-work.service';
     TransactionalUnitOfWork,
     AutoCommitUnitOfWork,
   ],
-  exports: [TransactionalUnitOfWork, AutoCommitUnitOfWork],
+  exports: [TransactionalUnitOfWork, AutoCommitUnitOfWork, 'UNIT_OF_WORK'],
 })
 export class UnitOfWorkModule {}

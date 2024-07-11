@@ -1,14 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ScreenerResponse } from '../../../shared-types/screener';
 import { chain } from 'lodash';
 import { ScreenerRepository } from '../domain/screener.repository';
+import { BaseUseCase } from '../../../lib/base-use-case';
+import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
 
 @Injectable()
-export class GetHierarchyUseCase {
-  constructor(private readonly screenerRepository: ScreenerRepository) {}
+export class GetHierarchyUseCase extends BaseUseCase<void, ScreenerResponse> {
+  constructor(
+    private readonly screenerRepository: ScreenerRepository,
+    @Inject('UNIT_OF_WORK') unitOfWork: TransactionalUnitOfWork,
+  ) {
+    super(unitOfWork);
+  }
 
-  // TODO this is a reading usecase. Do we need a usecase for reading?
-  async execute(): Promise<ScreenerResponse> {
+  async executeUseCase(): Promise<ScreenerResponse> {
     const entries = await this.screenerRepository.getAll();
 
     return {

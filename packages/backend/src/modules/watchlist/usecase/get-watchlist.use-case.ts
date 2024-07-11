@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { WatchlistRepository } from '../domain/repository/watchlist.repository';
 import { BaseUseCase } from '../../../lib/base-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
@@ -15,7 +15,7 @@ export class GetWatchlistUseCase extends BaseUseCase<
 > {
   constructor(
     private watchlistRepository: WatchlistRepository,
-    unitOfWork: TransactionalUnitOfWork,
+    @Inject('UNIT_OF_WORK') unitOfWork: TransactionalUnitOfWork,
   ) {
     super(unitOfWork);
   }
