@@ -6,7 +6,7 @@ import * as http from 'http';
 import * as https from 'https';
 import * as express from 'express';
 import * as Sentry from '@sentry/node';
-import { SentryFilter } from './infra/monitoring/sentry.exception-filter';
+import { SentryFilter } from './modules/monitoring/sentry.exception-filter';
 
 async function bootstrap() {
   const httpsOptions = {
