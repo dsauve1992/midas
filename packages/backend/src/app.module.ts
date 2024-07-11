@@ -13,8 +13,8 @@ import { BreakoutModule } from './modules/breakout/breakout.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
-import { UnitOfWorkModule } from './lib/unitOfWorkModule';
 import { AppController } from './app.controller';
+import { UnitOfWorkModule } from './lib/unit-of-work/unit-of-work.module';
 
 @Module({
   imports: [

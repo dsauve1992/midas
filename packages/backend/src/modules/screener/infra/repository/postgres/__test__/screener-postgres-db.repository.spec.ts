@@ -1,44 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigModule } from '@nestjs/config';
-import { Pool } from 'pg';
-import Knex from 'knex';
-import { AutoCommitUnitOfWork } from '../../../../../../lib/unit-of-work/auto-commit-unit-of-work.service';
 import { ScreenerPostgresDbRepository } from '../screener-postgres-db.repository';
 import { ScreenerEntryEntity } from '../../../../domain/screener-entry.entity';
 import { IntegrationTestModule } from '../../../../../../lib/test/integration-test.module';
+import { IntegrationTestService } from '../../../../../../lib/test/intergation-test.service';
 
 describe('ScreenerPostgresDbRepository specs', () => {
   let repository: ScreenerPostgresDbRepository;
-  let unitOfWork: AutoCommitUnitOfWork;
-  let pool: Pool;
-  let knex: Knex.Knex;
+  let integrationTestService: IntegrationTestService;
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), IntegrationTestModule],
+      imports: [IntegrationTestModule],
       providers: [ScreenerPostgresDbRepository],
     }).compile();
 
     repository = app.get(ScreenerPostgresDbRepository);
-    unitOfWork = app.get('UNIT_OF_WORK');
-    pool = app.get('PG_CONNECTION_POOL');
-    knex = app.get('KNEX');
-
-    await knex.migrate.latest();
-    await unitOfWork.connect();
+    integrationTestService = app.get(IntegrationTestService);
+    await integrationTestService.start();
   });
 
   beforeEach(async () => {
-    const client = await pool.connect();
+    const client = await integrationTestService.pool.connect();
     await client.query('DELETE FROM screener;');
     client.release();
   });
 
-  afterAll(async () => {
-    await unitOfWork.release();
-    await pool.end();
-    await knex.destroy();
-  });
+  afterAll(async () => integrationTestService.stop());
 
   test('given empty screener, when get all, it should return empty list', async () => {
     const screenerEntities = await repository.getAll();

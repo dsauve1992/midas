@@ -1,46 +1,33 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Watchlist } from '../../../../domain/model/Watchlist';
-import { ConfigModule } from '@nestjs/config';
 import { WatchlistPostgresDbRepository } from '../watchlist-postgres-db.repository';
 import { v4 as uuidv4 } from 'uuid';
-import { Pool } from 'pg';
-import Knex from 'knex';
-import { AutoCommitUnitOfWork } from '../../../../../../lib/unit-of-work/auto-commit-unit-of-work.service';
 import { IntegrationTestModule } from '../../../../../../lib/test/integration-test.module';
+import { IntegrationTestService } from '../../../../../../lib/test/intergation-test.service';
 
 describe('WatchlistPostgresDbRepository specs', () => {
   let repository: WatchlistPostgresDbRepository;
-  let unitOfWork: AutoCommitUnitOfWork;
-  let pool: Pool;
-  let knex: Knex.Knex;
+  let integrationTestService: IntegrationTestService;
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), IntegrationTestModule],
+      imports: [IntegrationTestModule],
       providers: [WatchlistPostgresDbRepository],
     }).compile();
 
     repository = app.get(WatchlistPostgresDbRepository);
-    unitOfWork = app.get('UNIT_OF_WORK');
-    pool = app.get('PG_CONNECTION_POOL');
-    knex = app.get('KNEX');
-
-    await knex.migrate.latest();
-    await unitOfWork.connect();
+    integrationTestService = app.get(IntegrationTestService);
+    await integrationTestService.start();
   });
 
   beforeEach(async () => {
-    const client = await pool.connect();
+    const client = await integrationTestService.pool.connect();
     await client.query('DELETE FROM watchlist_items;');
     await client.query('DELETE FROM watchlists;');
     client.release();
   });
 
-  afterAll(async () => {
-    await unitOfWork.release();
-    await pool.end();
-    await knex.destroy();
-  });
+  afterAll(async () => integrationTestService.stop());
 
   test('given no watchlist for userId, when get it, it should get empty watchlist', async () => {
     const newWatchlist = await repository.getByUserId('unknownUserId');
