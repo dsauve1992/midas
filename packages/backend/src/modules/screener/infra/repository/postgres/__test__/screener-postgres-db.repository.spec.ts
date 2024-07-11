@@ -1,9 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
-import {
-  PostgreSqlContainer,
-  StartedPostgreSqlContainer,
-} from '@testcontainers/postgresql';
 import { Pool } from 'pg';
 import Knex from 'knex';
 import { AutoCommitUnitOfWork } from '../../../../../../lib/auto-commit-unit-of-work.service';
@@ -14,11 +10,8 @@ describe('ScreenerPostgresDbRepository specs', () => {
   let repository: ScreenerPostgresDbRepository;
   let unitOfWork: AutoCommitUnitOfWork;
   let pool: Pool;
-  let postgresContainer: StartedPostgreSqlContainer;
 
   beforeAll(async () => {
-    postgresContainer = await new PostgreSqlContainer().start();
-
     const app: TestingModule = await Test.createTestingModule({
       imports: [ConfigModule.forRoot()],
       providers: [
@@ -30,12 +23,11 @@ describe('ScreenerPostgresDbRepository specs', () => {
         {
           provide: 'PG_CONNECTION_POOL',
           useValue: new Pool({
-            host: postgresContainer.getHost(),
-            port: postgresContainer.getPort(),
-            user: postgresContainer.getUsername(),
-            password: postgresContainer.getPassword(),
-            database: postgresContainer.getDatabase(),
-            max: 1,
+            host: global.__dbConfig__.host,
+            port: global.__dbConfig__.port,
+            user: global.__dbConfig__.user,
+            password: global.__dbConfig__.password,
+            database: global.__dbConfig__.database,
           }),
         },
       ],
@@ -48,25 +40,25 @@ describe('ScreenerPostgresDbRepository specs', () => {
     const knex = Knex({
       client: 'pg',
       connection: {
-        host: postgresContainer.getHost(),
-        port: postgresContainer.getPort(),
-        user: postgresContainer.getUsername(),
-        password: postgresContainer.getPassword(),
-        database: postgresContainer.getDatabase(),
+        host: global.__dbConfig__.host,
+        port: global.__dbConfig__.port,
+        user: global.__dbConfig__.user,
+        password: global.__dbConfig__.password,
+        database: global.__dbConfig__.database,
       },
     });
 
     await knex.migrate.latest();
   });
 
-  afterEach(async () => {
+  beforeEach(async () => {
     const client = await pool.connect();
     await client.query('DELETE FROM screener;');
     client.release();
   });
 
-  afterAll(() => {
-    postgresContainer.stop();
+  afterAll(async () => {
+    await pool.end();
   });
 
   test('given empty screener, when get all, it should return empty list', async () => {

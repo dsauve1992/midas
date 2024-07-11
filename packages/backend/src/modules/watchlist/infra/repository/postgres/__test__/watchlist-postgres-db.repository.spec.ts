@@ -3,10 +3,6 @@ import { Watchlist } from '../../../../domain/model/Watchlist';
 import { ConfigModule } from '@nestjs/config';
 import { WatchlistPostgresDbRepository } from '../watchlist-postgres-db.repository';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  PostgreSqlContainer,
-  StartedPostgreSqlContainer,
-} from '@testcontainers/postgresql';
 import { Pool } from 'pg';
 import Knex from 'knex';
 import { AutoCommitUnitOfWork } from '../../../../../../lib/auto-commit-unit-of-work.service';
@@ -15,11 +11,8 @@ describe('WatchlistPostgresDbRepository specs', () => {
   let repository: WatchlistPostgresDbRepository;
   let unitOfWork: AutoCommitUnitOfWork;
   let pool: Pool;
-  let postgresContainer: StartedPostgreSqlContainer;
 
   beforeAll(async () => {
-    postgresContainer = await new PostgreSqlContainer().start();
-
     const app: TestingModule = await Test.createTestingModule({
       imports: [ConfigModule.forRoot()],
       providers: [
@@ -31,12 +24,11 @@ describe('WatchlistPostgresDbRepository specs', () => {
         {
           provide: 'PG_CONNECTION_POOL',
           useValue: new Pool({
-            host: postgresContainer.getHost(),
-            port: postgresContainer.getPort(),
-            user: postgresContainer.getUsername(),
-            password: postgresContainer.getPassword(),
-            database: postgresContainer.getDatabase(),
-            max: 1,
+            host: global.__dbConfig__.host,
+            port: global.__dbConfig__.port,
+            user: global.__dbConfig__.user,
+            password: global.__dbConfig__.password,
+            database: global.__dbConfig__.database,
           }),
         },
       ],
@@ -49,26 +41,26 @@ describe('WatchlistPostgresDbRepository specs', () => {
     const knex = Knex({
       client: 'pg',
       connection: {
-        host: postgresContainer.getHost(),
-        port: postgresContainer.getPort(),
-        user: postgresContainer.getUsername(),
-        password: postgresContainer.getPassword(),
-        database: postgresContainer.getDatabase(),
+        host: global.__dbConfig__.host,
+        port: global.__dbConfig__.port,
+        user: global.__dbConfig__.user,
+        password: global.__dbConfig__.password,
+        database: global.__dbConfig__.database,
       },
     });
 
     await knex.migrate.latest();
   });
 
-  afterEach(async () => {
+  beforeEach(async () => {
     const client = await pool.connect();
     await client.query('DELETE FROM watchlist_items;');
     await client.query('DELETE FROM watchlists;');
     client.release();
   });
 
-  afterAll(() => {
-    postgresContainer.stop();
+  afterAll(async () => {
+    await pool.end();
   });
 
   test('given no watchlist for userId, when get it, it should get empty watchlist', async () => {

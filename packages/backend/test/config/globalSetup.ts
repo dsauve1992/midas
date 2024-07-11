@@ -1,4 +1,4 @@
-import { TestContainer } from './database/setupDynamoDbTestContainer';
+import { TestContainer } from './database/setupPostgresDbTestContainer';
 
 module.exports = async function () {
   await TestContainer.init();
