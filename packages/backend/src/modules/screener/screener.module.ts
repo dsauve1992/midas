@@ -12,6 +12,8 @@ import { ScreenerRestController } from './controller/screener.rest.controller';
 import { ScreenerRepository } from './domain/screener.repository';
 import { ScreenerEntryFactory } from './domain/screener-entry.factory';
 import { ScreenerPostgresDbRepository } from './infra/repository/postgres/screener-postgres-db.repository';
+import { Pool } from 'pg';
+import { TransactionalUnitOfWork } from '../../lib/unit-of-work/transactional-unit-of-work.service';
 
 @Module({
   controllers: [ScreenerRestController],
@@ -31,16 +33,27 @@ import { ScreenerPostgresDbRepository } from './infra/repository/postgres/screen
 export class ScreenerModule implements OnModuleInit {
   constructor(
     @Inject(TELEGRAM_BOT) private bot: Telegraf,
-    private updateScreenerUseCase: UpdateScreenerUseCase,
+    private screenerFetcherService: TradingViewScreenerService,
+    private screenerEntryFactory: ScreenerEntryFactory,
+    @Inject('PG_CONNECTION_POOL') private readonly pool: Pool,
   ) {}
 
   async onModuleInit() {
     this.bot.command('screener', async (ctx) => {
       await ctx.reply('⏳ updating screener...');
 
-      this.updateScreenerUseCase.execute().finally(() => {
-        ctx.reply('✅ screener updated');
-      });
+      const unitOfWork = new TransactionalUnitOfWork(this.pool);
+
+      new UpdateScreenerUseCase(
+        this.screenerFetcherService,
+        new ScreenerPostgresDbRepository(unitOfWork),
+        this.screenerEntryFactory,
+        unitOfWork,
+      )
+        .execute()
+        .finally(() => {
+          ctx.reply('✅ screener updated');
+        });
     });
   }
 }
