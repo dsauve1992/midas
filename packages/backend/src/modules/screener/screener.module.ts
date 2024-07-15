@@ -42,6 +42,12 @@ export class ScreenerModule implements OnModuleInit {
     this.bot.command('screener', async (ctx) => {
       await ctx.reply('⏳ updating screener...');
 
+      /*
+FIXME : in the context of a telegram command, we cannot use nestjs dependency injection mecanism
+ because UnitOFWork need to be Request scoped (But what is a Request in that context ?).
+ So we need to create the unit of work by ourselves and inject that same instance into any dependency that needs it.
+ But it's ok to use the dependency injection mecanism for the other dependencies.
+ */
       const unitOfWork = new TransactionalUnitOfWork(this.pool);
       try {
         await new UpdateScreenerUseCase(

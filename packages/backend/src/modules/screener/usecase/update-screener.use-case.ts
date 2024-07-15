@@ -36,7 +36,6 @@ export class UpdateScreenerUseCase extends BaseUseCase<void, void> {
       } catch (e) {
         this.logger.error(symbolWithExchange);
         this.logger.error(e);
-        throw e;
       }
     }
   }

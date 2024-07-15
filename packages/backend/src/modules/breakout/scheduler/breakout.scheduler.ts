@@ -19,6 +19,12 @@ export class BreakoutScheduler {
   async handleCron() {
     const unitOfWork = new TransactionalUnitOfWork(this.pool);
 
+    /*
+FIXME : in the context of a cron job, we cannot use nestjs dependency injection mecanism
+ because UnitOFWork need to be Request scoped (But what is a Request in the context of a cron job ?).
+ So we need to create the unit of work by ourselves and inject that same instance into any dependency that needs it.
+ But it's ok to use the dependency injection mecanism for the other dependencies.
+ */
     const checkForBreakoutUseCase = new CheckForBreakoutUseCase(
       this.breakoutService,
       new WatchlistPostgresDbRepository(unitOfWork),
