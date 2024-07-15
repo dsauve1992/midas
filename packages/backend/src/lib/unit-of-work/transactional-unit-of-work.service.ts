@@ -1,8 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { Pool, PoolClient } from 'pg';
 import { UnitOfWork } from './unit-of-work';
 
-@Injectable()
 export class TransactionalUnitOfWork implements UnitOfWork {
   private client: PoolClient;
 
@@ -26,8 +25,10 @@ export class TransactionalUnitOfWork implements UnitOfWork {
     try {
       await this.client.query('ROLLBACK');
     } finally {
-      this.client.release();
-      this.client = null; // Ensure client is cleared after release
+      if (this.client) {
+        this.client.release();
+        this.client = null; // Ensure client is cleared after release
+      }
     }
   }
 

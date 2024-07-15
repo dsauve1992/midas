@@ -1,7 +1,7 @@
 import { Inject, Module, OnModuleInit } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { TradingViewScreenerService } from './infra/trading-view/trading-view-screener.service';
-import { ComputeRatingCronController } from './controller/compute-rating.cron.controller';
+import { UpdateScreenerCronJobController } from './controller/update-screener-cron-job.controller';
 import { RatingModule } from '../rating/rating.module';
 import { HistoricalDataModule } from '../historical-data/historical-data.module';
 import { UpdateScreenerUseCase } from './usecase/update-screener.use-case';
@@ -25,7 +25,7 @@ import { ScreenerPostgresDbRepository } from './infra/repository/postgres/screen
       useClass: ScreenerPostgresDbRepository,
     },
     ScreenerEntryFactory,
-    ComputeRatingCronController,
+    UpdateScreenerCronJobController,
   ],
 })
 export class ScreenerModule implements OnModuleInit {
