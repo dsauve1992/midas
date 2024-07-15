@@ -43,17 +43,18 @@ export class ScreenerModule implements OnModuleInit {
       await ctx.reply('⏳ updating screener...');
 
       const unitOfWork = new TransactionalUnitOfWork(this.pool);
+      try {
+        await new UpdateScreenerUseCase(
+          this.screenerFetcherService,
+          new ScreenerPostgresDbRepository(unitOfWork),
+          this.screenerEntryFactory,
+          unitOfWork,
+        ).execute();
+      } catch (e) {
+        await ctx.reply(`❌ an error occured : ${e.message}`);
+      }
 
-      new UpdateScreenerUseCase(
-        this.screenerFetcherService,
-        new ScreenerPostgresDbRepository(unitOfWork),
-        this.screenerEntryFactory,
-        unitOfWork,
-      )
-        .execute()
-        .finally(() => {
-          ctx.reply('✅ screener updated');
-        });
+      await ctx.reply('✅ screener updated');
     });
   }
 }
