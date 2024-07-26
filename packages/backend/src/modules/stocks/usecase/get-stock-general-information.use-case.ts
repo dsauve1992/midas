@@ -26,6 +26,8 @@ export class GetStockGeneralInformationUseCase {
       this.computeFundamentalRatingUseCase.execute(symbol),
     ]);
 
+    console.log(profile);
+
     return {
       ...profile,
       returnOnEquity: enterpriseRatiosTtm.returnOnEquityTTM,

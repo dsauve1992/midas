@@ -4,8 +4,10 @@ import { ConfigModule } from '@nestjs/config';
 import { AddSymbolToWatchlistUseCase } from './usecase/add-symbol-to-watchlist.use-case';
 import { RemoveSymbolFromWatchlistUseCase } from './usecase/remove-symbol-from-watchlist.use-case';
 import { WatchlistController } from './controller/watchlist.controller';
-import { GetWatchlistUseCase } from './usecase/get-watchlist.use-case';
+import { GetWatchlistsUseCase } from './usecase/get-watchlists-use-case';
 import { WatchlistPostgresDbRepository } from './infra/repository/postgres/watchlist-postgres-db.repository';
+import { CreateWatchlistUseCase } from './usecase/create-watchlist.use-case';
+import { DeleteWatchlistUseCase } from './usecase/delete-watchlist.use-case';
 
 @Module({
   imports: [
@@ -20,7 +22,9 @@ import { WatchlistPostgresDbRepository } from './infra/repository/postgres/watch
     },
     AddSymbolToWatchlistUseCase,
     RemoveSymbolFromWatchlistUseCase,
-    GetWatchlistUseCase,
+    CreateWatchlistUseCase,
+    DeleteWatchlistUseCase,
+    GetWatchlistsUseCase,
   ],
   exports: [WatchlistRepository],
   controllers: [WatchlistController],

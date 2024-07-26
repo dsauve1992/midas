@@ -20,14 +20,16 @@ export class CheckForBreakoutUseCase extends BaseUseCase<void, void> {
     const { isTheStockMarketOpen } =
       await this.fmpService.getMarketOpeningInformation();
 
-    if (isTheStockMarketOpen) {
-      const watchlist = await this.watchlistRepository.getByUserId(
-        'auth0|65554db56ac7eefb66a57439',
-      );
+    // FIXME disabled feature : we need to set on which watchlist we want to check for breakout
 
-      for (const symbol of watchlist) {
-        await this.breakoutService.checkFor(symbol);
-      }
-    }
+    // if (isTheStockMarketOpen) {
+    //   const watchlist = await this.watchlistRepository.getByUserId(
+    //     'auth0|65554db56ac7eefb66a57439',
+    //   );
+    //
+    //   for (const symbol of watchlist) {
+    //     await this.breakoutService.checkFor(symbol);
+    //   }
+    // }
   }
 }

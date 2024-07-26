@@ -1,22 +1,35 @@
 import { MidasBackendClient } from "./MidasBackendClient.ts";
+import { WatchlistDto } from "backend/src/shared-types/watchlist.dto";
 
 export class WatchlistClient extends MidasBackendClient {
-  async fetch(): Promise<string[]> {
-    return this.get<string[]>(`${this.getBaseUrl()}`).then(
+  async createWatchlist(name: string): Promise<void> {
+    await this.post<{ name: string }, void>(`${this.getBaseUrl()}`, {
+      name,
+    });
+  }
+
+  async getAll(): Promise<WatchlistDto[]> {
+    return this.get<WatchlistDto[]>(`${this.getBaseUrl()}`).then(
       (result) => result.data,
     );
   }
 
-  async addSymbol(symbol: string): Promise<void> {
-    await this.post<{ symbol: string }, void>(`${this.getBaseUrl()}/add`, {
-      symbol,
-    });
+  async addSymbol(watchlistId: string, symbol: string): Promise<void> {
+    await this.post<{ symbol: string }, void>(
+      `${this.getBaseUrl()}/${watchlistId}/add`,
+      {
+        symbol,
+      },
+    );
   }
 
-  async removeSymbol(symbol: string): Promise<void> {
-    await this.post<{ symbol: string }, void>(`${this.getBaseUrl()}/remove`, {
-      symbol,
-    });
+  async removeSymbol(watchlistId: string, symbol: string): Promise<void> {
+    await this.post<{ symbol: string }, void>(
+      `${this.getBaseUrl()}/${watchlistId}/remove`,
+      {
+        symbol,
+      },
+    );
   }
 
   protected getBaseUrl(): string {

@@ -1,14 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
 
 export class Watchlist implements Iterable<string> {
+  deleted = false;
+
   constructor(
     readonly id: string,
+    readonly name: string,
     readonly userId: string,
     private items: Set<string>,
   ) {}
 
-  static init(userId: string): Watchlist {
-    return new Watchlist(uuidv4(), userId, new Set<string>());
+  static init(userId: string, name: string): Watchlist {
+    return new Watchlist(uuidv4(), name, userId, new Set<string>());
   }
 
   public [Symbol.iterator](): Iterator<string> {
@@ -25,5 +28,10 @@ export class Watchlist implements Iterable<string> {
 
   isEmpty() {
     return this.items.size == 0;
+  }
+
+  flagAsDeleted() {
+    this.items.clear();
+    this.deleted = true;
   }
 }

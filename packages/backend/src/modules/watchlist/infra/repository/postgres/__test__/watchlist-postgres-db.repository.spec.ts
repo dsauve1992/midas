@@ -29,39 +29,88 @@ describe('WatchlistPostgresDbRepository specs', () => {
 
   afterAll(async () => integrationTestService.stop());
 
-  test('given no watchlist for userId, when get it, it should get empty watchlist', async () => {
-    const newWatchlist = await repository.getByUserId('unknownUserId');
-    expect(newWatchlist.isEmpty()).toBe(true);
-  });
-
   test('given a watchlist, when save it, it should persisted into repository', async () => {
     const expectedWatchlist = new Watchlist(
       uuidv4(),
+      'My Watchlist',
       'aUserId',
       new Set(['CLFD']),
     );
 
     await repository.save(expectedWatchlist);
-    const actual = await repository.getByUserId('aUserId');
+    const actual = await repository.getById('aUserId', expectedWatchlist.id);
 
     expect(actual).toEqual(expectedWatchlist);
   });
 
   test('given an existing watchlist, when change it then save, changes should be persisted into repository', async () => {
     const id = uuidv4();
-    const aWatchlist = new Watchlist(id, 'aUserId', new Set([]));
+    const aWatchlist = new Watchlist(
+      id,
+      'My Watchlist',
+      'aUserId',
+      new Set([]),
+    );
     await repository.save(aWatchlist);
 
     aWatchlist.addSymbol('AAPL');
     aWatchlist.addSymbol('TSLA');
     await repository.save(aWatchlist);
 
-    const actual = await repository.getByUserId('aUserId');
+    const actual = await repository.getById('aUserId', aWatchlist.id);
     const expected = new Watchlist(
       aWatchlist.id,
+      'My Watchlist',
       'aUserId',
       new Set(['AAPL', 'TSLA']),
     );
     expect(actual).toEqual(expected);
+  });
+
+  test('given an existing watchlist, when flag it as deleted then save, it should be able to get it anymore', async () => {
+    const id = uuidv4();
+    const aWatchlist = new Watchlist(
+      id,
+      'My Watchlist',
+      'aUserId',
+      new Set([]),
+    );
+    await repository.save(aWatchlist);
+
+    expect(await repository.getById('aUserId', aWatchlist.id)).toEqual(
+      aWatchlist,
+    );
+
+    aWatchlist.flagAsDeleted();
+    await repository.save(aWatchlist);
+
+    await expect(() =>
+      repository.getById('aUserId', aWatchlist.id),
+    ).rejects.toThrow(
+      `Cannot get watchlist with id: ${aWatchlist.id} for user: aUserId`,
+    );
+  });
+
+  test('given multiple watchlist for a user, when get all by user id, it should return all watchlists', async () => {
+    const aWatchlist = new Watchlist(
+      uuidv4(),
+      'My Watchlist',
+      'aUserId',
+      new Set(['AAPL', 'MSFT']),
+    );
+    const anotherWatchlist = new Watchlist(
+      uuidv4(),
+      'Another Watchlist',
+      'aUserId',
+      new Set(['TSLA', 'CRWD']),
+    );
+
+    await repository.save(aWatchlist);
+    await repository.save(anotherWatchlist);
+
+    const actual = await repository.getAllByUserId('aUserId');
+
+    expect(actual).toContainEqual(aWatchlist);
+    expect(actual).toContainEqual(anotherWatchlist);
   });
 });

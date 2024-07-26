@@ -16,7 +16,8 @@ export const useAddSymbolToWatchlist = ({
   const instance = useApiClientInstance(WatchlistClient);
 
   const { mutate, isLoading } = useMutation(
-    (symbol: string) => instance.addSymbol(symbol),
+    ({ watchlistId, symbol }: { watchlistId: string; symbol: string }) =>
+      instance.addSymbol(watchlistId, symbol),
     {
       onSuccess: async () => {
         await client.invalidateQueries(["watchlist"]);

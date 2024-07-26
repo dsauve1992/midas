@@ -3,7 +3,7 @@ import CandlestickChartIcon from "@mui/icons-material/CandlestickChart";
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import DescriptionModal from "./DescriptionModal.tsx";
 import { StockGeneralInformationResponseDto } from "backend/src/shared-types/response.dto";
-import { WatchlistToggleButton } from "../../../../watchlist/ui/WatchlistToggleButton.tsx";
+import { WatchlistToggleButton } from "../../../../watchlist/ui/toggle-button/WatchlistToggleButton.tsx";
 
 export interface Props {
   profile: StockGeneralInformationResponseDto;

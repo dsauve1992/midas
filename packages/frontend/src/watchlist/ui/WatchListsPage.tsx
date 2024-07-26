@@ -1,7 +1,7 @@
 import { Card, CardContent, Grid, List, Typography } from "@mui/material";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard";
-import { useGetWatchlist } from "./hooks/useGetWatchlist.ts";
-import { WatchlistToggleButton } from "./WatchlistToggleButton.tsx";
+import { useGetWatchlists } from "./hooks/useGetWatchlists.ts";
+import { WatchlistToggleButton } from "./toggle-button/WatchlistToggleButton.tsx";
 import Box from "@mui/material/Box";
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";
@@ -9,16 +9,25 @@ import { Helmet } from "react-helmet";
 import { TicketDetailButton } from "../../screener/new/TicketDetailButton.tsx";
 
 export const WatchListsPage = () => {
-  const { data: symbols } = useGetWatchlist();
+  const { data: watchlists } = useGetWatchlists();
   return (
     <>
       <Helmet>
-        <title>Watchlist - Midas</title>
+        <title>Watchlists - Midas</title>
       </Helmet>
 
-      <List sx={{ width: "100%" }}>
-        {symbols?.map((el) => <WatchListTicker symbol={el} key={el} />)}
-      </List>
+      {watchlists?.map((watchlist) => (
+        <>
+          <h4>{watchlist.name}</h4>
+          <List sx={{ width: "100%" }}>
+            {watchlist.symbols?.map((el) => (
+              <WatchListTicker symbol={el} key={el} />
+            ))}
+          </List>
+
+          <br />
+        </>
+      ))}
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { WatchlistToggleButton } from "../../watchlist/ui/WatchlistToggleButton.tsx";
+import { WatchlistToggleButton } from "../../watchlist/ui/toggle-button/WatchlistToggleButton.tsx";
 import { ScreenerEntryFrontendDto } from "backend/src/shared-types/screener-entry-frontend.dto.ts";
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";

@@ -2,21 +2,20 @@ import { useApiClientInstance } from "../../../api/useApiClient.ts";
 import { useMutation, useQueryClient } from "react-query";
 import { WatchlistClient } from "../../../api/WatchlistClient.ts";
 
-export type useRemoveSymbolFromWatchlistProps = {
+export type useCreateWatchlistProps = {
   onSuccess?: () => void;
   onError?: () => void;
 };
 
-export const useRemoveSymbolFromWatchlist = ({
+export const useCreateWatchlist = ({
   onSuccess,
   onError,
-}: useRemoveSymbolFromWatchlistProps) => {
+}: useCreateWatchlistProps) => {
   const client = useQueryClient();
   const instance = useApiClientInstance(WatchlistClient);
 
   const { mutate, isLoading } = useMutation(
-    ({ watchlistId, symbol }: { watchlistId: string; symbol: string }) =>
-      instance.removeSymbol(watchlistId, symbol),
+    (name: string) => instance.createWatchlist(name),
     {
       onSuccess: async () => {
         await client.invalidateQueries(["watchlist"]);
@@ -27,7 +26,7 @@ export const useRemoveSymbolFromWatchlist = ({
   );
 
   return {
-    remove: mutate,
+    create: mutate,
     processing: isLoading,
   };
 };

@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { TradingViewScreenerService } from '../infra/trading-view/trading-view-screener.service';
-import { delay } from '../../../utils/delay';
+import { delay } from '../../../lib/utils/delay';
 import { ScreenerRepository } from '../domain/screener.repository';
 import { ScreenerEntryFactory } from '../domain/screener-entry.factory';
 import { BaseUseCase } from '../../../lib/base-use-case';
