@@ -8,7 +8,7 @@ import TickerPage from "../../../../../ticker/ui/TickerPage/TickerPage.tsx";
 import { ToolsPage } from "../../../../../tools/ToolsPage.tsx";
 import { WatchListsPage } from "../../../../../watchlist/ui/WatchListsPage.tsx";
 import { useElementSize } from "usehooks-ts";
-import ScreenerPage from "../../../../../screener/new/ScreenerPage.tsx";
+import ScreenerPage from "../../../../../screener/ui/ScreenerPage.tsx";
 
 const Layout: React.FunctionComponent = () => {
   const [squareRef, { height }] = useElementSize();

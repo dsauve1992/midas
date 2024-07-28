@@ -1,17 +1,17 @@
 import { Box, Typography } from "@mui/material";
 import { WatchlistToggleButton } from "../../watchlist/ui/toggle-button/WatchlistToggleButton.tsx";
-import { ScreenerEntryFrontendDto } from "backend/src/shared-types/screener-entry-frontend.dto.ts";
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
 import { TicketDetailButton } from "./TicketDetailButton.tsx";
+import { NewScreenerEntryFrontendDto } from "backend/src/shared-types/new-screener-entry-frontend.dto";
 
 export interface StockScreenerTapeCardProps {
-  ticker: ScreenerEntryFrontendDto;
+  ticker: NewScreenerEntryFrontendDto;
 }
 
 export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
-  const { exchange, symbol, averageDailyRange } = ticker;
+  const { exchange, symbol } = ticker;
 
   const ref = useRef(null);
   const { enterCount } = useInViewport(ref);
@@ -34,9 +34,6 @@ export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
           <Typography display="inline-block" variant={"h5"}>
             {symbol}
           </Typography>
-          <Typography display="inline-block" variant={"subtitle1"}>
-            {averageDailyRange.toFixed(2)}%
-          </Typography>
           <TicketDetailButton symbol={symbol} />
         </Box>
         <WatchlistToggleButton symbol={symbol} />
@@ -48,7 +45,7 @@ export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
               symbol={`${exchange}:${symbol}`}
               withDateRanges={true}
               interval={"D"}
-              range={"6m"}
+              range={"12m"}
               hideTopToolbar
             />
           </Box>

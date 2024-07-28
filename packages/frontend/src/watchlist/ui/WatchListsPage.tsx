@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";
 import { Helmet } from "react-helmet";
-import { TicketDetailButton } from "../../screener/new/TicketDetailButton.tsx";
+import { TicketDetailButton } from "../../screener/ui/TicketDetailButton.tsx";
 
 export const WatchListsPage = () => {
   const { data: watchlists } = useGetWatchlists();
