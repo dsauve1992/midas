@@ -14,6 +14,9 @@ type MetricComparisonChartProps = {
   previousMetricLabel?: string;
   growthMetricLabel?: string;
   data: MetricComparison[];
+  options?: {
+    size: "small" | "large";
+  };
 };
 
 const style = { height: "100%", width: "100%" };
@@ -26,7 +29,7 @@ export const MetricComparisonChart = ({
 }: MetricComparisonChartProps) => {
   const options: EChartOption = {
     title: {
-      show: true,
+      show: false,
       text: title,
     },
     tooltip: {
@@ -36,18 +39,19 @@ export const MetricComparisonChart = ({
       },
     },
     grid: {
-      right: "20%",
+      top: "20%",
+      left: "10%",
+      right: "15%",
+      bottom: "20%",
     },
-    xAxis: [
-      {
-        type: "category",
-        axisTick: {
-          alignWithLabel: true,
-        },
-        // prettier-ignore
-        data: data.map((e) => e.period),
+    xAxis: {
+      type: "category",
+      axisTick: {
+        alignWithLabel: true,
       },
-    ],
+      // prettier-ignore
+      data: data.map((e) => e.period),
+    },
     yAxis: [
       {
         type: "value",
@@ -90,6 +94,7 @@ export const MetricComparisonChart = ({
           color: "#545454",
           width: "250px",
           backgroundColor: "#00fe41",
+          fontSize: 10,
           padding: 6,
           borderRadius: 100,
         },

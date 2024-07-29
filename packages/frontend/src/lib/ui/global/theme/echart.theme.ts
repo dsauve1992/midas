@@ -20,6 +20,7 @@ const axisCommon = function () {
     axisLabel: {
       textStyle: {
         color: contrastColor,
+        fontSize: 8,
       },
     },
     splitLine: {
@@ -49,17 +50,20 @@ const theme = {
       },
       label: {
         color: "#000",
+        fontSize: 8,
       },
     },
   },
   legend: {
     textStyle: {
       color: contrastColor,
+      fontSize: 8,
     },
   },
   title: {
     textStyle: {
       color: contrastColor,
+      fontSize: 8,
     },
   },
   toolbox: {

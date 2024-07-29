@@ -33,7 +33,7 @@ export const AnnualEpsHistory = ({ history, position }: Props) => {
     () => [
       {
         type: "value",
-        name: "Eps",
+        name: "YoY EPS History",
         show: true,
         splitLine: {
           show: false,
@@ -52,8 +52,8 @@ export const AnnualEpsHistory = ({ history, position }: Props) => {
 
   const options: EChartOption = {
     title: {
-      show: true,
-      text: "Annual EPS History",
+      show: false,
+      text: "YoY EPS History",
     },
     tooltip: {
       trigger: "axis",
@@ -62,7 +62,10 @@ export const AnnualEpsHistory = ({ history, position }: Props) => {
       },
     },
     grid: {
-      right: "10%",
+      top: "20%",
+      left: "10%",
+      right: "15%",
+      bottom: "20%",
     },
     yAxis: position === "horizontal" ? epsAxis : yearAxis,
     xAxis: position === "horizontal" ? yearAxis : epsAxis,
@@ -95,6 +98,7 @@ export const AnnualEpsHistory = ({ history, position }: Props) => {
           formatter: ({ value }: { value: number }) => value.toFixed(1),
           color: "#545454",
           width: "550px",
+          fontSize: 10,
           backgroundColor: "#00fe41",
           padding: 6,
           borderRadius: 100,
