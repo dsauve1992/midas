@@ -33,17 +33,16 @@ export const AnnualEpsHistory = ({ history, position }: Props) => {
     () => [
       {
         type: "value",
-        name: "YoY EPS History",
-        show: true,
-        splitLine: {
-          show: false,
+        axisLine: {
+          show: true,
         },
       } as CartesianAxis,
       {
         type: "value",
-        name: "Growth",
-        axisLine: {
-          show: true,
+        name: "YoY EPS History",
+        show: true,
+        splitLine: {
+          show: false,
         },
       } as CartesianAxis,
     ],

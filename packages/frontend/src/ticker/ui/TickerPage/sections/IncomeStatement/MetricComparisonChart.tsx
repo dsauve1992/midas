@@ -24,7 +24,7 @@ export const MetricComparisonChart = ({
   title,
   currentMetricLabel = "Current",
   previousMetricLabel = "Previous",
-  growthMetricLabel = "Growth",
+  growthMetricLabel = "",
   data,
 }: MetricComparisonChartProps) => {
   const options: EChartOption = {
@@ -104,5 +104,5 @@ export const MetricComparisonChart = ({
 
   const epsRef = useEchart(options);
 
-  return <div ref={epsRef} className="test_ds" style={style} />;
+  return <div ref={epsRef} style={style} />;
 };

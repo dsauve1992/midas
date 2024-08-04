@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React from "react";
 import { Box, Grid } from "@mui/material";
 import { useScreener } from "./hooks/useScreener.ts";
 import { Helmet } from "react-helmet";
@@ -7,49 +7,10 @@ import { StandaloneAnnualEpsHistory } from "../../ticker/ui/TickerPage/sections/
 import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneEpsChart.tsx";
 import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
 import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
+import { useSelection } from "./hooks/useSelection.tsx";
+import { WatchlistToggleButton } from "../../watchlist/ui/toggle-button/WatchlistToggleButton.tsx";
 
 export interface Props {}
-
-function useSelection<T>(collection: T[]) {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  const next = useCallback(() => {
-    if (currentIndex < collection.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  }, [currentIndex, collection]);
-
-  const previous = useCallback(() => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  }, [currentIndex]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft") {
-        previous();
-      } else if (event.key === "ArrowRight") {
-        next();
-      }
-    };
-
-    // Attach the event listener
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [next, previous]);
-
-  const selection = useMemo(
-    () => collection[currentIndex],
-    [currentIndex, collection],
-  );
-
-  return selection;
-}
 
 export const ScreenerPage: React.FunctionComponent<Props> = () => {
   const { data: tickers, isLoading } = useScreener();
@@ -71,10 +32,10 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
             <Box
               display="flex"
               flexDirection="column"
-              paddingLeft={"200px"}
               width={"100%"}
               height={"100%"}
             >
+              <WatchlistToggleButton symbol={selection.symbol} />
               <TradingViewTapeCard
                 symbol={`${selection.exchange}:${selection.symbol}`}
                 withDateRanges={true}
