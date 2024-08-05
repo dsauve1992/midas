@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { chain } from 'lodash';
+import { chain, uniq } from 'lodash';
 import { FinancialPeriod } from '../../rating/domain/FinancialPeriod';
 import {
   AnalystEstimateEntry,
@@ -124,12 +124,20 @@ class AnnuallyFinancialHistory {
   public readonly history: FinancialRecord<FinancialYear>[];
 
   constructor(_history: FinancialRecord<FinancialYear>[]) {
+    const periods = _history.map((record) => record.period.year);
+
+    if (uniq(periods).length !== periods.length) {
+      throw new Error('Duplicate periods');
+    }
+
     this.history = AnnuallyFinancialHistory.fillMissingRecords(
       _history.sort((a, b) => a.period.compare(b.period)),
     );
   }
 
   private static fillMissingRecords(history: FinancialRecord<FinancialYear>[]) {
+    console.log(history);
+
     if (history.length < 2) {
       return history;
     }
@@ -176,6 +184,9 @@ export class GetAnnuallyIncomeStatementV2UseCase {
   async execute(symbol: string): Promise<AnnuallyFinancialHistory> {
     const { incomeStatements, enterpriseRatios, analystEstimates } =
       await this.fetchData(symbol);
+
+    console.log(enterpriseRatios);
+
     const entries = this.mapToFinancialRecords(
       incomeStatements,
       enterpriseRatios,
