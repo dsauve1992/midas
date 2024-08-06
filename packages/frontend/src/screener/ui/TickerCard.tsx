@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { WatchlistToggleButton } from "../../watchlist/ui/toggle-button/WatchlistToggleButton.tsx";
+import { WatchlistGlobalToggleButton } from "../../watchlist/ui/toggle-button/WatchlistGlobalToggleButton.tsx";
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
@@ -36,7 +36,7 @@ export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
           </Typography>
           <TicketDetailButton symbol={symbol} />
         </Box>
-        <WatchlistToggleButton symbol={symbol} />
+        <WatchlistGlobalToggleButton symbol={symbol} />
       </Box>
       <Box height={"600px"} ref={ref}>
         {enterCount && (

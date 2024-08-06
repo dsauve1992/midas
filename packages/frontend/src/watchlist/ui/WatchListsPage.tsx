@@ -1,83 +1,79 @@
-import { Card, CardContent, Grid, List, Typography } from "@mui/material";
-import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard";
+import { Box, List, ListItemButton } from "@mui/material";
 import { useGetWatchlists } from "./hooks/useGetWatchlists.ts";
-import { WatchlistToggleButton } from "./toggle-button/WatchlistToggleButton.tsx";
-import Box from "@mui/material/Box";
-import { useRef } from "react";
-import { useInViewport } from "react-in-viewport";
 import { Helmet } from "react-helmet";
-import { TicketDetailButton } from "../../screener/ui/TicketDetailButton.tsx";
+import { WatchListTicker } from "./WatchListTicker.tsx";
+import { makeStyles } from "@mui/styles";
+import theme from "../../lib/ui/global/theme/mui.theme.ts";
+import { useMemo, useState } from "react";
+import { indexOf } from "lodash";
+
+const useStyles = makeStyles({
+  watchlistLateralMenu: {
+    width: "10%",
+    padding: "10px",
+    backgroundColor: theme.palette.background.paper,
+  },
+  watchlist: {
+    padding: "0 20px",
+    overflow: "scroll",
+    flexGrow: 1,
+  },
+});
 
 export const WatchListsPage = () => {
+  const classes = useStyles();
   const { data: watchlists } = useGetWatchlists();
+
+  const [selectedWatchlistIndex, setSelectedWatchlistIndex] =
+    useState<number>(0);
+
+  const selectedWatchlist = useMemo(() => {
+    return watchlists?.[selectedWatchlistIndex];
+  }, [selectedWatchlistIndex, watchlists]);
+
   return (
     <>
       <Helmet>
         <title>Watchlists - Midas</title>
       </Helmet>
 
-      {watchlists?.map((watchlist) => (
-        <>
-          <h4>{watchlist.name}</h4>
-          <List sx={{ width: "100%" }}>
-            {watchlist.symbols?.map((el) => (
-              <WatchListTicker symbol={el} key={el} />
+      <Box width={"100%"} display={"flex"} flexDirection="row">
+        <Box className={classes.watchlistLateralMenu}>
+          <h4>Watchlists</h4>
+          <List>
+            {watchlists?.map((watchlist) => (
+              <ListItemButton
+                key={watchlist.id}
+                selected={selectedWatchlist?.id === watchlist.id}
+                onClick={() =>
+                  setSelectedWatchlistIndex(indexOf(watchlists, watchlist))
+                }
+              >
+                {watchlist.name}
+              </ListItemButton>
             ))}
           </List>
-
-          <br />
-        </>
-      ))}
-    </>
-  );
-};
-
-export const WatchListTicker = ({ symbol }: { symbol: string }) => {
-  const ref = useRef(null);
-  const { enterCount } = useInViewport(ref);
-
-  return (
-    <Card ref={ref}>
-      <CardContent>
-        <Box
-          display={"flex"}
-          alignItems={"center"}
-          justifyContent={"space-between"}
-          marginBottom={1}
-        >
-          <Box
-            display={"inline-flex"}
-            flexDirection={"row"}
-            alignItems={"end"}
-            gap={1}
-          >
-            <Typography variant="h5">{symbol}</Typography>
-            <TicketDetailButton symbol={symbol} />
-          </Box>
-          <WatchlistToggleButton symbol={symbol} />
         </Box>
 
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={6} height="600px">
-            {enterCount > 0 && (
-              <TradingViewTapeCard
-                symbol={symbol}
-                interval={"D"}
-                range={"3m"}
-              />
-            )}
-          </Grid>
-          <Grid item xs={6} height="600px">
-            {enterCount > 0 && (
-              <TradingViewTapeCard
-                symbol={symbol}
-                interval={"60"}
-                range={"5d"}
-              />
-            )}
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+        <Box
+          className={classes.watchlist}
+          display={"flex"}
+          flexDirection="column"
+        >
+          {selectedWatchlist ? (
+            <>
+              <h4>{selectedWatchlist.name}</h4>
+              <List sx={{ width: "100%" }}>
+                {selectedWatchlist.symbols?.map((el) => (
+                  <WatchListTicker symbol={el} key={el} />
+                ))}
+              </List>
+            </>
+          ) : (
+            <p>Please select a watchlist</p>
+          )}
+        </Box>
+      </Box>
+    </>
   );
 };

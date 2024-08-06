@@ -8,7 +8,7 @@ import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeSt
 import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
 import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
 import { useSelection } from "./hooks/useSelection.tsx";
-import { WatchlistToggleButton } from "../../watchlist/ui/toggle-button/WatchlistToggleButton.tsx";
+import { WatchlistGlobalToggleButton } from "../../watchlist/ui/toggle-button/WatchlistGlobalToggleButton.tsx";
 
 export interface Props {}
 
@@ -35,7 +35,7 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
               width={"100%"}
               height={"100%"}
             >
-              <WatchlistToggleButton symbol={selection.symbol} />
+              <WatchlistGlobalToggleButton symbol={selection.symbol} />
               <TradingViewTapeCard
                 symbol={`${selection.exchange}:${selection.symbol}`}
                 withDateRanges={true}

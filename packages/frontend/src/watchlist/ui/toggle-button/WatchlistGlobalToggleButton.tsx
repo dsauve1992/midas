@@ -1,4 +1,3 @@
-import { useGetWatchlists } from "../hooks/useGetWatchlists.ts";
 import { useCallback, useMemo, useState } from "react";
 
 import { Button, Input, MenuItem, Typography } from "@mui/material";
@@ -6,35 +5,21 @@ import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
-
-import { useAddSymbolToWatchlist } from "../hooks/useAddSymbolToWatchlist.ts";
-import { useRemoveSymbolFromWatchlist } from "../hooks/useRemoveSymbolWatchlist.ts";
-import { toast } from "react-toastify";
 import { ToggleButtonTemplate } from "./ToggleButtonTemplate.tsx";
-import { useCreateWatchlist } from "../hooks/useCreateWatchlist.ts";
+import { useWatchlists } from "../hooks/useWatchlists.ts";
 
 export type WatchlistToggleButtonProps = {
   symbol: string;
 };
-export const WatchlistToggleButton = ({
+export const WatchlistGlobalToggleButton = ({
   symbol,
 }: WatchlistToggleButtonProps) => {
-  const { data: watchlists } = useGetWatchlists();
-  const { add } = useAddSymbolToWatchlist({
-    onSuccess: () =>
-      toast.success(`${symbol} has been added to your watchlist`),
-    onError: () => toast.error("Ouf!"),
-  });
-  const { remove } = useRemoveSymbolFromWatchlist({
-    onSuccess: () =>
-      toast.success(`${symbol} has been removed from your watchlist`),
-    onError: () => toast.error("Ouf!"),
-  });
-
-  const { create } = useCreateWatchlist({
-    onSuccess: () => toast.success(`watchlist has been created`),
-    onError: () => toast.error("Ouf!"),
-  });
+  const {
+    watchlists,
+    createNewWatchlist,
+    addToWatchlist,
+    removeSymbolFromWatchlist,
+  } = useWatchlists();
 
   const isInAnyWatchlist = useMemo(
     () => watchlists?.some((watchlist) => watchlist.symbols.includes(symbol)),
@@ -52,12 +37,12 @@ export const WatchlistToggleButton = ({
   const handleClickWatchlist = useCallback(
     (watchlistId: string) => {
       if (isInWatchlist(watchlistId)) {
-        remove({ watchlistId: watchlistId, symbol });
+        removeSymbolFromWatchlist({ watchlistId: watchlistId, symbol });
       } else {
-        add({ watchlistId: watchlistId, symbol });
+        addToWatchlist({ watchlistId: watchlistId, symbol });
       }
     },
-    [add, isInWatchlist, remove, symbol],
+    [addToWatchlist, isInWatchlist, removeSymbolFromWatchlist, symbol],
   );
 
   return (
@@ -78,7 +63,9 @@ export const WatchlistToggleButton = ({
               </Typography>
             </MenuItem>
           ))}
-          <CreateWatchlistCompactForm onCreate={(name) => create(name)} />
+          <CreateWatchlistCompactForm
+            onCreate={(name) => createNewWatchlist(name)}
+          />
         </>
       }
     />
