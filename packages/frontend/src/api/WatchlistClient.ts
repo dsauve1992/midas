@@ -23,6 +23,10 @@ export class WatchlistClient extends MidasBackendClient {
     );
   }
 
+  async deleteWatchlist(watchlistId: string): Promise<void> {
+    await this.delete<void>(`${this.getBaseUrl()}/${watchlistId}`);
+  }
+
   async removeSymbol(watchlistId: string, symbol: string): Promise<void> {
     await this.post<{ symbol: string }, void>(
       `${this.getBaseUrl()}/${watchlistId}/remove`,

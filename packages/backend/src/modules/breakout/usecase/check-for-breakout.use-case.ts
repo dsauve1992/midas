@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BreakoutService } from '../domain/breakout.service';
-import { WatchlistRepository } from '../../watchlist/domain/repository/watchlist.repository';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { BaseUseCase } from '../../../lib/base-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
@@ -9,7 +8,6 @@ import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional
 export class CheckForBreakoutUseCase extends BaseUseCase<void, void> {
   constructor(
     private breakoutService: BreakoutService,
-    private watchlistRepository: WatchlistRepository,
     private fmpService: FinancialModelingPrepService,
     @Inject('UNIT_OF_WORK') unitOfWork: TransactionalUnitOfWork,
   ) {

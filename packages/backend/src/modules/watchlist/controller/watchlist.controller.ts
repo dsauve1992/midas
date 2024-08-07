@@ -45,7 +45,7 @@ export class WatchlistController {
     @User() user: any,
     @Body('name') name: string,
   ): Promise<void> {
-    const watchlist = await this.createWatchlistUseCase.execute({
+    await this.createWatchlistUseCase.execute({
       userId: user.sub,
       name,
     });

@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WatchlistRepository } from '../../../domain/repository/watchlist.repository';
+import {
+  WatchlistReadOnlyRepository,
+  WatchlistWriteRepository,
+} from '../../../domain/repository/watchlist.repository';
 import { Watchlist } from '../../../domain/model/Watchlist';
 import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 import { groupBy, values } from 'lodash';
@@ -12,10 +15,10 @@ type WatchlistRow = {
 };
 
 @Injectable()
-export class WatchlistPostgresDbRepository extends WatchlistRepository {
-  constructor(@Inject('UNIT_OF_WORK') private unitOfWork: UnitOfWork) {
-    super();
-  }
+export class WatchlistPostgresDbRepository
+  implements WatchlistWriteRepository, WatchlistReadOnlyRepository
+{
+  constructor(@Inject('UNIT_OF_WORK') private unitOfWork: UnitOfWork) {}
   async getAllByUserId(userId: string): Promise<Watchlist[]> {
     const { rows } = await this.unitOfWork.getClient().query<WatchlistRow>(
       `
@@ -40,7 +43,6 @@ export class WatchlistPostgresDbRepository extends WatchlistRepository {
       );
     });
   }
-
   async getById(userId: string, id: string) {
     const { rows } = await this.unitOfWork.getClient().query<WatchlistRow>(
       `

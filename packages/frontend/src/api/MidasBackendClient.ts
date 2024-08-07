@@ -32,4 +32,16 @@ export class MidasBackendClient {
       },
     });
   }
+
+  protected async delete<ResponseBody>(
+    url: string,
+  ): Promise<AxiosResponse<ResponseBody>> {
+    const access_token = await this.authorizationTokenProvider();
+
+    return axios.delete(url, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+  }
 }

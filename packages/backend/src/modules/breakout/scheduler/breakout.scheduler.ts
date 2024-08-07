@@ -5,7 +5,6 @@ import { BreakoutService } from '../domain/breakout.service';
 import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
 import { Pool } from 'pg';
-import { WatchlistPostgresDbRepository } from '../../watchlist/infra/repository/postgres/watchlist-postgres-db.repository';
 
 @Injectable()
 export class BreakoutScheduler {
@@ -27,7 +26,6 @@ FIXME : in the context of a cron job, we cannot use nestjs dependency injection 
  */
     const checkForBreakoutUseCase = new CheckForBreakoutUseCase(
       this.breakoutService,
-      new WatchlistPostgresDbRepository(unitOfWork),
       this.fmpService,
       unitOfWork,
     );
