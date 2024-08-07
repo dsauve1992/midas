@@ -18,7 +18,7 @@
       "operation": "in_range",
       "right": ["AMEX", "NASDAQ", "NYSE"]
     },
-    { "left": "average_volume_30d_calc", "operation": "greater", "right": 500000 },
+    { "left": "average_volume_30d_calc", "operation": "greater", "right": 200000 },
     { "left": "Perf.3M", "operation": "greater", "right": 20 }
   ],
   "ignore_unknown_fields": false,
