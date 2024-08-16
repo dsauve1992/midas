@@ -6,6 +6,7 @@ import { makeStyles } from "@mui/styles";
 import theme from "../../lib/ui/global/theme/mui.theme.ts";
 import { useMemo, useState } from "react";
 import { indexOf } from "lodash";
+import { PageLayout } from "../../lib/ui/global/PageLayout.tsx";
 
 const useStyles = makeStyles({
   watchlistLateralMenu: {
@@ -37,43 +38,45 @@ export const WatchListsPage = () => {
         <title>Watchlists - Midas</title>
       </Helmet>
 
-      <Box width={"100%"} display={"flex"} flexDirection="row">
-        <Box className={classes.watchlistLateralMenu}>
-          <h4>Watchlists</h4>
-          <List>
-            {watchlists?.map((watchlist) => (
-              <ListItemButton
-                key={watchlist.id}
-                selected={selectedWatchlist?.id === watchlist.id}
-                onClick={() =>
-                  setSelectedWatchlistIndex(indexOf(watchlists, watchlist))
-                }
-              >
-                {watchlist.name}
-              </ListItemButton>
-            ))}
-          </List>
-        </Box>
+      <PageLayout>
+        <Box width={"100%"} display={"flex"} flexDirection="row">
+          <Box className={classes.watchlistLateralMenu}>
+            <h4>Watchlists</h4>
+            <List>
+              {watchlists?.map((watchlist) => (
+                <ListItemButton
+                  key={watchlist.id}
+                  selected={selectedWatchlist?.id === watchlist.id}
+                  onClick={() =>
+                    setSelectedWatchlistIndex(indexOf(watchlists, watchlist))
+                  }
+                >
+                  {watchlist.name}
+                </ListItemButton>
+              ))}
+            </List>
+          </Box>
 
-        <Box
-          className={classes.watchlist}
-          display={"flex"}
-          flexDirection="column"
-        >
-          {selectedWatchlist ? (
-            <>
-              <h4>{selectedWatchlist.name}</h4>
-              <List sx={{ width: "100%" }}>
-                {selectedWatchlist.symbols?.map((el) => (
-                  <WatchListTicker symbol={el} key={el} />
-                ))}
-              </List>
-            </>
-          ) : (
-            <p>Please select a watchlist</p>
-          )}
+          <Box
+            className={classes.watchlist}
+            display={"flex"}
+            flexDirection="column"
+          >
+            {selectedWatchlist ? (
+              <>
+                <h4>{selectedWatchlist.name}</h4>
+                <List sx={{ width: "100%" }}>
+                  {selectedWatchlist.symbols?.map((el) => (
+                    <WatchListTicker symbol={el} key={el} />
+                  ))}
+                </List>
+              </>
+            ) : (
+              <p>Please select a watchlist</p>
+            )}
+          </Box>
         </Box>
-      </Box>
+      </PageLayout>
     </>
   );
 };

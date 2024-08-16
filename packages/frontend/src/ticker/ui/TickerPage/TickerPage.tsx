@@ -12,7 +12,8 @@ import { TickerProfile } from "./header/TickerProfile.tsx";
 import { InvestorBusinessDailyVitalCard } from "./header/InvestorBusinessDailyVitalCard.tsx";
 import VitalSection from "./header/vital/VitalSection.tsx";
 import { useCompanyGeneralInformation } from "../hooks/useCompanyGeneralInformation.ts";
-import TradingViewTapeCard from "../../../lib/ui/chart/TradingViewTapeCard.tsx";
+import TradingViewTapeCard from "../../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
+import { PageLayout } from "../../../lib/ui/global/PageLayout.tsx";
 
 const sx = { borderBottom: 1, borderColor: "divider" };
 const TickerPage: React.FunctionComponent = () => {
@@ -33,7 +34,7 @@ const TickerPage: React.FunctionComponent = () => {
         <title>{symbol} - Midas</title>
       </Helmet>
 
-      <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default" }}>
+      <PageLayout>
         <Grid container sx={{ marginBottom: "40px" }}>
           <Grid item lg={6} md={12}>
             <Grid container>
@@ -64,7 +65,7 @@ const TickerPage: React.FunctionComponent = () => {
             </TabPanel>
           ))}
         </TabContext>
-      </Box>
+      </PageLayout>
     </>
   );
 };

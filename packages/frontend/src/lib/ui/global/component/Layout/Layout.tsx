@@ -31,7 +31,7 @@ const Layout: React.FunctionComponent = () => {
           <MidasMenu />
         </div>
 
-        <Box display={"flex"} height={mainSectionHeight} padding={"20px"}>
+        <Box display={"flex"} height={mainSectionHeight}>
           <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/ticker/:id/*" element={<TickerPage />} />

@@ -3,13 +3,13 @@ import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.t
 
 type TradingViewTapeCardProps = {
   symbol: string;
-  interval?: "D" | "15" | "60";
-  range?: "1m" | "3m" | "6m" | "12m" | "5d" | "1d";
+  interval?: "D" | "15" | "60" | "W";
+  range?: "1m" | "3m" | "6m" | "12m" | "5d" | "1d" | "3Y";
   withDateRanges?: boolean;
   hideTopToolbar?: boolean;
 };
 
-function TradingViewTapeCard({
+function TradingViewTapeCardWidget({
   symbol,
   interval = "D",
   range = "12m",
@@ -87,4 +87,4 @@ function TradingViewTapeCard({
   return <div id={containerId} style={{ height: "100%" }} />;
 }
 
-export default memo(TradingViewTapeCard);
+export default memo(TradingViewTapeCardWidget);

@@ -4,7 +4,7 @@ type TradingViewSimpleDailyTapeCardProps = {
   symbol: string;
 };
 
-const TradingViewSimpleDailyTapeCard = (
+const TradingViewSimpleDailyTapeCardWidget = (
   props: TradingViewSimpleDailyTapeCardProps,
 ) => {
   const { symbol } = props;
@@ -86,4 +86,4 @@ const TradingViewSimpleDailyTapeCard = (
   );
 };
 
-export default memo(TradingViewSimpleDailyTapeCard);
+export default memo(TradingViewSimpleDailyTapeCardWidget);

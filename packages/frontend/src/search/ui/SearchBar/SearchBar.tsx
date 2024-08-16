@@ -4,7 +4,7 @@ import { alpha, styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { SearchResults } from "./SearchResults";
 import { useSearchBar } from "./useSearchBar";
-import type { SearchResult } from "backend/src/shared-types/financial-modeling-prep";
+import type { SearchTickerResult } from "backend/src/shared-types/financial-modeling-prep";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -57,7 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export interface Props {
-  onSelect: (value: SearchResult) => void;
+  onSelect: (value: SearchTickerResult) => void;
 }
 
 const inputProps = { "aria-label": "search" };

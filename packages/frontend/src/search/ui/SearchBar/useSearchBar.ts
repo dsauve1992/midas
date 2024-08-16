@@ -8,7 +8,7 @@ type useSearchBarProps<T> = {
 
 export const useSearchBar = <T>({ onSelect }: useSearchBarProps<T>) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const debouncedValue = useDebounce<string>(searchQuery, 500);
+  const debouncedValue = useDebounce<string>(searchQuery, 200);
   const { data: results } = useSearch(debouncedValue);
 
   const selectAndReset = useCallback(
@@ -27,7 +27,7 @@ export const useSearchBar = <T>({ onSelect }: useSearchBarProps<T>) => {
         }
       }
     },
-    [searchQuery, selectAndReset],
+    [results, selectAndReset],
   );
 
   return {

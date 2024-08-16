@@ -2,13 +2,14 @@ import React from "react";
 import { Box, Grid } from "@mui/material";
 import { useScreener } from "./hooks/useScreener.ts";
 import { Helmet } from "react-helmet";
-import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
+import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
 import { StandaloneAnnualEpsHistory } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneAnnualEpsHistory.tsx";
 import { StandaloneEpsChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneEpsChart.tsx";
 import { StandaloneRevenueChart } from "../../ticker/ui/TickerPage/sections/IncomeStatement/StandaloneRevenueChart.tsx";
 import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sections/EarningSurprise/StandaloneEarningSurprisesChart.tsx";
 import { useSelection } from "./hooks/useSelection.tsx";
 import { WatchlistGlobalToggleButton } from "../../watchlist/ui/toggle-button/WatchlistGlobalToggleButton.tsx";
+import { PageLayout } from "../../lib/ui/global/PageLayout.tsx";
 
 export interface Props {}
 
@@ -27,7 +28,7 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
           <title>Screener - Midas</title>
         </Helmet>
 
-        <Box display="flex" flexDirection="column" gap={"1px"} width={"100%"}>
+        <PageLayout>
           {selection && (
             <Box
               display="flex"
@@ -62,7 +63,7 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
               </Grid>
             </Box>
           )}
-        </Box>
+        </PageLayout>
       </>
     );
   }

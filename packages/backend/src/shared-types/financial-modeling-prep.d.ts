@@ -262,7 +262,7 @@ export type EarningCallTranscript = {
   content: string;
 };
 
-export type SearchResult = {
+export type SearchTickerResult = {
   symbol: string;
   name: string;
   currency: string;

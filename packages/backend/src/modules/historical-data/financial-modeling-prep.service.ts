@@ -12,7 +12,7 @@ import {
   InsiderTradingEvent,
   OHLCVRecord,
   PriceTargetRecord,
-  SearchResult,
+  SearchTickerResult,
   SharesFloat,
   SocialSentiment,
   StockMarketInformation,
@@ -131,8 +131,11 @@ export class FinancialModelingPrepService {
     );
   }
 
-  async search(query: string): Promise<SearchResult[]> {
-    return this.fetch<SearchResult[]>('/v3/search', { limit: 10, query });
+  async searchTicker(query: string): Promise<SearchTickerResult[]> {
+    return this.fetch<SearchTickerResult[]>('/v3/search-ticker', {
+      limit: 10,
+      query,
+    });
   }
 
   async fetch<T>(

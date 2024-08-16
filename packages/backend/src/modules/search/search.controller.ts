@@ -9,6 +9,6 @@ export class SearchController {
 
   @Get('/')
   async search(@Query('query') query: string) {
-    return this.financialModelingPrepService.search(query);
+    return this.financialModelingPrepService.searchTicker(query);
   }
 }

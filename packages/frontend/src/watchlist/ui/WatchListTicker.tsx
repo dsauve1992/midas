@@ -3,7 +3,7 @@ import { useInViewport } from "react-in-viewport";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TicketDetailButton } from "../../screener/ui/TicketDetailButton.tsx";
-import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
+import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
 import { WatchlistGlobalToggleButton } from "./toggle-button/WatchlistGlobalToggleButton.tsx";
 
 export interface WatchListTickerProps {
@@ -49,8 +49,8 @@ export const WatchListTicker = ({ symbol }: WatchListTickerProps) => {
             {enterCount > 0 && (
               <TradingViewTapeCard
                 symbol={symbol}
-                interval={"60"}
-                range={"5d"}
+                interval={"W"}
+                range={"12m"}
               />
             )}
           </Grid>

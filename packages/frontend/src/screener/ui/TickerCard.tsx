@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { WatchlistGlobalToggleButton } from "../../watchlist/ui/toggle-button/WatchlistGlobalToggleButton.tsx";
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";
-import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCard.tsx";
+import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
 import { TicketDetailButton } from "./TicketDetailButton.tsx";
 import { NewScreenerEntryFrontendDto } from "backend/src/shared-types/new-screener-entry-frontend.dto";
 

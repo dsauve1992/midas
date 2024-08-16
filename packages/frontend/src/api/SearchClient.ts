@@ -1,10 +1,10 @@
 import axios from "axios";
 import { MidasBackendClient } from "./MidasBackendClient.ts";
-import { SearchResult } from "backend/src/shared-types/financial-modeling-prep";
+import { SearchTickerResult } from "backend/src/shared-types/financial-modeling-prep";
 
 export class SearchClient extends MidasBackendClient {
-  async search(query: string): Promise<SearchResult[]> {
-    const { data } = await axios.get<SearchResult[]>(
+  async search(query: string): Promise<SearchTickerResult[]> {
+    const { data } = await axios.get<SearchTickerResult[]>(
       `${this.getSearchUrl()}?query=${query}`,
     );
 

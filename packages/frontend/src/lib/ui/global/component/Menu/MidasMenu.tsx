@@ -2,6 +2,7 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import HomeIcon from "@mui/icons-material/Home";
 import {
   Avatar,
   Button,
@@ -13,7 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../../../search/ui/SearchBar/SearchBar.tsx";
-import type { SearchResult } from "backend/src/shared-types/financial-modeling-prep";
+import type { SearchTickerResult } from "backend/src/shared-types/financial-modeling-prep";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const MidasMenu = ({ ref }: { ref?: React.Ref<HTMLElement> }) => {
@@ -32,7 +33,7 @@ const MidasMenu = ({ ref }: { ref?: React.Ref<HTMLElement> }) => {
     setAnchorElUser(null);
   };
 
-  function onClickResult(stock: SearchResult) {
+  function onClickResult(stock: SearchTickerResult) {
     navigate(`/ticker/${stock.symbol}`, { state: { stock } });
   }
 
@@ -40,27 +41,25 @@ const MidasMenu = ({ ref }: { ref?: React.Ref<HTMLElement> }) => {
     await logout();
   }
 
-  function goToToolsPage() {
-    navigate("/tools");
-  }
-
-  function gotToScreenPage() {
-    navigate("/screener");
-  }
-
   return (
     <Box display="flex" flexBasis="auto" ref={ref}>
       <AppBar position="relative">
         <Toolbar>
+          <IconButton onClick={() => navigate("/")}>
+            <HomeIcon />
+          </IconButton>
           <Box sx={{ flexGrow: 1 }}>
             <SearchBar onSelect={onClickResult} />
           </Box>
-          <Box sx={{ flexGrow: 1 }}>
-            <Button variant="text" onClick={goToToolsPage}>
+          <Box sx={{ flexGrow: 3 }}>
+            <Button variant="text" onClick={() => navigate("/tools")}>
               Tools
             </Button>
-            <Button variant="text" onClick={gotToScreenPage}>
+            <Button variant="text" onClick={() => navigate("/screener")}>
               Screener
+            </Button>
+            <Button variant="text" onClick={() => navigate("/watchlist")}>
+              Watchlist
             </Button>
           </Box>
 
