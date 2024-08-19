@@ -339,6 +339,20 @@ export type PriceTargetRecord = {
   analystCompany: string;
 };
 
+export type RealTimePrice = {
+  bidSize: number;
+  askPrice: number;
+  volume: number;
+  askSize: number;
+  bidPrice: number;
+  lastSalePrice: number;
+  lastSaleSize: number;
+  lastSaleTime: number;
+  fmpLast: number;
+  lastUpdated: number;
+  symbol: string;
+};
+
 export type TechnicalRecord = OHLCVRecord & {
   sma?: number;
   ema?: number;

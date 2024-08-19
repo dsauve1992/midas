@@ -12,9 +12,10 @@ import { OwnershipModule } from '../ownership/ownership.module';
 import { QuarterlyIncomeStatementMapper } from './controller/mapper/quarterly-income-statement.mapper';
 import { GetAnnuallyIncomeStatementUseCase } from './usecase/get-annually-income-statement.use-case';
 import { AnnuallyIncomeStatementMapper } from './controller/mapper/annually-income-statement.mapper';
-import { GetAnnualAnalystEstimatesUseCase } from './usecase/get-annual-analyst-estimates-use-case.service';
+import { GetAnnualAnalystEstimatesUseCase } from './usecase/get-annual-analyst-estimates-use-case';
 import { GetAnnuallyIncomeStatementV2UseCase } from './usecase/get-annually-income-statement-v2.use-case';
 import { GetPriceTargetUseCase } from './usecase/get-price-target.use-case';
+import { GetRealTimePriceUseCase } from './usecase/get-real-time-price-use-case';
 
 @Module({
   controllers: [StocksController],
@@ -36,6 +37,7 @@ import { GetPriceTargetUseCase } from './usecase/get-price-target.use-case';
     GetAnnualAnalystEstimatesUseCase,
     QuarterlyIncomeStatementMapper,
     AnnuallyIncomeStatementMapper,
+    GetRealTimePriceUseCase,
   ],
 })
 export class StocksModule {}

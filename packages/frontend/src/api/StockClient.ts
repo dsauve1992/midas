@@ -3,6 +3,7 @@ import {
   EarningsSurprise,
   InsiderTradingEvent,
   PriceTargetRecord,
+  RealTimePrice,
 } from "backend/src/shared-types/financial-modeling-prep";
 import { MidasBackendClient } from "./MidasBackendClient.ts";
 import { InstitutionalOwnershipResponse } from "backend/src/shared-types/institutional-ownership";
@@ -72,6 +73,14 @@ export class StockClient extends MidasBackendClient {
     );
 
     return data.reverse();
+  }
+
+  async getRealTimePrice(symbol: string) {
+    const { data } = await this.get<RealTimePrice>(
+      `${this.getStockUrl(symbol)}/real-time-price`,
+    );
+
+    return data;
   }
 
   private getStockUrl(symbol: string) {

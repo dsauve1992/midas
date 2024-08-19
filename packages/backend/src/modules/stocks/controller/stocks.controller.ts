@@ -10,9 +10,10 @@ import { QuarterlyIncomeStatementMapper } from './mapper/quarterly-income-statem
 import { AnnuallyIncomeStatementMapper } from './mapper/annually-income-statement.mapper';
 import { GetAnnuallyIncomeStatementUseCase } from '../usecase/get-annually-income-statement.use-case';
 import { AuthGuard } from '@nestjs/passport';
-import { GetAnnualAnalystEstimatesUseCase } from '../usecase/get-annual-analyst-estimates-use-case.service';
+import { GetAnnualAnalystEstimatesUseCase } from '../usecase/get-annual-analyst-estimates-use-case';
 import { GetAnnuallyIncomeStatementV2UseCase } from '../usecase/get-annually-income-statement-v2.use-case';
 import { GetPriceTargetUseCase } from '../usecase/get-price-target.use-case';
+import { GetRealTimePriceUseCase } from '../usecase/get-real-time-price-use-case';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('stocks/:symbol')
@@ -29,6 +30,7 @@ export class StocksController {
     private getAnalystEstimatesUseCase: GetAnnualAnalystEstimatesUseCase,
     private quarterlyIncomeStatementMapper: QuarterlyIncomeStatementMapper,
     private annuallyIncomeStatementMapper: AnnuallyIncomeStatementMapper,
+    private getRealTimePriceUseCase: GetRealTimePriceUseCase,
   ) {}
 
   @Get()
@@ -95,5 +97,9 @@ export class StocksController {
   @Get('analyst-estimates')
   getEstimates(@Param('symbol') symbol: string) {
     return this.getAnalystEstimatesUseCase.execute(symbol);
+  }
+  @Get('real-time-price')
+  getRealTimePrices(@Param('symbol') symbol: string) {
+    return this.getRealTimePriceUseCase.execute(symbol);
   }
 }

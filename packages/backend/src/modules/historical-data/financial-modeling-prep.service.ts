@@ -12,6 +12,7 @@ import {
   InsiderTradingEvent,
   OHLCVRecord,
   PriceTargetRecord,
+  RealTimePrice,
   SearchTickerResult,
   SharesFloat,
   SocialSentiment,
@@ -119,6 +120,14 @@ export class FinancialModelingPrepService {
     return this.fetch<EarningCalendarEntry[]>(
       `/v3/historical/earning_calendar/${symbol}`,
     );
+  }
+
+  async getRealtimePrice(symbol: string): Promise<RealTimePrice> {
+    return (
+      await this.fetch<RealTimePrice[]>(
+        `/v3/stock/full/real-time-price/${symbol}`,
+      )
+    )[0];
   }
 
   async getAnalystEstimates(
