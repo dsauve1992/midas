@@ -2,31 +2,48 @@
   "columns": [
     "name",
     "description",
-    "logoid",
-    "update_mode",
-    "type",
-    "Perf.3M",
+    "market",
+    "sector",
     "exchange"
   ],
   "filter": [
-    { "left": "EMA10", "operation": "greater", "right": "SMA50" },
-    { "left": "EMA20", "operation": "egreater", "right": "SMA50" },
-    { "left": "SMA50", "operation": "egreater", "right": "SMA150" },
-    { "left": "SMA50", "operation": "egreater", "right": "SMA200" },
+    {
+      "left": "volume|1W",
+      "operation": "greater",
+      "right": 1000000
+    },
     {
       "left": "exchange",
       "operation": "in_range",
-      "right": ["AMEX", "NASDAQ", "NYSE"]
+      "right": [
+        "AMEX",
+        "NASDAQ",
+        "NYSE"
+      ]
     },
-    { "left": "average_volume_30d_calc", "operation": "greater", "right": 200000 },
-    { "left": "Perf.3M", "operation": "greater", "right": 20 }
+    {
+      "left": "close",
+      "operation": "greater",
+      "right": "SMA150"
+    },
+    {"left":"high|1W","operation":"egreater","right":"DonchCh20.Upper|1W"}
   ],
   "ignore_unknown_fields": false,
-  "options": { "lang": "en" },
-  "range": [0, 100],
-  "sort": { "sortBy": "Perf.3M", "sortOrder": "desc" },
+  "options": {
+    "lang": "en"
+  },
+  "range": [
+    0,
+    10000
+  ],
+  "sort": {
+    "sortBy": "beta_1_year",
+    "sortOrder": "asc"
+  },
   "symbols": {},
-  "markets": ["america"],
+  "markets": [
+    "america"
+  ],
   "filter2": {
     "operator": "and",
     "operands": [
@@ -49,7 +66,9 @@
                     "expression": {
                       "left": "typespecs",
                       "operation": "has",
-                      "right": ["common"]
+                      "right": [
+                        "common"
+                      ]
                     }
                   }
                 ]
@@ -70,7 +89,9 @@
                     "expression": {
                       "left": "typespecs",
                       "operation": "has",
-                      "right": ["preferred"]
+                      "right": [
+                        "preferred"
+                      ]
                     }
                   }
                 ]
@@ -105,7 +126,9 @@
                     "expression": {
                       "left": "typespecs",
                       "operation": "has_none_of",
-                      "right": ["etf"]
+                      "right": [
+                        "etf"
+                      ]
                     }
                   }
                 ]

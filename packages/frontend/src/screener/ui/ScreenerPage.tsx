@@ -10,12 +10,13 @@ import { StandaloneEarningSurprisesChart } from "../../ticker/ui/TickerPage/sect
 import { useSelection } from "./hooks/useSelection.tsx";
 import { WatchlistGlobalToggleButton } from "../../watchlist/ui/toggle-button/WatchlistGlobalToggleButton.tsx";
 import { PageLayout } from "../../lib/ui/global/PageLayout.tsx";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export interface Props {}
 
 export const ScreenerPage: React.FunctionComponent<Props> = () => {
   const { data: tickers, isLoading } = useScreener();
-  const selection = useSelection(tickers || []);
+  const { selection, index, total } = useSelection(tickers || []);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -23,10 +24,13 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
 
   if (tickers) {
     return (
-      <>
+      <Box display={"flex"} flexDirection={"column"} width={"100%"}>
         <Helmet>
           <title>Screener - Midas</title>
         </Helmet>
+        <Box width={"100%"}>
+          <LinearProgress variant="determinate" value={(index / total) * 100} />
+        </Box>
 
         <PageLayout>
           {selection && (
@@ -40,8 +44,8 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
               <TradingViewTapeCard
                 symbol={`${selection.exchange}:${selection.symbol}`}
                 withDateRanges={true}
-                interval={"D"}
-                range={"12m"}
+                interval={"W"}
+                range={"60m"}
                 hideTopToolbar
               />
               <Grid container spacing={1}>
@@ -64,7 +68,7 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
             </Box>
           )}
         </PageLayout>
-      </>
+      </Box>
     );
   }
 

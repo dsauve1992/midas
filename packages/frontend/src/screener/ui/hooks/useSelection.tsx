@@ -38,5 +38,9 @@ export function useSelection<T>(collection: T[]) {
     [currentIndex, collection],
   );
 
-  return selection;
+  return {
+    selection,
+    index: currentIndex,
+    total: collection.length,
+  };
 }
