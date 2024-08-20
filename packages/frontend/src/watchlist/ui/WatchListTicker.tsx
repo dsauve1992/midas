@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useInViewport } from "react-in-viewport";
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TicketDetailButton } from "../../screener/ui/TicketDetailButton.tsx";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
@@ -35,26 +35,11 @@ export const WatchListTicker = ({ symbol }: WatchListTickerProps) => {
           <WatchlistGlobalToggleButton symbol={symbol} />
         </Box>
 
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={6} height="600px">
-            {enterCount > 0 && (
-              <TradingViewTapeCard
-                symbol={symbol}
-                interval={"D"}
-                range={"3m"}
-              />
-            )}
-          </Grid>
-          <Grid item xs={6} height="600px">
-            {enterCount > 0 && (
-              <TradingViewTapeCard
-                symbol={symbol}
-                interval={"W"}
-                range={"12m"}
-              />
-            )}
-          </Grid>
-        </Grid>
+        <Box height="600px">
+          {enterCount > 0 && (
+            <TradingViewTapeCard symbol={symbol} interval={"D"} range={"60m"} />
+          )}
+        </Box>
       </CardContent>
     </Card>
   );

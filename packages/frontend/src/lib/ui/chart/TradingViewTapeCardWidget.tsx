@@ -4,7 +4,7 @@ import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.t
 type TradingViewTapeCardProps = {
   symbol: string;
   interval?: "D" | "15" | "60" | "W";
-  range?: "1m" | "3m" | "6m" | "12m" | "5d" | "1d" | "3Y";
+  range?: "1m" | "3m" | "6m" | "12m" | "5d" | "1d" | "3Y" | "60m";
   withDateRanges?: boolean;
   hideTopToolbar?: boolean;
 };

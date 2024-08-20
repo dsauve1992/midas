@@ -1,4 +1,4 @@
-import { Box, List, ListItemButton } from "@mui/material";
+import { Box, Chip, List, ListItemButton } from "@mui/material";
 import { useGetWatchlists } from "./hooks/useGetWatchlists.ts";
 import { Helmet } from "react-helmet";
 import { WatchListTicker } from "./WatchListTicker.tsx";
@@ -52,6 +52,11 @@ export const WatchListsPage = () => {
                   }
                 >
                   {watchlist.name}
+
+                  <Chip
+                    style={{ marginLeft: "5px" }}
+                    label={watchlist.symbols.length}
+                  />
                 </ListItemButton>
               ))}
             </List>

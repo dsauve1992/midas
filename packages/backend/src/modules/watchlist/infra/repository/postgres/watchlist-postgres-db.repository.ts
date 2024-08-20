@@ -54,7 +54,7 @@ export class WatchlistPostgresDbRepository
         watchlists.id as id,
         watchlists.name as name,
         watchlists.user_id as userid,
-        watchlists.order as "order"
+        watchlists.order as "order",
         watchlist_items.symbol as symbol
         FROM watchlists 
         LEFT JOIN watchlist_items on watchlists.id = watchlist_items.watchlist_id 
@@ -82,7 +82,7 @@ export class WatchlistPostgresDbRepository
     await this.unitOfWork
       .getClient()
       .query(
-        'INSERT INTO watchlists (id, name, user_id, order) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING',
+        'INSERT INTO watchlists (id, name, user_id, "order") VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING',
         [watchlist.id, watchlist.name, watchlist.userId, watchlist.order],
       );
 
