@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { WatchlistReadOnlyRepository } from '../domain/repository/watchlist.repository';
 import { BaseUseCase } from '../../../lib/base-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
-import { Watchlist } from '../domain/model/Watchlist';
+import { Watchlist } from '../domain/model/watchlist';
 
 interface GetWatchlistUseCaseRequest {
   userId: string;

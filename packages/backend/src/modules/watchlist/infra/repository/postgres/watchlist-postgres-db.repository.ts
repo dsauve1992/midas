@@ -3,7 +3,7 @@ import {
   WatchlistReadOnlyRepository,
   WatchlistWriteRepository,
 } from '../../../domain/repository/watchlist.repository';
-import { Watchlist } from '../../../domain/model/Watchlist';
+import { Watchlist } from '../../../domain/model/watchlist';
 import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 import { groupBy, values } from 'lodash';
 
@@ -11,6 +11,7 @@ type WatchlistRow = {
   id: string;
   name: string;
   userid: string;
+  order: number;
   symbol: string;
 };
 
@@ -26,6 +27,7 @@ export class WatchlistPostgresDbRepository
         watchlists.id as id,
         watchlists.name as name,
         watchlists.user_id as userid,
+        watchlists.order as "order",
         watchlist_items.symbol as symbol
         FROM watchlists 
         LEFT JOIN watchlist_items on watchlists.id = watchlist_items.watchlist_id 
@@ -39,10 +41,12 @@ export class WatchlistPostgresDbRepository
         rows[0].id,
         rows[0].name,
         rows[0].userid,
+        rows[0].order,
         new Set(rows.map((row) => row.symbol).filter(Boolean)),
       );
     });
   }
+
   async getById(userId: string, id: string) {
     const { rows } = await this.unitOfWork.getClient().query<WatchlistRow>(
       `
@@ -50,6 +54,7 @@ export class WatchlistPostgresDbRepository
         watchlists.id as id,
         watchlists.name as name,
         watchlists.user_id as userid,
+        watchlists.order as "order"
         watchlist_items.symbol as symbol
         FROM watchlists 
         LEFT JOIN watchlist_items on watchlists.id = watchlist_items.watchlist_id 
@@ -68,6 +73,7 @@ export class WatchlistPostgresDbRepository
       rows[0].id,
       rows[0].name,
       rows[0].userid,
+      rows[0].order,
       new Set(rows.map((row) => row.symbol).filter(Boolean)),
     );
   }
@@ -76,8 +82,8 @@ export class WatchlistPostgresDbRepository
     await this.unitOfWork
       .getClient()
       .query(
-        'INSERT INTO watchlists (id, name, user_id) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING',
-        [watchlist.id, watchlist.name, watchlist.userId],
+        'INSERT INTO watchlists (id, name, user_id, order) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING',
+        [watchlist.id, watchlist.name, watchlist.userId, watchlist.order],
       );
 
     await this.unitOfWork

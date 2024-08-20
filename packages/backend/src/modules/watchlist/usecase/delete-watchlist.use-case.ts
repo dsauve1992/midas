@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WatchlistWriteRepository } from '../domain/repository/watchlist.repository';
 import { BaseUseCase } from '../../../lib/base-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
+import { UserWatchlistsAggregateRepository } from '../domain/repository/user-watchlists-aggregate.repository';
 
 interface DeleteWatchlistUseCaseRequest {
   userId: string;
@@ -11,8 +11,8 @@ interface DeleteWatchlistUseCaseRequest {
 @Injectable()
 export class DeleteWatchlistUseCase extends BaseUseCase<DeleteWatchlistUseCaseRequest> {
   constructor(
-    @Inject('WatchlistWriteRepository')
-    private watchlistRepository: WatchlistWriteRepository,
+    @Inject('UserWatchlistsAggregateRepository')
+    private userWatchlistsAggregateRepository: UserWatchlistsAggregateRepository,
     @Inject('UNIT_OF_WORK') unitOfWork: TransactionalUnitOfWork,
   ) {
     super(unitOfWork);
@@ -22,13 +22,11 @@ export class DeleteWatchlistUseCase extends BaseUseCase<DeleteWatchlistUseCaseRe
     userId,
     watchlistId,
   }: DeleteWatchlistUseCaseRequest) {
-    const watchlist = await this.watchlistRepository.getById(
-      userId,
-      watchlistId,
-    );
+    const userWatchlistsAggregate =
+      await this.userWatchlistsAggregateRepository.getById(userId);
 
-    watchlist.flagAsDeleted();
+    userWatchlistsAggregate.deleteWatchlist(watchlistId);
 
-    await this.watchlistRepository.save(watchlist);
+    await this.userWatchlistsAggregateRepository.save(userWatchlistsAggregate);
   }
 }

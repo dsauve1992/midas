@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Watchlist } from '../../../../domain/model/Watchlist';
+import { Watchlist } from '../../../../domain/model/watchlist';
 import { WatchlistPostgresDbRepository } from '../watchlist-postgres-db.repository';
 import { v4 as uuidv4 } from 'uuid';
 import { IntegrationTestModule } from '../../../../../../lib/test/integration-test.module';
@@ -34,6 +34,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
       uuidv4(),
       'My Watchlist',
       'aUserId',
+      0,
       new Set(['CLFD']),
     );
 
@@ -49,6 +50,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
       id,
       'My Watchlist',
       'aUserId',
+      0,
       new Set([]),
     );
     await repository.save(aWatchlist);
@@ -62,6 +64,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
       aWatchlist.id,
       'My Watchlist',
       'aUserId',
+      0,
       new Set(['AAPL', 'TSLA']),
     );
     expect(actual).toEqual(expected);
@@ -73,6 +76,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
       id,
       'My Watchlist',
       'aUserId',
+      0,
       new Set([]),
     );
     await repository.save(aWatchlist);
@@ -96,12 +100,14 @@ describe('WatchlistPostgresDbRepository specs', () => {
       uuidv4(),
       'My Watchlist',
       'aUserId',
+      0,
       new Set(['AAPL', 'MSFT']),
     );
     const anotherWatchlist = new Watchlist(
       uuidv4(),
       'Another Watchlist',
       'aUserId',
+      1,
       new Set(['TSLA', 'CRWD']),
     );
 

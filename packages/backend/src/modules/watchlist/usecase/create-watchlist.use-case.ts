@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WatchlistWriteRepository } from '../domain/repository/watchlist.repository';
 import { BaseUseCase } from '../../../lib/base-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
-import { Watchlist } from '../domain/model/Watchlist';
+import { UserWatchlistsAggregateRepository } from '../domain/repository/user-watchlists-aggregate.repository';
 
 interface CreateWatchlistUseCaseRequest {
   userId: string;
@@ -12,8 +11,8 @@ interface CreateWatchlistUseCaseRequest {
 @Injectable()
 export class CreateWatchlistUseCase extends BaseUseCase<CreateWatchlistUseCaseRequest> {
   constructor(
-    @Inject('WatchlistWriteRepository')
-    private watchlistRepository: WatchlistWriteRepository,
+    @Inject('UserWatchlistsAggregateRepository')
+    private userWatchlistsAggregateRepository: UserWatchlistsAggregateRepository,
     @Inject('UNIT_OF_WORK') unitOfWork: TransactionalUnitOfWork,
   ) {
     super(unitOfWork);
@@ -23,8 +22,11 @@ export class CreateWatchlistUseCase extends BaseUseCase<CreateWatchlistUseCaseRe
     userId,
     name,
   }: CreateWatchlistUseCaseRequest) {
-    const watchlist = Watchlist.init(userId, name);
+    const userWatchlistsAggregate =
+      await this.userWatchlistsAggregateRepository.getById(userId);
 
-    await this.watchlistRepository.save(watchlist);
+    userWatchlistsAggregate.createWatchlist(name);
+
+    await this.userWatchlistsAggregateRepository.save(userWatchlistsAggregate);
   }
 }

@@ -7,11 +7,12 @@ export class Watchlist implements Iterable<string> {
     readonly id: string,
     readonly name: string,
     readonly userId: string,
+    public order: number,
     private items: Set<string>,
   ) {}
 
-  static init(userId: string, name: string): Watchlist {
-    return new Watchlist(uuidv4(), name, userId, new Set<string>());
+  static init(userId: string, name: string, order: number): Watchlist {
+    return new Watchlist(uuidv4(), name, userId, order, new Set<string>());
   }
 
   public [Symbol.iterator](): Iterator<string> {
@@ -32,6 +33,7 @@ export class Watchlist implements Iterable<string> {
 
   flagAsDeleted() {
     this.items.clear();
+    this.order = -1;
     this.deleted = true;
   }
 }

@@ -1,4 +1,4 @@
-import { Watchlist } from '../model/Watchlist';
+import { Watchlist } from '../model/watchlist';
 
 export interface WatchlistReadOnlyRepository {
   getAllByUserId(userId: string): Promise<Watchlist[]>;

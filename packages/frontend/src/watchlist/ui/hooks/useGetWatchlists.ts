@@ -6,5 +6,7 @@ import { WatchlistDto } from "backend/src/shared-types/watchlist.dto";
 export const useGetWatchlists = () => {
   const instance = useApiClientInstance(WatchlistClient);
 
-  return useQuery<WatchlistDto[]>(["watchlist"], () => instance.getAll());
+  return useQuery<WatchlistDto[]>(["watchlist"], () => instance.getAll(), {
+    select: (data) => data.sort((a, b) => a.order - b.order),
+  });
 };

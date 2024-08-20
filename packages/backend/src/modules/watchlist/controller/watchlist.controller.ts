@@ -37,6 +37,7 @@ export class WatchlistController {
       id: watchlist.id,
       name: watchlist.name,
       symbols: Array.from(watchlist),
+      order: watchlist.order,
     }));
   }
 
