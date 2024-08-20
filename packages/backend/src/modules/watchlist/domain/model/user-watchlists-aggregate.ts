@@ -33,7 +33,7 @@ export class UserWatchlistsAggregate {
 
   get watchlists(): Set<Watchlist> {
     return Object.freeze(
-      new Set(orderBy(Array.from(this._watchlists), ['order'])),
+      new Set<Watchlist>(orderBy(Array.from(this._watchlists), ['order'])),
     );
   }
 
