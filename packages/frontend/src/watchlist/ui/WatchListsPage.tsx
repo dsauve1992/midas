@@ -1,4 +1,12 @@
-import { Box, Chip, List, ListItemButton } from "@mui/material";
+import {
+  Box,
+  Chip,
+  List,
+  ListItemButton,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import { useGetWatchlists } from "./hooks/useGetWatchlists.ts";
 import { Helmet } from "react-helmet";
 import { WatchListTicker } from "./WatchListTicker.tsx";
@@ -24,6 +32,7 @@ const useStyles = makeStyles({
 export const WatchListsPage = () => {
   const classes = useStyles();
   const { data: watchlists } = useGetWatchlists();
+  const [interval, setInterval] = useState<"D" | "W">("D");
 
   const [selectedWatchlistIndex, setSelectedWatchlistIndex] =
     useState<number>(0);
@@ -69,12 +78,31 @@ export const WatchListsPage = () => {
           >
             {selectedWatchlist ? (
               <>
-                <h4>{selectedWatchlist.name}</h4>
-                <List sx={{ width: "100%" }}>
-                  {selectedWatchlist.symbols?.map((el) => (
-                    <WatchListTicker symbol={el} key={el} />
-                  ))}
-                </List>
+                <Typography variant="h5">{selectedWatchlist.name}</Typography>
+                <ToggleButtonGroup
+                  value={interval}
+                  exclusive
+                  size={"small"}
+                  onChange={(_, value) => setInterval(value)}
+                >
+                  <ToggleButton value="D" aria-label="left aligned">
+                    Daily
+                  </ToggleButton>
+                  <ToggleButton value="W" aria-label="centered">
+                    Weekly
+                  </ToggleButton>
+                </ToggleButtonGroup>
+                <Box overflow="scroll">
+                  <List sx={{ width: "100%" }}>
+                    {selectedWatchlist.symbols?.map((el) => (
+                      <WatchListTicker
+                        symbol={el}
+                        key={el}
+                        interval={interval}
+                      />
+                    ))}
+                  </List>
+                </Box>
               </>
             ) : (
               <p>Please select a watchlist</p>

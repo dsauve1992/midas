@@ -5,6 +5,7 @@ type TradingViewTapeCardProps = {
   symbol: string;
   interval?: "D" | "15" | "60" | "W";
   range?: "1m" | "3m" | "6m" | "12m" | "5d" | "1d" | "3Y" | "60m";
+  movingAverages?: { type: "EMA" | "SMA"; length: number }[];
   withDateRanges?: boolean;
   hideTopToolbar?: boolean;
 };
@@ -15,6 +16,7 @@ function TradingViewTapeCardWidget({
   range = "12m",
   withDateRanges = true,
   hideTopToolbar = false,
+  movingAverages = [],
 }: TradingViewTapeCardProps) {
   const tradingViewReady = useTradingViewContext();
   const containerId = useMemo(
@@ -22,6 +24,19 @@ function TradingViewTapeCardWidget({
     [interval, symbol],
   );
   const onLoadScriptRef = useRef<() => void>(null);
+
+  const studies = useMemo(
+    () =>
+      movingAverages.map(({ type, length }) => ({
+        id:
+          type === "SMA" ? "MASimple@tv-basicstudies" : "MAExp@tv-basicstudies",
+        version: 60,
+        inputs: {
+          length,
+        },
+      })),
+    [movingAverages],
+  );
 
   const createWidget = useCallback(() => {
     if ("TradingView" in window) {
@@ -42,23 +57,7 @@ function TradingViewTapeCardWidget({
         withdateranges: withDateRanges,
         hide_top_toolbar: hideTopToolbar,
         fullscreen: true,
-        studies: [
-          {
-            id: "MAExp@tv-basicstudies",
-            version: 60,
-            inputs: {
-              length: 10,
-            },
-          },
-          {
-            id: "MAExp@tv-basicstudies",
-            version: 60,
-            inputs: {
-              length: 20,
-            },
-          },
-          "Earnings",
-        ],
+        studies,
         hide_side_toolbar: true,
         allow_symbol_change: false,
         details: false,
@@ -69,7 +68,15 @@ function TradingViewTapeCardWidget({
     }
 
     return null;
-  }, [containerId, hideTopToolbar, interval, range, symbol, withDateRanges]);
+  }, [
+    containerId,
+    hideTopToolbar,
+    interval,
+    range,
+    studies,
+    symbol,
+    withDateRanges,
+  ]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

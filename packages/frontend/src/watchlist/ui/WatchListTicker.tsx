@@ -8,9 +8,10 @@ import { WatchlistGlobalToggleButton } from "./toggle-button/WatchlistGlobalTogg
 
 export interface WatchListTickerProps {
   symbol: string;
+  interval: "D" | "W";
 }
 
-export const WatchListTicker = ({ symbol }: WatchListTickerProps) => {
+export const WatchListTicker = ({ symbol, interval }: WatchListTickerProps) => {
   const ref = useRef(null);
   const { enterCount } = useInViewport(ref);
 
@@ -37,7 +38,16 @@ export const WatchListTicker = ({ symbol }: WatchListTickerProps) => {
 
         <Box height="600px">
           {enterCount > 0 && (
-            <TradingViewTapeCard symbol={symbol} interval={"D"} range={"60m"} />
+            <TradingViewTapeCard
+              symbol={symbol}
+              interval={interval}
+              range={"60m"}
+              movingAverages={[
+                { type: "EMA", length: 10 },
+                { type: "EMA", length: 20 },
+                { type: "SMA", length: interval === "D" ? 150 : 30 },
+              ]}
+            />
           )}
         </Box>
       </CardContent>
