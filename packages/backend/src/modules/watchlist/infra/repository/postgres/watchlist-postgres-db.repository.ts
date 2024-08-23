@@ -6,6 +6,7 @@ import {
 import { Watchlist } from '../../../domain/model/watchlist';
 import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 import { groupBy, values } from 'lodash';
+import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
 
 type WatchlistRow = {
   id: string;
@@ -42,7 +43,12 @@ export class WatchlistPostgresDbRepository
         rows[0].name,
         rows[0].userid,
         rows[0].order,
-        new Set(rows.map((row) => row.symbol).filter(Boolean)),
+        new Set(
+          rows
+            .map((row) => row.symbol)
+            .filter(Boolean)
+            .map((symbol) => SymbolWithExchange.from(symbol)),
+        ),
       );
     });
   }
@@ -74,7 +80,12 @@ export class WatchlistPostgresDbRepository
       rows[0].name,
       rows[0].userid,
       rows[0].order,
-      new Set(rows.map((row) => row.symbol).filter(Boolean)),
+      new Set(
+        rows
+          .map((row) => row.symbol)
+          .filter(Boolean)
+          .map((symbol) => SymbolWithExchange.from(symbol)),
+      ),
     );
   }
 

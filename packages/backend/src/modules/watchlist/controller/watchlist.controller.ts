@@ -15,6 +15,7 @@ import { GetWatchlistsUseCase } from '../usecase/get-watchlists-use-case';
 import { WatchlistDto } from '../../../shared-types/watchlist.dto';
 import { CreateWatchlistUseCase } from '../usecase/create-watchlist.use-case';
 import { DeleteWatchlistUseCase } from '../usecase/delete-watchlist.use-case';
+import { SymbolWithExchange } from 'src/modules/stocks/domain/symbol-with-exchange';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('watchlist')
@@ -72,7 +73,7 @@ export class WatchlistController {
     await this.addSymbolToWatchlistUseCase.execute({
       userId: user.sub,
       watchlistId,
-      symbol,
+      symbolWithExchange: SymbolWithExchange.from(symbol),
     });
   }
 
@@ -85,7 +86,7 @@ export class WatchlistController {
     await this.removeSymbolFromWatchlistUseCase.execute({
       userId: user.sub,
       watchlistId,
-      symbol,
+      symbolWithExchange: SymbolWithExchange.from(symbol),
     });
   }
 }

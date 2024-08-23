@@ -40,9 +40,15 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
               width={"100%"}
               height={"100%"}
             >
-              <WatchlistGlobalToggleButton symbol={selection.symbol} />
+              <WatchlistGlobalToggleButton
+                symbolExchange={{
+                  symbol: selection.symbol,
+                  exchange: selection.exchange,
+                }}
+              />
               <TradingViewTapeCard
-                symbol={`${selection.exchange}:${selection.symbol}`}
+                exchange={selection.exchange}
+                symbol={selection.symbol}
                 withDateRanges={true}
                 interval={"W"}
                 movingAverages={[{ type: "SMA", length: 30 }]}

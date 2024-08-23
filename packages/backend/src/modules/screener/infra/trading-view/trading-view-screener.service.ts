@@ -2,13 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import * as screenerParameters_v2 from './screenerParameter.json';
-
-export class SymbolWithExchange {
-  constructor(
-    readonly exchange: string,
-    readonly symbol: string,
-  ) {}
-}
+import { SymbolWithExchange } from '../../../stocks/domain/symbol-with-exchange';
 
 @Injectable()
 export class TradingViewScreenerService {

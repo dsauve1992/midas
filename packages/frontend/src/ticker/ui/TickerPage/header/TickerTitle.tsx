@@ -21,7 +21,12 @@ const TickerTitle: React.FunctionComponent<Props> = ({ profile }: Props) => {
       <div>
         <Typography variant="h4">
           {profile.companyName} ({profile.symbol}){" "}
-          <WatchlistGlobalToggleButton symbol={profile.symbol} />
+          <WatchlistGlobalToggleButton
+            symbolExchange={{
+              symbol: profile.symbol,
+              exchange: profile.exchangeShortName,
+            }}
+          />
         </Typography>
         <DescriptionModal description={profile.description} />
         <IconButton

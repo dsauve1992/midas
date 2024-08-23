@@ -2,11 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BaseUseCase } from '../../../lib/base-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
 import { WatchlistWriteRepository } from '../domain/repository/watchlist.repository';
+import { SymbolWithExchange } from '../../stocks/domain/symbol-with-exchange';
 
 interface AddSymbolToWatchlistUseCaseRequest {
   userId: string;
   watchlistId: string;
-  symbol: string;
+  symbolWithExchange: SymbolWithExchange;
 }
 
 @Injectable()
@@ -22,14 +23,14 @@ export class AddSymbolToWatchlistUseCase extends BaseUseCase<AddSymbolToWatchlis
   protected async executeUseCase({
     userId,
     watchlistId,
-    symbol,
+    symbolWithExchange,
   }: AddSymbolToWatchlistUseCaseRequest) {
     const watchlist = await this.watchlistRepository.getById(
       userId,
       watchlistId,
     );
 
-    watchlist.addSymbol(symbol);
+    watchlist.addSymbol(symbolWithExchange);
 
     await this.watchlistRepository.save(watchlist);
   }

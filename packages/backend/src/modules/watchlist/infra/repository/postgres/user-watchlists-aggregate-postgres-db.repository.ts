@@ -4,6 +4,7 @@ import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 import { UserWatchlistsAggregateRepository } from '../../../domain/repository/user-watchlists-aggregate.repository';
 import { UserWatchlistsAggregate } from '../../../domain/model/user-watchlists-aggregate';
 import { chain } from 'lodash';
+import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
 
 type WatchlistRow = {
   id: string;
@@ -44,7 +45,12 @@ export class UserWatchlistsAggregatePostgresDbRepository
           rows[0].name,
           rows[0].userid,
           rows[0].orderw,
-          new Set(rows.map((row) => row.symbol).filter(Boolean)),
+          new Set(
+            rows
+              .map((row) => row.symbol)
+              .filter(Boolean)
+              .map((symbol) => SymbolWithExchange.from(symbol)),
+          ),
         );
       })
       .value();

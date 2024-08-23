@@ -36,13 +36,19 @@ export const TickerCard = ({ ticker }: StockScreenerTapeCardProps) => {
           </Typography>
           <TicketDetailButton symbol={symbol} />
         </Box>
-        <WatchlistGlobalToggleButton symbol={symbol} />
+        <WatchlistGlobalToggleButton
+          symbolExchange={{
+            symbol: symbol,
+            exchange: exchange,
+          }}
+        />
       </Box>
       <Box height={"600px"} ref={ref}>
         {enterCount && (
           <Box height={"100%"}>
             <TradingViewTapeCard
-              symbol={`${exchange}:${symbol}`}
+              exchange={exchange}
+              symbol={symbol}
               withDateRanges={true}
               interval={"D"}
               range={"12m"}

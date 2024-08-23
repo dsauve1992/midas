@@ -8,11 +8,16 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { ToggleButtonTemplate } from "./ToggleButtonTemplate.tsx";
 import { useWatchlists } from "../hooks/useWatchlists.ts";
 
-export type WatchlistToggleButtonProps = {
+export interface SymbolExchange {
   symbol: string;
+  exchange: string;
+}
+
+export type WatchlistToggleButtonProps = {
+  symbolExchange: SymbolExchange;
 };
 export const WatchlistGlobalToggleButton = ({
-  symbol,
+  symbolExchange,
 }: WatchlistToggleButtonProps) => {
   const {
     watchlists,
@@ -22,27 +27,40 @@ export const WatchlistGlobalToggleButton = ({
   } = useWatchlists();
 
   const isInAnyWatchlist = useMemo(
-    () => watchlists?.some((watchlist) => watchlist.symbols.includes(symbol)),
-    [symbol, watchlists],
+    () =>
+      watchlists?.some((watchlist) =>
+        watchlist.symbols.includes(
+          `${symbolExchange.exchange}:${symbolExchange.symbol}`,
+        ),
+      ),
+    [symbolExchange, watchlists],
   );
 
   const isInWatchlist = useCallback(
     (watchlistId: string) =>
       watchlists
         ?.find((watchlist) => watchlist.id === watchlistId)
-        ?.symbols.includes(symbol),
-    [symbol, watchlists],
+        ?.symbols.includes(
+          `${symbolExchange.exchange}:${symbolExchange.symbol}`,
+        ),
+    [symbolExchange, watchlists],
   );
 
   const handleClickWatchlist = useCallback(
     (watchlistId: string) => {
       if (isInWatchlist(watchlistId)) {
-        removeSymbolFromWatchlist({ watchlistId: watchlistId, symbol });
+        removeSymbolFromWatchlist({
+          watchlistId: watchlistId,
+          symbol: `${symbolExchange.exchange}:${symbolExchange.symbol}`,
+        });
       } else {
-        addToWatchlist({ watchlistId: watchlistId, symbol });
+        addToWatchlist({
+          watchlistId: watchlistId,
+          symbol: `${symbolExchange.exchange}:${symbolExchange.symbol}`,
+        });
       }
     },
-    [addToWatchlist, isInWatchlist, removeSymbolFromWatchlist, symbol],
+    [addToWatchlist, isInWatchlist, removeSymbolFromWatchlist, symbolExchange],
   );
 
   return (

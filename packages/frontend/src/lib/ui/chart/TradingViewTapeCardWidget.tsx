@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useRef } from "react";
 import { useTradingViewContext } from "../global/TradingViewWidgetScriptLoader.tsx";
 
 type TradingViewTapeCardProps = {
+  exchange: string;
   symbol: string;
   interval?: "D" | "15" | "60" | "W";
   range?: "1m" | "3m" | "6m" | "12m" | "5d" | "1d" | "3Y" | "60m";
@@ -11,6 +12,7 @@ type TradingViewTapeCardProps = {
 };
 
 function TradingViewTapeCardWidget({
+  exchange,
   symbol,
   interval = "D",
   range = "12m",
@@ -45,7 +47,7 @@ function TradingViewTapeCardWidget({
 
       return new window.TradingView.widget({
         autosize: true,
-        symbol,
+        symbol: `${exchange}:${symbol}`,
         interval,
         range,
         timezone: "Etc/UTC",
@@ -70,6 +72,7 @@ function TradingViewTapeCardWidget({
     return null;
   }, [
     containerId,
+    exchange,
     hideTopToolbar,
     interval,
     range,

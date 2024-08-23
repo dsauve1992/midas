@@ -2,11 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { WatchlistWriteRepository } from '../domain/repository/watchlist.repository';
 import { BaseUseCase } from '../../../lib/base-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
+import { SymbolWithExchange } from '../../stocks/domain/symbol-with-exchange';
 
 interface RemoveSymbolFromWatchlistUseCaseRequest {
   userId: string;
   watchlistId: string;
-  symbol: string;
+  symbolWithExchange: SymbolWithExchange;
 }
 
 @Injectable()
@@ -20,7 +21,7 @@ export class RemoveSymbolFromWatchlistUseCase extends BaseUseCase<RemoveSymbolFr
   }
 
   protected async executeUseCase({
-    symbol,
+    symbolWithExchange,
     watchlistId,
     userId,
   }: RemoveSymbolFromWatchlistUseCaseRequest) {
@@ -29,7 +30,7 @@ export class RemoveSymbolFromWatchlistUseCase extends BaseUseCase<RemoveSymbolFr
       watchlistId,
     );
 
-    watchlist.removeSymbol(symbol);
+    watchlist.removeSymbol(symbolWithExchange);
 
     await this.watchlistRepository.save(watchlist);
   }

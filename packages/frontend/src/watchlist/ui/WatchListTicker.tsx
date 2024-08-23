@@ -4,14 +4,20 @@ import { Card, CardContent, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TicketDetailButton } from "../../screener/ui/TicketDetailButton.tsx";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
-import { WatchlistGlobalToggleButton } from "./toggle-button/WatchlistGlobalToggleButton.tsx";
+import {
+  SymbolExchange,
+  WatchlistGlobalToggleButton,
+} from "./toggle-button/WatchlistGlobalToggleButton.tsx";
 
 export interface WatchListTickerProps {
-  symbol: string;
+  symbolExchange: SymbolExchange;
   interval: "D" | "W";
 }
 
-export const WatchListTicker = ({ symbol, interval }: WatchListTickerProps) => {
+export const WatchListTicker = ({
+  symbolExchange,
+  interval,
+}: WatchListTickerProps) => {
   const ref = useRef(null);
   const { enterCount } = useInViewport(ref);
 
@@ -30,16 +36,17 @@ export const WatchListTicker = ({ symbol, interval }: WatchListTickerProps) => {
             alignItems={"end"}
             gap={1}
           >
-            <Typography variant="h5">{symbol}</Typography>
-            <TicketDetailButton symbol={symbol} />
+            <Typography variant="h5">{symbolExchange.symbol}</Typography>
+            <TicketDetailButton symbol={symbolExchange.symbol} />
           </Box>
-          <WatchlistGlobalToggleButton symbol={symbol} />
+          <WatchlistGlobalToggleButton symbolExchange={symbolExchange} />
         </Box>
 
         <Box height="600px">
           {enterCount > 0 && (
             <TradingViewTapeCard
-              symbol={symbol}
+              symbol={symbolExchange.symbol}
+              exchange={symbolExchange.exchange}
               interval={interval}
               range={"60m"}
               movingAverages={[

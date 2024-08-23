@@ -48,7 +48,10 @@ const TickerPage: React.FunctionComponent = () => {
             <VitalSection profile={profile!} />
           </Grid>
           <Grid item lg={6} md={12}>
-            <TradingViewTapeCard symbol={symbol!} />
+            <TradingViewTapeCard
+              symbol={symbol!}
+              exchange={profile!.exchangeShortName}
+            />
           </Grid>
         </Grid>
         <TabContext value={currentTab}>

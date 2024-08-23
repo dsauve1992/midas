@@ -96,7 +96,10 @@ export const WatchListsPage = () => {
                   <List sx={{ width: "100%" }}>
                     {selectedWatchlist.symbols?.map((el) => (
                       <WatchListTicker
-                        symbol={el}
+                        symbolExchange={{
+                          symbol: el.split(":")[1],
+                          exchange: el.split(":")[0],
+                        }}
                         key={el}
                         interval={interval}
                       />
