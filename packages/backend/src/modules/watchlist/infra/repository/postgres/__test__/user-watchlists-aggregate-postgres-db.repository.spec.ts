@@ -5,8 +5,14 @@ import { IntegrationTestModule } from '../../../../../../lib/test/integration-te
 import { IntegrationTestService } from '../../../../../../lib/test/intergation-test.service';
 import { UserWatchlistsAggregatePostgresDbRepository } from '../user-watchlists-aggregate-postgres-db.repository';
 import { UserWatchlistsAggregate } from '../../../../domain/model/user-watchlists-aggregate';
+import { SymbolWithExchange } from '../../../../../stocks/domain/symbol-with-exchange';
 
 const USER_ID = 'aUserId';
+
+const AAPL = SymbolWithExchange.from('NASDAQ:AAPL');
+const MSFT = SymbolWithExchange.from('NASDAQ:MSFT');
+const CLFD = SymbolWithExchange.from('NASDAQ:CLFD');
+const TSLA = SymbolWithExchange.from('NASDAQ:TSLA');
 
 describe('UserWatchlistsAggregatePostgresDbRepository specs', () => {
   let repository: UserWatchlistsAggregatePostgresDbRepository;
@@ -36,20 +42,8 @@ describe('UserWatchlistsAggregatePostgresDbRepository specs', () => {
     const expectedUserWatchlists = new UserWatchlistsAggregate(
       USER_ID,
       new Set([
-        new Watchlist(
-          uuidv4(),
-          'My Watchlist',
-          USER_ID,
-          0,
-          new Set(['AAPL', 'MSFT']),
-        ),
-        new Watchlist(
-          uuidv4(),
-          'Another Watchlist',
-          USER_ID,
-          1,
-          new Set(['TSLA', 'CRWD']),
-        ),
+        new Watchlist(uuidv4(), 'My Watchlist', USER_ID, 0, [AAPL, MSFT]),
+        new Watchlist(uuidv4(), 'Another Watchlist', USER_ID, 1, [TSLA, CLFD]),
       ]),
     );
 

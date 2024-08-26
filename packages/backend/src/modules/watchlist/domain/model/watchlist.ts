@@ -10,39 +10,43 @@ export class Watchlist implements Iterable<string> {
     readonly name: string,
     readonly userId: string,
     public order: number,
-    private items: Set<SymbolWithExchange>,
+    private items: SymbolWithExchange[],
   ) {}
 
   static init(userId: string, name: string, order: number): Watchlist {
-    return new Watchlist(
-      uuidv4(),
-      name,
-      userId,
-      order,
-      new Set<SymbolWithExchange>(),
-    );
+    return new Watchlist(uuidv4(), name, userId, order, []);
   }
 
   public [Symbol.iterator](): Iterator<string> {
-    return Array.from(this.items)
-      .map((symbol) => symbol.toString())
-      [Symbol.iterator]();
+    return this.items.map((symbol) => symbol.toString())[Symbol.iterator]();
   }
 
   addSymbol(symbol: SymbolWithExchange) {
-    this.items.add(symbol);
+    if (!this.isExistsInWatchlist(symbol)) {
+      this.items.push(symbol);
+    }
+  }
+
+  private isExistsInWatchlist(symbol: SymbolWithExchange) {
+    return !!this.items.find(
+      (_symbol) => _symbol.toString() === symbol.toString(),
+    );
   }
 
   removeSymbol(symbol: SymbolWithExchange) {
-    this.items.delete(symbol);
+    if (this.isExistsInWatchlist(symbol)) {
+      this.items = this.items.filter(
+        (_symbol) => _symbol.toString() === symbol.toString(),
+      );
+    }
   }
 
   isEmpty() {
-    return this.items.size == 0;
+    return this.items.length == 0;
   }
 
   flagAsDeleted() {
-    this.items.clear();
+    this.items = [];
     this.order = -1;
     this.deleted = true;
   }

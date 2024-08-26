@@ -43,12 +43,10 @@ export class WatchlistPostgresDbRepository
         rows[0].name,
         rows[0].userid,
         rows[0].order,
-        new Set(
-          rows
-            .map((row) => row.symbol)
-            .filter(Boolean)
-            .map((symbol) => SymbolWithExchange.from(symbol)),
-        ),
+        rows
+          .map((row) => row.symbol)
+          .filter(Boolean)
+          .map((symbol) => SymbolWithExchange.from(symbol)),
       );
     });
   }
@@ -80,12 +78,10 @@ export class WatchlistPostgresDbRepository
       rows[0].name,
       rows[0].userid,
       rows[0].order,
-      new Set(
-        rows
-          .map((row) => row.symbol)
-          .filter(Boolean)
-          .map((symbol) => SymbolWithExchange.from(symbol)),
-      ),
+      rows
+        .map((row) => row.symbol)
+        .filter(Boolean)
+        .map((symbol) => SymbolWithExchange.from(symbol)),
     );
   }
 

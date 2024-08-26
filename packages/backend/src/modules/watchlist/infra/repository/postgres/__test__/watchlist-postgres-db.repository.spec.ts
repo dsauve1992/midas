@@ -4,6 +4,12 @@ import { WatchlistPostgresDbRepository } from '../watchlist-postgres-db.reposito
 import { v4 as uuidv4 } from 'uuid';
 import { IntegrationTestModule } from '../../../../../../lib/test/integration-test.module';
 import { IntegrationTestService } from '../../../../../../lib/test/intergation-test.service';
+import { SymbolWithExchange } from '../../../../../stocks/domain/symbol-with-exchange';
+
+const AAPL = SymbolWithExchange.from('NASDAQ:AAPL');
+const MSFT = SymbolWithExchange.from('NASDAQ:MSFT');
+const CLFD = SymbolWithExchange.from('NASDAQ:CLFD');
+const TSLA = SymbolWithExchange.from('NASDAQ:TSLA');
 
 describe('WatchlistPostgresDbRepository specs', () => {
   let repository: WatchlistPostgresDbRepository;
@@ -35,7 +41,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
       'My Watchlist',
       'aUserId',
       0,
-      new Set(['CLFD']),
+      [CLFD],
     );
 
     await repository.save(expectedWatchlist);
@@ -46,17 +52,11 @@ describe('WatchlistPostgresDbRepository specs', () => {
 
   test('given an existing watchlist, when change it then save, changes should be persisted into repository', async () => {
     const id = uuidv4();
-    const aWatchlist = new Watchlist(
-      id,
-      'My Watchlist',
-      'aUserId',
-      0,
-      new Set([]),
-    );
+    const aWatchlist = new Watchlist(id, 'My Watchlist', 'aUserId', 0, []);
     await repository.save(aWatchlist);
 
-    aWatchlist.addSymbol('AAPL');
-    aWatchlist.addSymbol('TSLA');
+    aWatchlist.addSymbol(AAPL);
+    aWatchlist.addSymbol(TSLA);
     await repository.save(aWatchlist);
 
     const actual = await repository.getById('aUserId', aWatchlist.id);
@@ -65,20 +65,14 @@ describe('WatchlistPostgresDbRepository specs', () => {
       'My Watchlist',
       'aUserId',
       0,
-      new Set(['AAPL', 'TSLA']),
+      [AAPL, TSLA],
     );
     expect(actual).toEqual(expected);
   });
 
   test('given an existing watchlist, when flag it as deleted then save, it should be able to get it anymore', async () => {
     const id = uuidv4();
-    const aWatchlist = new Watchlist(
-      id,
-      'My Watchlist',
-      'aUserId',
-      0,
-      new Set([]),
-    );
+    const aWatchlist = new Watchlist(id, 'My Watchlist', 'aUserId', 0, []);
     await repository.save(aWatchlist);
 
     expect(await repository.getById('aUserId', aWatchlist.id)).toEqual(
@@ -96,19 +90,16 @@ describe('WatchlistPostgresDbRepository specs', () => {
   });
 
   test('given multiple watchlist for a user, when get all by user id, it should return all watchlists', async () => {
-    const aWatchlist = new Watchlist(
-      uuidv4(),
-      'My Watchlist',
-      'aUserId',
-      0,
-      new Set(['AAPL', 'MSFT']),
-    );
+    const aWatchlist = new Watchlist(uuidv4(), 'My Watchlist', 'aUserId', 0, [
+      AAPL,
+      MSFT,
+    ]);
     const anotherWatchlist = new Watchlist(
       uuidv4(),
       'Another Watchlist',
       'aUserId',
       1,
-      new Set(['TSLA', 'CRWD']),
+      [AAPL, MSFT],
     );
 
     await repository.save(aWatchlist);

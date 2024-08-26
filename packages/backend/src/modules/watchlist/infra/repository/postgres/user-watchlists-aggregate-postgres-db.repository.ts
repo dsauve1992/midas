@@ -45,12 +45,10 @@ export class UserWatchlistsAggregatePostgresDbRepository
           rows[0].name,
           rows[0].userid,
           rows[0].orderw,
-          new Set(
-            rows
-              .map((row) => row.symbol)
-              .filter(Boolean)
-              .map((symbol) => SymbolWithExchange.from(symbol)),
-          ),
+          rows
+            .map((row) => row.symbol)
+            .filter(Boolean)
+            .map((symbol) => SymbolWithExchange.from(symbol)),
         );
       })
       .value();
