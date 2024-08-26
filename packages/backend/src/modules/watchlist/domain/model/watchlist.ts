@@ -36,7 +36,7 @@ export class Watchlist implements Iterable<string> {
   removeSymbol(symbol: SymbolWithExchange) {
     if (this.isExistsInWatchlist(symbol)) {
       this.items = this.items.filter(
-        (_symbol) => _symbol.toString() === symbol.toString(),
+        (_symbol) => _symbol.toString() !== symbol.toString(),
       );
     }
   }
