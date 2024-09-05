@@ -4,22 +4,23 @@ import { toast } from "react-toastify";
 import { useRemoveSymbolFromWatchlist } from "./useRemoveSymbolWatchlist.ts";
 import { useCreateWatchlist } from "./useCreateWatchlist.ts";
 import { useDeleteWatchlist } from "./useDeleteWatchlist.ts";
+import { useRenameWatchlist } from "./useRenameWatchlist.ts";
 
 // FIXME we should improve the error/success messages and allow client to override them
 
 export const useWatchlists = () => {
   const { data: watchlists } = useGetWatchlists();
 
-  const { add: addToWatchlist } = useAddSymbolToWatchlist({
+  const { add: addSymbol } = useAddSymbolToWatchlist({
     onSuccess: () => toast.success(`successfully added to your watchlist`),
     onError: () => toast.error("Ouf!"),
   });
-  const { remove: removeSymbolFromWatchlist } = useRemoveSymbolFromWatchlist({
+  const { remove: removeSymbol } = useRemoveSymbolFromWatchlist({
     onSuccess: () => toast.success(`successfully removed from your watchlist`),
     onError: () => toast.error("Ouf!"),
   });
 
-  const { create: createNewWatchlist } = useCreateWatchlist({
+  const { create } = useCreateWatchlist({
     onSuccess: () => toast.success(`watchlist has been created`),
     onError: () => toast.error("Ouf!"),
   });
@@ -29,11 +30,17 @@ export const useWatchlists = () => {
     onError: () => toast.error("Ouf!"),
   });
 
+  const { rename } = useRenameWatchlist({
+    onSuccess: () => toast.success(`watchlist has been renamed`),
+    onError: () => toast.error("Ouf!"),
+  });
+
   return {
     watchlists,
-    addToWatchlist,
-    removeSymbolFromWatchlist,
-    createNewWatchlist,
-    deleteWatchlist,
+    addSymbol,
+    removeSymbol,
+    create,
+    delete: deleteWatchlist,
+    rename,
   };
 };

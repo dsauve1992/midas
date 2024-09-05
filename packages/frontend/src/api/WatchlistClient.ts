@@ -14,6 +14,15 @@ export class WatchlistClient extends MidasBackendClient {
     );
   }
 
+  async renameWatchlist(watchlistId: string, name: string): Promise<void> {
+    await this.post<{ name: string }, void>(
+      `${this.getBaseUrl()}/${watchlistId}/rename`,
+      {
+        name,
+      },
+    );
+  }
+
   async addSymbol(watchlistId: string, symbol: string): Promise<void> {
     await this.post<{ symbol: string }, void>(
       `${this.getBaseUrl()}/${watchlistId}/add`,

@@ -19,12 +19,7 @@ export type WatchlistToggleButtonProps = {
 export const WatchlistGlobalToggleButton = ({
   symbolExchange,
 }: WatchlistToggleButtonProps) => {
-  const {
-    watchlists,
-    createNewWatchlist,
-    addToWatchlist,
-    removeSymbolFromWatchlist,
-  } = useWatchlists();
+  const { watchlists, create, addSymbol, removeSymbol } = useWatchlists();
 
   const isInAnyWatchlist = useMemo(
     () =>
@@ -49,18 +44,18 @@ export const WatchlistGlobalToggleButton = ({
   const handleClickWatchlist = useCallback(
     (watchlistId: string) => {
       if (isInWatchlist(watchlistId)) {
-        removeSymbolFromWatchlist({
+        removeSymbol({
           watchlistId: watchlistId,
           symbol: `${symbolExchange.exchange}:${symbolExchange.symbol}`,
         });
       } else {
-        addToWatchlist({
+        addSymbol({
           watchlistId: watchlistId,
           symbol: `${symbolExchange.exchange}:${symbolExchange.symbol}`,
         });
       }
     },
-    [addToWatchlist, isInWatchlist, removeSymbolFromWatchlist, symbolExchange],
+    [isInWatchlist, symbolExchange],
   );
 
   return (
@@ -81,9 +76,7 @@ export const WatchlistGlobalToggleButton = ({
               </Typography>
             </MenuItem>
           ))}
-          <CreateWatchlistCompactForm
-            onCreate={(name) => createNewWatchlist(name)}
-          />
+          <CreateWatchlistCompactForm onCreate={(name) => create(name)} />
         </>
       }
     />
