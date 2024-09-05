@@ -3,8 +3,9 @@ import { Watchlist } from '../../../../domain/model/watchlist';
 import { WatchlistPostgresDbRepository } from '../watchlist-postgres-db.repository';
 import { v4 as uuidv4 } from 'uuid';
 import { IntegrationTestModule } from '../../../../../../lib/test/integration-test.module';
-import { IntegrationTestService } from '../../../../../../lib/test/intergation-test.service';
+import { IntegrationTestService } from '../../../../../../lib/test/integration-test.service';
 import { SymbolWithExchange } from '../../../../../stocks/domain/symbol-with-exchange';
+import { NonEmptyString } from '../../../../../../lib/domain/NonEmptyString';
 
 const AAPL = SymbolWithExchange.from('NASDAQ:AAPL');
 const MSFT = SymbolWithExchange.from('NASDAQ:MSFT');
@@ -38,7 +39,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
   test('given a watchlist, when save it, it should persisted into repository', async () => {
     const expectedWatchlist = new Watchlist(
       uuidv4(),
-      'My Watchlist',
+      NonEmptyString.from('My Watchlist'),
       'aUserId',
       0,
       [CLFD],
@@ -52,7 +53,13 @@ describe('WatchlistPostgresDbRepository specs', () => {
 
   test('given an existing watchlist, when change it then save, changes should be persisted into repository', async () => {
     const id = uuidv4();
-    const aWatchlist = new Watchlist(id, 'My Watchlist', 'aUserId', 0, []);
+    const aWatchlist = new Watchlist(
+      id,
+      NonEmptyString.from('My Watchlist'),
+      'aUserId',
+      0,
+      [],
+    );
     await repository.save(aWatchlist);
 
     aWatchlist.addSymbol(AAPL);
@@ -62,7 +69,7 @@ describe('WatchlistPostgresDbRepository specs', () => {
     const actual = await repository.getById('aUserId', aWatchlist.id);
     const expected = new Watchlist(
       aWatchlist.id,
-      'My Watchlist',
+      NonEmptyString.from('My Watchlist'),
       'aUserId',
       0,
       [AAPL, TSLA],
@@ -72,7 +79,13 @@ describe('WatchlistPostgresDbRepository specs', () => {
 
   test('given an existing watchlist, when flag it as deleted then save, it should be able to get it anymore', async () => {
     const id = uuidv4();
-    const aWatchlist = new Watchlist(id, 'My Watchlist', 'aUserId', 0, []);
+    const aWatchlist = new Watchlist(
+      id,
+      NonEmptyString.from('My Watchlist'),
+      'aUserId',
+      0,
+      [],
+    );
     await repository.save(aWatchlist);
 
     expect(await repository.getById('aUserId', aWatchlist.id)).toEqual(
@@ -90,13 +103,16 @@ describe('WatchlistPostgresDbRepository specs', () => {
   });
 
   test('given multiple watchlist for a user, when get all by user id, it should return all watchlists', async () => {
-    const aWatchlist = new Watchlist(uuidv4(), 'My Watchlist', 'aUserId', 0, [
-      AAPL,
-      MSFT,
-    ]);
+    const aWatchlist = new Watchlist(
+      uuidv4(),
+      NonEmptyString.from('My Watchlist'),
+      'aUserId',
+      0,
+      [AAPL, MSFT],
+    );
     const anotherWatchlist = new Watchlist(
       uuidv4(),
-      'Another Watchlist',
+      NonEmptyString.from('Another Watchlist'),
       'aUserId',
       1,
       [AAPL, MSFT],

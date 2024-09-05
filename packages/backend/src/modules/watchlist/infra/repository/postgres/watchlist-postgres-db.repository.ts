@@ -7,6 +7,7 @@ import { Watchlist } from '../../../domain/model/watchlist';
 import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 import { groupBy, values } from 'lodash';
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
+import { NonEmptyString } from '../../../../../lib/domain/NonEmptyString';
 
 type WatchlistRow = {
   id: string;
@@ -40,7 +41,7 @@ export class WatchlistPostgresDbRepository
     return values(groupBy(rows, 'id')).map((rows) => {
       return new Watchlist(
         rows[0].id,
-        rows[0].name,
+        NonEmptyString.from(rows[0].name),
         rows[0].userid,
         rows[0].order,
         rows
@@ -75,7 +76,7 @@ export class WatchlistPostgresDbRepository
 
     return new Watchlist(
       rows[0].id,
-      rows[0].name,
+      NonEmptyString.from(rows[0].name),
       rows[0].userid,
       rows[0].order,
       rows
@@ -90,7 +91,12 @@ export class WatchlistPostgresDbRepository
       .getClient()
       .query(
         'INSERT INTO watchlists (id, name, user_id, "order") VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING',
-        [watchlist.id, watchlist.name, watchlist.userId, watchlist.order],
+        [
+          watchlist.id,
+          watchlist.name.toString(),
+          watchlist.userId,
+          watchlist.order,
+        ],
       );
 
     await this.unitOfWork

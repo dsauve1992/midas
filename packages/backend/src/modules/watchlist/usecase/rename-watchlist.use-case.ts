@@ -4,13 +4,14 @@ import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional
 import { UserWatchlistsAggregateRepository } from '../domain/repository/user-watchlists-aggregate.repository';
 import { NonEmptyString } from '../../../lib/domain/NonEmptyString';
 
-interface CreateWatchlistUseCaseRequest {
+interface RenameWatchlistUseCaseRequest {
   userId: string;
+  watchlistId: string;
   name: NonEmptyString;
 }
 
 @Injectable()
-export class CreateWatchlistUseCase extends BaseUseCase<CreateWatchlistUseCaseRequest> {
+export class RenameWatchlistUseCase extends BaseUseCase<RenameWatchlistUseCaseRequest> {
   constructor(
     @Inject('UserWatchlistsAggregateRepository')
     private userWatchlistsAggregateRepository: UserWatchlistsAggregateRepository,
@@ -21,12 +22,13 @@ export class CreateWatchlistUseCase extends BaseUseCase<CreateWatchlistUseCaseRe
 
   protected async executeUseCase({
     userId,
+    watchlistId,
     name,
-  }: CreateWatchlistUseCaseRequest) {
+  }: RenameWatchlistUseCaseRequest) {
     const userWatchlistsAggregate =
       await this.userWatchlistsAggregateRepository.getById(userId);
 
-    userWatchlistsAggregate.createWatchlist(name);
+    userWatchlistsAggregate.renameWatchlist(watchlistId, name);
 
     await this.userWatchlistsAggregateRepository.save(userWatchlistsAggregate);
   }

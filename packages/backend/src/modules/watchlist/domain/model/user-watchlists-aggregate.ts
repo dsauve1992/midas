@@ -1,5 +1,6 @@
 import { Watchlist } from './watchlist';
 import { orderBy } from 'lodash';
+import { NonEmptyString } from '../../../../lib/domain/NonEmptyString';
 
 export class UserWatchlistsAggregate {
   constructor(
@@ -7,7 +8,7 @@ export class UserWatchlistsAggregate {
     private _watchlists: Set<Watchlist> = new Set<Watchlist>(),
   ) {}
 
-  createWatchlist(name: string): Watchlist {
+  createWatchlist(name: NonEmptyString): Watchlist {
     this.assertNameIsUnique(name);
 
     const newWatchlist = Watchlist.init(
@@ -21,12 +22,22 @@ export class UserWatchlistsAggregate {
     return newWatchlist;
   }
 
-  private assertNameIsUnique(name: string) {
-    const watchlistNames = Array.from(this._watchlists).map((w) =>
-      w.name.toLowerCase(),
+  renameWatchlist(watchlistId: string, name: NonEmptyString) {
+    this.assertNameIsUnique(name);
+
+    const watchlist = Array.from(this._watchlists).find(
+      (w) => w.id === watchlistId,
     );
 
-    if (watchlistNames.includes(name.toLowerCase())) {
+    watchlist.rename(name);
+  }
+
+  private assertNameIsUnique(name: NonEmptyString) {
+    const watchlistNames = Array.from(this._watchlists).map((w) =>
+      w.name.toString().toLowerCase(),
+    );
+
+    if (watchlistNames.includes(name.toString().toLowerCase())) {
       throw new Error('Watchlist name must be unique');
     }
   }

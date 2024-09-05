@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { Pool } from 'pg';
 import { AutoCommitUnitOfWork } from '../unit-of-work/auto-commit-unit-of-work.service';
 import Knex from 'knex';
-import { IntegrationTestService } from './intergation-test.service';
+import { IntegrationTestService } from './integration-test.service';
 
 @Module({
   controllers: [],

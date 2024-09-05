@@ -5,6 +5,7 @@ import {
 
 export class TestContainer {
   private static container: StartedPostgreSqlContainer;
+
   static async init() {
     this.container = await new PostgreSqlContainer().start();
 
@@ -16,6 +17,7 @@ export class TestContainer {
       database: this.container.getDatabase(),
     };
   }
+
   static async stop() {
     await this.container.stop();
   }

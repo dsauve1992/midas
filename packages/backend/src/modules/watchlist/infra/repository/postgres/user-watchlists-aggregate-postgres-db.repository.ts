@@ -5,6 +5,7 @@ import { UserWatchlistsAggregateRepository } from '../../../domain/repository/us
 import { UserWatchlistsAggregate } from '../../../domain/model/user-watchlists-aggregate';
 import { chain } from 'lodash';
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
+import { NonEmptyString } from '../../../../../lib/domain/NonEmptyString';
 
 type WatchlistRow = {
   id: string;
@@ -42,7 +43,7 @@ export class UserWatchlistsAggregatePostgresDbRepository
       .map(([id, rows]) => {
         return new Watchlist(
           id,
-          rows[0].name,
+          NonEmptyString.from(rows[0].name),
           rows[0].userid,
           rows[0].orderw,
           rows
@@ -58,13 +59,26 @@ export class UserWatchlistsAggregatePostgresDbRepository
 
   async save(userWatchlistsAggregate: UserWatchlistsAggregate) {
     for (const watchlist of userWatchlistsAggregate.watchlists) {
-      await this.unitOfWork.getClient().query(
-        `
+      if (watchlist.deleted) {
+        await this.unitOfWork.getClient().query(
+          `
+            DELETE FROM watchlists where id = $1`,
+          [watchlist.id],
+        );
+      } else {
+        await this.unitOfWork.getClient().query(
+          `
             INSERT INTO watchlists (id, name, user_id, "order") 
             VALUES ($1, $2, $3, $4) 
             ON CONFLICT DO NOTHING`,
-        [watchlist.id, watchlist.name, watchlist.userId, watchlist.order],
-      );
+          [
+            watchlist.id,
+            watchlist.name.toString(),
+            watchlist.userId,
+            watchlist.order,
+          ],
+        );
+      }
 
       await this.unitOfWork
         .getClient()
