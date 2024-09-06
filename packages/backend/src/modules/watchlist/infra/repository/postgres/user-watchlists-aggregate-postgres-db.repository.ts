@@ -70,7 +70,10 @@ export class UserWatchlistsAggregatePostgresDbRepository
           `
             INSERT INTO watchlists (id, name, user_id, "order") 
             VALUES ($1, $2, $3, $4) 
-            ON CONFLICT DO NOTHING`,
+            ON CONFLICT(id) 
+            DO UPDATE SET
+                name = EXCLUDED.name,
+                "order" = EXCLUDED."order";`,
           [
             watchlist.id,
             watchlist.name.toString(),

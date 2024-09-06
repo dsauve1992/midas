@@ -1,8 +1,10 @@
 import {
   Box,
   Chip,
+  IconButton,
   List,
   ListItemButton,
+  Modal,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -15,6 +17,8 @@ import theme from "../../lib/ui/global/theme/mui.theme.ts";
 import { useMemo, useState } from "react";
 import { indexOf } from "lodash";
 import { PageLayout } from "../../lib/ui/global/PageLayout.tsx";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { WatchlistsEditionForm } from "./WatchlistsEditionForm.tsx";
 
 const useStyles = makeStyles({
   watchlistLateralMenu: {
@@ -37,9 +41,19 @@ export const WatchListsPage = () => {
   const [selectedWatchlistIndex, setSelectedWatchlistIndex] =
     useState<number>(0);
 
+  const [modalOpen, setModalOpen] = useState(false);
+
   const selectedWatchlist = useMemo(() => {
     return watchlists?.[selectedWatchlistIndex];
   }, [selectedWatchlistIndex, watchlists]);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <>
@@ -50,7 +64,12 @@ export const WatchListsPage = () => {
       <PageLayout>
         <Box width={"100%"} display={"flex"} flexDirection="row">
           <Box className={classes.watchlistLateralMenu}>
-            <h4>Watchlists</h4>
+            <Box display="flex" flexDirection="row">
+              <Typography variant="h6">Watchlists</Typography>
+              <IconButton onClick={handleOpenModal} size="small" sx={{ ml: 2 }}>
+                <ModeEditIcon />
+              </IconButton>
+            </Box>
             <List>
               {watchlists?.map((watchlist) => (
                 <ListItemButton
@@ -112,6 +131,10 @@ export const WatchListsPage = () => {
             )}
           </Box>
         </Box>
+
+        <Modal open={modalOpen} onClose={handleCloseModal}>
+          <WatchlistsEditionForm />
+        </Modal>
       </PageLayout>
     </>
   );
