@@ -22,7 +22,7 @@ import { WatchlistsEditionForm } from "./WatchlistsEditionForm.tsx";
 
 const useStyles = makeStyles({
   watchlistLateralMenu: {
-    width: "10%",
+    minWidth: "100px",
     padding: "10px",
     backgroundColor: theme.palette.background.paper,
   },
@@ -73,18 +73,29 @@ export const WatchListsPage = () => {
             <List>
               {watchlists?.map((watchlist) => (
                 <ListItemButton
+                  sx={{ p: 1 }}
                   key={watchlist.id}
                   selected={selectedWatchlist?.id === watchlist.id}
                   onClick={() =>
                     setSelectedWatchlistIndex(indexOf(watchlists, watchlist))
                   }
                 >
-                  {watchlist.name}
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    width="100%"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Typography variant="subtitle2">
+                      {watchlist.name}
+                    </Typography>
 
-                  <Chip
-                    style={{ marginLeft: "5px" }}
-                    label={watchlist.symbols.length}
-                  />
+                    <Chip
+                      style={{ marginLeft: "5px" }}
+                      label={watchlist.symbols.length}
+                    />
+                  </Box>
                 </ListItemButton>
               ))}
             </List>
