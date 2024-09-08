@@ -1,6 +1,7 @@
 import {
   Box,
   Chip,
+  Collapse,
   IconButton,
   List,
   ListItemButton,
@@ -19,6 +20,7 @@ import { indexOf } from "lodash";
 import { PageLayout } from "../../lib/ui/global/PageLayout.tsx";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { WatchlistsEditionForm } from "./WatchlistsEditionForm.tsx";
+import { TransitionGroup } from "react-transition-group";
 
 const useStyles = makeStyles({
   watchlistLateralMenu: {
@@ -124,13 +126,16 @@ export const WatchListsPage = () => {
                 </ToggleButtonGroup>
                 <Box overflow="scroll">
                   <List sx={{ width: "100%" }}>
-                    {selectedWatchlist.symbols?.map((el) => (
-                      <WatchListTicker
-                        symbolExchange={el}
-                        key={el}
-                        interval={interval}
-                      />
-                    ))}
+                    <TransitionGroup>
+                      {selectedWatchlist.symbols?.map((el) => (
+                        <Collapse key={el} timeout={500}>
+                          <WatchListTicker
+                            symbolExchange={el}
+                            interval={interval}
+                          />
+                        </Collapse>
+                      ))}
+                    </TransitionGroup>
                   </List>
                 </Box>
               </>
