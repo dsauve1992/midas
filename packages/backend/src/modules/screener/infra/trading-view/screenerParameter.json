@@ -8,7 +8,7 @@
   ],
   "filter": [
     {
-      "left": "volume|1W",
+      "left": "volume",
       "operation": "greater",
       "right": 1000000
     },
@@ -26,7 +26,11 @@
       "operation": "greater",
       "right": "SMA150"
     },
-    {"left":"high|1W","operation":"egreater","right":"DonchCh20.Upper|1W"}
+    {
+      "left": "high",
+      "operation": "egreater",
+      "right": "High.6M"
+    }
   ],
   "ignore_unknown_fields": false,
   "options": {
