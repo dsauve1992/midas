@@ -64,7 +64,12 @@ export const WatchListsPage = () => {
       </Helmet>
 
       <PageLayout>
-        <Box width={"100%"} display={"flex"} flexDirection="row">
+        <Box
+          width={"100%"}
+          height={"100%"}
+          display={"flex"}
+          flexDirection="row"
+        >
           <Box className={classes.watchlistLateralMenu}>
             <Box display="flex" flexDirection="row">
               <Typography variant="h6">Watchlists</Typography>
@@ -109,7 +114,12 @@ export const WatchListsPage = () => {
             flexDirection="column"
           >
             {selectedWatchlist ? (
-              <>
+              <Box
+                display="flex"
+                gap={"10px"}
+                height={"100%"}
+                flexDirection="column"
+              >
                 <Typography variant="h5">{selectedWatchlist.name}</Typography>
                 <ToggleButtonGroup
                   value={interval}
@@ -138,7 +148,7 @@ export const WatchListsPage = () => {
                     </TransitionGroup>
                   </List>
                 </Box>
-              </>
+              </Box>
             ) : (
               <p>Please select a watchlist</p>
             )}
