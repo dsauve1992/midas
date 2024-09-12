@@ -6,7 +6,7 @@ import { Cron } from '@nestjs/schedule';
 export class ScreenerCronService {
   constructor(private tradingViewScreenerService: TradingViewScreenerService) {}
 
-  @Cron('45 * * * * *')
+  @Cron('0 * * * *')
   handleCron() {
     return this.tradingViewScreenerService.search();
   }
