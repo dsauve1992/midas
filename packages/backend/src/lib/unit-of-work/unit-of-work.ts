@@ -1,5 +1,5 @@
-import { PoolClient } from 'pg';
-
 export interface UnitOfWork {
-  getClient(): PoolClient;
+  start(): Promise<void>;
+  commit(): Promise<void>;
+  rollback(): Promise<void>;
 }

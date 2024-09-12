@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Watchlist } from '../../../domain/model/watchlist';
-import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 import { UserWatchlistsAggregateRepository } from '../../../domain/repository/user-watchlists-aggregate.repository';
 import { UserWatchlistsAggregate } from '../../../domain/model/user-watchlists-aggregate';
 import { chain } from 'lodash';
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
 import { NonEmptyString } from '../../../../../lib/domain/NonEmptyString';
+import { DatabaseClientGetter } from '../../../../../lib/unit-of-work/database-client-getter';
 
 type WatchlistRow = {
   id: string;
@@ -19,11 +19,15 @@ type WatchlistRow = {
 export class UserWatchlistsAggregatePostgresDbRepository
   implements UserWatchlistsAggregateRepository
 {
-  constructor(@Inject('UNIT_OF_WORK') private unitOfWork: UnitOfWork) {}
+  constructor(
+    @Inject('UNIT_OF_WORK') private databaseClientGetter: DatabaseClientGetter,
+  ) {}
 
   async getById(userId: string): Promise<UserWatchlistsAggregate> {
-    const { rows } = await this.unitOfWork.getClient().query<WatchlistRow>(
-      `
+    const { rows } = await this.databaseClientGetter
+      .getClient()
+      .query<WatchlistRow>(
+        `
         SELECT
         watchlists.id as id,
         watchlists.name as name,
@@ -34,8 +38,8 @@ export class UserWatchlistsAggregatePostgresDbRepository
         LEFT JOIN watchlist_items on watchlists.id = watchlist_items.watchlist_id 
         WHERE user_id = $1
         `,
-      [userId],
-    );
+        [userId],
+      );
 
     const watchlists = chain(rows)
       .groupBy('id')
@@ -60,13 +64,13 @@ export class UserWatchlistsAggregatePostgresDbRepository
   async save(userWatchlistsAggregate: UserWatchlistsAggregate) {
     for (const watchlist of userWatchlistsAggregate.watchlists) {
       if (watchlist.deleted) {
-        await this.unitOfWork.getClient().query(
+        await this.databaseClientGetter.getClient().query(
           `
             DELETE FROM watchlists where id = $1`,
           [watchlist.id],
         );
       } else {
-        await this.unitOfWork.getClient().query(
+        await this.databaseClientGetter.getClient().query(
           `
             INSERT INTO watchlists (id, name, user_id, "order") 
             VALUES ($1, $2, $3, $4) 
@@ -83,14 +87,14 @@ export class UserWatchlistsAggregatePostgresDbRepository
         );
       }
 
-      await this.unitOfWork
+      await this.databaseClientGetter
         .getClient()
         .query(
           `DELETE FROM watchlist_items WHERE watchlist_id = '${watchlist.id}'`,
         );
 
       if (!watchlist.isEmpty()) {
-        await this.unitOfWork.getClient().query(
+        await this.databaseClientGetter.getClient().query(
           `INSERT INTO watchlist_items (symbol, watchlist_id) VALUES ${Array.from(
             watchlist,
           )

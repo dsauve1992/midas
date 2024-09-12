@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Watchlist } from '../../../../domain/model/watchlist';
 import { v4 as uuidv4 } from 'uuid';
-import { IntegrationTestModule } from '../../../../../../lib/test/integration-test.module';
-import { IntegrationTestService } from '../../../../../../lib/test/integration-test.service';
+import { IntegrationTestModule } from '../../../../../../lib/test/db-integration/integration-test.module';
+import { IntegrationTestService } from '../../../../../../lib/test/db-integration/integration-test.service';
 import { UserWatchlistsAggregatePostgresDbRepository } from '../user-watchlists-aggregate-postgres-db.repository';
 import { UserWatchlistsAggregate } from '../../../../domain/model/user-watchlists-aggregate';
 import { SymbolWithExchange } from '../../../../../stocks/domain/symbol-with-exchange';

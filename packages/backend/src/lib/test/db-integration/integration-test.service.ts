@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Knex } from 'knex';
-import { AutoCommitUnitOfWork } from '../unit-of-work/auto-commit-unit-of-work.service';
+import { AutoCommitUnitOfWork } from '../../unit-of-work/auto-commit-unit-of-work.service';
 import { Pool } from 'pg';
 
 @Injectable()

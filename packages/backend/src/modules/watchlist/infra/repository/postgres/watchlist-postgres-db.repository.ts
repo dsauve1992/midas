@@ -4,10 +4,10 @@ import {
   WatchlistWriteRepository,
 } from '../../../domain/repository/watchlist.repository';
 import { Watchlist } from '../../../domain/model/watchlist';
-import { UnitOfWork } from '../../../../../lib/unit-of-work/unit-of-work';
 import { groupBy, values } from 'lodash';
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
 import { NonEmptyString } from '../../../../../lib/domain/NonEmptyString';
+import { DatabaseClientGetter } from '../../../../../lib/unit-of-work/database-client-getter';
 
 type WatchlistRow = {
   id: string;
@@ -21,10 +21,14 @@ type WatchlistRow = {
 export class WatchlistPostgresDbRepository
   implements WatchlistWriteRepository, WatchlistReadOnlyRepository
 {
-  constructor(@Inject('UNIT_OF_WORK') private unitOfWork: UnitOfWork) {}
+  constructor(
+    @Inject('UNIT_OF_WORK') private databaseClientGetter: DatabaseClientGetter,
+  ) {}
   async getAllByUserId(userId: string): Promise<Watchlist[]> {
-    const { rows } = await this.unitOfWork.getClient().query<WatchlistRow>(
-      `
+    const { rows } = await this.databaseClientGetter
+      .getClient()
+      .query<WatchlistRow>(
+        `
         SELECT
         watchlists.id as id,
         watchlists.name as name,
@@ -35,8 +39,8 @@ export class WatchlistPostgresDbRepository
         LEFT JOIN watchlist_items on watchlists.id = watchlist_items.watchlist_id 
         WHERE user_id = $1
         `,
-      [userId],
-    );
+        [userId],
+      );
 
     return values(groupBy(rows, 'id')).map((rows) => {
       return new Watchlist(
@@ -53,8 +57,10 @@ export class WatchlistPostgresDbRepository
   }
 
   async getById(userId: string, id: string) {
-    const { rows } = await this.unitOfWork.getClient().query<WatchlistRow>(
-      `
+    const { rows } = await this.databaseClientGetter
+      .getClient()
+      .query<WatchlistRow>(
+        `
         SELECT
         watchlists.id as id,
         watchlists.name as name,
@@ -65,8 +71,8 @@ export class WatchlistPostgresDbRepository
         LEFT JOIN watchlist_items on watchlists.id = watchlist_items.watchlist_id 
         WHERE user_id = $1 AND watchlists.id = $2
         `,
-      [userId, id],
-    );
+        [userId, id],
+      );
 
     if (!rows.length) {
       throw new Error(
@@ -87,7 +93,7 @@ export class WatchlistPostgresDbRepository
   }
 
   async save(watchlist: Watchlist) {
-    await this.unitOfWork
+    await this.databaseClientGetter
       .getClient()
       .query(
         'INSERT INTO watchlists (id, name, user_id, "order") VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING',
@@ -99,14 +105,14 @@ export class WatchlistPostgresDbRepository
         ],
       );
 
-    await this.unitOfWork
+    await this.databaseClientGetter
       .getClient()
       .query(
         `DELETE FROM watchlist_items WHERE watchlist_id = '${watchlist.id}'`,
       );
 
     if (!watchlist.isEmpty()) {
-      await this.unitOfWork.getClient().query(
+      await this.databaseClientGetter.getClient().query(
         `INSERT INTO watchlist_items (symbol, watchlist_id) VALUES ${Array.from(
           watchlist,
         )
@@ -116,7 +122,7 @@ export class WatchlistPostgresDbRepository
     }
 
     if (watchlist.deleted) {
-      await this.unitOfWork
+      await this.databaseClientGetter
         .getClient()
         .query(
           `DELETE FROM watchlists WHERE id = '${watchlist.id}' AND user_id = '${watchlist.userId}'`,

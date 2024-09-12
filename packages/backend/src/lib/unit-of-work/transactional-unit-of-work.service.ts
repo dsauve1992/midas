@@ -1,8 +1,11 @@
 import { Inject } from '@nestjs/common';
 import { Pool, PoolClient } from 'pg';
 import { UnitOfWork } from './unit-of-work';
+import { DatabaseClientGetter } from './database-client-getter';
 
-export class TransactionalUnitOfWork implements UnitOfWork {
+export class TransactionalUnitOfWork
+  implements UnitOfWork, DatabaseClientGetter
+{
   private client: PoolClient;
 
   constructor(@Inject('PG_CONNECTION_POOL') private readonly pool: Pool) {}
