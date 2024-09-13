@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { TradingViewScreenerService } from '../infra/trading-view/trading-view-screener.service';
 import { Cron } from '@nestjs/schedule';
+import { AnalyseScreenerElementsUseCase } from '../usecase/analyse-screener-elements.use-case';
 
 @Injectable()
 export class ScreenerCronService {
-  constructor(private tradingViewScreenerService: TradingViewScreenerService) {}
+  constructor(
+    private analyseScreenerElementsUseCase: AnalyseScreenerElementsUseCase,
+  ) {}
 
   @Cron('0 * * * *')
   handleCron() {
-    return this.tradingViewScreenerService.search();
+    return this.analyseScreenerElementsUseCase.execute();
   }
 }
