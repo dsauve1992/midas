@@ -8,16 +8,16 @@ import { ScreenerRestController } from './controller/screener.rest.controller';
 import { ScreenerCronService } from './cron/screener-cron.service';
 
 import { StockAnalyser } from './domain/stock-analyser';
+import { AnalyseScreenerElementsUseCase } from './usecase/analyse-screener-elements.use-case';
 
 @Module({
   controllers: [ScreenerRestController],
-  imports: [
-    HttpModule,
-    RatingModule,
-    HistoricalDataModule,
-    TelegramModule,
+  imports: [HttpModule, RatingModule, HistoricalDataModule, TelegramModule],
+  providers: [
+    TradingViewScreenerService,
+    StockAnalyser,
     ScreenerCronService,
+    AnalyseScreenerElementsUseCase,
   ],
-  providers: [TradingViewScreenerService, StockAnalyser],
 })
 export class ScreenerModule {}
