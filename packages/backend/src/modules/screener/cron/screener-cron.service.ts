@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
 import { AnalyseScreenerElementsUseCase } from '../usecase/analyse-screener-elements.use-case';
 
 @Injectable()
@@ -8,8 +7,8 @@ export class ScreenerCronService {
     private analyseScreenerElementsUseCase: AnalyseScreenerElementsUseCase,
   ) {}
 
-  @Cron('0 * * * *')
-  handleCron() {
-    return this.analyseScreenerElementsUseCase.execute();
-  }
+  // @Cron('0 * * * *')
+  // handleCron() {
+  //   return this.analyseScreenerElementsUseCase.execute();
+  // }
 }

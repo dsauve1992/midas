@@ -3467,6 +3467,21 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
+"@types/jest-when@^3.5.5":
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/@types/jest-when/-/jest-when-3.5.5.tgz#c23e97945959277946c15eff2a2fe51d18743045"
+  integrity sha512-H9MDPIrz7NOu6IXP9OHExNN9LnJbGYAzRsGIDKxWr7Fth9vovemNV8yFbkUWLSEmuA8PREvAEvt9yK0PPLmFHA==
+  dependencies:
+    "@types/jest" "*"
+
+"@types/jest@*":
+  version "29.5.13"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.13.tgz#8bc571659f401e6a719a7bf0dbcb8b78c71a8adc"
+  integrity sha512-wd+MVEZCHt23V0/L642O5APvspWply/rGY5BcW4SUETo2UzPU3Z26qr8jC2qxpimI2jjx9h7+2cj2FwIr01bXg==
+  dependencies:
+    expect "^29.0.0"
+    pretty-format "^29.0.0"
+
 "@types/jest@^29.5.2":
   version "29.5.12"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.12.tgz#7f7dc6eb4cf246d2474ed78744b05d06ce025544"
@@ -3521,10 +3536,10 @@
   resolved "https://registry.yarnpkg.com/@types/methods/-/methods-1.1.4.tgz#d3b7ac30ac47c91054ea951ce9eed07b1051e547"
   integrity sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==
 
-"@types/mime@^1":
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.5.tgz#1ef302e01cf7d2b5a0fa526790c9123bf1d06690"
-  integrity sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==
+"@types/mime@3.0.4", "@types/mime@^1":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/mime/-/mime-3.0.4.tgz#2198ac274de6017b44d941e00261d5bc6a0e0a45"
+  integrity sha512-iJt33IQnVRkqeqC7PzBHPTC6fDlRNRW8vjrgqtScAhrmMwe8c4Eo7+fUGTa+XdWrpEgpyKWMYmi2dIwMAYRzPw==
 
 "@types/minimatch@^3.0.3":
   version "3.0.5"
@@ -8421,6 +8436,11 @@ jest-watcher@^29.7.0:
     emittery "^0.13.1"
     jest-util "^29.7.0"
     string-length "^4.0.1"
+
+jest-when@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/jest-when/-/jest-when-3.6.0.tgz#b46ee408d68f671447b218f2ae6bd93fb5028acf"
+  integrity sha512-+cZWTy0ekAJo7M9Om0Scdor1jm3wDiYJWmXE8U22UVnkH54YCXAuaqz3P+up/FdtOg8g4wHOxV7Thd7nKhT6Dg==
 
 jest-worker@^27.4.5:
   version "27.5.1"

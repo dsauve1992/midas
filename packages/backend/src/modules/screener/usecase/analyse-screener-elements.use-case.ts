@@ -18,7 +18,7 @@ export class AnalyseScreenerElementsUseCase extends BaseUseCase<void, void> {
     const results = await this.tradingViewScreenerService.search();
 
     for (const result of results) {
-      this.stockAnalyser.analyseSymbol(result);
+      await this.stockAnalyser.for(result);
     }
   }
 }

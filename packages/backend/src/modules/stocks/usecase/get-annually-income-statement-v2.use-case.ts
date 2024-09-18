@@ -136,8 +136,6 @@ class AnnuallyFinancialHistory {
   }
 
   private static fillMissingRecords(history: FinancialRecord<FinancialYear>[]) {
-    console.log(history);
-
     if (history.length < 2) {
       return history;
     }
@@ -184,8 +182,6 @@ export class GetAnnuallyIncomeStatementV2UseCase {
   async execute(symbol: string): Promise<AnnuallyFinancialHistory> {
     const { incomeStatements, enterpriseRatios, analystEstimates } =
       await this.fetchData(symbol);
-
-    console.log(enterpriseRatios);
 
     const entries = this.mapToFinancialRecords(
       incomeStatements,
