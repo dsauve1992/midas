@@ -17,13 +17,11 @@ export class ScreenerRestController {
   }
 
   @Get('/:symbol')
-  async test(@Param('symbol') symbol: string): Promise<void> {
+  async test(@Param('symbol') symbol: string): Promise<unknown> {
     const result = await this.stockAnalyser.for(
       SymbolWithExchange.from(symbol),
     );
 
-    console.log('**********');
-    console.log(result);
-    console.log('**********');
+    return result;
   }
 }
