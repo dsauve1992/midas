@@ -13,28 +13,31 @@ export class StockAnalyser {
   for(symbol: SymbolWithExchange) {
     const pythonPath = path.resolve(
       __dirname,
-      '../../../../../python-scripts/venv/bin/python3',
+      '../../../python-scripts/venv/bin/python3',
     );
     const scriptPath = path.resolve(
       __dirname,
-      '../../../../../python-scripts/src/analysis.py',
+      '../../../python-scripts/src/analysis.py',
     );
 
     return new Promise((resolve, reject) => {
-      const process = spawn(pythonPath, [scriptPath, symbol.symbol]);
+      const pythonScript = spawn(
+        process.env.NODE_ENV === 'production' ? 'python3' : pythonPath,
+        [scriptPath, symbol.symbol],
+      );
 
       let result = '';
       let error = '';
 
-      process.stdout.on('data', (data) => {
+      pythonScript.stdout.on('data', (data) => {
         result += data.toString();
       });
 
-      process.stderr.on('data', (data) => {
+      pythonScript.stderr.on('data', (data) => {
         error += data.toString();
       });
 
-      process.on('close', (code) => {
+      pythonScript.on('close', (code) => {
         if (code === 0) {
           try {
             const jsonResult = JSON.parse(result);
