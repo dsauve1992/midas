@@ -20,13 +20,11 @@ RUN yarn build
 
 WORKDIR /usr/src/app/dist/python-scripts
 # Install Python dependencies
-RUN pip install virtualenv
-RUN python3 -m venv venv
-RUN source venv/bin/activate
 RUN pip install -r requirements.txt
 
 WORKDIR /usr/src/app
-# Expose the application port
+
+ENV NODE_ENV production
 EXPOSE 443
 
 # Start the application
