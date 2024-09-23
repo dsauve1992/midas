@@ -8,10 +8,8 @@ export class ScreenerCronService {
     private analyseScreenerElementsUseCase: AnalyseScreenerElementsUseCase,
   ) {}
 
-  @Cron('0 0 * * *')
+  @Cron('15 * * * *')
   handleCron() {
-    console.log('Cron job started');
-
     return this.analyseScreenerElementsUseCase.execute();
   }
 }
