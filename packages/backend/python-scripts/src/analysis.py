@@ -85,7 +85,7 @@ def analyse_symbol(symbol):
     df['tr2'] = abs(low - close.shift())
     df['tr'] = df[['tr0', 'tr1', 'tr2']].max(axis=1)
     df['atr_50'] = df['tr'].rolling(window=50).mean()
-    df['tr_from_atr'] = (df['tr'] / df['body_length_sma_50'].shift()) * 100
+    df['tr_from_atr'] = (df['tr'] / df['atr_50'].shift()) * 100
 
     # price moving averages
     df['SMA_150'] = close.rolling(window=150).mean()
@@ -94,7 +94,7 @@ def analyse_symbol(symbol):
 
     # volume moving averages
     df['V_SMA_100'] = volume.rolling(window=100).mean()
-    df['volume_perc_from_sma'] = (volume / df['V_SMA_100']) * 100
+    df['volume_perc_from_sma'] = (volume / df['V_SMA_100'].shift()) * 100
 
     # High / Low
     df['ALL_TIME_HIGH'] = high.max()
@@ -152,10 +152,11 @@ def analyse_symbol(symbol):
 
 
 if __name__ == '__main__':
-    symbol = sys.argv[1]
+    try:
+        symbol = sys.argv[1]
 
-    df = analyse_symbol(symbol)
-
-    print(df.to_json(orient='table', index=True))
-
+        df = analyse_symbol(symbol)
+        print(df.to_json(orient='table', index=True))
+    except:
+        print('{"data": []}')
 

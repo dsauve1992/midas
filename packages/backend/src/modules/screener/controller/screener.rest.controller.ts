@@ -1,27 +1,20 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { NewScreenerEntryFrontendDto } from '../../../shared-types/new-screener-entry-frontend.dto';
-import { TradingViewScreenerService } from '../infra/trading-view/trading-view-screener.service';
-import { StockAnalyser } from '../domain/stock-analyser';
-import { SymbolWithExchange } from '../../stocks/domain/symbol-with-exchange';
+import { ScreenerRepository } from '../domain/repository/screener.repository';
+import { StockTechnicalLabeler } from '../domain/service/stock-technical-labeler';
 
 @Controller('screener')
 export class ScreenerRestController {
   constructor(
-    private tradingViewScreenerService: TradingViewScreenerService,
-    private stockAnalyser: StockAnalyser,
+    @Inject('ScreenerRepository')
+    private screenerRepository: ScreenerRepository,
+    private stockTechnicalLabeler: StockTechnicalLabeler,
   ) {}
 
   @Get()
   async getScreener(): Promise<NewScreenerEntryFrontendDto[]> {
-    return this.tradingViewScreenerService.search();
-  }
+    const snapshot = await this.screenerRepository.search();
 
-  @Get('/:symbol')
-  async test(@Param('symbol') symbol: string): Promise<unknown> {
-    const result = await this.stockAnalyser.for(
-      SymbolWithExchange.from(symbol),
-    );
-
-    return result;
+    return snapshot.symbols;
   }
 }

@@ -1,24 +1,33 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseUseCase } from '../../../lib/base-use-case';
-import { TradingViewScreenerService } from '../infra/trading-view/trading-view-screener.service';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
-import { StockAnalyser } from '../domain/stock-analyser';
+import { LabeledScreenerSymbol } from '../domain/model/labeled-screener.symbol';
+import { LabeledScreenerSymbolRepository } from '../domain/repository/labeled-screener-symbol.repository';
+import { StockTechnicalLabeler } from '../domain/service/stock-technical-labeler';
+import { ScreenerRepository } from '../domain/repository/screener.repository';
 
 @Injectable()
 export class AnalyseScreenerElementsUseCase extends BaseUseCase<void, void> {
   constructor(
-    private tradingViewScreenerService: TradingViewScreenerService,
-    private stockAnalyser: StockAnalyser,
-    @Inject('UNIT_OF_WORK') unitOfWork: TransactionalUnitOfWork,
+    @Inject('ScreenerRepository')
+    private screenerRepository: ScreenerRepository,
+    @Inject('LabeledScreenerSymbolRepository')
+    private labeledScreenerSymbolRepository: LabeledScreenerSymbolRepository,
+    private stockTechnicalLabeler: StockTechnicalLabeler,
+    unitOfWork: TransactionalUnitOfWork,
   ) {
     super(unitOfWork);
   }
 
   async executeUseCase(): Promise<void> {
-    const results = await this.tradingViewScreenerService.search();
+    const snapshot = await this.screenerRepository.search();
 
-    for (const result of results) {
-      await this.stockAnalyser.for(result);
+    for (const symbol of snapshot) {
+      const labels = await this.stockTechnicalLabeler.for(symbol);
+
+      await this.labeledScreenerSymbolRepository.save(
+        new LabeledScreenerSymbol(symbol, labels),
+      );
     }
   }
 }

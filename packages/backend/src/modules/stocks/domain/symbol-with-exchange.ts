@@ -14,6 +14,10 @@ export class SymbolWithExchange {
     return new SymbolWithExchange(exchange, symbolName);
   }
 
+  equals(other: SymbolWithExchange) {
+    return this.exchange === other.exchange && this.symbol === other.symbol;
+  }
+
   toString() {
     return `${this.exchange}:${this.symbol}`;
   }
