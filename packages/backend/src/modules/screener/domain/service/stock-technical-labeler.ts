@@ -11,7 +11,9 @@ export class StockTechnicalLabeler {
   async for(symbol: SymbolWithExchange): Promise<TechnicalLabel[]> {
     const events = await this.stockTechnicalAnalyser.for(symbol);
 
-    console.table(events);
+    if (events.length === 0) {
+      return [];
+    }
 
     const {
       breakout,
@@ -23,9 +25,9 @@ export class StockTechnicalLabeler {
 
     if (
       breakout &&
-      body_length_perc_from_sma > 200 &&
-      volume_perc_from_sma > 200 &&
-      tr_from_atr > 200 &&
+      body_length_perc_from_sma > 150 &&
+      volume_perc_from_sma > 150 &&
+      tr_from_atr > 150 &&
       body_perc > 60
     ) {
       return [

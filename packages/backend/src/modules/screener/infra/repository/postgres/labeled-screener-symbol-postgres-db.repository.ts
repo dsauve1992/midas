@@ -1,8 +1,7 @@
 import { SymbolWithExchange } from 'src/modules/stocks/domain/symbol-with-exchange';
 import { LabeledScreenerSymbol } from '../../../domain/model/labeled-screener.symbol';
 import { LabeledScreenerSymbolRepository } from '../../../domain/repository/labeled-screener-symbol.repository';
-import { Inject } from '@nestjs/common';
-import { DatabaseClientGetter } from '../../../../../lib/unit-of-work/database-client-getter';
+import { AutoCommitUnitOfWork } from '../../../../../lib/unit-of-work/auto-commit-unit-of-work.service';
 
 type SymbolLabelRow = {
   title: string;
@@ -12,9 +11,7 @@ type SymbolLabelRow = {
 export class LabeledScreenerSymbolPostgresDbRepository
   implements LabeledScreenerSymbolRepository
 {
-  constructor(
-    @Inject('UNIT_OF_WORK') private databaseClientGetter: DatabaseClientGetter,
-  ) {}
+  constructor(private databaseClientGetter: AutoCommitUnitOfWork) {}
 
   async getBySymbol(
     symbol: SymbolWithExchange,
@@ -24,8 +21,8 @@ export class LabeledScreenerSymbolPostgresDbRepository
       .query<SymbolLabelRow>(
         `
         SELECT
-          title as title,
-          description as description
+          title,
+          description
         FROM symbol_label 
         WHERE symbol = $1
         `,
@@ -42,15 +39,16 @@ export class LabeledScreenerSymbolPostgresDbRepository
         `DELETE FROM symbol_label WHERE symbol = '${labeledScreenerSymbol.symbol.toString()}'`,
       );
 
-    await this.databaseClientGetter.getClient().query(
-      `INSERT INTO symbol_label (symbol, title, description) VALUES ${Array.from(
-        labeledScreenerSymbol.labels,
-      )
+    if (labeledScreenerSymbol.labels.length) {
+      const queryTextOrConfig = `INSERT INTO symbol_label (symbol, title, description) VALUES ${labeledScreenerSymbol.labels
         .map(
           (label) =>
             `('${labeledScreenerSymbol.symbol.toString()}', '${label.title}', '${label.description}')`,
         )
-        .join(',')}`,
-    );
+        .join(',')}`;
+
+      console.log(queryTextOrConfig);
+      await this.databaseClientGetter.getClient().query(queryTextOrConfig);
+    }
   }
 }

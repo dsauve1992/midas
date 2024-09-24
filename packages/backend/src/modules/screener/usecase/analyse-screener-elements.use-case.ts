@@ -1,35 +1,43 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseUseCase } from '../../../lib/base-use-case';
-import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
-import { LabeledScreenerSymbolRepository } from '../domain/repository/labeled-screener-symbol.repository';
 import { StockTechnicalLabeler } from '../domain/service/stock-technical-labeler';
 import { ScreenerRepository } from '../domain/repository/screener.repository';
+import { LabeledScreenerSymbolPostgresDbRepository } from '../infra/repository/postgres/labeled-screener-symbol-postgres-db.repository';
+import { AutoCommitUnitOfWork } from '../../../lib/unit-of-work/auto-commit-unit-of-work.service';
 
 @Injectable()
-export class AnalyseScreenerElementsUseCase extends BaseUseCase<void, void> {
+export class AnalyseScreenerElementsUseCase {
   constructor(
     @Inject('ScreenerRepository')
     private screenerRepository: ScreenerRepository,
-    @Inject('LabeledScreenerSymbolRepository')
-    private labeledScreenerSymbolRepository: LabeledScreenerSymbolRepository,
     private stockTechnicalLabeler: StockTechnicalLabeler,
-    unitOfWork: TransactionalUnitOfWork,
-  ) {
-    super(unitOfWork);
-  }
+    private unitOfWork: AutoCommitUnitOfWork,
+  ) {}
 
-  async executeUseCase(): Promise<void> {
-    const snapshot = await this.screenerRepository.search();
+  async execute(): Promise<void> {
+    await this.unitOfWork.connect();
 
-    for (const symbol of snapshot) {
-      const labeledSymbol =
-        await this.labeledScreenerSymbolRepository.getBySymbol(symbol);
+    try {
+      const repo = new LabeledScreenerSymbolPostgresDbRepository(
+        this.unitOfWork,
+      );
+      const snapshot = await this.screenerRepository.search();
 
-      const labels = await this.stockTechnicalLabeler.for(symbol);
+      for (const symbol of snapshot) {
+        try {
+          console.log(`Analysing symbol: ${symbol.toString()}`);
+          const labeledSymbol = await repo.getBySymbol(symbol);
 
-      labeledSymbol.updateLabels(labels);
+          const labels = await this.stockTechnicalLabeler.for(symbol);
 
-      await this.labeledScreenerSymbolRepository.save(labeledSymbol);
+          labeledSymbol.updateLabels(labels);
+
+          await repo.save(labeledSymbol);
+        } catch (error) {
+          console.error(`Error analysing symbol: ${symbol.toString()}`, error);
+        }
+      }
+    } finally {
+      await this.unitOfWork.release();
     }
   }
 }

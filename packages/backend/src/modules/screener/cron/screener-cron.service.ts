@@ -8,7 +8,7 @@ export class ScreenerCronService {
     private analyseScreenerElementsUseCase: AnalyseScreenerElementsUseCase,
   ) {}
 
-  @Cron('50 * * * *')
+  @Cron('46 * * * *')
   handleCron() {
     return this.analyseScreenerElementsUseCase.execute();
   }
