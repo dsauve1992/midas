@@ -1,19 +1,32 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { StockTechnicalLabeler } from '../domain/service/stock-technical-labeler';
+import { Cron } from '@nestjs/schedule';
+import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
 import { ScreenerRepository } from '../domain/repository/screener.repository';
-import { LabeledScreenerSymbolPostgresDbRepository } from '../infra/repository/postgres/labeled-screener-symbol-postgres-db.repository';
+import { StockTechnicalLabeler } from '../domain/service/stock-technical-labeler';
 import { AutoCommitUnitOfWork } from '../../../lib/unit-of-work/auto-commit-unit-of-work.service';
+import { LabeledScreenerSymbolPostgresDbRepository } from '../infra/repository/postgres/labeled-screener-symbol-postgres-db.repository';
 
 @Injectable()
-export class AnalyseScreenerElementsUseCase {
+export class AnalyseScreenerCron {
   constructor(
+    private fmpService: FinancialModelingPrepService,
     @Inject('ScreenerRepository')
     private screenerRepository: ScreenerRepository,
     private stockTechnicalLabeler: StockTechnicalLabeler,
     private unitOfWork: AutoCommitUnitOfWork,
   ) {}
 
-  async execute(): Promise<void> {
+  @Cron('29 9 * * *')
+  async handleCron() {
+    const { isTheStockMarketOpen } =
+      await this.fmpService.getMarketOpeningInformation();
+
+    if (isTheStockMarketOpen) {
+      await this.execute();
+    }
+  }
+
+  private async execute(): Promise<void> {
     await this.unitOfWork.connect();
 
     try {
@@ -24,7 +37,6 @@ export class AnalyseScreenerElementsUseCase {
 
       for (const symbol of snapshot) {
         try {
-          console.log(`Analysing symbol: ${symbol.toString()}`);
           const labeledSymbol = await repo.getBySymbol(symbol);
 
           const labels = await this.stockTechnicalLabeler.for(symbol);
