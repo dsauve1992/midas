@@ -3,6 +3,8 @@
 /node_modules
 /documentation
 
+/python-scripts/src/__pycache__
+
 # Logs
 logs
 *.log
@@ -36,3 +38,6 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Sentry Config File
+.sentryclirc
