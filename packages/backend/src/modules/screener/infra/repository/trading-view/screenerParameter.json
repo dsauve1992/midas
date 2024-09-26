@@ -8,9 +8,9 @@
   ],
   "filter": [
     {
-      "left": "volume",
+      "left": "average_volume_10d_calc",
       "operation": "greater",
-      "right": 1000000
+      "right": 200000
     },
     {
       "left": "exchange",
