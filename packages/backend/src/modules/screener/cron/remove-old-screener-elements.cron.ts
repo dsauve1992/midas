@@ -1,56 +1,33 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { FinancialModelingPrepService } from '../../historical-data/financial-modeling-prep.service';
-import { ScreenerRepository } from '../domain/repository/screener.repository';
 import { AutoCommitUnitOfWork } from '../../../lib/unit-of-work/auto-commit-unit-of-work.service';
-import { LabeledScreenerSymbolRepository } from '../domain/repository/labeled-screener-symbol.repository';
-import { LabeledScreenerSymbolPostgresDbRepository } from '../infra/repository/postgres/labeled-screener-symbol-postgres-db.repository';
+import { LabeledScreenerSymbolWriteRepository } from '../domain/repository/labeled-screener-symbol.write-repository';
+import { LabeledScreenerSymbolPostgresDbWriteRepository } from '../infra/repository/postgres/labeled-screener-symbol-postgres-db-write.repository';
 
 @Injectable()
 export class RemoveOldScreenerElementCron {
-  constructor(
-    private fmpService: FinancialModelingPrepService,
-    @Inject('ScreenerRepository')
-    private screenerRepository: ScreenerRepository,
-    private unitOfWork: AutoCommitUnitOfWork,
-  ) {}
+  constructor(private unitOfWork: AutoCommitUnitOfWork) {}
 
-  @Cron('29 9 * * *')
+  @Cron('29 9 * * *', { timeZone: 'America/Montreal' })
   async handleCron() {
-    const { isTheStockMarketOpen } =
-      await this.fmpService.getMarketOpeningInformation();
-
-    if (isTheStockMarketOpen) {
-      console.log('RemoveOldScreenerElementCron');
-      await this.execute();
-    }
+    await this.execute();
   }
 
   private async execute(): Promise<void> {
     await this.unitOfWork.connect();
 
+    /*
+     * FIXME : I have to use instanciate the repository here because of the unit of work.
+     *  I should also use the TransactionalUnitOfWork instead of the AutoCommitUnitOfWork.
+     *  But the TransactionalUnitOfWork require a Request scope which is not available in the cron job.
+     *  This is a pretty big problem, but this related to nestjs, not my code
+     * */
+
     try {
-      const repository: LabeledScreenerSymbolRepository =
-        new LabeledScreenerSymbolPostgresDbRepository(this.unitOfWork);
+      const repository: LabeledScreenerSymbolWriteRepository =
+        new LabeledScreenerSymbolPostgresDbWriteRepository(this.unitOfWork);
 
-      const yesterdaySnapshot = await repository.getSnapshot();
-      const latestSnapshot = await this.screenerRepository.search();
-
-      const snapshotDifference =
-        latestSnapshot.differenceFrom(yesterdaySnapshot);
-
-      for (const symbol of snapshotDifference.removedSymbols) {
-        try {
-          const labeledSymbol = await repository.getBySymbol(symbol);
-
-          console.log(`Removing symbol: ${symbol.toString()}`);
-          labeledSymbol.delete();
-
-          await repository.save(labeledSymbol);
-        } catch (error) {
-          console.error(`Error set symbol as new: ${symbol.toString()}`, error);
-        }
-      }
+      await repository.reset();
     } finally {
       await this.unitOfWork.release();
     }

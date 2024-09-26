@@ -4,7 +4,7 @@ import { FinancialModelingPrepService } from '../../historical-data/financial-mo
 import { ScreenerRepository } from '../domain/repository/screener.repository';
 import { StockTechnicalLabeler } from '../domain/service/stock-technical-labeler';
 import { AutoCommitUnitOfWork } from '../../../lib/unit-of-work/auto-commit-unit-of-work.service';
-import { LabeledScreenerSymbolPostgresDbRepository } from '../infra/repository/postgres/labeled-screener-symbol-postgres-db.repository';
+import { LabeledScreenerSymbolPostgresDbWriteRepository } from '../infra/repository/postgres/labeled-screener-symbol-postgres-db-write.repository';
 
 @Injectable()
 export class AnalyseScreenerCron {
@@ -16,7 +16,7 @@ export class AnalyseScreenerCron {
     private unitOfWork: AutoCommitUnitOfWork,
   ) {}
 
-  @Cron('1,16,31,46 * * * *')
+  @Cron('1,16,31,46 * * * *', { timeZone: 'America/Montreal' })
   async handleCron() {
     const { isTheStockMarketOpen } =
       await this.fmpService.getMarketOpeningInformation();
@@ -30,7 +30,13 @@ export class AnalyseScreenerCron {
     await this.unitOfWork.connect();
 
     try {
-      const repo = new LabeledScreenerSymbolPostgresDbRepository(
+      /*
+       * FIXME : I have to use instanciate the repository here because of the unit of work.
+       *  I should also use the TransactionalUnitOfWork instead of the AutoCommitUnitOfWork.
+       *  But the TransactionalUnitOfWork require a Request scope which is not available in the cron job.
+       *  This is a pretty big problem, but this related to nestjs, not my code
+       * */
+      const repo = new LabeledScreenerSymbolPostgresDbWriteRepository(
         this.unitOfWork,
       );
       const snapshot = await this.screenerRepository.search();

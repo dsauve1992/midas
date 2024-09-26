@@ -2,23 +2,23 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { IntegrationTestModule } from '../../../../../../lib/test/db-integration/integration-test.module';
 import { IntegrationTestService } from '../../../../../../lib/test/db-integration/integration-test.service';
 import { SymbolWithExchange } from '../../../../../stocks/domain/symbol-with-exchange';
-import { LabeledScreenerSymbolPostgresDbRepository } from '../labeled-screener-symbol-postgres-db.repository';
+import { LabeledScreenerSymbolPostgresDbWriteRepository } from '../labeled-screener-symbol-postgres-db-write.repository';
 import { LabeledScreenerSymbol } from '../../../../domain/model/labeled-screener.symbol';
 
 const AAPL = SymbolWithExchange.from('NASDAQ:AAPL');
 const CLFD = SymbolWithExchange.from('NASDAQ:CLFD');
 
 describe('WatchlistPostgresDbRepository specs', () => {
-  let repository: LabeledScreenerSymbolPostgresDbRepository;
+  let repository: LabeledScreenerSymbolPostgresDbWriteRepository;
   let integrationTestService: IntegrationTestService;
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [IntegrationTestModule],
-      providers: [LabeledScreenerSymbolPostgresDbRepository],
+      providers: [LabeledScreenerSymbolPostgresDbWriteRepository],
     }).compile();
 
-    repository = app.get(LabeledScreenerSymbolPostgresDbRepository);
+    repository = app.get(LabeledScreenerSymbolPostgresDbWriteRepository);
     integrationTestService = app.get(IntegrationTestService);
     await integrationTestService.start();
   });

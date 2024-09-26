@@ -9,8 +9,10 @@ import { AnalyseScreenerCron } from './cron/analyse-screener.cron';
 import { StockTechnicalAnalyser } from './domain/service/stock-technical-analyser';
 import { StockTechnicalLabeler } from './domain/service/stock-technical-labeler';
 import { TradingViewScreenerRepository } from './infra/repository/trading-view/trading-view-screener.repository';
-import { LabeledScreenerSymbolPostgresDbRepository } from './infra/repository/postgres/labeled-screener-symbol-postgres-db.repository';
+import { LabeledScreenerSymbolPostgresDbWriteRepository } from './infra/repository/postgres/labeled-screener-symbol-postgres-db-write.repository';
 import { RemoveOldScreenerElementCron } from './cron/remove-old-screener-elements.cron';
+import { GetScreenerUseCase } from './usecase/get-screener.use-case';
+import { LabeledScreenerSymbolPostgresDbReadRepository } from './infra/repository/postgres/labeled-screener-symbol-postgres-db.read-repository';
 
 @Module({
   controllers: [ScreenerRestController],
@@ -21,9 +23,14 @@ import { RemoveOldScreenerElementCron } from './cron/remove-old-screener-element
       useClass: TradingViewScreenerRepository,
     },
     {
-      provide: 'LabeledScreenerSymbolRepository',
-      useClass: LabeledScreenerSymbolPostgresDbRepository,
+      provide: 'LabeledScreenerSymbolWriteRepository',
+      useClass: LabeledScreenerSymbolPostgresDbWriteRepository,
     },
+    {
+      provide: 'LabeledScreenerSymbolReadRepository',
+      useClass: LabeledScreenerSymbolPostgresDbReadRepository,
+    },
+    GetScreenerUseCase,
     StockTechnicalAnalyser,
     StockTechnicalLabeler,
     AnalyseScreenerCron,
