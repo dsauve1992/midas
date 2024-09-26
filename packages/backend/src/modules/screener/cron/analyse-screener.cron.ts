@@ -16,7 +16,7 @@ export class AnalyseScreenerCron {
     private unitOfWork: AutoCommitUnitOfWork,
   ) {}
 
-  @Cron('29 9 * * *')
+  @Cron('1,16,31,46 * * * *')
   async handleCron() {
     const { isTheStockMarketOpen } =
       await this.fmpService.getMarketOpeningInformation();

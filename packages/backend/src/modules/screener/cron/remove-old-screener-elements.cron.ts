@@ -15,7 +15,7 @@ export class RemoveOldScreenerElementCron {
     private unitOfWork: AutoCommitUnitOfWork,
   ) {}
 
-  @Cron('1,16,31,46 * * * *')
+  @Cron('29 9 * * *')
   async handleCron() {
     const { isTheStockMarketOpen } =
       await this.fmpService.getMarketOpeningInformation();
