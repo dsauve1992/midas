@@ -20,15 +20,13 @@ export class StockTechnicalLabeler {
       body_length_perc_from_sma,
       volume_perc_from_sma,
       tr_from_atr,
-      body_perc,
     } = orderBy(events, 'date', 'desc')[0];
 
     if (
       breakout &&
-      body_length_perc_from_sma > 150 &&
+      body_length_perc_from_sma > 100 &&
       volume_perc_from_sma > 150 &&
-      tr_from_atr > 150 &&
-      body_perc > 60
+      tr_from_atr > 100
     ) {
       return [
         {
@@ -42,10 +40,6 @@ export class StockTechnicalLabeler {
         {
           title: 'TR from ATR',
           description: `${tr_from_atr}%`,
-        },
-        {
-          title: 'Body perc',
-          description: `${body_perc}%`,
         },
       ];
     }

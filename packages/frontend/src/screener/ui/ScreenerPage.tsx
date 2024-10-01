@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Chip, Grid } from "@mui/material";
 import { useScreener } from "./hooks/useScreener.ts";
 import { Helmet } from "react-helmet";
 import TradingViewTapeCard from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
@@ -40,12 +40,22 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
               width={"100%"}
               height={"100%"}
             >
-              <WatchlistGlobalToggleButton
-                symbolExchange={{
-                  symbol: selection.symbol,
-                  exchange: selection.exchange,
-                }}
-              />
+              <Box
+                display="flex"
+                flexDirection="row"
+                width={"100%"}
+                gap={"24px"}
+              >
+                <WatchlistGlobalToggleButton
+                  symbolExchange={{
+                    symbol: selection.symbol,
+                    exchange: selection.exchange,
+                  }}
+                />
+                {(selection.labels || []).map((label) => (
+                  <Chip label={`${label.title} : ${label.description}`} />
+                ))}
+              </Box>
               <TradingViewTapeCard
                 exchange={selection.exchange}
                 symbol={selection.symbol}
