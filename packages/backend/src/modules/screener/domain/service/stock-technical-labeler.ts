@@ -31,15 +31,15 @@ export class StockTechnicalLabeler {
       return [
         {
           title: 'Body length perc from SMA',
-          description: `${body_length_perc_from_sma}%`,
+          description: body_length_perc_from_sma.toFixed(2),
         },
         {
           title: 'Volume perc from SMA',
-          description: `${volume_perc_from_sma}%`,
+          description: volume_perc_from_sma.toFixed(2),
         },
         {
           title: 'TR from ATR',
-          description: `${tr_from_atr}%`,
+          description: tr_from_atr.toFixed(2),
         },
       ];
     }
