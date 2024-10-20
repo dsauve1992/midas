@@ -61,7 +61,11 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
                 symbol={selection.symbol}
                 withDateRanges={true}
                 interval={"W"}
-                movingAverages={[{ type: "SMA", length: 30 }]}
+                movingAverages={[
+                    { type: "SMA", length: 30 },
+                    { type: "EMA", length: 20 },
+                    { type: "EMA", length: 10 },
+                ]}
                 range={"60m"}
                 hideTopToolbar
               />
