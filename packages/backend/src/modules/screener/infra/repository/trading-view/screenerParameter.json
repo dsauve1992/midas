@@ -8,28 +8,29 @@
   ],
   "filter": [
     {
-      "left": "average_volume_10d_calc",
-      "operation": "greater",
-      "right": 200000
-    },
-    {
-      "left": "exchange",
-      "operation": "in_range",
-      "right": [
-        "AMEX",
-        "NASDAQ",
-        "NYSE"
-      ]
-    },
-    {
       "left": "close",
-      "operation": "greater",
-      "right": "SMA150"
+      "operation": "egreater",
+      "right": 20
     },
     {
-      "left": "high",
+      "left": "Perf.6M",
+      "operation": "greater",
+      "right": 30
+    },
+    {
+      "left": "EMA10|1W",
       "operation": "egreater",
-      "right": "High.6M"
+      "right": "EMA20|1W"
+    },
+    {
+      "left": "EMA20|1W",
+      "operation": "egreater",
+      "right": "SMA30|1W"
+    },
+    {
+      "left": "average_volume_30d_calc",
+      "operation": "greater",
+      "right": 300000
     }
   ],
   "ignore_unknown_fields": false,
