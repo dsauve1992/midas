@@ -10,17 +10,8 @@ WORKDIR /usr/src/app
 # Copy only the backend files (this avoids copying unnecessary files from monorepo)
 COPY . .
 
-# Install Node.js dependencies
-RUN yarn install --frozen-lockfile
-
-
 # Build the backend
 RUN yarn build
-
-
-WORKDIR /usr/src/app/dist/python-scripts
-# Install Python dependencies
-RUN pip install -r requirements.txt
 
 WORKDIR /usr/src/app
 
