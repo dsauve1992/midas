@@ -66,7 +66,7 @@ export const ScreenerPage: React.FunctionComponent<Props> = () => {
                     { type: "EMA", length: 20 },
                     { type: "EMA", length: 10 },
                 ]}
-                range={"60m"}
+                range={"12m"}
                 hideTopToolbar
               />
               <Grid container spacing={1}>

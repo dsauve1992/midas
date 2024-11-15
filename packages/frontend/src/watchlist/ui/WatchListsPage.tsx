@@ -38,7 +38,7 @@ const useStyles = makeStyles({
 export const WatchListsPage = () => {
   const classes = useStyles();
   const { data: watchlists } = useGetWatchlists();
-  const [interval, setInterval] = useState<"D" | "W">("D");
+  const [interval, setInterval] = useState<"D" | "W">("W");
 
   const [selectedWatchlistIndex, setSelectedWatchlistIndex] =
     useState<number>(0);

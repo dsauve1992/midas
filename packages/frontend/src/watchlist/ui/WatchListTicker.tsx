@@ -61,7 +61,7 @@ export const WatchListTicker = ({
               symbol={symbol}
               exchange={exchange}
               interval={interval}
-              range={"60m"}
+              range={"12m"}
               movingAverages={movingAverages}
             />
           )}
