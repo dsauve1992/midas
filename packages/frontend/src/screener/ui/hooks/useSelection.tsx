@@ -40,6 +40,7 @@ export function useSelection<T>(collection: T[]) {
 
   return {
     selection,
+    goTo: setCurrentIndex,
     index: currentIndex,
     total: collection.length,
   };

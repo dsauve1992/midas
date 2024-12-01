@@ -1,29 +1,56 @@
 import { SymbolWithExchange } from '../../../stocks/domain/symbol-with-exchange';
 
-export class SnapshotDifference {
+export class ScreenerEntry {
+  symbol: SymbolWithExchange;
+  sector: string;
+  industry: string;
+  capitalisation: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+  ema10: number;
+  ema20: number;
+  sma30: number;
+
   constructor(
-    readonly newSymbols: SymbolWithExchange[],
-    readonly removedSymbols: SymbolWithExchange[],
-    readonly sameSymbols: SymbolWithExchange[],
-  ) {}
+    symbol: SymbolWithExchange,
+    sector: string,
+    industry: string,
+    capitalisation: number,
+    open: number,
+    high: number,
+    low: number,
+    close: number,
+    volume: number,
+    ema10: number,
+    ema20: number,
+    sma30: number,
+  ) {
+    this.symbol = symbol;
+    this.sector = sector;
+    this.industry = industry;
+    this.capitalisation = capitalisation;
+    this.open = open;
+    this.high = high;
+    this.low = low;
+    this.close = close;
+    this.volume = volume;
+    this.ema10 = ema10;
+    this.ema20 = ema20;
+    this.sma30 = sma30;
+  }
 }
 
 export class ScreenerSnapshot {
-  readonly symbols: SymbolWithExchange[];
+  readonly entries: ScreenerEntry[];
 
-  constructor(symbols: SymbolWithExchange[]) {
-    this.symbols = symbols;
+  constructor(symbols: ScreenerEntry[]) {
+    this.entries = symbols;
   }
 
-  differenceFrom(other: ScreenerSnapshot) {
-    return new SnapshotDifference(
-      this.symbols.filter((symbol) => !other.symbols.includes(symbol)),
-      other.symbols.filter((symbol) => !this.symbols.includes(symbol)),
-      this.symbols.filter((symbol) => other.symbols.includes(symbol)),
-    );
-  }
-
-  public [Symbol.iterator](): Iterator<SymbolWithExchange> {
-    return this.symbols[Symbol.iterator]();
+  public [Symbol.iterator](): Iterator<ScreenerEntry> {
+    return this.entries[Symbol.iterator]();
   }
 }
