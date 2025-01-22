@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { RatingModule } from '../rating/rating.module';
 import { HistoricalDataModule } from '../historical-data/historical-data.module';
-import { TelegramModule } from '../telegram/telegram.module';
 import { ScreenerRestController } from './controller/screener.rest.controller';
 
 import { TradingViewScreenerRepository } from './infra/repository/trading-view/trading-view-screener.repository';
@@ -12,7 +11,7 @@ import { LabeledScreenerSymbolPostgresDbReadRepository } from './infra/repositor
 
 @Module({
   controllers: [ScreenerRestController],
-  imports: [HttpModule, RatingModule, HistoricalDataModule, TelegramModule],
+  imports: [HttpModule, RatingModule, HistoricalDataModule],
   providers: [
     {
       provide: 'ScreenerRepository',

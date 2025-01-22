@@ -12,7 +12,6 @@ import { AuthorizationModule } from './modules/authorization/authorization.modul
 import { BreakoutModule } from './modules/breakout/breakout.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
-import { TelegramModule } from './modules/telegram/telegram.module';
 import { AppController } from './app.controller';
 import { UnitOfWorkModule } from './lib/unit-of-work/unit-of-work.module';
 import { SentryModule } from '@sentry/nestjs/setup';
@@ -35,7 +34,6 @@ import { SentryModule } from '@sentry/nestjs/setup';
     AuthorizationModule,
     BreakoutModule,
     WatchlistModule,
-    TelegramModule,
     UnitOfWorkModule,
   ],
   controllers: [AppController],

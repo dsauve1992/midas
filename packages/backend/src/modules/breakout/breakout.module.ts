@@ -5,7 +5,6 @@ import { CheckForBreakoutUseCase } from './usecase/check-for-breakout.use-case';
 import { BreakoutScheduler } from './scheduler/breakout.scheduler';
 import { WatchlistModule } from '../watchlist/watchlist.module';
 import { BreakoutEventListener } from './listener/breakout-event.listener';
-import { TelegramModule } from '../telegram/telegram.module';
 
 @Module({
   providers: [
@@ -14,6 +13,6 @@ import { TelegramModule } from '../telegram/telegram.module';
     BreakoutScheduler,
     BreakoutEventListener,
   ],
-  imports: [HistoricalDataModule, WatchlistModule, TelegramModule],
+  imports: [HistoricalDataModule, WatchlistModule],
 })
 export class BreakoutModule {}
