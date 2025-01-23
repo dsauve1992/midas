@@ -1,22 +1,14 @@
-import { BaseUseCase } from '../../../lib/base-use-case';
 import { Inject } from '@nestjs/common';
 import { ScreenerRepository } from '../domain/repository/screener.repository';
-import { UnitOfWork } from '../../../lib/unit-of-work/unit-of-work';
 import { NewScreenerEntryFrontendDto } from '../../../shared-types/new-screener-entry-frontend.dto';
 
-export class GetScreenerUseCase extends BaseUseCase<
-  void,
-  NewScreenerEntryFrontendDto[]
-> {
+export class GetScreenerUseCase {
   constructor(
     @Inject('ScreenerRepository')
     private screenerRepository: ScreenerRepository,
-    @Inject('UNIT_OF_WORK') unitOfWork: UnitOfWork,
-  ) {
-    super(unitOfWork);
-  }
+  ) {}
 
-  async executeUseCase(): Promise<NewScreenerEntryFrontendDto[]> {
+  async execute(): Promise<NewScreenerEntryFrontendDto[]> {
     const snapshot = await this.screenerRepository.search();
 
     return snapshot.entries.map((entry) => {
