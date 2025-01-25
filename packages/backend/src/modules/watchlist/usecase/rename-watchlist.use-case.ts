@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseUseCase } from '../../../lib/base-use-case';
+import { BaseMutationUseCase } from '../../../lib/base-mutation-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
 import { UserWatchlistsAggregateRepository } from '../domain/repository/user-watchlists-aggregate.repository';
 import { NonEmptyString } from '../../../lib/domain/NonEmptyString';
@@ -11,7 +11,7 @@ interface RenameWatchlistUseCaseRequest {
 }
 
 @Injectable()
-export class RenameWatchlistUseCase extends BaseUseCase<RenameWatchlistUseCaseRequest> {
+export class RenameWatchlistUseCase extends BaseMutationUseCase<RenameWatchlistUseCaseRequest> {
   constructor(
     @Inject('UserWatchlistsAggregateRepository')
     private userWatchlistsAggregateRepository: UserWatchlistsAggregateRepository,

@@ -1,6 +1,6 @@
 import { UnitOfWork } from './unit-of-work/unit-of-work';
 
-export abstract class BaseUseCase<T, U = void> {
+export abstract class BaseMutationUseCase<T, U = void> {
   protected constructor(protected readonly unitOfWork: UnitOfWork) {}
 
   async execute(data: T): Promise<U> {

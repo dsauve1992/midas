@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseUseCase } from '../../../lib/base-use-case';
+import { BaseMutationUseCase } from '../../../lib/base-mutation-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
 import { WatchlistWriteRepository } from '../domain/repository/watchlist.repository';
 import { SymbolWithExchange } from '../../stocks/domain/symbol-with-exchange';
@@ -11,7 +11,7 @@ interface AddSymbolToWatchlistUseCaseRequest {
 }
 
 @Injectable()
-export class AddSymbolToWatchlistUseCase extends BaseUseCase<AddSymbolToWatchlistUseCaseRequest> {
+export class AddSymbolToWatchlistUseCase extends BaseMutationUseCase<AddSymbolToWatchlistUseCaseRequest> {
   constructor(
     @Inject('WatchlistWriteRepository')
     private watchlistRepository: WatchlistWriteRepository,

@@ -9,7 +9,6 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { StocksModule } from './modules/stocks/stocks.module';
 import { SearchModule } from './modules/search/search.module';
 import { AuthorizationModule } from './modules/authorization/authorization.module';
-import { BreakoutModule } from './modules/breakout/breakout.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
 import { AppController } from './app.controller';
@@ -32,7 +31,6 @@ import { SentryModule } from '@sentry/nestjs/setup';
     StocksModule,
     SearchModule,
     AuthorizationModule,
-    BreakoutModule,
     WatchlistModule,
     UnitOfWorkModule,
   ],

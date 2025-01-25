@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { FinancialModelingPrepService } from '../../../historical-data/financial-modeling-prep.service';
 import { subWeeks } from 'date-fns';
-import { TechnicalAnalysis } from '../../../breakout/domain/TechnicalAnalysis';
+import { TechnicalAnalysis } from '../TechnicalAnalysis';
 
 @Injectable()
 export class TechnicalIndicatorService {

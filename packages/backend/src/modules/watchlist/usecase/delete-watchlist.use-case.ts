@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseUseCase } from '../../../lib/base-use-case';
+import { BaseMutationUseCase } from '../../../lib/base-mutation-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
 import { UserWatchlistsAggregateRepository } from '../domain/repository/user-watchlists-aggregate.repository';
 
@@ -9,7 +9,7 @@ interface DeleteWatchlistUseCaseRequest {
 }
 
 @Injectable()
-export class DeleteWatchlistUseCase extends BaseUseCase<DeleteWatchlistUseCaseRequest> {
+export class DeleteWatchlistUseCase extends BaseMutationUseCase<DeleteWatchlistUseCaseRequest> {
   constructor(
     @Inject('UserWatchlistsAggregateRepository')
     private userWatchlistsAggregateRepository: UserWatchlistsAggregateRepository,

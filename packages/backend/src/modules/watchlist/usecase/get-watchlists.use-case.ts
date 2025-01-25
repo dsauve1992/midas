@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { WatchlistReadOnlyRepository } from '../domain/repository/watchlist.repository';
-import { BaseUseCase } from '../../../lib/base-use-case';
+import { BaseMutationUseCase } from '../../../lib/base-mutation-use-case';
 import { TransactionalUnitOfWork } from '../../../lib/unit-of-work/transactional-unit-of-work.service';
 import { Watchlist } from '../domain/model/watchlist';
 
@@ -9,7 +9,7 @@ interface GetWatchlistUseCaseRequest {
 }
 
 @Injectable()
-export class GetWatchlistsUseCase extends BaseUseCase<
+export class GetWatchlistsUseCase extends BaseMutationUseCase<
   GetWatchlistUseCaseRequest,
   Watchlist[]
 > {
