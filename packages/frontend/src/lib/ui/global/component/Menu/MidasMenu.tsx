@@ -61,6 +61,12 @@ const MidasMenu = ({ ref }: { ref?: React.Ref<HTMLElement> }) => {
             <Button variant="text" onClick={() => navigate("/watchlist")}>
               Watchlist
             </Button>
+            <Button
+              variant="text"
+              onClick={() => navigate("/position-management")}
+            >
+              Position Management
+            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
