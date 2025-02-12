@@ -14,6 +14,7 @@ import { WatchlistModule } from './modules/watchlist/watchlist.module';
 import { AppController } from './app.controller';
 import { UnitOfWorkModule } from './lib/unit-of-work/unit-of-work.module';
 import { SentryModule } from '@sentry/nestjs/setup';
+import { PositionModule } from './modules/position/position.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { SentryModule } from '@sentry/nestjs/setup';
     AuthorizationModule,
     WatchlistModule,
     UnitOfWorkModule,
+    PositionModule,
   ],
   controllers: [AppController],
 })
