@@ -14,23 +14,28 @@ jest.mock('../../../../../lib/domain/IdGenerator');
 const AAPL = SymbolWithExchange.from('NASDAQ:AAPL');
 const AN_ID = uuidv4();
 
+const NOW = new Date('2020-01-01');
+
 describe('CreatePositionWishUseCase', () => {
   let useCase: CreatePositionWishUseCase;
   let positionWishRepository: DeepMocked<PositionWishRepository>;
+
+  beforeAll(() => jest.useFakeTimers().setSystemTime(NOW));
+  afterAll(() => jest.useRealTimers());
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       providers: [
         CreatePositionWishUseCase,
         {
-          provide: PositionWishRepository,
+          provide: 'PositionWishRepository',
           useValue: createMock<PositionWishRepository>(),
         },
       ],
     }).compile();
 
     useCase = app.get(CreatePositionWishUseCase);
-    positionWishRepository = app.get(PositionWishRepository);
+    positionWishRepository = app.get('PositionWishRepository');
 
     jest.mocked(IdGenerator.generateUUIDv4).mockReturnValue(AN_ID);
   });
@@ -43,6 +48,7 @@ describe('CreatePositionWishUseCase', () => {
       portfolioValue: 1000,
       riskPercentage: Percentage.from(0.005),
       quantity: 10,
+      userId: '1',
     });
 
     expect(positionWishRepository.save).toHaveBeenCalledWith(
@@ -54,6 +60,8 @@ describe('CreatePositionWishUseCase', () => {
         1000,
         Percentage.from(0.005),
         10,
+        '1',
+        NOW,
       ),
     );
   });

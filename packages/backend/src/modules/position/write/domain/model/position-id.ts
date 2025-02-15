@@ -10,4 +10,8 @@ export class PositionId {
   static from(value: string): PositionId {
     return new PositionId(value);
   }
+
+  toString(): string {
+    return this.value;
+  }
 }

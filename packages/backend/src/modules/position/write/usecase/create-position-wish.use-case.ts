@@ -2,9 +2,10 @@ import { SymbolWithExchange } from '../../../stocks/domain/symbol-with-exchange'
 import { Percentage } from '../../../../lib/domain/Percentage';
 import { PositionWishRepository } from '../domain/repository/position-wish.repository';
 import { PositionWish } from '../domain/model/position-wish';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 export type CreatePositionListRequest = {
+  userId: string;
   symbol: SymbolWithExchange;
   buyPrice: number;
   stopLoss: number;
@@ -16,6 +17,7 @@ export type CreatePositionListRequest = {
 @Injectable()
 export class CreatePositionWishUseCase {
   constructor(
+    @Inject('PositionWishRepository')
     private readonly positionWishRepository: PositionWishRepository,
   ) {}
 
@@ -27,6 +29,7 @@ export class CreatePositionWishUseCase {
       request.portfolioValue,
       request.riskPercentage,
       request.quantity,
+      request.userId,
     );
 
     await this.positionWishRepository.save(positionWish);

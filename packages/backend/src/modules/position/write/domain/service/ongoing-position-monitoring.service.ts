@@ -1,5 +1,6 @@
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
-import { OnGoingPositionRepository } from '../repository/ongoing-position.repository';
+import { OngoingPositionRepository } from '../repository/ongoing-position.repository';
+import { Inject } from '@nestjs/common';
 
 export interface RealtimePriceService {
   getPrice(symbol: SymbolWithExchange): Promise<number>;
@@ -7,18 +8,20 @@ export interface RealtimePriceService {
 
 export class OngoingPositionMonitoringService {
   constructor(
-    private readonly onGoingPositionRepository: OnGoingPositionRepository,
+    @Inject('OngoingPositionRepository')
+    private readonly ongoingPositionRepository: OngoingPositionRepository,
     private readonly realtimePriceService: RealtimePriceService,
   ) {}
 
-  async monitorPositionWish(): Promise<void> {
-    const ongoingPositions = await this.onGoingPositionRepository.getAll();
+  async run(): Promise<void> {
+    const ongoingPositions = await this.ongoingPositionRepository.getAll();
 
     for (const position of ongoingPositions) {
       const currentPrice = await this.realtimePriceService.getPrice(
         position.symbol,
       );
       await position.check(currentPrice);
+      await this.ongoingPositionRepository.save(position);
     }
   }
 }
