@@ -1,8 +1,12 @@
 import { MidasBackendClient } from "../../api/MidasBackendClient.ts";
+import { CreatePositionRequestDto } from "backend/src/shared-types/position";
 
 export class PositionClient extends MidasBackendClient {
-  async createPositionWish(): Promise<void> {
-    return; // TODO POST /position/wish { formData: PositionWishFormData }
+  async createPositionWish(request: CreatePositionRequestDto): Promise<void> {
+    await this.post<CreatePositionRequestDto, void>(
+      `${this.getBaseUrl()}/wish`,
+      request,
+    );
   }
 
   protected getBaseUrl(): string {

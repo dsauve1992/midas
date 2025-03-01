@@ -44,7 +44,7 @@ const MidasMenu = ({ ref }: { ref?: React.Ref<HTMLElement> }) => {
   return (
     <Box display="flex" flexBasis="auto" ref={ref}>
       <AppBar position="relative">
-        <Toolbar>
+        <Toolbar sx={{ display: "flex", gap: 2 }}>
           <IconButton onClick={() => navigate("/")}>
             <HomeIcon />
           </IconButton>

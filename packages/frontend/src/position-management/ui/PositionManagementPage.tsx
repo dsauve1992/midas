@@ -1,13 +1,53 @@
 import { Box, Button, TextField } from "@mui/material";
 import { Helmet } from "react-helmet";
-import { useState } from "react";
-import { PositionWishFormData } from "../domain/PositionWishFormData.ts";
 import SearchBar from "../../search/ui/SearchBar/SearchBar.tsx";
 import TradingViewTapeCardWidget from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
+import { useCreatePositionWish } from "../hooks/useCreatePositionWish.ts";
+import { toast } from "react-toastify";
+import { Controller, useForm } from "react-hook-form";
+import { SymbolWithExchange } from "../../ticker/domain/SymbolWithExchange.ts";
+
+export type PositionWishFormData = {
+  symbolWithExchange: SymbolWithExchange | null;
+  portfolioValue: number;
+  buyPrice: number;
+  stopLoss: number;
+  riskPercentage: number;
+};
+
+const DEFAULT_RISK_PERCENTAGE = 0.5;
 
 export const PositionManagementPage = () => {
-  const [positionWishFormData, setPositionWishFormData] =
-    useState<PositionWishFormData>(PositionWishFormData.init());
+  const { handleSubmit, watch, control } = useForm<PositionWishFormData>({
+    defaultValues: {
+      symbolWithExchange: null,
+      portfolioValue: 0,
+      buyPrice: 0,
+      stopLoss: 0,
+      riskPercentage: DEFAULT_RISK_PERCENTAGE,
+    },
+  });
+
+  const { create, processing } = useCreatePositionWish({
+    onSuccess: () => toast.success(`successfully created position wish`),
+    onError: () => toast.error("Ouf!"),
+  });
+
+  const submitForm = (data: PositionWishFormData) => {
+    create({
+      request: {
+        symbol: `${data.symbolWithExchange!.symbol}.${
+          data.symbolWithExchange!.exchange
+        }`,
+        portfolioValue: data.portfolioValue,
+        buyPrice: data.buyPrice,
+        stopLoss: data.stopLoss,
+        riskPercentage: data.riskPercentage,
+      },
+    });
+  };
+
+  const selectedSymbolWithExchange = watch("symbolWithExchange");
 
   return (
     <Box display={"flex"} flexDirection={"column"} width={"100%"}>
@@ -26,89 +66,121 @@ export const PositionManagementPage = () => {
           component="form"
           display={"flex"}
           flexDirection="column"
-          p={1}
+          p={2}
           gap={4}
         >
-          <SearchBar
-            onSelect={({ symbol, exchangeShortName: exchange }) =>
-              setPositionWishFormData(
-                positionWishFormData.updateSymbol({ exchange, symbol }),
-              )
-            }
+          <Controller
+            name="symbolWithExchange"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <SearchBar
+                onSelect={({ symbol, exchangeShortName: exchange }) =>
+                  field.onChange({ symbol, exchange })
+                }
+              />
+            )}
           />
-          {positionWishFormData.symbol && (
+
+          {selectedSymbolWithExchange && (
             <>
-              <TextField
-                label="Risk Percentage"
-                variant="outlined"
-                value={positionWishFormData.riskPercentage}
-                onChange={(e) =>
-                  setPositionWishFormData(
-                    positionWishFormData.updateRiskPercentage(
-                      Number.parseFloat(e.target.value),
-                    ),
-                  )
-                }
+              <Controller
+                name="riskPercentage"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField
+                    label="Risk Percentage"
+                    variant="outlined"
+                    value={field.value}
+                    onChange={(e) =>
+                      field.onChange(Number.parseFloat(e.target.value))
+                    }
+                  />
+                )}
               />
-              <TextField
-                label="Portfolio Value"
-                type="number"
-                variant="outlined"
-                value={positionWishFormData.portfolioValue}
-                onChange={(e) =>
-                  setPositionWishFormData(
-                    positionWishFormData.updatePortfolioValue(
-                      Number.parseFloat(e.target.value),
-                    ),
-                  )
-                }
+
+              <Controller
+                name="portfolioValue"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField
+                    label="Portfolio Value"
+                    type="number"
+                    variant="outlined"
+                    value={field.value}
+                    onChange={(e) =>
+                      field.onChange(Number.parseFloat(e.target.value))
+                    }
+                  />
+                )}
               />
-              <TextField
-                label="Buy Price"
-                type="number"
-                variant="outlined"
-                value={positionWishFormData.buyPrice}
-                onChange={(e) =>
-                  setPositionWishFormData(
-                    positionWishFormData.updateBuyPrice(
-                      Number.parseFloat(e.target.value),
-                    ),
-                  )
-                }
+
+              <Controller
+                name="buyPrice"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField
+                    label="Buy Price"
+                    type="number"
+                    variant="outlined"
+                    value={field.value}
+                    onChange={(e) =>
+                      field.onChange(Number.parseFloat(e.target.value))
+                    }
+                  />
+                )}
               />
-              <TextField
-                label="Stop Loss Price"
-                type="number"
-                variant="outlined"
-                value={positionWishFormData.stopLoss}
-                onChange={(e) =>
-                  setPositionWishFormData(
-                    positionWishFormData.updateStopLoss(
-                      Number.parseFloat(e.target.value),
-                    ),
-                  )
-                }
+
+              <Controller
+                name="stopLoss"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField
+                    label="Stop Loss Price"
+                    type="number"
+                    variant="outlined"
+                    value={field.value}
+                    onChange={(e) =>
+                      field.onChange(Number.parseFloat(e.target.value))
+                    }
+                  />
+                )}
               />
+
               <TextField
                 label="Nb Shares"
                 type="number"
                 disabled
                 variant="outlined"
-                value={positionWishFormData.stopLoss}
+                value={computeNbShares(
+                  watch("portfolioValue"),
+                  watch("buyPrice"),
+                  watch("riskPercentage"),
+                  watch("stopLoss"),
+                )}
               />
-              <Button fullWidth variant="contained">
+              <Button
+                fullWidth
+                disabled={processing}
+                variant="contained"
+                onClick={handleSubmit(submitForm)}
+              >
                 Save
               </Button>
             </>
           )}
         </Box>
         <Box flex={1} p={1}>
-          {positionWishFormData.symbol && (
+          {selectedSymbolWithExchange && (
             <TradingViewTapeCardWidget
-              exchange={positionWishFormData.symbol.exchange}
+              exchange={selectedSymbolWithExchange.exchange}
               interval={"W"}
-              range={"6m"}
-              symbol={positionWishFormData.symbol.symbol}
+              range={"12m"}
+              symbol={selectedSymbolWithExchange.symbol}
             />
           )}
         </Box>
@@ -116,3 +188,14 @@ export const PositionManagementPage = () => {
     </Box>
   );
 };
+
+function computeNbShares(
+  portfolioValue: number,
+  buyPrice: number,
+  riskPercentage: number,
+  stopLoss: number,
+) {
+  return Math.floor(
+    (portfolioValue * (riskPercentage / 100)) / (buyPrice - stopLoss),
+  );
+}

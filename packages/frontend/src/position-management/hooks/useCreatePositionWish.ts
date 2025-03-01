@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "react-query";
-import { PositionWishFormData } from "../domain/PositionWishFormData.ts";
 import { useApiClientInstance } from "../../api/useApiClient.ts";
 import { PositionClient } from "../client/PositionClient.ts";
+import { CreatePositionRequestDto } from "backend/src/shared-types/position";
 
 export type useCreatePositionWishProps = {
   onSuccess?: () => void;
@@ -16,8 +16,8 @@ export const useCreatePositionWish = ({
   const instance = useApiClientInstance(PositionClient);
 
   const { mutate, isLoading } = useMutation(
-    ({ formData }: { formData: PositionWishFormData }) =>
-      instance.createPositionWish(formData),
+    ({ request }: { request: CreatePositionRequestDto }) =>
+      instance.createPositionWish(request),
     {
       onSuccess: async () => {
         await client.invalidateQueries(["positions"]);
