@@ -23,11 +23,6 @@
       "right": 20
     },
     {
-      "left": "Perf.6M",
-      "operation": "greater",
-      "right": 30
-    },
-    {
       "left": "EMA10|1W",
       "operation": "egreater",
       "right": "EMA20|1W"
