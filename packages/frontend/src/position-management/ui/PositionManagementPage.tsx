@@ -18,15 +18,13 @@ export type PositionWishFormData = {
 const DEFAULT_RISK_PERCENTAGE = 0.5;
 
 export const PositionManagementPage = () => {
-  const { handleSubmit, watch, control } = useForm<PositionWishFormData>({
-    defaultValues: {
-      symbolWithExchange: null,
-      portfolioValue: 0,
-      buyPrice: 0,
-      stopLoss: 0,
-      riskPercentage: DEFAULT_RISK_PERCENTAGE,
-    },
-  });
+  const { handleSubmit, watch, control, formState } =
+    useForm<PositionWishFormData>({
+      defaultValues: {
+        symbolWithExchange: null,
+        riskPercentage: DEFAULT_RISK_PERCENTAGE,
+      },
+    });
 
   const { create, processing } = useCreatePositionWish({
     onSuccess: () => toast.success(`successfully created position wish`),
@@ -36,10 +34,15 @@ export const PositionManagementPage = () => {
   const submitForm = (data: PositionWishFormData) => {
     create({
       request: {
-        symbol: `${data.symbolWithExchange!.symbol}.${
+        symbol: `${data.symbolWithExchange!.symbol}:${
           data.symbolWithExchange!.exchange
         }`,
-        portfolioValue: data.portfolioValue,
+        nbShares: computeNbShares(
+          data.portfolioValue,
+          data.buyPrice,
+          data.riskPercentage,
+          data.stopLoss,
+        ),
         buyPrice: data.buyPrice,
         stopLoss: data.stopLoss,
         riskPercentage: data.riskPercentage,
@@ -163,9 +166,10 @@ export const PositionManagementPage = () => {
                   watch("stopLoss"),
                 )}
               />
+
               <Button
                 fullWidth
-                disabled={processing}
+                disabled={processing || !formState.isValid}
                 variant="contained"
                 onClick={handleSubmit(submitForm)}
               >

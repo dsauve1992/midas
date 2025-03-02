@@ -1,7 +1,7 @@
 export type CreatePositionRequestDto = {
   symbol: string;
-  portfolioValue: number;
   buyPrice: number;
   stopLoss: number;
+  nbShares: number;
   riskPercentage: number;
 };

@@ -5,34 +5,33 @@ import { PositionId } from './position-id';
 export class PositionWish {
   constructor(
     readonly id: PositionId,
+    readonly userId: string,
     readonly symbol: SymbolWithExchange,
     readonly buyPrice: number,
     readonly stopLoss: number,
-    readonly portfolioTotalValue: number,
     readonly riskPercentage: Percentage,
     readonly quantity: number,
-    readonly userId: string,
     readonly createdAt: Date,
+    readonly updatedAt: Date,
   ) {}
 
   static new(
+    userId: string,
     symbol: SymbolWithExchange,
     buyPrice: number,
     stopLoss: number,
-    portofolioTotalValue: number,
     riskPercentage: Percentage,
     quantity: number,
-    userId: string,
   ) {
     return new PositionWish(
       PositionId.new(),
+      userId,
       symbol,
       buyPrice,
       stopLoss,
-      portofolioTotalValue,
       riskPercentage,
       quantity,
-      userId,
+      new Date(),
       new Date(),
     );
   }

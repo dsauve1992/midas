@@ -3,35 +3,45 @@ import { Percentage } from '../../../../lib/domain/Percentage';
 import { PositionWishRepository } from '../domain/repository/position-wish.repository';
 import { PositionWish } from '../domain/model/position-wish';
 import { Inject, Injectable } from '@nestjs/common';
+import { BaseMutationUseCase } from '../../../../lib/base-mutation-use-case';
+import { TransactionalUnitOfWork } from '../../../../lib/unit-of-work/transactional-unit-of-work.service';
 
-export type CreatePositionListRequest = {
+export type CreatePositionWishRequest = {
   userId: string;
   symbol: SymbolWithExchange;
   buyPrice: number;
   stopLoss: number;
-  portfolioValue: number;
   riskPercentage: Percentage;
   quantity: number;
 };
 
 @Injectable()
-export class CreatePositionWishUseCase {
+export class CreatePositionWishUseCase extends BaseMutationUseCase<
+  CreatePositionWishRequest,
+  PositionWish
+> {
   constructor(
     @Inject('PositionWishRepository')
     private readonly positionWishRepository: PositionWishRepository,
-  ) {}
+    @Inject('UNIT_OF_WORK') unitOfWork: TransactionalUnitOfWork,
+  ) {
+    super(unitOfWork);
+  }
 
-  async execute(request: CreatePositionListRequest): Promise<void> {
+  protected async executeUseCase(
+    request: CreatePositionWishRequest,
+  ): Promise<PositionWish> {
     const positionWish = PositionWish.new(
+      request.userId,
       request.symbol,
       request.buyPrice,
       request.stopLoss,
-      request.portfolioValue,
       request.riskPercentage,
       request.quantity,
-      request.userId,
     );
 
     await this.positionWishRepository.save(positionWish);
+
+    return positionWish;
   }
 }
