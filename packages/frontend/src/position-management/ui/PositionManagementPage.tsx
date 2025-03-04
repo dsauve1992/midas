@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { Helmet } from "react-helmet";
 import SearchBar from "../../search/ui/SearchBar/SearchBar.tsx";
 import TradingViewTapeCardWidget from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
@@ -6,6 +6,8 @@ import { useCreatePositionWish } from "../hooks/useCreatePositionWish.ts";
 import { toast } from "react-toastify";
 import { Controller, useForm } from "react-hook-form";
 import { SymbolWithExchange } from "../../ticker/domain/SymbolWithExchange.ts";
+import { useGetPositions } from "../hooks/useGetPositions.ts";
+import { PositionWishCard } from "./component/PositionWishCard.tsx";
 
 export type PositionWishFormData = {
   symbolWithExchange: SymbolWithExchange | null;
@@ -26,6 +28,8 @@ export const PositionManagementPage = () => {
       },
     });
 
+  const { data } = useGetPositions();
+
   const { create, processing } = useCreatePositionWish({
     onSuccess: () => toast.success(`successfully created position wish`),
     onError: () => toast.error("Ouf!"),
@@ -34,8 +38,8 @@ export const PositionManagementPage = () => {
   const submitForm = (data: PositionWishFormData) => {
     create({
       request: {
-        symbol: `${data.symbolWithExchange!.symbol}:${
-          data.symbolWithExchange!.exchange
+        symbol: `${data.symbolWithExchange!.exchange}:${
+          data.symbolWithExchange!.symbol
         }`,
         nbShares: computeNbShares(
           data.portfolioValue,
@@ -57,6 +61,22 @@ export const PositionManagementPage = () => {
       <Helmet>
         <title>Position Management - Midas</title>
       </Helmet>
+
+      <Grid container spacing={2}>
+        {data && data?.length > 0 ? (
+          data?.map((position) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={position.id}>
+              <PositionWishCard position={position} />
+            </Grid>
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <Typography variant="body1" align="center">
+              No position wishes found. Create one to get started.
+            </Typography>
+          </Grid>
+        )}
+      </Grid>
 
       <Box
         display="flex"

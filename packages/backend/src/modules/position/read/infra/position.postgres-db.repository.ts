@@ -8,10 +8,10 @@ interface PositionWishRow {
   id: string;
   user_id: string;
   symbol_with_exchange: string;
-  nb_shares: number;
-  risk_percentage: number;
-  target_buy_price: number;
-  stop_loss: number;
+  nb_shares: string;
+  risk_percentage: string;
+  target_buy_price: string;
+  stop_loss: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -23,11 +23,11 @@ export class PositionPostgresDbRepository implements PositionRepository {
   async getAllByUserId(userId: string): Promise<PositionModel[]> {
     const { rows } = await this.pool.query<PositionWishRow>(
       `
-                    SELECT *
-                    FROM position_wishes
-                    WHERE user_id = $1
-                    ORDER BY created_at DESC
-                `,
+                SELECT *
+                FROM position_wishes
+                WHERE user_id = $1
+                ORDER BY created_at DESC
+            `,
       [userId],
     );
 
@@ -35,16 +35,18 @@ export class PositionPostgresDbRepository implements PositionRepository {
   }
 
   private mapToEntity(row: PositionWishRow): PositionModel {
-    return new PositionModel(
-      row.id,
-      row.user_id,
-      SymbolWithExchange.from(row.symbol_with_exchange),
-      row.nb_shares,
-      row.target_buy_price,
-      row.stop_loss,
-      row.risk_percentage,
-      row.created_at,
-      row.updated_at,
-    );
+    console.log(row);
+
+    return {
+      id: row.id,
+      userId: row.user_id,
+      symbol: SymbolWithExchange.from(row.symbol_with_exchange),
+      quantity: Number.parseInt(row.nb_shares),
+      buyPrice: Number.parseFloat(row.target_buy_price),
+      stopLoss: Number.parseFloat(row.stop_loss),
+      riskPercentage: Number.parseFloat(row.risk_percentage),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
   }
 }
