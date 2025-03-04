@@ -1,3 +1,5 @@
+import { PositionModel } from '../modules/position/read/model/PositionModel';
+
 export type CreatePositionRequestDto = {
   symbol: string;
   buyPrice: number;
@@ -5,3 +7,5 @@ export type CreatePositionRequestDto = {
   nbShares: number;
   riskPercentage: number;
 };
+
+export type PositionModelDto = PositionModel;

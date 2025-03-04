@@ -1,16 +1,19 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
 import { CreatePositionRequestDto } from '../../shared-types/position';
 import { CreatePositionWishUseCase } from './write/usecase/create-position-wish.use-case';
 import { Percentage } from '../../lib/domain/Percentage';
 import { SymbolWithExchange } from '../stocks/domain/symbol-with-exchange';
 import { User } from '../authorization/User.param';
 import { AuthGuard } from '@nestjs/passport';
+import { PositionRepository } from './read/position.repository';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('position')
 export class PositionController {
   constructor(
     private readonly createPositionWishUseCase: CreatePositionWishUseCase,
+    @Inject('PositionReadRepository')
+    private readonly positionRepository: PositionRepository,
   ) {}
 
   @Post('/wish')
@@ -28,5 +31,10 @@ export class PositionController {
     });
 
     return positionWish.id;
+  }
+
+  @Get('/')
+  async queryPosition(@User() user: any) {
+    return this.positionRepository.getAllByUserId(user.sub);
   }
 }
