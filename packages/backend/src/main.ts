@@ -23,6 +23,7 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new SentryFilter(httpAdapter));
   app.enableCors();
+  app.enableShutdownHooks();
   await app.init();
 
   http.createServer(server).listen(3000);
