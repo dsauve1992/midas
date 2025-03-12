@@ -53,7 +53,13 @@ export const PositionWishCard = ({ position }: Props) => {
 
   return (
     <Card className={classes.card} variant="outlined">
-      <CardContent>
+      <Box className={classes.cardBackground}>
+        <Box
+          className={classes.logoBackground}
+          style={{ backgroundImage: `url(${logoUrl})` }}
+        />
+      </Box>
+      <CardContent className={classes.content}>
         <Grid container spacing={2}>
           {/* Symbol and Logo */}
           <Grid item xs={7} sm={8}>
@@ -147,10 +153,35 @@ const useStyles = makeStyles(() => ({
       boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)",
     },
     margin: "8px 0",
+    position: "relative",
+    overflow: "hidden",
+  },
+  cardBackground: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+  logoBackground: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    opacity: 0.05,
+  },
+  content: {
+    position: "relative",
+    zIndex: 1,
   },
   stockImage: {
     width: 40,
+    height: 40,
     objectFit: "contain",
+    boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
   },
   symbolText: {
     fontWeight: "bold",
