@@ -15,9 +15,10 @@ import { PositionModelDto } from "backend/src/shared-types/position";
 
 export type Props = {
   position: PositionModelDto;
+  onClick?: () => void;
 };
 
-export const PositionWishCard = ({ position }: Props) => {
+export const PositionWishCard = ({ position, onClick }: Props) => {
   const classes = useStyles();
 
   // Format currency
@@ -52,7 +53,7 @@ export const PositionWishCard = ({ position }: Props) => {
   const logoUrl = `https://images.financialmodelingprep.com/symbol/${position.symbol.symbol}.png`;
 
   return (
-    <Card className={classes.card} variant="outlined">
+    <Card className={classes.card} variant="outlined" onClick={onClick}>
       <Box className={classes.cardBackground}>
         <Box
           className={classes.logoBackground}
@@ -152,6 +153,7 @@ const useStyles = makeStyles(() => ({
       transform: "translateY(-4px)",
       boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)",
     },
+    cursor: "pointer",
     margin: "8px 0",
     position: "relative",
     overflow: "hidden",

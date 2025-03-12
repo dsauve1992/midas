@@ -4,15 +4,22 @@ import { PositionModelDto } from "backend/src/shared-types/position";
 
 type PositionCardsViewProps = {
   positions: PositionModelDto[] | undefined;
+  onSelectPosition: (position: PositionModelDto) => void;
 };
 
-export const PositionCardsView = ({ positions }: PositionCardsViewProps) => {
+export const PositionCardsView = ({
+  positions,
+  onSelectPosition,
+}: PositionCardsViewProps) => {
   return (
     <Grid container spacing={2}>
       {positions && positions?.length > 0 ? (
         positions?.map((position) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={position.id}>
-            <PositionWishCard position={position} />
+            <PositionWishCard
+              position={position}
+              onClick={() => onSelectPosition(position)}
+            />
           </Grid>
         ))
       ) : (
