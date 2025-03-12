@@ -1,225 +1,38 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Helmet } from "react-helmet";
-import SearchBar from "../../search/ui/SearchBar/SearchBar.tsx";
-import TradingViewTapeCardWidget from "../../lib/ui/chart/TradingViewTapeCardWidget.tsx";
-import { useCreatePositionWish } from "../hooks/useCreatePositionWish.ts";
-import { toast } from "react-toastify";
-import { Controller, useForm } from "react-hook-form";
-import { SymbolWithExchange } from "../../ticker/domain/SymbolWithExchange.ts";
 import { useGetPositions } from "../hooks/useGetPositions.ts";
-import { PositionWishCard } from "./component/PositionWishCard.tsx";
-
-export type PositionWishFormData = {
-  symbolWithExchange: SymbolWithExchange | null;
-  portfolioValue: number;
-  buyPrice: number;
-  stopLoss: number;
-  riskPercentage: number;
-};
-
-const DEFAULT_RISK_PERCENTAGE = 0.5;
+import { PositionCardsView } from "./view/PositionCardsView.tsx";
+import { CreatePositionForm } from "./component/CreatePositionForm.tsx";
+import { useState } from "react";
+import { PageLayout } from "../../lib/ui/global/PageLayout.tsx";
+import Drawer from "@mui/material/Drawer";
 
 export const PositionManagementPage = () => {
-  const { handleSubmit, watch, control, formState } =
-    useForm<PositionWishFormData>({
-      defaultValues: {
-        symbolWithExchange: null,
-        riskPercentage: DEFAULT_RISK_PERCENTAGE,
-      },
-    });
-
   const { data } = useGetPositions();
+  const [open, setOpen] = useState(false);
 
-  const { create, processing } = useCreatePositionWish({
-    onSuccess: () => toast.success(`successfully created position wish`),
-    onError: () => toast.error("Ouf!"),
-  });
-
-  const submitForm = (data: PositionWishFormData) => {
-    create({
-      request: {
-        symbol: `${data.symbolWithExchange!.exchange}:${
-          data.symbolWithExchange!.symbol
-        }`,
-        nbShares: computeNbShares(
-          data.portfolioValue,
-          data.buyPrice,
-          data.riskPercentage,
-          data.stopLoss,
-        ),
-        buyPrice: data.buyPrice,
-        stopLoss: data.stopLoss,
-        riskPercentage: data.riskPercentage,
-      },
-    });
+  const handleCloseDrawer = () => {
+    setOpen(!open);
   };
 
-  const selectedSymbolWithExchange = watch("symbolWithExchange");
-
   return (
-    <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+    <>
       <Helmet>
         <title>Position Management - Midas</title>
       </Helmet>
+      <PageLayout>
+        <Button variant="contained" onClick={() => setOpen(true)}>
+          Create New Position
+        </Button>
 
-      <Grid container spacing={2}>
-        {data && data?.length > 0 ? (
-          data?.map((position) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={position.id}>
-              <PositionWishCard position={position} />
-            </Grid>
-          ))
-        ) : (
-          <Grid item xs={12}>
-            <Typography variant="body1" align="center">
-              No position wishes found. Create one to get started.
-            </Typography>
-          </Grid>
-        )}
-      </Grid>
+        <PositionCardsView positions={data} />
 
-      <Box
-        display="flex"
-        flexDirection="row"
-        width="100%"
-        height={"100%"}
-        gap={"4px"}
-      >
-        <Box
-          component="form"
-          display={"flex"}
-          flexDirection="column"
-          p={2}
-          gap={4}
-        >
-          <Controller
-            name="symbolWithExchange"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <SearchBar
-                onSelect={({ symbol, exchangeShortName: exchange }) =>
-                  field.onChange({ symbol, exchange })
-                }
-              />
-            )}
-          />
-
-          {selectedSymbolWithExchange && (
-            <>
-              <Controller
-                name="riskPercentage"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <TextField
-                    label="Risk Percentage"
-                    variant="outlined"
-                    value={field.value}
-                    onChange={(e) =>
-                      field.onChange(Number.parseFloat(e.target.value))
-                    }
-                  />
-                )}
-              />
-
-              <Controller
-                name="portfolioValue"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <TextField
-                    label="Portfolio Value"
-                    type="number"
-                    variant="outlined"
-                    value={field.value}
-                    onChange={(e) =>
-                      field.onChange(Number.parseFloat(e.target.value))
-                    }
-                  />
-                )}
-              />
-
-              <Controller
-                name="buyPrice"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <TextField
-                    label="Buy Price"
-                    type="number"
-                    variant="outlined"
-                    value={field.value}
-                    onChange={(e) =>
-                      field.onChange(Number.parseFloat(e.target.value))
-                    }
-                  />
-                )}
-              />
-
-              <Controller
-                name="stopLoss"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <TextField
-                    label="Stop Loss Price"
-                    type="number"
-                    variant="outlined"
-                    value={field.value}
-                    onChange={(e) =>
-                      field.onChange(Number.parseFloat(e.target.value))
-                    }
-                  />
-                )}
-              />
-
-              <TextField
-                label="Nb Shares"
-                type="number"
-                disabled
-                variant="outlined"
-                value={computeNbShares(
-                  watch("portfolioValue"),
-                  watch("buyPrice"),
-                  watch("riskPercentage"),
-                  watch("stopLoss"),
-                )}
-              />
-
-              <Button
-                fullWidth
-                disabled={processing || !formState.isValid}
-                variant="contained"
-                onClick={handleSubmit(submitForm)}
-              >
-                Save
-              </Button>
-            </>
-          )}
-        </Box>
-        <Box flex={1} p={1}>
-          {selectedSymbolWithExchange && (
-            <TradingViewTapeCardWidget
-              exchange={selectedSymbolWithExchange.exchange}
-              interval={"W"}
-              range={"12m"}
-              symbol={selectedSymbolWithExchange.symbol}
-            />
-          )}
-        </Box>
-      </Box>
-    </Box>
+        <Drawer anchor={"right"} open={open} onClose={handleCloseDrawer}>
+          <Box minWidth={1600} height={"100%"}>
+            <CreatePositionForm onSuccess={handleCloseDrawer} />
+          </Box>
+        </Drawer>
+      </PageLayout>
+    </>
   );
 };
-
-function computeNbShares(
-  portfolioValue: number,
-  buyPrice: number,
-  riskPercentage: number,
-  stopLoss: number,
-) {
-  return Math.floor(
-    (portfolioValue * (riskPercentage / 100)) / (buyPrice - stopLoss),
-  );
-}
