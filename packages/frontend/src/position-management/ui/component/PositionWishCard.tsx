@@ -67,6 +67,7 @@ export const PositionWishCard = ({ position, onClick }: Props) => {
             <Box display="flex" alignItems="center">
               <Avatar
                 src={logoUrl}
+                variant={"square"}
                 alt={position.symbol.symbol}
                 className={classes.stockImage}
               >

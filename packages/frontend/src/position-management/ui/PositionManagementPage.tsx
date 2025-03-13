@@ -7,25 +7,24 @@ import { useState } from "react";
 import { PageLayout } from "../../lib/ui/global/PageLayout.tsx";
 import Drawer from "@mui/material/Drawer";
 import { PositionModelDto } from "backend/src/shared-types/position";
+import { PositionDetailDrawer } from "./component/PositionDetailDrawer.tsx";
 
 export const PositionManagementPage = () => {
   const { data } = useGetPositions();
   const [openCreatePositionFormDrawer, setOpenCreatePositionFormDrawer] =
     useState(false);
-  const [openPositionDetailDrawer, setOpenPositionDetailDrawer] =
-    useState(false);
+  const [selectedPosition, setSelectedPosition] = useState<PositionModelDto>();
 
   const handleCloseCreatePositionFormDrawer = () => {
     setOpenCreatePositionFormDrawer(!openCreatePositionFormDrawer);
   };
 
   const handleClosePositionDetailDrawer = () => {
-    setOpenPositionDetailDrawer(!openPositionDetailDrawer);
+    setSelectedPosition(undefined);
   };
 
   const handleSelectPosition = (position: PositionModelDto) => {
-    console.log(position);
-    setOpenPositionDetailDrawer(true);
+    setSelectedPosition(position);
   };
 
   return (
@@ -59,16 +58,10 @@ export const PositionManagementPage = () => {
           </Box>
         </Drawer>
 
-        <Drawer
-          test-id={"position-detail-drawer"}
-          anchor={"right"}
-          open={openPositionDetailDrawer}
+        <PositionDetailDrawer
+          position={selectedPosition}
           onClose={handleClosePositionDetailDrawer}
-        >
-          <Box minWidth={800} height={"100%"}>
-            lorem40
-          </Box>
-        </Drawer>
+        />
       </PageLayout>
     </>
   );
