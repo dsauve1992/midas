@@ -5,7 +5,7 @@ export interface PositionModel {
   userId: string;
   symbol: SymbolWithExchange;
   quantity: number;
-  buyPrice: number;
+  entryPrice: number;
   stopLoss: number;
   riskPercentage: number;
   createdAt: Date;

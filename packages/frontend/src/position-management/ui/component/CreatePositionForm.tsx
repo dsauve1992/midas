@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 export type PositionWishFormData = {
   symbolWithExchange: SymbolWithExchange | null;
   portfolioValue: number;
-  buyPrice: number;
+  entryPrice: number;
   stopLoss: number;
   riskPercentage: number;
 };
@@ -45,11 +45,11 @@ export const CreatePositionForm = ({ onSuccess }: Props) => {
         }`,
         nbShares: computeNbShares(
           data.portfolioValue,
-          data.buyPrice,
+          data.entryPrice,
           data.riskPercentage,
           data.stopLoss,
         ),
-        buyPrice: data.buyPrice,
+        entryPrice: data.entryPrice,
         stopLoss: data.stopLoss,
         riskPercentage: data.riskPercentage,
       },
@@ -122,12 +122,12 @@ export const CreatePositionForm = ({ onSuccess }: Props) => {
             />
 
             <Controller
-              name="buyPrice"
+              name="entryPrice"
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <TextField
-                  label="Buy Price"
+                  label="Entry Price"
                   type="number"
                   variant="outlined"
                   value={field.value}
@@ -162,7 +162,7 @@ export const CreatePositionForm = ({ onSuccess }: Props) => {
               variant="outlined"
               value={computeNbShares(
                 watch("portfolioValue"),
-                watch("buyPrice"),
+                watch("entryPrice"),
                 watch("riskPercentage"),
                 watch("stopLoss"),
               )}
@@ -195,11 +195,11 @@ export const CreatePositionForm = ({ onSuccess }: Props) => {
 
 function computeNbShares(
   portfolioValue: number,
-  buyPrice: number,
+  entryPrice: number,
   riskPercentage: number,
   stopLoss: number,
 ) {
   return Math.floor(
-    (portfolioValue * (riskPercentage / 100)) / (buyPrice - stopLoss),
+    (portfolioValue * (riskPercentage / 100)) / (entryPrice - stopLoss),
   );
 }

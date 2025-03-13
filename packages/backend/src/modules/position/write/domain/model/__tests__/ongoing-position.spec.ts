@@ -38,7 +38,7 @@ describe('OngoingPosition', () => {
         quantity: 2,
       }),
       OngoingPositionEvent.RaiseStopLoss({
-        newStopLoss: position.buyPrice,
+        newStopLoss: position.entryPrice,
       }),
     ]);
   });

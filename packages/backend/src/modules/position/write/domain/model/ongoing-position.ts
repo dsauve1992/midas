@@ -27,7 +27,7 @@ export class OngoingPosition {
   constructor(
     readonly id: PositionId,
     readonly symbol: SymbolWithExchange,
-    readonly buyPrice: number,
+    readonly entryPrice: number,
     readonly stopLoss: number,
     readonly quantity: number,
   ) {}
@@ -37,7 +37,7 @@ export class OngoingPosition {
   }
 
   get initialRiskPerShare(): number {
-    return this.buyPrice - this.stopLoss;
+    return this.entryPrice - this.stopLoss;
   }
 
   get lastEvent(): OngoingPositionEvent {
@@ -67,7 +67,7 @@ export class OngoingPosition {
         }),
       );
       this._history.push(
-        OngoingPositionEvent.RaiseStopLoss({ newStopLoss: this.buyPrice }),
+        OngoingPositionEvent.RaiseStopLoss({ newStopLoss: this.entryPrice }),
       );
     }
   }

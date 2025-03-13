@@ -24,7 +24,7 @@ export class PositionController {
     const positionWish = await this.createPositionWishUseCase.execute({
       userId: user.sub,
       symbol: SymbolWithExchange.from(body.symbol),
-      buyPrice: body.buyPrice,
+      entryPrice: body.entryPrice,
       stopLoss: body.stopLoss,
       riskPercentage: Percentage.from(body.riskPercentage),
       quantity: body.nbShares,

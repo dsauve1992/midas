@@ -31,7 +31,7 @@ export const PositionWishCard = ({ position, onClick }: Props) => {
 
   // Calculate potential loss based on stop loss
   const potentialLoss =
-    (position.buyPrice - position.stopLoss) * position.quantity;
+    (position.entryPrice - position.stopLoss) * position.quantity;
 
   // Determine risk level styling
   const getRiskChipClass = () => {
@@ -114,9 +114,9 @@ export const PositionWishCard = ({ position, onClick }: Props) => {
           </Box>
 
           <Box className={classes.dataRow}>
-            <Typography className={classes.dataLabel}>Buy Price:</Typography>
+            <Typography className={classes.dataLabel}>Entry Price:</Typography>
             <Typography className={classes.dataValue}>
-              {formatCurrency(position.buyPrice)}
+              {formatCurrency(position.entryPrice)}
             </Typography>
           </Box>
 

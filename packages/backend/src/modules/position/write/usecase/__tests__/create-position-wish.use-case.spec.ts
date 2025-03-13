@@ -43,9 +43,8 @@ describe('CreatePositionWishUseCase', () => {
   test('when create a position wish, it should persist it', async () => {
     await useCase.execute({
       symbol: AAPL,
-      buyPrice: 100,
+      entryPrice: 100,
       stopLoss: 90,
-      portfolioValue: 1000,
       riskPercentage: Percentage.from(0.005),
       quantity: 10,
       userId: '1',
@@ -54,13 +53,13 @@ describe('CreatePositionWishUseCase', () => {
     expect(positionWishRepository.save).toHaveBeenCalledWith(
       new PositionWish(
         PositionId.from(AN_ID),
+        '1',
         AAPL,
         100,
         90,
-        1000,
         Percentage.from(0.005),
         10,
-        '1',
+        NOW,
         NOW,
       ),
     );

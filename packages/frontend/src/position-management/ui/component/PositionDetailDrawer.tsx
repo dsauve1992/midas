@@ -154,7 +154,7 @@ export const PositionDetailDrawer = ({
                   }}
                 />
                 <Typography variant="body2">
-                  ${position.buyPrice.toFixed(2)}
+                  ${position.entryPrice.toFixed(2)}
                 </Typography>
               </ListItem>
 
@@ -180,7 +180,7 @@ export const PositionDetailDrawer = ({
                   }}
                 />
                 <Typography variant="body2">
-                  ${(position.buyPrice * position.quantity).toFixed(2)}
+                  ${(position.entryPrice * position.quantity).toFixed(2)}
                 </Typography>
               </ListItem>
 

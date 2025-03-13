@@ -42,7 +42,7 @@ export class PositionPostgresDbRepository implements PositionRepository {
       userId: row.user_id,
       symbol: SymbolWithExchange.from(row.symbol_with_exchange),
       quantity: Number.parseInt(row.nb_shares),
-      buyPrice: Number.parseFloat(row.target_buy_price),
+      entryPrice: Number.parseFloat(row.target_buy_price),
       stopLoss: Number.parseFloat(row.stop_loss),
       riskPercentage: Number.parseFloat(row.risk_percentage),
       createdAt: row.created_at,

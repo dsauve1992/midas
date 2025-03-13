@@ -9,7 +9,7 @@ import { TransactionalUnitOfWork } from '../../../../lib/unit-of-work/transactio
 export type CreatePositionWishRequest = {
   userId: string;
   symbol: SymbolWithExchange;
-  buyPrice: number;
+  entryPrice: number;
   stopLoss: number;
   riskPercentage: Percentage;
   quantity: number;
@@ -34,7 +34,7 @@ export class CreatePositionWishUseCase extends BaseMutationUseCase<
     const positionWish = PositionWish.new(
       request.userId,
       request.symbol,
-      request.buyPrice,
+      request.entryPrice,
       request.stopLoss,
       request.riskPercentage,
       request.quantity,

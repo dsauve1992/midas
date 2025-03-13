@@ -2,7 +2,7 @@ import { PositionModel } from '../modules/position/read/model/PositionModel';
 
 export type CreatePositionRequestDto = {
   symbol: string;
-  buyPrice: number;
+  entryPrice: number;
   stopLoss: number;
   nbShares: number;
   riskPercentage: number;
