@@ -5,9 +5,10 @@ import { PositionWish } from '../domain/model/position-wish';
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseMutationUseCase } from '../../../../lib/base-mutation-use-case';
 import { TransactionalUnitOfWork } from '../../../../lib/unit-of-work/transactional-unit-of-work.service';
+import { UserId } from '../../../user/domain/UserId';
 
 export type CreatePositionWishRequest = {
-  userId: string;
+  userId: UserId;
   symbol: SymbolWithExchange;
   entryPrice: number;
   stopLoss: number;

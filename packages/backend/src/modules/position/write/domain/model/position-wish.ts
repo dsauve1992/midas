@@ -1,11 +1,13 @@
 import { Percentage } from '../../../../../lib/domain/Percentage';
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
 import { PositionId } from './position-id';
+import { OngoingPosition } from './ongoing-position';
+import { UserId } from '../../../../user/domain/UserId';
 
 export class PositionWish {
   constructor(
     readonly id: PositionId,
-    readonly userId: string,
+    readonly userId: UserId,
     readonly symbol: SymbolWithExchange,
     readonly entryPrice: number,
     readonly stopLoss: number,
@@ -16,7 +18,7 @@ export class PositionWish {
   ) {}
 
   static new(
-    userId: string,
+    userId: UserId,
     symbol: SymbolWithExchange,
     entryPrice: number,
     stopLoss: number,
@@ -32,6 +34,18 @@ export class PositionWish {
       riskPercentage,
       quantity,
       new Date(),
+      new Date(),
+    );
+  }
+
+  confirmBuyOrderExecuted(buyPrice: number) {
+    return new OngoingPosition(
+      PositionId.new(),
+      this.userId,
+      this.symbol,
+      buyPrice,
+      this.stopLoss,
+      this.quantity,
       new Date(),
     );
   }

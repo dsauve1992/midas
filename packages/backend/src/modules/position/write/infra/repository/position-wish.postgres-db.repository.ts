@@ -5,6 +5,7 @@ import { DatabaseClientGetter } from '../../../../../lib/unit-of-work/database-c
 import { PositionId } from '../../domain/model/position-id';
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
 import { Percentage } from '../../../../../lib/domain/Percentage';
+import { UserId } from '../../../../user/domain/UserId';
 
 interface PositionWishRow {
   id: string;
@@ -125,7 +126,7 @@ export class PositionWishPostgresDbRepository
   private mapToEntity(row: PositionWishRow): PositionWish {
     return new PositionWish(
       PositionId.from(row.id),
-      row.user_id,
+      UserId.from(row.user_id),
       SymbolWithExchange.from(row.symbol_with_exchange),
       row.target_buy_price,
       row.stop_loss,

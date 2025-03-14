@@ -6,6 +6,7 @@ import { SymbolWithExchange } from '../stocks/domain/symbol-with-exchange';
 import { User } from '../authorization/User.param';
 import { AuthGuard } from '@nestjs/passport';
 import { PositionRepository } from './read/position.repository';
+import { UserId } from '../user/domain/UserId';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('position')
@@ -22,7 +23,7 @@ export class PositionController {
     @Body() body: CreatePositionRequestDto,
   ) {
     const positionWish = await this.createPositionWishUseCase.execute({
-      userId: user.sub,
+      userId: UserId.from(user.sub),
       symbol: SymbolWithExchange.from(body.symbol),
       entryPrice: body.entryPrice,
       stopLoss: body.stopLoss,
