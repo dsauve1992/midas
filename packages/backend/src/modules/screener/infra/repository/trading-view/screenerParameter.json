@@ -47,12 +47,13 @@
     10000
   ],
   "sort": {
-    "sortBy": "beta_1_year",
-    "sortOrder": "asc"
+    "sortBy": "price",
+    "sortOrder": "desc"
   },
   "symbols": {},
   "markets": [
-    "america"
+    "america",
+    "canada"
   ],
   "filter2": {
     "operator": "and",
