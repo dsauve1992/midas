@@ -51,7 +51,7 @@ export const PositionManagementPage = () => {
           open={openCreatePositionFormDrawer}
           onClose={handleCloseCreatePositionFormDrawer}
         >
-          <Box minWidth={1600} height={"100%"}>
+          <Box maxWidth={"100%"} width={800} height={"100%"}>
             <CreatePositionForm
               onSuccess={handleCloseCreatePositionFormDrawer}
             />
