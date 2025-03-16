@@ -3,11 +3,13 @@ import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchan
 import { PositionId } from './position-id';
 import { OngoingPosition } from './ongoing-position';
 import { UserId } from '../../../../user/domain/UserId';
+import { PositionWishStatus } from './position-wish-status';
 
 export interface PositionWishProps {
   id: PositionId;
   userId: UserId;
   symbol: SymbolWithExchange;
+  status: PositionWishStatus;
   entryPrice: number;
   stopLoss: number;
   riskPercentage: Percentage;
@@ -18,6 +20,7 @@ export interface PositionWishProps {
 
 export class PositionWish {
   readonly id: PositionId;
+  private _status: PositionWishStatus;
   readonly userId: UserId;
   readonly symbol: SymbolWithExchange;
   readonly entryPrice: number;
@@ -39,6 +42,10 @@ export class PositionWish {
     this.updatedAt = props.updatedAt;
   }
 
+  get status(): PositionWishStatus {
+    return this._status;
+  }
+
   static new(
     userId: UserId,
     symbol: SymbolWithExchange,
@@ -49,6 +56,7 @@ export class PositionWish {
   ): PositionWish {
     return new PositionWish({
       id: PositionId.new(),
+      status: PositionWishStatus.PENDING,
       userId,
       symbol,
       entryPrice,
@@ -61,6 +69,8 @@ export class PositionWish {
   }
 
   confirmBuyOrderExecuted(buyPrice: number): OngoingPosition {
+    this._status = PositionWishStatus.EXECUTED;
+
     return new OngoingPosition(
       PositionId.new(),
       this.userId,

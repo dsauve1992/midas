@@ -6,9 +6,11 @@ import { PositionId } from '../../domain/model/position-id';
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
 import { Percentage } from '../../../../../lib/domain/Percentage';
 import { UserId } from '../../../../user/domain/UserId';
+import { PositionWishStatus } from '../../domain/model/position-wish-status';
 
 interface PositionWishRow {
   id: string;
+  status: string;
   user_id: string;
   symbol_with_exchange: string;
   nb_shares: number;
@@ -46,15 +48,17 @@ export class PositionWishPostgresDbRepository
         `
                     UPDATE position_wishes
                     SET symbol_with_exchange = $1,
-                        nb_shares            = $2,
-                        risk_percentage      = $3,
-                        target_buy_price     = $4,
-                        stop_loss            = $5,
-                        updated_at           = $6
+                        status               = $2,
+                        nb_shares            = $3,
+                        risk_percentage      = $4,
+                        target_buy_price     = $5,
+                        stop_loss            = $6,
+                        updated_at           = $7
                     WHERE id = $7
                 `,
         [
           positionWish.symbol.toString(),
+          positionWish.status,
           positionWish.quantity,
           positionWish.riskPercentage.valueOf(),
           positionWish.entryPrice,
@@ -68,13 +72,14 @@ export class PositionWishPostgresDbRepository
       await this.databaseClientGetter.getClient().query(
         `
                     INSERT INTO position_wishes
-                    (id, user_id, symbol_with_exchange, nb_shares, risk_percentage, target_buy_price, stop_loss,
+                    (id, status, user_id, symbol_with_exchange, nb_shares, risk_percentage, target_buy_price, stop_loss,
                      created_at,
                      updated_at)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
                 `,
         [
           positionWish.id.toString(),
+          positionWish.status,
           positionWish.userId,
           positionWish.symbol.toString(),
           positionWish.quantity,
@@ -86,22 +91,6 @@ export class PositionWishPostgresDbRepository
         ],
       );
     }
-  }
-
-  async getAllByUserId(userId: string): Promise<PositionWish[]> {
-    const { rows } = await this.databaseClientGetter
-      .getClient()
-      .query<PositionWishRow>(
-        `
-                    SELECT *
-                    FROM position_wishes
-                    WHERE user_id = $1
-                    ORDER BY created_at DESC
-                `,
-        [userId],
-      );
-
-    return rows.map(this.mapToEntity);
   }
 
   async getById(id: PositionId): Promise<PositionWish> {
@@ -124,16 +113,17 @@ export class PositionWishPostgresDbRepository
   }
 
   private mapToEntity(row: PositionWishRow): PositionWish {
-    return new PositionWish(
-      PositionId.from(row.id),
-      UserId.from(row.user_id),
-      SymbolWithExchange.from(row.symbol_with_exchange),
-      row.target_buy_price,
-      row.stop_loss,
-      Percentage.from(row.risk_percentage),
-      row.nb_shares,
-      row.created_at,
-      row.updated_at,
-    );
+    return new PositionWish({
+      id: PositionId.from(row.id),
+      status: row.status as PositionWishStatus,
+      userId: UserId.from(row.user_id),
+      symbol: SymbolWithExchange.from(row.symbol_with_exchange),
+      entryPrice: row.target_buy_price,
+      stopLoss: row.stop_loss,
+      riskPercentage: Percentage.from(row.risk_percentage),
+      quantity: row.nb_shares,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    });
   }
 }
