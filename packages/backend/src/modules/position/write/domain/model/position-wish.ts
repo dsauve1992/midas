@@ -4,18 +4,40 @@ import { PositionId } from './position-id';
 import { OngoingPosition } from './ongoing-position';
 import { UserId } from '../../../../user/domain/UserId';
 
+export interface PositionWishProps {
+  id: PositionId;
+  userId: UserId;
+  symbol: SymbolWithExchange;
+  entryPrice: number;
+  stopLoss: number;
+  riskPercentage: Percentage;
+  quantity: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export class PositionWish {
-  constructor(
-    readonly id: PositionId,
-    readonly userId: UserId,
-    readonly symbol: SymbolWithExchange,
-    readonly entryPrice: number,
-    readonly stopLoss: number,
-    readonly riskPercentage: Percentage,
-    readonly quantity: number,
-    readonly createdAt: Date,
-    readonly updatedAt: Date,
-  ) {}
+  readonly id: PositionId;
+  readonly userId: UserId;
+  readonly symbol: SymbolWithExchange;
+  readonly entryPrice: number;
+  readonly stopLoss: number;
+  readonly riskPercentage: Percentage;
+  readonly quantity: number;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+
+  constructor(props: PositionWishProps) {
+    this.id = props.id;
+    this.userId = props.userId;
+    this.symbol = props.symbol;
+    this.entryPrice = props.entryPrice;
+    this.stopLoss = props.stopLoss;
+    this.riskPercentage = props.riskPercentage;
+    this.quantity = props.quantity;
+    this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
+  }
 
   static new(
     userId: UserId,
@@ -24,21 +46,21 @@ export class PositionWish {
     stopLoss: number,
     riskPercentage: Percentage,
     quantity: number,
-  ) {
-    return new PositionWish(
-      PositionId.new(),
+  ): PositionWish {
+    return new PositionWish({
+      id: PositionId.new(),
       userId,
       symbol,
       entryPrice,
       stopLoss,
       riskPercentage,
       quantity,
-      new Date(),
-      new Date(),
-    );
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
   }
 
-  confirmBuyOrderExecuted(buyPrice: number) {
+  confirmBuyOrderExecuted(buyPrice: number): OngoingPosition {
     return new OngoingPosition(
       PositionId.new(),
       this.userId,
