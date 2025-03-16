@@ -82,4 +82,8 @@ export class PositionWish {
       new Date(),
     );
   }
+
+  confirmBuyOrderCreated() {
+    this._status = PositionWishStatus.PENDING;
+  }
 }

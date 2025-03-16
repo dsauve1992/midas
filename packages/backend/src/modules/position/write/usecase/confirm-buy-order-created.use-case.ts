@@ -3,22 +3,18 @@ import { BaseMutationUseCase } from '../../../../lib/base-mutation-use-case';
 import { TransactionalUnitOfWork } from '../../../../lib/unit-of-work/transactional-unit-of-work.service';
 import { PositionId } from '../domain/model/position-id';
 import { PositionWishRepository } from '../domain/repository/position-wish.repository';
-import { OngoingPositionRepository } from '../domain/repository/ongoing-position.repository';
 import { PositionWishStatus } from '../domain/model/position-wish-status';
 
 export type ConfirmBuyOrderCreatedRequest = {
   positionId: PositionId;
-  buyPrice: number;
 };
 
 @Injectable()
-export class ConfirmBuyOrderExecutedUseCase extends BaseMutationUseCase<ConfirmBuyOrderCreatedRequest> {
+export class ConfirmBuyOrderCreatedUseCase extends BaseMutationUseCase<ConfirmBuyOrderCreatedRequest> {
   constructor(
     @Inject('UNIT_OF_WORK') unitOfWork: TransactionalUnitOfWork,
     @Inject('PositionWishRepository')
     private readonly positionWishRepository: PositionWishRepository,
-    @Inject('OngoingPositionRepository')
-    private readonly ongoingPositionRepository: OngoingPositionRepository,
   ) {
     super(unitOfWork);
   }
@@ -30,17 +26,14 @@ export class ConfirmBuyOrderExecutedUseCase extends BaseMutationUseCase<ConfirmB
       request.positionId,
     );
 
-    if (positionWish.status !== PositionWishStatus.PENDING) {
+    if (positionWish.status !== PositionWishStatus.WAIT_FOR_ORDER_CREATED) {
       throw new Error(
-        'Cannot confirm buy order execution: position wish must be pending',
+        'Cannot confirm buy order creation : position wish must be waiting for order to be created',
       );
     }
 
-    const ongoingPosition = positionWish.confirmBuyOrderExecuted(
-      request.buyPrice,
-    );
+    positionWish.confirmBuyOrderCreated();
 
     await this.positionWishRepository.save(positionWish);
-    await this.ongoingPositionRepository.save(ongoingPosition);
   }
 }

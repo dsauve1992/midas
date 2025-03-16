@@ -11,6 +11,7 @@ import { HistoricalDataModule } from '../historical-data/historical-data.module'
 import { CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase } from './write/usecase/check-for-reached-entry-price-related-to-pending-position-wishes-use-case';
 import { HistoricalPriceService } from './write/domain/service/historical-price-service';
 import { OngoingPositionPostgresDbRepository } from './write/infra/repository/ongoing-position.postgres-db.repository';
+import { ConfirmBuyOrderCreatedUseCase } from './write/usecase/confirm-buy-order-created.use-case';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { OngoingPositionPostgresDbRepository } from './write/infra/repository/on
     CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase,
     ConfirmBuyOrderExecutedUseCase,
     CreatePositionWishUseCase,
+    ConfirmBuyOrderCreatedUseCase,
     HistoricalPriceService,
     {
       provide: 'PositionWishRepository',

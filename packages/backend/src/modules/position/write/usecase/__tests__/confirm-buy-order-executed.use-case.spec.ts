@@ -75,7 +75,7 @@ describe('ConfirmBuyOrderExecutedUseCase', () => {
           buyPrice: 100,
         }),
       ).rejects.toThrow(
-        'Cannot confirm buy order : position wish must be pending',
+        'Cannot confirm buy order execution : position wish must be pending',
       );
     },
   );

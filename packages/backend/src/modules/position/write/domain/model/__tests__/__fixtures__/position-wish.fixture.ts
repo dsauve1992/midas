@@ -40,3 +40,21 @@ export const givenPendingPositionWish = (
     ...props,
   });
 };
+
+export const givenWaitForOrderCreatedPositionWish = (
+  props: Partial<Omit<PositionWishProps, 'status'>> = {},
+): PositionWish => {
+  return new PositionWish({
+    id: PositionId.new(),
+    status: PositionWishStatus.WAIT_FOR_ORDER_CREATED,
+    userId: UserId.from('userId'),
+    symbol: SymbolWithExchange.from('NASDAQ:AAPL'),
+    entryPrice: 100,
+    stopLoss: 90,
+    riskPercentage: Percentage.from(0.1),
+    quantity: 10,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...props,
+  });
+};
