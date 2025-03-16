@@ -10,6 +10,8 @@ import { givenPositionWish } from '../../domain/model/__tests__/__fixtures__/pos
 import { when } from 'jest-when';
 import { OngoingPosition } from '../../domain/model/ongoing-position';
 import { UseCaseTestModule } from '../../../../../lib/test/use-case/use-case-test.module';
+import { PositionWishStatus } from '../../domain/model/position-wish-status';
+import { PositionWish } from '../../domain/model/position-wish';
 
 jest.mock('../../../../../lib/domain/IdGenerator');
 
@@ -17,7 +19,9 @@ const AN_ID = uuidv4();
 
 const NOW = new Date('2020-01-01');
 
-const A_POSITION_WISH = givenPositionWish();
+const A_PENDING_POSITION_WISH = givenPositionWish({
+  status: PositionWishStatus.PENDING,
+});
 
 describe('ConfirmBuyOrderExecutedUseCase', () => {
   let useCase: ConfirmBuyOrderExecutedUseCase;
@@ -26,6 +30,8 @@ describe('ConfirmBuyOrderExecutedUseCase', () => {
 
   beforeAll(() => jest.useFakeTimers().setSystemTime(NOW));
   afterAll(() => jest.useRealTimers());
+
+  beforeEach(() => jest.clearAllMocks());
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -50,28 +56,70 @@ describe('ConfirmBuyOrderExecutedUseCase', () => {
     jest.mocked(IdGenerator.generateUUIDv4).mockReturnValue(AN_ID);
   });
 
-  test('given a position wish, when confirm buy order on that wish, it should create an ongoing position and persist it', async () => {
+  test.each([
+    PositionWishStatus.EXECUTED,
+    PositionWishStatus.CANCELLED,
+    PositionWishStatus.REJECTED,
+  ])(
+    'given a %s position wish, when confirm buy order on that wish, it should throw an error',
+    async (status) => {
+      when(positionWishRepository.getById)
+        .calledWith(A_PENDING_POSITION_WISH.id)
+        .mockResolvedValue(givenPositionWish({ status }));
+
+      await expect(() =>
+        useCase.execute({
+          positionId: A_PENDING_POSITION_WISH.id,
+          buyPrice: 100,
+        }),
+      ).rejects.toThrow(
+        'Cannot confirm buy order : position wish must be pending',
+      );
+    },
+  );
+
+  test('given a pending position wish, when confirm buy order on that wish, then it should create an ongoing position and persist it', async () => {
     when(positionWishRepository.getById)
-      .calledWith(A_POSITION_WISH.id)
-      .mockResolvedValue(A_POSITION_WISH);
+      .calledWith(A_PENDING_POSITION_WISH.id)
+      .mockResolvedValue(A_PENDING_POSITION_WISH);
 
     const buyPrice = 100;
 
     await useCase.execute({
-      positionId: A_POSITION_WISH.id,
+      positionId: A_PENDING_POSITION_WISH.id,
       buyPrice,
     });
 
     expect(ongoingPositionRepository.save).toHaveBeenCalledWith(
       new OngoingPosition(
         PositionId.from(AN_ID),
-        A_POSITION_WISH.userId,
-        A_POSITION_WISH.symbol,
+        A_PENDING_POSITION_WISH.userId,
+        A_PENDING_POSITION_WISH.symbol,
         buyPrice,
-        A_POSITION_WISH.stopLoss,
-        A_POSITION_WISH.quantity,
+        A_PENDING_POSITION_WISH.stopLoss,
+        A_PENDING_POSITION_WISH.quantity,
         NOW,
       ),
+    );
+  });
+
+  test('given a pending position wish, when confirm buy order on that wish, then it should set position wish to executed and persist it', async () => {
+    when(positionWishRepository.getById)
+      .calledWith(A_PENDING_POSITION_WISH.id)
+      .mockResolvedValue(A_PENDING_POSITION_WISH);
+
+    const buyPrice = 100;
+
+    await useCase.execute({
+      positionId: A_PENDING_POSITION_WISH.id,
+      buyPrice,
+    });
+
+    expect(positionWishRepository.save).toHaveBeenCalledWith(
+      new PositionWish({
+        ...A_PENDING_POSITION_WISH,
+        status: PositionWishStatus.EXECUTED,
+      }),
     );
   });
 });

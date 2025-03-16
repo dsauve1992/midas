@@ -3,12 +3,14 @@ import { SymbolWithExchange } from '../../../../../../stocks/domain/symbol-with-
 import { Percentage } from '../../../../../../../lib/domain/Percentage';
 import { PositionWish, PositionWishProps } from '../../position-wish';
 import { UserId } from '../../../../../../user/domain/UserId';
+import { PositionWishStatus } from '../../position-wish-status';
 
 export const givenPositionWish = (
   props: Partial<PositionWishProps> = {},
 ): PositionWish => {
   return new PositionWish({
     id: PositionId.new(),
+    status: PositionWishStatus.PENDING,
     userId: UserId.from('userId'),
     symbol: SymbolWithExchange.from('NASDAQ:AAPL'),
     entryPrice: 100,

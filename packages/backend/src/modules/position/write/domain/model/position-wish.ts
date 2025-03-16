@@ -33,6 +33,7 @@ export class PositionWish {
   constructor(props: PositionWishProps) {
     this.id = props.id;
     this.userId = props.userId;
+    this._status = props.status;
     this.symbol = props.symbol;
     this.entryPrice = props.entryPrice;
     this.stopLoss = props.stopLoss;
