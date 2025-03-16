@@ -46,7 +46,7 @@ describe('CreatePositionWishUseCase', () => {
     jest.mocked(IdGenerator.generateUUIDv4).mockReturnValue(AN_ID);
   });
 
-  test('when create a position wish, it should persist it', async () => {
+  test('when create a position wish, it should wait for order to be created and persist it', async () => {
     await useCase.execute({
       symbol: AAPL,
       entryPrice: 100,
@@ -59,7 +59,7 @@ describe('CreatePositionWishUseCase', () => {
     expect(positionWishRepository.save).toHaveBeenCalledWith(
       new PositionWish({
         id: PositionId.from(AN_ID),
-        status: PositionWishStatus.PENDING,
+        status: PositionWishStatus.WAIT_FOR_ORDER_CREATED,
         userId: A_USER_ID,
         symbol: AAPL,
         entryPrice: 100,

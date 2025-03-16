@@ -57,7 +57,7 @@ export class PositionWish {
   ): PositionWish {
     return new PositionWish({
       id: PositionId.new(),
-      status: PositionWishStatus.PENDING,
+      status: PositionWishStatus.WAIT_FOR_ORDER_CREATED,
       userId,
       symbol,
       entryPrice,

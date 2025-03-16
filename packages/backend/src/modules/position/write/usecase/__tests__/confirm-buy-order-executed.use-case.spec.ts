@@ -6,7 +6,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { PositionId } from '../../domain/model/position-id';
 import { ConfirmBuyOrderExecutedUseCase } from '../confirm-buy-order-executed.use-case';
 import { OngoingPositionRepository } from '../../domain/repository/ongoing-position.repository';
-import { givenPositionWish } from '../../domain/model/__tests__/__fixtures__/position-wish.fixture';
+import {
+  givenPendingPositionWish,
+  givenPositionWish,
+} from '../../domain/model/__tests__/__fixtures__/position-wish.fixture';
 import { when } from 'jest-when';
 import { OngoingPosition } from '../../domain/model/ongoing-position';
 import { UseCaseTestModule } from '../../../../../lib/test/use-case/use-case-test.module';
@@ -19,9 +22,7 @@ const AN_ID = uuidv4();
 
 const NOW = new Date('2020-01-01');
 
-const A_PENDING_POSITION_WISH = givenPositionWish({
-  status: PositionWishStatus.PENDING,
-});
+const A_POSITION_ID = PositionId.from(AN_ID);
 
 describe('ConfirmBuyOrderExecutedUseCase', () => {
   let useCase: ConfirmBuyOrderExecutedUseCase;
@@ -57,6 +58,7 @@ describe('ConfirmBuyOrderExecutedUseCase', () => {
   });
 
   test.each([
+    PositionWishStatus.WAIT_FOR_ORDER_CREATED,
     PositionWishStatus.EXECUTED,
     PositionWishStatus.CANCELLED,
     PositionWishStatus.REJECTED,
@@ -64,12 +66,12 @@ describe('ConfirmBuyOrderExecutedUseCase', () => {
     'given a %s position wish, when confirm buy order on that wish, it should throw an error',
     async (status) => {
       when(positionWishRepository.getById)
-        .calledWith(A_PENDING_POSITION_WISH.id)
+        .calledWith(A_POSITION_ID)
         .mockResolvedValue(givenPositionWish({ status }));
 
       await expect(() =>
         useCase.execute({
-          positionId: A_PENDING_POSITION_WISH.id,
+          positionId: A_POSITION_ID,
           buyPrice: 100,
         }),
       ).rejects.toThrow(
@@ -79,9 +81,11 @@ describe('ConfirmBuyOrderExecutedUseCase', () => {
   );
 
   test('given a pending position wish, when confirm buy order on that wish, then it should create an ongoing position and persist it', async () => {
+    const A_PENDING_POSITION_WISH = givenPendingPositionWish();
+
     when(positionWishRepository.getById)
       .calledWith(A_PENDING_POSITION_WISH.id)
-      .mockResolvedValue(A_PENDING_POSITION_WISH);
+      .mockResolvedValue(givenPendingPositionWish());
 
     const buyPrice = 100;
 
@@ -104,6 +108,8 @@ describe('ConfirmBuyOrderExecutedUseCase', () => {
   });
 
   test('given a pending position wish, when confirm buy order on that wish, then it should set position wish to executed and persist it', async () => {
+    const A_PENDING_POSITION_WISH = givenPendingPositionWish();
+
     when(positionWishRepository.getById)
       .calledWith(A_PENDING_POSITION_WISH.id)
       .mockResolvedValue(A_PENDING_POSITION_WISH);
