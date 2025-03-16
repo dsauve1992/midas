@@ -29,6 +29,20 @@ export class PositionWishPostgresDbRepository
     @Inject('UNIT_OF_WORK') private databaseClientGetter: DatabaseClientGetter,
   ) {}
 
+  async getAllPending(): Promise<PositionWish[]> {
+    const { rows } = await this.databaseClientGetter
+      .getClient()
+      .query<PositionWishRow>(
+        `
+                    SELECT *
+                    FROM position_wishes
+                    WHERE status = 'PENDING'
+                `,
+      );
+
+    return rows.map(this.mapToEntity);
+  }
+
   async save(positionWish: PositionWish): Promise<void> {
     // First check if the position wish already exists
     const { rows } = await this.databaseClientGetter

@@ -150,11 +150,8 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
   /**
    * Validate if a buy order was executed and get the actual price
    */
-  async validateBuyOrderExecution(
-    symbol: string,
-    quantity: number,
-  ): Promise<number | null> {
-    const question = `✅ VALIDATION: Was your buy order for ${quantity} ${symbol} executed successfully?`;
+  async validateBuyOrderExecution(symbol: string): Promise<number | null> {
+    const question = `✅ VALIDATION: Was your buy order for ${symbol} executed successfully?`;
 
     const initialResponse = await this.askQuestion(question, [
       '✅ YES',
@@ -162,7 +159,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     ]);
 
     if (initialResponse.includes('YES')) {
-      const priceQuestion = `What was the actual buy price for ${quantity} ${symbol}?`;
+      const priceQuestion = `What was the actual buy price for ${symbol}?`;
       const priceResponse = await this.askQuestion(priceQuestion);
       const price = parseFloat(priceResponse.trim());
       return isNaN(price) ? null : price;

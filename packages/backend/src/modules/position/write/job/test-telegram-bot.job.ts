@@ -25,10 +25,7 @@ export class TestTelegramBotJob {
       this.logger.debug('order created');
       if (orderCreated) {
         // Check if the order was executed
-        const actualPrice = await this.bot.validateBuyOrderExecution(
-          symbol,
-          quantity,
-        );
+        const actualPrice = await this.bot.validateBuyOrderExecution(symbol);
 
         this.logger.debug('actualPrice:', actualPrice);
 
