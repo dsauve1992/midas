@@ -8,10 +8,15 @@ import { PositionWish } from '../../domain/model/position-wish';
 import { IdGenerator } from '../../../../../lib/domain/IdGenerator';
 import { v4 as uuidv4 } from 'uuid';
 import { PositionId } from '../../domain/model/position-id';
+import { UserId } from '../../../../user/domain/UserId';
+import { PositionWishStatus } from '../../domain/model/position-wish-status';
+import { UseCaseTestModule } from '../../../../../lib/test/use-case/use-case-test.module';
 
 jest.mock('../../../../../lib/domain/IdGenerator');
 
 const AAPL = SymbolWithExchange.from('NASDAQ:AAPL');
+const A_USER_ID = UserId.from('1');
+
 const AN_ID = uuidv4();
 
 const NOW = new Date('2020-01-01');
@@ -25,6 +30,7 @@ describe('CreatePositionWishUseCase', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [UseCaseTestModule],
       providers: [
         CreatePositionWishUseCase,
         {
@@ -47,21 +53,22 @@ describe('CreatePositionWishUseCase', () => {
       stopLoss: 90,
       riskPercentage: Percentage.from(0.005),
       quantity: 10,
-      userId: '1',
+      userId: A_USER_ID,
     });
 
     expect(positionWishRepository.save).toHaveBeenCalledWith(
-      new PositionWish(
-        PositionId.from(AN_ID),
-        '1',
-        AAPL,
-        100,
-        90,
-        Percentage.from(0.005),
-        10,
-        NOW,
-        NOW,
-      ),
+      new PositionWish({
+        id: PositionId.from(AN_ID),
+        status: PositionWishStatus.PENDING,
+        userId: A_USER_ID,
+        symbol: AAPL,
+        entryPrice: 100,
+        stopLoss: 90,
+        riskPercentage: Percentage.from(0.005),
+        quantity: 10,
+        createdAt: NOW,
+        updatedAt: NOW,
+      }),
     );
   });
 });
