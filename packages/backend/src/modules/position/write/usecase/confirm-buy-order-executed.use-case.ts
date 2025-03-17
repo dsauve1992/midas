@@ -4,7 +4,6 @@ import { TransactionalUnitOfWork } from '../../../../lib/unit-of-work/transactio
 import { PositionId } from '../domain/model/position-id';
 import { PositionWishRepository } from '../domain/repository/position-wish.repository';
 import { OngoingPositionRepository } from '../domain/repository/ongoing-position.repository';
-import { PositionWishStatus } from '../domain/model/position-wish-status';
 
 export type ConfirmBuyOrderCreatedRequest = {
   positionId: PositionId;
@@ -29,12 +28,6 @@ export class ConfirmBuyOrderExecutedUseCase extends BaseMutationUseCase<ConfirmB
     const positionWish = await this.positionWishRepository.getById(
       request.positionId,
     );
-
-    if (positionWish.status !== PositionWishStatus.PENDING) {
-      throw new Error(
-        'Cannot confirm buy order execution: position wish must be pending',
-      );
-    }
 
     const ongoingPosition = positionWish.confirmBuyOrderExecuted(
       request.buyPrice,

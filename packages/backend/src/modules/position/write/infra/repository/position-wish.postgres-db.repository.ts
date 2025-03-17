@@ -29,6 +29,20 @@ export class PositionWishPostgresDbRepository
     @Inject('UNIT_OF_WORK') private databaseClientGetter: DatabaseClientGetter,
   ) {}
 
+  async getAllWaitingForOrderCreated(): Promise<PositionWish[]> {
+    const { rows } = await this.databaseClientGetter
+      .getClient()
+      .query<PositionWishRow>(
+        `
+                    SELECT *
+                    FROM position_wishes
+                    WHERE status = 'WAIT_FOR_ORDER_CREATED'
+                `,
+      );
+
+    return rows.map(this.mapToEntity);
+  }
+
   async getAllPending(): Promise<PositionWish[]> {
     const { rows } = await this.databaseClientGetter
       .getClient()

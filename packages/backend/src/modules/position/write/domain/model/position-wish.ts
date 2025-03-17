@@ -70,6 +70,12 @@ export class PositionWish {
   }
 
   confirmBuyOrderExecuted(buyPrice: number): OngoingPosition {
+    if (this.status !== PositionWishStatus.PENDING) {
+      throw new Error(
+        'Cannot confirm buy order execution: position wish must be pending',
+      );
+    }
+
     this._status = PositionWishStatus.EXECUTED;
 
     return new OngoingPosition(
@@ -84,6 +90,12 @@ export class PositionWish {
   }
 
   confirmBuyOrderCreated() {
+    if (this.status !== PositionWishStatus.WAIT_FOR_ORDER_CREATED) {
+      throw new Error(
+        'Cannot confirm buy order creation : position wish must be waiting for order to be created',
+      );
+    }
+
     this._status = PositionWishStatus.PENDING;
   }
 }
