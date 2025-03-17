@@ -16,7 +16,7 @@ export class MonitorPendingPositionWishesJob {
     private readonly historicalPriceService: HistoricalPriceService,
   ) {}
 
-  @Cron('*/1 * * * *')
+  @Cron('0 */2 * * *')
   async run() {
     this.logger.debug('start job');
     try {
