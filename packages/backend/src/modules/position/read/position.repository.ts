@@ -1,5 +1,6 @@
 import { PositionModel } from './model/PositionModel';
+import { UserId } from '../../user/domain/UserId';
 
 export interface PositionRepository {
-  getAllByUserId(userId: string): Promise<PositionModel[]>;
+  getAllByUserId(userId: UserId): Promise<PositionModel[]>;
 }

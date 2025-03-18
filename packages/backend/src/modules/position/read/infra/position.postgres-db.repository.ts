@@ -3,6 +3,7 @@ import { SymbolWithExchange } from '../../../stocks/domain/symbol-with-exchange'
 import { PositionRepository } from '../position.repository';
 import { PositionModel } from '../model/PositionModel';
 import { Pool } from 'pg';
+import { UserId } from '../../../user/domain/UserId';
 
 interface PositionWishRow {
   id: string;
@@ -20,7 +21,7 @@ interface PositionWishRow {
 export class PositionPostgresDbRepository implements PositionRepository {
   constructor(@Inject('PG_CONNECTION_POOL') private pool: Pool) {}
 
-  async getAllByUserId(userId: string): Promise<PositionModel[]> {
+  async getAllByUserId(userId: UserId): Promise<PositionModel[]> {
     const { rows } = await this.pool.query<PositionWishRow>(
       `
                 SELECT *
@@ -28,15 +29,13 @@ export class PositionPostgresDbRepository implements PositionRepository {
                 WHERE user_id = $1
                 ORDER BY created_at DESC
             `,
-      [userId],
+      [userId.toString()],
     );
 
     return rows.map(this.mapToEntity);
   }
 
   private mapToEntity(row: PositionWishRow): PositionModel {
-    console.log(row);
-
     return {
       id: row.id,
       userId: row.user_id,

@@ -108,7 +108,7 @@ export class PositionWishPostgresDbRepository
         [
           positionWish.id.toString(),
           positionWish.status,
-          positionWish.userId,
+          positionWish.userId.toString(),
           positionWish.symbol.toString(),
           positionWish.quantity,
           positionWish.riskPercentage.valueOf(),

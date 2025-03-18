@@ -36,6 +36,6 @@ export class PositionController {
 
   @Get('/')
   async queryPosition(@User() user: any) {
-    return this.positionRepository.getAllByUserId(user.sub);
+    return this.positionRepository.getAllByUserId(UserId.from(user.sub));
   }
 }
