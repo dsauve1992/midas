@@ -18,7 +18,6 @@ export const givenPositionWish = (
     riskPercentage: Percentage.from(0.1),
     quantity: 10,
     createdAt: new Date(),
-    updatedAt: new Date(),
     ...props,
   });
 };
@@ -26,17 +25,8 @@ export const givenPositionWish = (
 export const givenPendingPositionWish = (
   props: Partial<Omit<PositionWishProps, 'status'>> = {},
 ): PositionWish => {
-  return new PositionWish({
-    id: PositionId.new(),
+  return givenPositionWish({
     status: PositionWishStatus.PENDING,
-    userId: UserId.from('userId'),
-    symbol: SymbolWithExchange.from('NASDAQ:AAPL'),
-    entryPrice: 100,
-    stopLoss: 90,
-    riskPercentage: Percentage.from(0.1),
-    quantity: 10,
-    createdAt: new Date(),
-    updatedAt: new Date(),
     ...props,
   });
 };
@@ -44,17 +34,8 @@ export const givenPendingPositionWish = (
 export const givenWaitForOrderCreatedPositionWish = (
   props: Partial<Omit<PositionWishProps, 'status'>> = {},
 ): PositionWish => {
-  return new PositionWish({
-    id: PositionId.new(),
+  return givenPositionWish({
     status: PositionWishStatus.WAIT_FOR_ORDER_CREATED,
-    userId: UserId.from('userId'),
-    symbol: SymbolWithExchange.from('NASDAQ:AAPL'),
-    entryPrice: 100,
-    stopLoss: 90,
-    riskPercentage: Percentage.from(0.1),
-    quantity: 10,
-    createdAt: new Date(),
-    updatedAt: new Date(),
     ...props,
   });
 };

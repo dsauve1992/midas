@@ -15,7 +15,6 @@ export interface PositionWishProps {
   riskPercentage: Percentage;
   quantity: number;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export class PositionWish {
@@ -28,7 +27,6 @@ export class PositionWish {
   readonly riskPercentage: Percentage;
   readonly quantity: number;
   readonly createdAt: Date;
-  readonly updatedAt: Date;
 
   constructor(props: PositionWishProps) {
     this.id = props.id;
@@ -40,7 +38,6 @@ export class PositionWish {
     this.riskPercentage = props.riskPercentage;
     this.quantity = props.quantity;
     this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
   }
 
   get status(): PositionWishStatus {
@@ -65,7 +62,6 @@ export class PositionWish {
       riskPercentage,
       quantity,
       createdAt: new Date(),
-      updatedAt: new Date(),
     });
   }
 

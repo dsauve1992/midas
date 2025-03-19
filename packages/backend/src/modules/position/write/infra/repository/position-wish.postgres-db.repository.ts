@@ -13,10 +13,10 @@ interface PositionWishRow {
   status: string;
   user_id: string;
   symbol_with_exchange: string;
-  nb_shares: number;
-  risk_percentage: number;
-  target_buy_price: number;
-  stop_loss: number;
+  nb_shares: string;
+  risk_percentage: string;
+  target_buy_price: string;
+  stop_loss: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -81,7 +81,7 @@ export class PositionWishPostgresDbRepository
                         risk_percentage      = $4,
                         target_buy_price     = $5,
                         stop_loss            = $6,
-                        updated_at           = $7
+                        updated_at           = NOW()
                     WHERE id = $7
                 `,
         [
@@ -91,7 +91,6 @@ export class PositionWishPostgresDbRepository
           positionWish.riskPercentage.valueOf(),
           positionWish.entryPrice,
           positionWish.stopLoss,
-          new Date(),
           positionWish.id.toString(),
         ],
       );
@@ -115,7 +114,7 @@ export class PositionWishPostgresDbRepository
           positionWish.entryPrice,
           positionWish.stopLoss,
           positionWish.createdAt,
-          positionWish.updatedAt,
+          positionWish.createdAt,
         ],
       );
     }
@@ -146,12 +145,11 @@ export class PositionWishPostgresDbRepository
       status: row.status as PositionWishStatus,
       userId: UserId.from(row.user_id),
       symbol: SymbolWithExchange.from(row.symbol_with_exchange),
-      entryPrice: row.target_buy_price,
-      stopLoss: row.stop_loss,
-      riskPercentage: Percentage.from(row.risk_percentage),
-      quantity: row.nb_shares,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
+      entryPrice: Number.parseFloat(row.target_buy_price),
+      stopLoss: Number.parseFloat(row.stop_loss),
+      riskPercentage: Percentage.from(Number.parseFloat(row.risk_percentage)),
+      quantity: Number.parseInt(row.nb_shares),
+      createdAt: new Date(row.created_at),
     });
   }
 }

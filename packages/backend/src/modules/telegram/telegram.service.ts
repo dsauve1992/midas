@@ -15,6 +15,8 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
   private readonly chatId: string;
   private messageResponses = new Subject<ResponseData>();
   private pendingQuestions = new Map<number, string>();
+  // Track active questions by chat ID
+  private activeChatQuestions = new Map<string, number>();
 
   constructor(private configService: ConfigService) {
     // Initialize the Telegram bot with the token from your config
@@ -33,15 +35,30 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     // Handle incoming text messages
     this.bot.on('text', (ctx) => {
       const message = ctx.message;
-      const reply = message.reply_to_message;
+      const chatId = ctx.chat.id.toString();
 
       // If this is a reply to a question we asked
+      const reply = message.reply_to_message;
       if (reply && reply.message_id) {
+        console.log('reply');
         this.messageResponses.next({
           chatId: ctx.chat.id.toString(),
           messageId: reply.message_id,
           text: message.text,
         });
+        return;
+      }
+
+      const activeQuestionId = this.activeChatQuestions.get(chatId);
+      console.log('activeQuestion');
+      if (activeQuestionId) {
+        this.messageResponses.next({
+          chatId,
+          messageId: activeQuestionId,
+          text: message.text,
+        });
+        // Clear the active question after handling
+        this.activeChatQuestions.delete(chatId);
       }
     });
 
@@ -95,6 +112,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       }
 
       this.pendingQuestions.set(messageId, question);
+      this.activeChatQuestions.set(this.chatId, messageId);
 
       // Wait for a response to this specific message
       const response = await firstValueFrom(
@@ -115,8 +133,10 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       );
 
       this.pendingQuestions.delete(messageId);
+      this.activeChatQuestions.delete(this.chatId);
       return response.text;
     } catch (error) {
+      this.activeChatQuestions.delete(this.chatId);
       // Remove keyboard on error as well
       await this.bot.telegram.sendMessage(
         this.chatId,
