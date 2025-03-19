@@ -33,9 +33,18 @@ export class CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase {
       );
 
       if (highestPrice >= wish.entryPrice) {
-        await this.telegramService.validateBuyOrderExecution(
-          wish.symbol.toString(),
-        );
+        this.telegramService
+          .validateBuyOrderExecution(wish.symbol.toString())
+          .then(async (buyPrice) => {
+            if (buyPrice) {
+              this.logger.log(
+                `Buy order for ${wish.symbol.toString()} executed at ${buyPrice}`,
+              );
+              // TODO: Implement this
+              // const ongoingPosition = wish.confirmBuyOrderExecuted(buyPrice);
+              // await this.positionWishRepository.save(wish);
+            }
+          });
       }
     }
   }
