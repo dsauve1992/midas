@@ -90,7 +90,7 @@ describe('CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase', () =>
       .mockResolvedValue(150);
     when(historicalPriceService.getLast15MinHighestPriceFor)
       .calledWith(NASDAQ_GOOGL)
-      .mockResolvedValue(200);
+      .mockResolvedValue(201);
 
     when(telegramService.validateBuyOrderExecution).mockResolvedValue(101.5);
 
@@ -100,6 +100,30 @@ describe('CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase', () =>
       [NASDAQ_MSFT],
       [NASDAQ_GOOGL],
     ]);
+  });
+
+  test('given user has refuted the order execution, then it should do nothing', async () => {
+    const aPendingPositionWish = givenPendingPositionWish({
+      entryPrice: 100,
+      symbol: NASDAQ_AAPL,
+    });
+    when(positionWishRepository.getAllPending).mockResolvedValue([
+      aPendingPositionWish,
+    ]);
+
+    when(historicalPriceService.getLast15MinHighestPriceFor)
+      .calledWith(NASDAQ_AAPL)
+      .mockResolvedValue(101);
+
+    when(telegramService.validateBuyOrderExecution)
+      .calledWith(NASDAQ_AAPL)
+      .mockResolvedValue(null);
+
+    await useCase.execute();
+
+    expect(positionWishRepository.save).not.toHaveBeenCalled();
+
+    expect(ongoingPositionRepository.save).not.toHaveBeenCalled();
   });
 
   test('given user has confirmed for order execution with buyPrice, then it should set wish to executed, create ongoing position and persist them', async () => {
@@ -115,11 +139,13 @@ describe('CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase', () =>
       .calledWith(NASDAQ_AAPL)
       .mockResolvedValue(101);
 
+    const validateBuyOrderExecutionPromise = Promise.resolve(101.5);
     when(telegramService.validateBuyOrderExecution)
       .calledWith(NASDAQ_AAPL)
-      .mockResolvedValue(101.5);
+      .mockResolvedValue(validateBuyOrderExecutionPromise);
 
     await useCase.execute();
+    await validateBuyOrderExecutionPromise;
 
     expect(positionWishRepository.save).toHaveBeenCalledWith(
       new PositionWish({

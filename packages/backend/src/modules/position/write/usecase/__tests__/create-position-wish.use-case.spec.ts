@@ -67,7 +67,6 @@ describe('CreatePositionWishUseCase', () => {
         riskPercentage: Percentage.from(0.005),
         quantity: 10,
         createdAt: NOW,
-        updatedAt: NOW,
       }),
     );
   });

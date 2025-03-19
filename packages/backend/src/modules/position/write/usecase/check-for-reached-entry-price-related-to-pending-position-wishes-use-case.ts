@@ -36,7 +36,7 @@ export class CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase {
       );
 
       if (highestPrice >= wish.entryPrice) {
-        return this.telegramService
+        this.telegramService
           .validateBuyOrderExecution(wish.symbol)
           .then(async (buyPrice) => {
             if (buyPrice) {

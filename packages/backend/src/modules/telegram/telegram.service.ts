@@ -156,12 +156,12 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
    * Remind user to create a buy order and wait for confirmation
    */
   async remindBuyOrder(
-    symbol: string,
+    symbol: SymbolWithExchange,
     quantity: number,
     price?: number,
   ): Promise<boolean> {
     const priceText = price ? `at $${price}` : '';
-    const question = `🔔 REMINDER: Please create a buy order for ${quantity} ${symbol} ${priceText} in Disnat.`;
+    const question = `🔔 REMINDER: Please create a buy order for ${quantity} ${symbol.symbol} ${priceText} in Disnat.`;
 
     const response = await this.askQuestion(question, ['✅ DONE', '❌ CANCEL']);
     console.log('response', response);

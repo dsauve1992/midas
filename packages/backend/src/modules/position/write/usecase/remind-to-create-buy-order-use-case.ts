@@ -10,15 +10,13 @@ export class RemindToCreateBuyOrderUseCase {
     private telegramService: TelegramService,
   ) {}
 
-  // TODO add test for this one
-
   async execute() {
     const wishes =
       await this.positionWishRepository.getAllWaitingForOrderCreated();
 
     for (const wish of wishes) {
       this.telegramService
-        .remindBuyOrder(wish.symbol.toString(), wish.quantity, wish.entryPrice)
+        .remindBuyOrder(wish.symbol, wish.quantity, wish.entryPrice)
         .then(async (orderCreated) => {
           if (orderCreated) {
             wish.confirmBuyOrderCreated();
