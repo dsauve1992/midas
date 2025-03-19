@@ -74,15 +74,15 @@ export class PositionWish {
 
     this._status = PositionWishStatus.EXECUTED;
 
-    return new OngoingPosition(
-      PositionId.new(),
-      this.userId,
-      this.symbol,
-      buyPrice,
-      this.stopLoss,
-      this.quantity,
-      new Date(),
-    );
+    return new OngoingPosition({
+      id: PositionId.new(),
+      userId: this.userId,
+      symbol: this.symbol,
+      buyPrice: buyPrice,
+      stopLoss: this.stopLoss,
+      quantity: this.quantity,
+      createdAt: new Date(),
+    });
   }
 
   confirmBuyOrderCreated() {

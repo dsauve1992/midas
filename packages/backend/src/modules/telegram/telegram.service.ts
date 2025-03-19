@@ -2,6 +2,7 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Markup, Telegraf } from 'telegraf';
 import { filter, firstValueFrom, Subject, timeout } from 'rxjs';
+import { SymbolWithExchange } from '../stocks/domain/symbol-with-exchange';
 
 interface ResponseData {
   chatId: string;
@@ -170,8 +171,10 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
   /**
    * Validate if a buy order was executed and get the actual price
    */
-  async validateBuyOrderExecution(symbol: string): Promise<number | null> {
-    const question = `✅ VALIDATION: Was your buy order for ${symbol} executed successfully?`;
+  async validateBuyOrderExecution(
+    symbol: SymbolWithExchange,
+  ): Promise<number | null> {
+    const question = `✅ VALIDATION: Was your buy order for ${symbol.symbol} executed successfully?`;
 
     const initialResponse = await this.askQuestion(question, [
       '✅ YES',
@@ -179,7 +182,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     ]);
 
     if (initialResponse.includes('YES')) {
-      const priceQuestion = `What was the actual buy price for ${symbol}?`;
+      const priceQuestion = `What was the actual buy price for ${symbol.symbol}?`;
       const priceResponse = await this.askQuestion(priceQuestion);
       const price = parseFloat(priceResponse.trim());
       return isNaN(price) ? null : price;

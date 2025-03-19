@@ -5,6 +5,7 @@ import { PositionWishPostgresDbRepository } from '../infra/repository/position-w
 import { AutoCommitUnitOfWork } from '../../../../lib/unit-of-work/auto-commit-unit-of-work.service';
 import { HistoricalPriceService } from '../domain/service/historical-price-service';
 import { TelegramService } from '../../../telegram/telegram.service';
+import { OngoingPositionPostgresDbRepository } from '../infra/repository/ongoing-position.postgres-db.repository';
 
 @Injectable()
 export class MonitorPendingPositionWishesJob {
@@ -24,6 +25,7 @@ export class MonitorPendingPositionWishesJob {
       const useCase =
         new CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase(
           new PositionWishPostgresDbRepository(this.autoCommitUnitOfWork),
+          new OngoingPositionPostgresDbRepository(),
           this.historicalPriceService,
           this.bot,
         );

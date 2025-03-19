@@ -10,6 +10,8 @@ export class RemindToCreateBuyOrderUseCase {
     private telegramService: TelegramService,
   ) {}
 
+  // TODO add test for this one
+
   async execute() {
     const wishes =
       await this.positionWishRepository.getAllWaitingForOrderCreated();

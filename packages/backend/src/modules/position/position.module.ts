@@ -5,7 +5,6 @@ import { PositionWishPostgresDbRepository } from './write/infra/repository/posit
 import { ConfigModule } from '@nestjs/config';
 import { PositionPostgresDbRepository } from './read/infra/position.postgres-db.repository';
 import { TelegramModule } from '../telegram/telegram.module';
-import { ConfirmBuyOrderExecutedUseCase } from './write/usecase/confirm-buy-order-executed.use-case';
 import { MonitorPendingPositionWishesJob } from './write/job/monitor-pending-position-wishes-job';
 import { HistoricalDataModule } from '../historical-data/historical-data.module';
 import { CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase } from './write/usecase/check-for-reached-entry-price-related-to-pending-position-wishes-use-case';
@@ -24,12 +23,10 @@ import { RemindToCreateBuyOrderUseCase } from './write/usecase/remind-to-create-
   ],
   controllers: [PositionController],
   providers: [
-    // TestTelegramBotJob,
     MonitorPendingPositionWishesJob,
     RemindToCreateBuyOrderJob,
     RemindToCreateBuyOrderUseCase,
     CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase,
-    ConfirmBuyOrderExecutedUseCase,
     CreatePositionWishUseCase,
     HistoricalPriceService,
     {

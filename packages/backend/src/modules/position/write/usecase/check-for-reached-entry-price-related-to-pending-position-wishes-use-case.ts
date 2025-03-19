@@ -2,6 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PositionWishRepository } from '../domain/repository/position-wish.repository';
 import { HistoricalPriceService } from '../domain/service/historical-price-service';
 import { TelegramService } from '../../../telegram/telegram.service';
+import { OngoingPositionRepository } from '../domain/repository/ongoing-position.repository';
 
 @Injectable()
 export class CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase {
@@ -12,6 +13,8 @@ export class CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase {
   constructor(
     @Inject('PositionWishRepository')
     private positionWishRepository: PositionWishRepository,
+    @Inject('OngoingPositionRepository')
+    private ongoingPositionRepository: OngoingPositionRepository,
     private historicalPriceService: HistoricalPriceService,
     private telegramService: TelegramService,
   ) {}
@@ -33,16 +36,14 @@ export class CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase {
       );
 
       if (highestPrice >= wish.entryPrice) {
-        this.telegramService
-          .validateBuyOrderExecution(wish.symbol.toString())
+        return this.telegramService
+          .validateBuyOrderExecution(wish.symbol)
           .then(async (buyPrice) => {
             if (buyPrice) {
-              this.logger.log(
-                `Buy order for ${wish.symbol.toString()} executed at ${buyPrice}`,
-              );
-              // TODO: Implement this
-              // const ongoingPosition = wish.confirmBuyOrderExecuted(buyPrice);
-              // await this.positionWishRepository.save(wish);
+              const ongoingPosition = wish.confirmBuyOrderExecuted(buyPrice);
+
+              await this.positionWishRepository.save(wish);
+              await this.ongoingPositionRepository.save(ongoingPosition);
             }
           });
       }
