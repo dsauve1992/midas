@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-     - master
+      - master
 
 jobs:
   frontend:
@@ -112,6 +112,7 @@ jobs:
             else
               echo "Aucun conteneur Docker en cours d'exécution."
             fi
+            docker rmi $(docker images -q)
             docker system prune --volumes --force
             echo "DOCKER_USERNAME: $DOCKER_USERNAME"
             echo "IMAGE_NAME: $IMAGE_NAME"
