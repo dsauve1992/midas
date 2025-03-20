@@ -112,7 +112,10 @@ jobs:
             else
               echo "Aucun conteneur Docker en cours d'exécution."
             fi
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q)
             docker rmi $(docker images -q)
+            docker volume prune -f
             docker system prune --volumes --force
             echo "DOCKER_USERNAME: $DOCKER_USERNAME"
             echo "IMAGE_NAME: $IMAGE_NAME"
