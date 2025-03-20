@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase } from '../usecase/check-for-reached-entry-price-related-to-pending-position-wishes-use-case';
 import { PositionWishPostgresDbRepository } from '../infra/repository/position-wish.postgres-db.repository';
 import { AutoCommitUnitOfWork } from '../../../../lib/unit-of-work/auto-commit-unit-of-work.service';
@@ -17,7 +17,7 @@ export class MonitorPendingPositionWishesJob {
     private readonly historicalPriceService: HistoricalPriceService,
   ) {}
 
-  @Cron('0 */2 * * *')
+  @Cron(CronExpression.EVERY_30_MINUTES)
   async run() {
     this.logger.debug('start job');
     try {
@@ -25,7 +25,7 @@ export class MonitorPendingPositionWishesJob {
       const useCase =
         new CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase(
           new PositionWishPostgresDbRepository(this.autoCommitUnitOfWork),
-          new OngoingPositionPostgresDbRepository(),
+          new OngoingPositionPostgresDbRepository(this.autoCommitUnitOfWork),
           this.historicalPriceService,
           this.bot,
         );
