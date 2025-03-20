@@ -130,6 +130,7 @@ jobs:
               -e AUTH0_AUDIENCE=https://${{ vars.EC2_HOST }} \
               -e AUTH0_ISSUER=https://${{ vars.AUTH0_DOMAIN }}/ \
               -e TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }} \
+              -e MASTER_CHAT_ID=${{ vars.MASTER_CHAT_ID }} \
               -e DATABASE_CONNECTION_STRING=${{ secrets.DATABASE_CONNECTION_STRING }} \
               $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
