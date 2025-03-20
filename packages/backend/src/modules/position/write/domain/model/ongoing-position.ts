@@ -4,6 +4,7 @@ import { UserId } from '../../../../user/domain/UserId';
 
 export interface OngoingPositionProps {
   id: PositionId;
+  positionWishId?: PositionId;
   userId: UserId;
   symbol: SymbolWithExchange;
   buyPrice: number;
@@ -14,6 +15,7 @@ export interface OngoingPositionProps {
 
 export class OngoingPosition {
   readonly id: PositionId;
+  readonly positionWishId: PositionId | null;
   readonly userId: UserId;
   readonly symbol: SymbolWithExchange;
   readonly buyPrice: number;
@@ -23,6 +25,7 @@ export class OngoingPosition {
 
   constructor(props: OngoingPositionProps) {
     this.id = props.id;
+    this.positionWishId = props.positionWishId;
     this.userId = props.userId;
     this.symbol = props.symbol;
     this.buyPrice = props.buyPrice;

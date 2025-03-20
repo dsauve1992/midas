@@ -4,7 +4,7 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('position', (table) => {
     table.string('id').primary();
     table
-      .foreign('position_wish_id')
+      .string('position_wish_id')
       .references('id')
       .inTable('position_wishes');
     table.string('status').notNullable();

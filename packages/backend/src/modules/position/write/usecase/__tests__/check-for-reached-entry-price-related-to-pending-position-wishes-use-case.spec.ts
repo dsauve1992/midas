@@ -157,6 +157,7 @@ describe('CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase', () =>
     expect(ongoingPositionRepository.save).toHaveBeenCalledWith(
       new OngoingPosition({
         id: A_POSITION_ID,
+        positionWishId: aPendingPositionWish.id,
         userId: aPendingPositionWish.userId,
         symbol: aPendingPositionWish.symbol,
         buyPrice: 101.5,

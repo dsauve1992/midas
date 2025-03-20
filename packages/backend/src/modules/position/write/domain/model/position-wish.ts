@@ -76,6 +76,7 @@ export class PositionWish {
 
     return new OngoingPosition({
       id: PositionId.new(),
+      positionWishId: this.id,
       userId: this.userId,
       symbol: this.symbol,
       buyPrice: buyPrice,
