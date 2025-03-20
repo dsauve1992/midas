@@ -3,5 +3,5 @@ export enum PositionWishStatus {
   PENDING = 'PENDING',
   CANCELLED = 'CANCELLED',
   EXECUTED = 'EXECUTED',
-  REJECTED = 'REJECTED',
+  STOP_LOSS_HIT = 'STOP_LOSS_HIT',
 }

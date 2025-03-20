@@ -191,9 +191,16 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     return null;
   }
 
-  /**
-   * Remind user to create a sell order and wait for confirmation
-   */
+  async askUserToCancelOrderBecauseStopLossHasBeenHit(
+    symbol: SymbolWithExchange,
+    stopLoss: number,
+  ): Promise<boolean> {
+    const question = `⚠️ ${symbol.toString()}: has reach a price below the stop loss ${stopLoss} : Please cancel the order.`;
+
+    const response = await this.askQuestion(question, ['✅ DONE', '❌ CANCEL']);
+    return response.includes('DONE');
+  }
+
   async remindSellOrder(
     symbol: string,
     quantity: number,

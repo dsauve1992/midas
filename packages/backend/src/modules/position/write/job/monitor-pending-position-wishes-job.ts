@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase } from '../usecase/check-for-reached-entry-price-related-to-pending-position-wishes-use-case';
+import { MonitorPendingPositionWishesUseCase } from '../usecase/monitor-pending-position-wishes.use-case';
 import { PositionWishPostgresDbRepository } from '../infra/repository/position-wish.postgres-db.repository';
 import { AutoCommitUnitOfWork } from '../../../../lib/unit-of-work/auto-commit-unit-of-work.service';
 import { HistoricalPriceService } from '../domain/service/historical-price-service';
@@ -17,18 +17,17 @@ export class MonitorPendingPositionWishesJob {
     private readonly historicalPriceService: HistoricalPriceService,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_MINUTES)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async run() {
     this.logger.debug('start job');
     try {
       await this.autoCommitUnitOfWork.connect();
-      const useCase =
-        new CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase(
-          new PositionWishPostgresDbRepository(this.autoCommitUnitOfWork),
-          new OngoingPositionPostgresDbRepository(this.autoCommitUnitOfWork),
-          this.historicalPriceService,
-          this.bot,
-        );
+      const useCase = new MonitorPendingPositionWishesUseCase(
+        new PositionWishPostgresDbRepository(this.autoCommitUnitOfWork),
+        new OngoingPositionPostgresDbRepository(this.autoCommitUnitOfWork),
+        this.historicalPriceService,
+        this.bot,
+      );
       await useCase.execute();
     } catch (e) {
       await this.autoCommitUnitOfWork.release();

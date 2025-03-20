@@ -7,7 +7,7 @@ import { PositionPostgresDbRepository } from './read/infra/position.postgres-db.
 import { TelegramModule } from '../telegram/telegram.module';
 import { MonitorPendingPositionWishesJob } from './write/job/monitor-pending-position-wishes-job';
 import { HistoricalDataModule } from '../historical-data/historical-data.module';
-import { CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase } from './write/usecase/check-for-reached-entry-price-related-to-pending-position-wishes-use-case';
+import { MonitorPendingPositionWishesUseCase } from './write/usecase/monitor-pending-position-wishes-use-case.service';
 import { HistoricalPriceService } from './write/domain/service/historical-price-service';
 import { OngoingPositionPostgresDbRepository } from './write/infra/repository/ongoing-position.postgres-db.repository';
 import { RemindToCreateBuyOrderJob } from './write/job/remind-to-create-buy-order-job';
@@ -26,7 +26,7 @@ import { RemindToCreateBuyOrderUseCase } from './write/usecase/remind-to-create-
     MonitorPendingPositionWishesJob,
     RemindToCreateBuyOrderJob,
     RemindToCreateBuyOrderUseCase,
-    CheckForReachedEntryPriceRelatedToPendingPositionWishesUseCase,
+    MonitorPendingPositionWishesUseCase,
     CreatePositionWishUseCase,
     HistoricalPriceService,
     {

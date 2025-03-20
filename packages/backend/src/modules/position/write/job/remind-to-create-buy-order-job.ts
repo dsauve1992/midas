@@ -14,7 +14,7 @@ export class RemindToCreateBuyOrderJob {
     private readonly bot: TelegramService,
   ) {}
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async run() {
     this.logger.debug('start job');
     try {

@@ -95,4 +95,8 @@ export class PositionWish {
 
     this._status = PositionWishStatus.PENDING;
   }
+
+  setStopLossHit() {
+    this._status = PositionWishStatus.STOP_LOSS_HIT;
+  }
 }
