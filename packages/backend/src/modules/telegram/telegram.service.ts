@@ -33,8 +33,8 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       ctx.reply('Backend is up and running!');
     });
 
-    this.bot.command('chat_id', (ctx) => {
-      ctx.reply(ctx.message.chat.id.toString());
+    this.bot.command('info', (ctx) => {
+      ctx.reply(`chatId: ${ctx.chat.id.toString()}`);
     });
 
     // Handle incoming text messages
