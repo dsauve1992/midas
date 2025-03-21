@@ -188,8 +188,8 @@ describe('MonitorPendingPositionWishesUseCase specs', () => {
     await useCase.execute();
 
     expect(telegramService.validateBuyOrderExecution.mock.calls).toEqual([
-      [NASDAQ_MSFT],
-      [NASDAQ_GOOGL],
+      [NASDAQ_MSFT, 140],
+      [NASDAQ_GOOGL, 180],
     ]);
   });
 
@@ -208,7 +208,7 @@ describe('MonitorPendingPositionWishesUseCase specs', () => {
       .mockResolvedValue({ high: 101, low: 94.9 });
 
     when(telegramService.validateBuyOrderExecution)
-      .calledWith(NASDAQ_AAPL)
+      .calledWith(NASDAQ_AAPL, aPendingPositionWish.stopLoss)
       .mockResolvedValue(null);
 
     await useCase.execute();
@@ -234,7 +234,7 @@ describe('MonitorPendingPositionWishesUseCase specs', () => {
 
     const validateBuyOrderExecutionPromise = Promise.resolve(101.5);
     when(telegramService.validateBuyOrderExecution)
-      .calledWith(NASDAQ_AAPL)
+      .calledWith(NASDAQ_AAPL, aPendingPositionWish.stopLoss)
       .mockResolvedValue(validateBuyOrderExecutionPromise);
 
     await useCase.execute();

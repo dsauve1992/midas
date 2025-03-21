@@ -26,7 +26,7 @@ export class MonitorPendingPositionWishesUseCase {
 
       if (high >= wish.entryPrice) {
         this.telegramService
-          .validateBuyOrderExecution(wish.symbol)
+          .validateBuyOrderExecution(wish.symbol, wish.stopLoss)
           .then(async (buyPrice) => {
             if (buyPrice) {
               const ongoingPosition = wish.confirmBuyOrderExecuted(buyPrice);

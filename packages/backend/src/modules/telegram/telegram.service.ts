@@ -177,6 +177,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
    */
   async validateBuyOrderExecution(
     symbol: SymbolWithExchange,
+    stopLoss: number,
   ): Promise<number | null> {
     const question = `✅ VALIDATION: Was your buy order for ${symbol.symbol} executed successfully?`;
 
@@ -188,6 +189,11 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     if (initialResponse.includes('YES')) {
       const priceQuestion = `What was the actual buy price for ${symbol.symbol}?`;
       const priceResponse = await this.askQuestion(priceQuestion);
+      await this.bot.telegram.sendMessage(
+        this.chatId,
+        `Also, don't forget to set a stop loss for this position at ${stopLoss}`,
+        { reply_markup: { remove_keyboard: true } },
+      );
       const price = parseFloat(priceResponse.trim());
       return isNaN(price) ? null : price;
     }
