@@ -4,6 +4,7 @@ import { UserId } from '../../../../user/domain/UserId';
 import { StrategyName } from './strategy/strategy-name';
 import { PositionStatus } from './position-status';
 import { StopLossHitEvent } from './stop-loss-hit-event';
+import { TakePartialProfitEvent } from './take-partial-profit-event';
 
 export interface OngoingPositionProps {
   id: PositionId;
@@ -79,5 +80,19 @@ export class OngoingPosition {
       new StopLossHitEvent({ sellingPrice, timestamp: new Date() }),
     );
     this._status = PositionStatus.COMPLETED;
+  }
+
+  computeR(factor: number) {
+    return this.buyPrice + (this.buyPrice - this.stopLoss) * factor;
+  }
+
+  registerPartialTakeProfit(sellingPrice: number, quantity: number) {
+    this.events.push(
+      new TakePartialProfitEvent({
+        sellingPrice,
+        nbOfShares: quantity,
+        timestamp: new Date(),
+      }),
+    );
   }
 }

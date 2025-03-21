@@ -201,6 +201,28 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     return null;
   }
 
+  async askUserToTakeInitialProfitAndRaiseStopLoss(params: {
+    symbol: SymbolWithExchange;
+    takeProfitPrice: number;
+    numberOfShares: number;
+  }): Promise<number | null> {
+    const question = `🚀 ${params.symbol.toString()} has reached your initial profit target at $${params.takeProfitPrice}. Please sell ${params.numberOfShares} shares and raise the stop loss`;
+
+    const initialResponse = await this.askQuestion(question, [
+      '✅ DONE',
+      '❌ CANCEL',
+    ]);
+
+    if (initialResponse.includes('DONE')) {
+      const priceQuestion = `What was the actual selling price for ${params.symbol.toString()}?`;
+      const priceResponse = await this.askQuestion(priceQuestion);
+      const price = parseFloat(priceResponse.trim());
+      return isNaN(price) ? null : price;
+    }
+
+    return null;
+  }
+
   async validateStopLossOrderExecution(
     symbol: SymbolWithExchange,
   ): Promise<number | null> {
