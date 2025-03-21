@@ -39,7 +39,7 @@ export class MonitorPendingPositionWishesJob {
         this.bot,
       );
       await useCase.execute();
-    } catch (e) {
+    } finally {
       await this.autoCommitUnitOfWork.release();
     }
     this.logger.debug('end job');
