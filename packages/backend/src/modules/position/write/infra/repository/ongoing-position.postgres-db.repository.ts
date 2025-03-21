@@ -5,6 +5,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DatabaseClientGetter } from '../../../../../lib/unit-of-work/database-client-getter';
 import { UserId } from '../../../../user/domain/UserId';
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
+import { PositionStatus } from '../../domain/model/position-status';
+import { StrategyName } from '../../domain/model/strategy/strategy-name';
 
 interface PositionRow {
   id: string;
@@ -97,7 +99,7 @@ export class OngoingPositionPostgresDbRepository
         [
           position.id.toString(),
           position.positionWishId?.toString(),
-          'ONGOING',
+          position.status,
           position.userId.toString(),
           position.symbol.toString(),
           position.quantity,
@@ -121,6 +123,10 @@ export class OngoingPositionPostgresDbRepository
       buyPrice: parseFloat(row.buy_price),
       stopLoss: parseFloat(row.stop_loss),
       createdAt: row.created_at,
+      status: row.status as PositionStatus,
+      // supporter ces deux informations dans la BD
+      events: [],
+      strategyName: StrategyName.RISK_REWARD_RATIO,
     });
   }
 }

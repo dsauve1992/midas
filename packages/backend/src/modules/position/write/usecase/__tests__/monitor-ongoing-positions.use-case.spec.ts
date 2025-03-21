@@ -19,8 +19,6 @@ describe('MonitorPendingPositionWishesUseCase specs', () => {
 
   beforeEach(() => jest.clearAllMocks());
 
-  afterAll(() => jest.useRealTimers());
-
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [UseCaseTestModule],
@@ -45,11 +43,6 @@ describe('MonitorPendingPositionWishesUseCase specs', () => {
     holdStrategy = app.get(HoldStrategy);
     riskRewardRatioStrategy = app.get(RiskRewardRatioStrategy);
     ongoingPositionRepository = app.get('OngoingPositionRepository');
-  });
-
-  it('should execute well', async () => {
-    expect(useCase).toBeDefined();
-    await useCase.execute();
   });
 
   test('given ongoing positions, when monitor them, it should follow related strategy', async () => {

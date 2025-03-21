@@ -201,6 +201,26 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     return null;
   }
 
+  async validateStopLossOrderExecution(
+    symbol: SymbolWithExchange,
+  ): Promise<number | null> {
+    const question = `✅ VALIDATION: Was your stop loss order for ${symbol.symbol} executed successfully?`;
+
+    const initialResponse = await this.askQuestion(question, [
+      '✅ YES',
+      '❌ NO',
+    ]);
+
+    if (initialResponse.includes('YES')) {
+      const priceQuestion = `What was the actual sell price for ${symbol.symbol}?`;
+      const priceResponse = await this.askQuestion(priceQuestion);
+      const price = parseFloat(priceResponse.trim());
+      return isNaN(price) ? null : price;
+    }
+
+    return null;
+  }
+
   async askUserToCancelOrderBecauseStopLossHasBeenHit(
     symbol: SymbolWithExchange,
     stopLoss: number,

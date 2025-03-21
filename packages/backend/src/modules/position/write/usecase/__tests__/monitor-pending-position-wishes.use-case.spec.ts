@@ -15,6 +15,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { PositionId } from '../../domain/model/position-id';
 import { PositionWish } from '../../domain/model/position-wish';
 import { PositionWishStatus } from '../../domain/model/position-wish-status';
+import { PositionStatus } from '../../domain/model/position-status';
+import { StrategyName } from '../../domain/model/strategy/strategy-name';
 
 jest.mock('../../../../../lib/domain/IdGenerator');
 
@@ -257,6 +259,9 @@ describe('MonitorPendingPositionWishesUseCase specs', () => {
         stopLoss: aPendingPositionWish.stopLoss,
         quantity: aPendingPositionWish.quantity,
         createdAt: NOW,
+        status: PositionStatus.ONGOING,
+        strategyName: StrategyName.RISK_REWARD_RATIO,
+        events: [],
       }),
     );
   });
