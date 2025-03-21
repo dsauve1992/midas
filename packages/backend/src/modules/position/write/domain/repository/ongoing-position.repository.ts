@@ -5,4 +5,6 @@ export interface OngoingPositionRepository {
   save(position: OngoingPosition): Promise<void>;
 
   getById(positionId: PositionId): Promise<OngoingPosition>;
+
+  getAll(): Promise<OngoingPosition[]>;
 }

@@ -27,6 +27,10 @@ export class OngoingPositionPostgresDbRepository
     @Inject('UNIT_OF_WORK') private databaseClientGetter: DatabaseClientGetter,
   ) {}
 
+  getAll(): Promise<OngoingPosition[]> {
+    throw new Error('Method not implemented.');
+  }
+
   async getById(positionId: PositionId): Promise<OngoingPosition> {
     const { rows } = await this.databaseClientGetter
       .getClient()

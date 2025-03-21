@@ -4,8 +4,8 @@ import { AutoCommitUnitOfWork } from '../../../../lib/unit-of-work/auto-commit-u
 import { FinancialModelingPrepService } from '../../../historical-data/financial-modeling-prep.service';
 
 @Injectable()
-export class MonitorOngoingPositionJob {
-  private readonly logger = new Logger(MonitorOngoingPositionJob.name);
+export class MonitorOngoingPositionsJob {
+  private readonly logger = new Logger(MonitorOngoingPositionsJob.name);
 
   constructor(
     private readonly autoCommitUnitOfWork: AutoCommitUnitOfWork,

@@ -1,6 +1,7 @@
 import { SymbolWithExchange } from '../../../../stocks/domain/symbol-with-exchange';
 import { PositionId } from './position-id';
 import { UserId } from '../../../../user/domain/UserId';
+import { StrategyName } from './strategy/strategy-name';
 
 export interface OngoingPositionProps {
   id: PositionId;
@@ -11,6 +12,7 @@ export interface OngoingPositionProps {
   stopLoss: number;
   quantity: number;
   createdAt: Date;
+  strategyName?: StrategyName;
 }
 
 export class OngoingPosition {
@@ -22,6 +24,7 @@ export class OngoingPosition {
   readonly stopLoss: number;
   readonly quantity: number;
   readonly createdAt: Date;
+  readonly strategyName: StrategyName;
 
   constructor(props: OngoingPositionProps) {
     this.id = props.id;
@@ -32,5 +35,6 @@ export class OngoingPosition {
     this.stopLoss = props.stopLoss;
     this.quantity = props.quantity;
     this.createdAt = props.createdAt;
+    this.strategyName = props.strategyName ?? StrategyName.HOLD;
   }
 }

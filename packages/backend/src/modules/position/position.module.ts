@@ -12,6 +12,10 @@ import { HistoricalPriceService } from './write/domain/service/historical-price-
 import { OngoingPositionPostgresDbRepository } from './write/infra/repository/ongoing-position.postgres-db.repository';
 import { RemindToCreateBuyOrderJob } from './write/job/remind-to-create-buy-order-job';
 import { RemindToCreateBuyOrderUseCase } from './write/usecase/remind-to-create-buy-order-use-case';
+import { MonitorOngoingPositionsJob } from './write/job/monitor-ongoing-positions-job';
+import { MonitorOngoingPositionsUseCase } from './write/usecase/monitor-ongoing-positions.use-case';
+import { HoldStrategy } from './write/domain/model/strategy/hold-strategy';
+import { RiskRewardRatioStrategy } from './write/domain/model/strategy/risk-reward-ratio-strategy';
 
 @Module({
   imports: [
@@ -25,10 +29,14 @@ import { RemindToCreateBuyOrderUseCase } from './write/usecase/remind-to-create-
   providers: [
     MonitorPendingPositionWishesJob,
     RemindToCreateBuyOrderJob,
+    MonitorOngoingPositionsJob,
     RemindToCreateBuyOrderUseCase,
     MonitorPendingPositionWishesUseCase,
     CreatePositionWishUseCase,
+    MonitorOngoingPositionsUseCase,
     HistoricalPriceService,
+    HoldStrategy,
+    RiskRewardRatioStrategy,
     {
       provide: 'PositionWishRepository',
       useClass: PositionWishPostgresDbRepository,

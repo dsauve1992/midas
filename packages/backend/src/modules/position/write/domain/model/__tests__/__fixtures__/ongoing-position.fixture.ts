@@ -15,5 +15,6 @@ export const givenOngoingPosition = (
     buyPrice: props.buyPrice ?? 100,
     stopLoss: props.stopLoss ?? 99,
     createdAt: props.createdAt ?? new Date(),
+    strategyName: props.strategyName,
   });
 };
