@@ -3,6 +3,7 @@ import { PositionId } from '../../position-id';
 import { UserId } from '../../../../../../user/domain/UserId';
 import { SymbolWithExchange } from '../../../../../../stocks/domain/symbol-with-exchange';
 import { PositionStatus } from '../../position-status';
+import { StrategyName } from '../../strategy/strategy-name';
 
 export const givenOngoingPosition = (
   props: Partial<OngoingPositionProps> = {},
@@ -17,7 +18,7 @@ export const givenOngoingPosition = (
     buyPrice: props.buyPrice ?? 100,
     stopLoss: props.stopLoss ?? 99,
     createdAt: props.createdAt ?? new Date(),
-    strategyName: props.strategyName,
+    strategyName: props.strategyName ?? StrategyName.HOLD,
     events: props.events ?? [],
   });
 };

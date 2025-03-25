@@ -40,7 +40,7 @@ export class OngoingPosition {
   readonly quantity: number;
   readonly createdAt: Date;
   readonly strategyName: StrategyName;
-  readonly events: StopLossHitEvent[];
+  readonly events: (StopLossHitEvent | TakePartialProfitEvent)[];
 
   constructor(props: OngoingPositionProps) {
     this.id = props.id;

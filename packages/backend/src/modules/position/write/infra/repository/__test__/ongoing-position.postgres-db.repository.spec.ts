@@ -8,6 +8,8 @@ import { PositionId } from '../../../domain/model/position-id';
 import { PositionWishRepository } from '../../../domain/repository/position-wish.repository';
 import { PositionWishPostgresDbRepository } from '../position-wish.postgres-db.repository';
 import { givenPositionWish } from '../../../domain/model/__tests__/__fixtures__/position-wish.fixture';
+import { TakePartialProfitEvent } from '../../../domain/model/position-events/take-partial-profit-event';
+import { StopLossHitEvent } from '../../../domain/model/position-events/stop-loss-hit-event';
 
 describe('OngoingPositionPostgresDbRepository specs', () => {
   let repository: OngoingPositionRepository;
@@ -32,6 +34,7 @@ describe('OngoingPositionPostgresDbRepository specs', () => {
 
   beforeEach(async () => {
     const client = await integrationTestService.pool.connect();
+    await client.query('DELETE FROM position_events;');
     await client.query('DELETE FROM position;');
     await client.query('DELETE FROM position_wishes;');
     client.release();
@@ -51,7 +54,7 @@ describe('OngoingPositionPostgresDbRepository specs', () => {
     expect(persistedOngoingPosition).toEqual(ongoingPosition);
   });
 
-  test('given a new ongoing position related to a position wish not persisted, when save it, it throw an error', async () => {
+  test('given a new ongoing position related to a position wish not persisted, when save it, it throws an error', async () => {
     const positionWishId = PositionId.new();
     const ongoingPosition = givenOngoingPosition({ positionWishId });
 
@@ -64,6 +67,24 @@ describe('OngoingPositionPostgresDbRepository specs', () => {
 
     const ongoingPosition = givenOngoingPosition({
       positionWishId: aPositionWish.id,
+    });
+
+    await repository.save(ongoingPosition);
+
+    const persistedOngoingPosition = await repository.getById(
+      ongoingPosition.id,
+    );
+
+    expect(persistedOngoingPosition).toEqual(ongoingPosition);
+  });
+
+  test('given ongoing position with events, when save it, it should be persisted', async () => {
+    const aPositionWish = givenPositionWish();
+    await positionWishRepository.save(aPositionWish);
+
+    const ongoingPosition = givenOngoingPosition({
+      positionWishId: aPositionWish.id,
+      events: [TakePartialProfitEvent.new(94.6, 30), StopLossHitEvent.new(100)],
     });
 
     await repository.save(ongoingPosition);

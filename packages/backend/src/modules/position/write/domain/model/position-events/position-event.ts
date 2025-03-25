@@ -20,4 +20,12 @@ export class PositionEventId {
   static new(): PositionEventId {
     return new PositionEventId(IdGenerator.generateUUIDv4());
   }
+
+  static from(value: string): PositionEventId {
+    return new PositionEventId(value);
+  }
+
+  toString(): string {
+    return this.value;
+  }
 }
