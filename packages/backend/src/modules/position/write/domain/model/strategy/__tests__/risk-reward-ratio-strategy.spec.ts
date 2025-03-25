@@ -5,13 +5,19 @@ import { createMock, DeepMocked } from '@golevelup/ts-jest';
 import { HistoricalPriceService } from '../../../service/historical-price-service';
 import { givenOngoingPosition } from '../../__tests__/__fixtures__/ongoing-position.fixture';
 import { when } from 'jest-when';
+import { v4 as uuidv4 } from 'uuid';
 import { OngoingPositionRepository } from '../../../repository/ongoing-position.repository';
 import { TelegramService } from '../../../../../../telegram/telegram.service';
 import { PositionStatus } from '../../position-status';
-import { StopLossHitEvent } from '../../stop-loss-hit-event';
-import { TakePartialProfitEvent } from '../../take-partial-profit-event';
+import { StopLossHitEvent } from '../../position-events/stop-loss-hit-event';
+import { TakePartialProfitEvent } from '../../position-events/take-partial-profit-event';
+import { PositionEventId } from '../../position-events/position-event';
+import { IdGenerator } from '../../../../../../../lib/domain/IdGenerator';
+
+jest.mock('../../../../../../../lib/domain/IdGenerator');
 
 const NOW = new Date('2021-01-01T00:00:00Z');
+const AN_ID = uuidv4();
 
 describe('RiskRewardRatioStrategy', () => {
   let riskRewardRatioStrategy: RiskRewardRatioStrategy;
@@ -48,6 +54,7 @@ describe('RiskRewardRatioStrategy', () => {
     historicalPriceService = app.get(HistoricalPriceService);
     telegramService = app.get(TelegramService);
     ongoingPositionRepository = app.get('OngoingPositionRepository');
+    jest.mocked(IdGenerator.generateUUIDv4).mockReturnValue(AN_ID);
   });
 
   test('given pending position wishes, when stop loss has been reached, it should ask user to cancel position', async () => {
@@ -96,6 +103,7 @@ describe('RiskRewardRatioStrategy', () => {
         status: PositionStatus.COMPLETED,
         events: [
           new StopLossHitEvent({
+            id: new PositionEventId(AN_ID),
             sellingPrice: 94.9,
             timestamp: NOW,
           }),
@@ -201,6 +209,7 @@ describe('RiskRewardRatioStrategy', () => {
         ...ongoingPosition,
         events: [
           new TakePartialProfitEvent({
+            id: new PositionEventId(AN_ID),
             sellingPrice: takeProfitSellingPrice,
             nbOfShares: 11,
             timestamp: NOW,

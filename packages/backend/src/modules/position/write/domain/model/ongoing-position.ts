@@ -3,8 +3,8 @@ import { PositionId } from './position-id';
 import { UserId } from '../../../../user/domain/UserId';
 import { StrategyName } from './strategy/strategy-name';
 import { PositionStatus } from './position-status';
-import { StopLossHitEvent } from './stop-loss-hit-event';
-import { TakePartialProfitEvent } from './take-partial-profit-event';
+import { StopLossHitEvent } from './position-events/stop-loss-hit-event';
+import { TakePartialProfitEvent } from './position-events/take-partial-profit-event';
 
 export interface OngoingPositionProps {
   id: PositionId;
@@ -76,9 +76,7 @@ export class OngoingPosition {
   }
 
   registerStopLossHit(sellingPrice: number) {
-    this.events.push(
-      new StopLossHitEvent({ sellingPrice, timestamp: new Date() }),
-    );
+    this.events.push(StopLossHitEvent.new(sellingPrice));
     this._status = PositionStatus.COMPLETED;
   }
 
@@ -87,12 +85,6 @@ export class OngoingPosition {
   }
 
   registerPartialTakeProfit(sellingPrice: number, quantity: number) {
-    this.events.push(
-      new TakePartialProfitEvent({
-        sellingPrice,
-        nbOfShares: quantity,
-        timestamp: new Date(),
-      }),
-    );
+    this.events.push(TakePartialProfitEvent.new(sellingPrice, quantity));
   }
 }
