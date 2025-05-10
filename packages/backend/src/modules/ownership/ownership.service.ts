@@ -12,6 +12,7 @@ import {
 export class OwnershipService {
   private static readonly EDGE_FUND_DATA_PROVIDER_BASE_URL = `https://services.bingapis.com/contentservices-finance.hedgefunddataprovider/api/v1`;
   private static readonly SEARCH_BASE_URL = `https://services.bingapis.com/contentservices-finance.csautosuggest/api/v1/Query`;
+
   constructor(private httpService: HttpService) {}
 
   async getHistory(symbol: string): Promise<AggregateHolding[]> {
@@ -23,6 +24,7 @@ export class OwnershipService {
         `${OwnershipService.EDGE_FUND_DATA_PROVIDER_BASE_URL}/GetSecurityAggregateHoldings/${matchingResult.SecId}`,
       ),
     );
+    console.log(data);
 
     return data.aggregateHoldings;
   }
