@@ -122,6 +122,7 @@ jobs:
             echo "IMAGE_TAG: $IMAGE_TAG"
             docker pull $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
             docker run -d \
+              --platform linux/x86_64 \
               -p 443:443 \
               -e FMP_API_KEY=${{ secrets.FMP_PRIVATE_KEY }} \
               -e SENTRY_DSN=${{ secrets.SENTRY_DSN }} \
