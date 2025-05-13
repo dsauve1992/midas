@@ -24,7 +24,6 @@ export class OwnershipService {
         `${OwnershipService.EDGE_FUND_DATA_PROVIDER_BASE_URL}/GetSecurityAggregateHoldings/${matchingResult.SecId}`,
       ),
     );
-    console.log(data);
 
     return data.aggregateHoldings;
   }
